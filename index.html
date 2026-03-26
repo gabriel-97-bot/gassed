@@ -1630,7 +1630,7 @@
     @keyframes wResultPop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .wheel-result-player { font-size: 1.6rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
     .wheel-result-challenge { font-size: 1.2rem; font-weight: 700; color: #C9A84C; margin-bottom: 6px; }
-    .wheel-result-desc { font-size: 0.92rem; font-weight: 500; color: var(--muted); line-height: 1.5; }
+    .wheel-result-desc { font-size: 1rem; font-weight: 500; color: var(--text); line-height: 1.5; text-align: center; }
 
     /* ══════════════════════════════════════════════════
        DESKTOP: iPhone 15 Pro preview frame
@@ -2069,8 +2069,6 @@
     </div>
     <button class="wheel-spin-btn" id="wheel-spin-btn" data-t="wheel.spinBtn" onclick="spinWheels()">SNURR!</button>
     <div id="wheel-result-card" class="wheel-result-card" style="display:none">
-      <div class="wheel-result-player" id="wheel-result-player"></div>
-      <div class="wheel-result-challenge" id="wheel-result-challenge"></div>
       <div class="wheel-result-desc" id="wheel-result-desc"></div>
     </div>
   </div>
@@ -4014,8 +4012,6 @@ function showWheelResult(playerIdx, challengeIdx) {
   SFX.wheelReveal();
   var player = app.players[playerIdx];
   var ch = WHEEL_CHALLENGES[challengeIdx];
-  document.getElementById('wheel-result-player').textContent = player;
-  document.getElementById('wheel-result-challenge').textContent = ch.emoji + ' ' + ch.label + '!';
   document.getElementById('wheel-result-desc').textContent = ch.desc || '';
   document.getElementById('wheel-result-card').style.display = '';
 }
