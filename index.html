@@ -158,17 +158,15 @@
 
     /* ── Settings button ── */
     #settings-btn {
-      position: absolute; bottom: 24px; right: 24px; z-index: 200;
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.18);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border-radius: 50%; width: 40px; height: 40px;
-      font-size: 1.15rem; cursor: pointer; color: #fff;
+      position: absolute; top: 14px; right: 14px; z-index: 200;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 50%; width: 28px; height: 28px;
+      font-size: 0.78rem; cursor: pointer; color: rgba(255,255,255,0.7);
       display: flex; align-items: center; justify-content: center;
       transition: background 0.2s, transform 0.2s;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
-    #settings-btn:hover { background: rgba(255,255,255,0.18); }
+    #settings-btn:hover { background: rgba(255,255,255,0.15); }
     #settings-btn:active { transform: rotate(45deg); }
 
     /* ── Settings overlay ── */
@@ -292,19 +290,18 @@
     /* ── Back button ── */
     .back-btn {
       position: absolute;
-      bottom: 24px;
-      left: 24px; z-index: 200;
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 50%; width: 40px; height: 40px;
-      font-size: 1.2rem; color: #fff;
+      top: 14px;
+      left: 14px; z-index: 200;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 50%; width: 28px; height: 28px;
+      font-size: 1rem; color: rgba(255,255,255,0.7);
       cursor: pointer; display: none;
       align-items: center; justify-content: center;
       transition: background 0.2s, transform 0.2s;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
     .back-btn.visible { display: flex; }
-    .back-btn:hover { background: rgba(255,255,255,0.18); }
+    .back-btn:hover { background: rgba(255,255,255,0.15); }
     .back-btn:active { transform: scale(0.9); }
 
     /* ── Shared atoms ── */
@@ -1727,8 +1724,8 @@
       .tod-wheel-stage { width: min(300px, 100%); }
 
       /* Floating buttons below Dynamic Island */
-      #settings-btn { bottom: 32px; right: 28px; }
-      .back-btn     { bottom: 32px; left: 28px; }
+      #settings-btn { top: 18px; right: 18px; }
+      .back-btn     { top: 18px; left: 18px; }
 
       /* Scale down to fit tight viewports (frame is 880px tall with bezel) */
       @media (max-height: 980px) {
