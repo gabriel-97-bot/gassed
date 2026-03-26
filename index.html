@@ -292,32 +292,20 @@
     /* ── Back button ── */
     .back-btn {
       position: absolute;
-      top: 14px;
-      left: 16px; z-index: 200;
-      background: rgba(30,30,50,0.82);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.16);
-      border-radius: 100px;
-      padding: 7px 16px;
-      font-size: 0.82rem; color: rgba(238,242,255,0.85);
+      bottom: 24px;
+      left: 24px; z-index: 200;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50%; width: 40px; height: 40px;
+      font-size: 1.2rem; color: #fff;
       cursor: pointer; display: none;
-      min-height: 36px; align-items: center; gap: 5px;
-      transition: all 0.2s cubic-bezier(0.22,1,0.36,1);
-      font-weight: 600; letter-spacing: 0.2px;
+      align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
     .back-btn.visible { display: flex; }
-    .back-btn:hover {
-      background: rgba(255,255,255,0.15);
-      border-color: rgba(255,255,255,0.28);
-      transform: scale(1.04);
-    }
-    .back-btn:active { transform: scale(0.93); }
-    .back-btn.on-dark {
-      background: rgba(0,0,0,0.5);
-      border-color: rgba(201,168,76,0.4);
-      color: #C9A84C;
-    }
+    .back-btn:hover { background: rgba(255,255,255,0.18); }
+    .back-btn:active { transform: scale(0.9); }
 
     /* ── Shared atoms ── */
     .screen-title {
@@ -1740,7 +1728,7 @@
 
       /* Floating buttons below Dynamic Island */
       #settings-btn { bottom: 32px; right: 28px; }
-      .back-btn     { top: 66px; }
+      .back-btn     { bottom: 32px; left: 28px; }
 
       /* Scale down to fit tight viewports (frame is 880px tall with bezel) */
       @media (max-height: 980px) {
@@ -1774,7 +1762,7 @@
 <button id="settings-btn" onclick="openSettings()" title="Innstillinger">⚙️</button>
 
 <!-- Back button -->
-<button class="back-btn" id="back-btn" onclick="confirmGoHome()">← <span data-t="nav.back">Back</span></button>
+<button class="back-btn" id="back-btn" onclick="confirmGoHome()">‹</button>
 
 <!-- Settings panel -->
 <div id="settings-overlay" onclick="closeSettings(event)">
