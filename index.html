@@ -4409,7 +4409,7 @@ function setHorseCardFront(card) {
   const rankFile = CARD_RANK_NAME[card.rank];
   const suitFile = CARD_SUIT_NAME[card.suitSym];
   if (rankFile && suitFile) {
-    document.getElementById('horse-card-img').src = `kortstokk/files/${rankFile}_${suitFile}.png`;
+    document.getElementById('horse-card-img').src = `cards/${rankFile}_${suitFile}.png`;
     document.getElementById('horse-big-suit').textContent = '';
   } else {
     document.getElementById('horse-card-img').src = '';
@@ -4552,7 +4552,7 @@ function horseRevealHurdle(hurdle, cb) {
       const frontImg = document.getElementById('hcr-front-img');
       const suitLbl  = document.getElementById('hcr-suit-label');
       hcrCard.classList.remove('flipped');
-      frontImg.src = rankFile && suitFile ? `kortstokk/files/${rankFile}_${suitFile}.png` : '';
+      frontImg.src = rankFile && suitFile ? `cards/${rankFile}_${suitFile}.png` : '';
       suitLbl.textContent = '';
       overlay.style.display = 'flex';
       // Flip after 0.7s
@@ -4852,7 +4852,7 @@ function showCardFront(cardData) {
   if (cardData.rank !== 'K') SFX.reveal();
   const rankName = CARD_RANK_NAME[cardData.rank];
   const suitName = CARD_SUIT_NAME[cardData.suit.symbol];
-  document.getElementById('card-img').src = 'kortstokk/files/' + rankName + '_' + suitName + '.png';
+  document.getElementById('card-img').src = 'cards/' + rankName + '_' + suitName + '.png';
   const rankNo = CARD_RANK_NO[cardData.rank] || cardData.rank;
   const suitNo = CARD_SUIT_NO[cardData.suit.symbol] || cardData.suit.symbol;
   document.getElementById('rule-badge').textContent = suitNo + ' ' + rankNo;
