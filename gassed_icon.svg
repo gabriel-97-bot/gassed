@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 280 280">
+  <rect width="280" height="280" rx="56" fill="#1a1a1a"/>
+  <rect x="12" y="12" width="256" height="256" rx="48" fill="none" stroke="#EF9F27" stroke-width="2" opacity="0.2"/>
+
+  <!-- glass kropp -->
+  <path d="M108 65 L116 185 L164 185 L172 65 Z" fill="#EF9F27" opacity="0.18"/>
+  <!-- ølvæske -->
+  <path d="M110 108 L116 185 L164 185 L170 108 Z" fill="#EF9F27" opacity="0.55"/>
+  <!-- skum -->
+  <ellipse cx="140" cy="65" rx="33" ry="12" fill="#f5e6c8" opacity="0.9"/>
+  <ellipse cx="122" cy="61" rx="10" ry="8" fill="#ffffff" opacity="0.7"/>
+  <ellipse cx="140" cy="58" rx="12" ry="9" fill="#ffffff" opacity="0.8"/>
+  <ellipse cx="158" cy="61" rx="9" ry="7" fill="#ffffff" opacity="0.7"/>
+  <!-- glass kontur -->
+  <path d="M108 65 L116 185 L164 185 L172 65 Z" fill="none" stroke="#EF9F27" stroke-width="2.5" opacity="0.7"/>
+  <!-- glass bunn -->
+  <rect x="112" y="185" width="56" height="7" rx="3" fill="#EF9F27" opacity="0.6"/>
+  <!-- håndtak -->
+  <path d="M172 95 Q198 95 198 123 Q198 151 172 151" fill="none" stroke="#EF9F27" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- GASSED tekst -->
+  <text
+    x="140" y="230"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Boogaloo, sans-serif"
+    font-size="46"
+    letter-spacing="4"
+    fill="#EF9F27"
+  >GASSED</text>
+</svg>

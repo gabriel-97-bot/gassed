@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100" viewBox="0 0 400 100">
+  <rect width="400" height="100" rx="12" fill="#1a1a1a"/>
+  <text
+    x="200" y="54"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Boogaloo, sans-serif"
+    font-size="62"
+    letter-spacing="6"
+    fill="#EF9F27"
+  >GASSED</text>
+</svg>
