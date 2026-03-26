@@ -1255,6 +1255,23 @@
       font-size: 2rem; font-weight: 900; letter-spacing: 0.04em;
       text-shadow: 0 0 24px rgba(255,200,0,0.8), 0 2px 8px rgba(0,0,0,0.9);
     }
+    .hcr-tap-hint {
+      font-size: 0.85rem; color: rgba(255,255,255,0.45);
+      letter-spacing: 0.06em; animation: hcrPulse 1.2s ease-in-out infinite alternate;
+    }
+    .hcr-result-text {
+      font-size: 1rem; font-weight: 700; color: #fff;
+      text-align: center; line-height: 1.6; white-space: pre-line;
+      padding: 0 24px;
+    }
+    .hcr-ok-btn {
+      margin-top: 4px; padding: 12px 48px;
+      background: linear-gradient(135deg, #EF2B2D, #c0231e);
+      border: none; border-radius: 100px;
+      color: #fff; font-size: 1rem; font-weight: 800;
+      letter-spacing: 0.5px; cursor: pointer;
+      box-shadow: 0 4px 18px rgba(239,43,45,0.5);
+    }
 
     /* ── Game Instructions Modal ─────────────────────────── */
     #game-instructions-modal {
@@ -1815,7 +1832,7 @@
 <!-- Hurdle Card Reveal Overlay -->
 <div id="hurdle-card-reveal" style="display:none">
   <div class="hcr-label" data-t="hcr.label">Hinderkortet avsløres!</div>
-  <div class="hcr-card-wrap">
+  <div class="hcr-card-wrap" id="hcr-card-wrap" onclick="hcrTap()" style="cursor:pointer">
     <div class="hcr-card" id="hcr-card">
       <div class="hcr-glow"></div>
       <div class="hcr-face hcr-back">
@@ -1827,7 +1844,10 @@
       </div>
     </div>
   </div>
-  <div class="hcr-suit-label" id="hcr-suit-label"></div>
+  <div class="hcr-tap-hint" id="hcr-tap-hint">Trykk for å snu kortet</div>
+  <div class="hcr-suit-label" id="hcr-suit-label" style="display:none"></div>
+  <div class="hcr-result-text" id="hcr-result-text" style="display:none"></div>
+  <button class="hcr-ok-btn" id="hcr-ok-btn" style="display:none" onclick="hcrConfirm()">OK</button>
 </div>
 
 <!-- Trivia Category Picker Modal -->
@@ -4529,25 +4549,36 @@ function horseRevealHurdle(hurdle, cb) {
     setTimeout(() => {
       const rankFile = CARD_RANK_NAME[card.rank];
       const suitFile = CARD_SUIT_NAME[card.suitSym];
-      const overlay  = document.getElementById('hurdle-card-reveal');
-      const hcrCard  = document.getElementById('hcr-card');
-      const frontImg = document.getElementById('hcr-front-img');
-      const suitLbl  = document.getElementById('hcr-suit-label');
+      const overlay    = document.getElementById('hurdle-card-reveal');
+      const hcrCard    = document.getElementById('hcr-card');
+      const frontImg   = document.getElementById('hcr-front-img');
+      const suitLbl    = document.getElementById('hcr-suit-label');
+      const tapHint    = document.getElementById('hcr-tap-hint');
+      const resultText = document.getElementById('hcr-result-text');
+      const okBtn      = document.getElementById('hcr-ok-btn');
+
+      // Reset state
       hcrCard.classList.remove('flipped');
       frontImg.src = rankFile && suitFile ? `cards/${rankFile}_${suitFile}.png` : '';
       suitLbl.textContent = '';
+      suitLbl.style.display = 'none';
+      resultText.style.display = 'none';
+      okBtn.style.display = 'none';
+      tapHint.style.display = '';
+
+      // Store flip data for hcrTap()
+      window._hcrFlipData = {
+        suitLbl, tapHint, resultText, okBtn,
+        suitText: `${card.suitSym} ${suitName}`,
+        suitColor: card.suitColor === 'red' ? '#ff4444' : '#fff',
+        desc: modalDesc,
+      };
+
       overlay.style.display = 'flex';
-      // Flip after 0.7s
-      setTimeout(() => {
-        hcrCard.classList.add('flipped');
-        suitLbl.textContent = `${card.suitSym} ${suitName}`;
-        suitLbl.style.color = card.suitColor === 'red' ? '#ff4444' : '#fff';
-      }, 700);
-      // Show modal after 2.2s, hide overlay — pass afterOk as the callback
-      setTimeout(() => {
+      window._hcrAfterOk = () => {
         overlay.style.display = 'none';
-        showHorseModal(modalIcon, modalTitle, modalDesc, modalType, afterOk);
-      }, 2200);
+        afterOk();
+      };
     }, 650);
 
   } else {
@@ -4589,6 +4620,27 @@ function showHorseModal(icon, title, desc, type, cb) {
 function dismissHorseModal() {
   document.getElementById('horse-hurdle-modal').style.display = 'none';
   if (_horseModalCb) { const f = _horseModalCb; _horseModalCb = null; f(); }
+}
+
+function hcrTap() {
+  const d = window._hcrFlipData;
+  if (!d || document.getElementById('hcr-card').classList.contains('flipped')) return;
+  SFX.flip();
+  document.getElementById('hcr-card').classList.add('flipped');
+  setTimeout(() => {
+    d.tapHint.style.display = 'none';
+    d.suitLbl.textContent = d.suitText;
+    d.suitLbl.style.color = d.suitColor;
+    d.suitLbl.style.display = '';
+    d.resultText.textContent = d.desc;
+    d.resultText.style.display = '';
+    d.okBtn.style.display = '';
+    window._hcrFlipData = null;
+  }, 680);
+}
+
+function hcrConfirm() {
+  if (window._hcrAfterOk) { const f = window._hcrAfterOk; window._hcrAfterOk = null; f(); }
 }
 
 function showHorseEvent(msg) {
