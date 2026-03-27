@@ -1518,8 +1518,31 @@
     }
     .tcat-opt:active { transform: scale(0.95); }
     .tcat-opt:hover  { background: var(--surface-hi); border-color: var(--border-hi); }
+    .tcat-opt.tcat-selected {
+      background: rgba(41,121,255,0.22);
+      border-color: rgba(41,121,255,0.7);
+      transform: scale(1.06);
+      box-shadow: 0 0 0 3px rgba(41,121,255,0.3);
+    }
     .tcat-emoji { font-size: 1.8rem; line-height: 1; }
     .tcat-name  { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+
+    /* ── Kategori-reveal animasjon ── */
+    #cat-reveal-overlay {
+      position: absolute; inset: 0; z-index: 600;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+      background: rgba(8,8,20,0.92);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      animation: catRevealIn 0.28s cubic-bezier(0.22,1,0.36,1);
+    }
+    #cat-reveal-overlay.hiding { animation: catRevealOut 0.3s ease forwards; }
+    .cat-reveal-emoji  { font-size: 5.5rem; animation: catEmojiPop 0.45s cubic-bezier(0.22,1,0.36,1); line-height: 1; }
+    .cat-reveal-label  { font-size: 1.7rem; font-weight: 900; color: #fff; letter-spacing: 1px; text-align: center; animation: catLabelFade 0.35s 0.15s ease both; }
+    .cat-reveal-sub    { font-size: 0.8rem; color: rgba(255,255,255,0.45); letter-spacing: 2px; text-transform: uppercase; animation: catLabelFade 0.35s 0.25s ease both; }
+    @keyframes catRevealIn  { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+    @keyframes catRevealOut { from { opacity: 1; transform: scale(1);    } to { opacity: 0; transform: scale(1.08); } }
+    @keyframes catEmojiPop  { 0% { transform: scale(0) rotate(-20deg); } 70% { transform: scale(1.15) rotate(4deg); } 100% { transform: scale(1) rotate(0); } }
+    @keyframes catLabelFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
     /* ── ToD Category Picker Modal ── */
     #tod-category-modal {
@@ -3786,10 +3809,39 @@ function triviaShowCatPicker() {
   document.getElementById('trivia-cat-modal').style.display = 'flex';
 }
 
+const CAT_DATA = {
+  geografi: { emoji: '🌍', name: 'Geografi' },
+  musikk:   { emoji: '🎵', name: 'Musikk' },
+  blandet:  { emoji: '🎲', name: 'Godt blandet' },
+  film:     { emoji: '🎬', name: 'Film' },
+};
+
+function showCatReveal(cat) {
+  const existing = document.getElementById('cat-reveal-overlay');
+  if (existing) existing.remove();
+  const d = CAT_DATA[cat] || { emoji: '❓', name: cat };
+  const el = document.createElement('div');
+  el.id = 'cat-reveal-overlay';
+  el.innerHTML = `<div class="cat-reveal-emoji">${d.emoji}</div><div class="cat-reveal-label">${d.name}</div><div class="cat-reveal-sub">Kategori valgt</div>`;
+  const screen = document.getElementById('screen-trivia');
+  if (screen) screen.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('hiding');
+    setTimeout(() => el.remove(), 320);
+  }, 1500);
+}
+
 function triviaCatPick(cat) {
   app.trivia.category = cat;
-  document.getElementById('trivia-cat-modal').style.display = 'none';
-  triviaRender();
+  app.trivia.catRevealTs = Date.now();
+  // Highlight valgt knapp
+  document.querySelectorAll('.tcat-opt').forEach(b => b.classList.remove('tcat-selected'));
+  event?.target?.closest('.tcat-opt')?.classList.add('tcat-selected');
+  setTimeout(() => {
+    document.getElementById('trivia-cat-modal').style.display = 'none';
+    showCatReveal(cat);
+    setTimeout(() => triviaRender(), 1820);
+  }, 250);
 }
 
 function triviaRender() {
@@ -5683,15 +5735,16 @@ const S = {
       case 'screen-trivia': {
         const answerBtns = [...document.querySelectorAll('#trivia-answers .trivia-answer-btn')];
         st.trivia = {
-          done:      document.getElementById('trivia-done-screen')?.style.display !== 'none',
-          playerInd: document.getElementById('trivia-player-indicator')?.textContent ?? '',
-          progress:  document.getElementById('trivia-progress')?.textContent ?? '',
-          qText:     document.getElementById('trivia-question-text')?.textContent ?? '',
-          answers:   answerBtns.map(b => ({ text: b.textContent.trim(), cls: b.className, dis: b.disabled })),
-          resultMsg: document.getElementById('trivia-result-msg')?.textContent ?? '',
-          resultCls: document.getElementById('trivia-result-msg')?.className ?? '',
-          nextText:  document.getElementById('trivia-next-btn')?.textContent ?? '',
-          nextShow:  document.getElementById('trivia-next-btn')?.style.display !== 'none',
+          done:        document.getElementById('trivia-done-screen')?.style.display !== 'none',
+          playerInd:   document.getElementById('trivia-player-indicator')?.textContent ?? '',
+          progress:    document.getElementById('trivia-progress')?.textContent ?? '',
+          qText:       document.getElementById('trivia-question-text')?.textContent ?? '',
+          answers:     answerBtns.map(b => ({ text: b.textContent.trim(), cls: b.className, dis: b.disabled })),
+          resultMsg:   document.getElementById('trivia-result-msg')?.textContent ?? '',
+          resultCls:   document.getElementById('trivia-result-msg')?.className ?? '',
+          nextText:    document.getElementById('trivia-next-btn')?.textContent ?? '',
+          nextShow:    document.getElementById('trivia-next-btn')?.style.display !== 'none',
+          catReveal:   app.trivia.catRevealTs ? { cat: app.trivia.category, ts: app.trivia.catRevealTs } : null,
         };
         break;
       }
@@ -5811,6 +5864,10 @@ const S = {
 
   _applyTrivia(t) {
     const $ = id => document.getElementById(id);
+    if (t.catReveal && t.catReveal.ts && t.catReveal.ts !== this._lastCatRevealTs) {
+      this._lastCatRevealTs = t.catReveal.ts;
+      showCatReveal(t.catReveal.cat);
+    }
     if (t.done) {
       $('trivia-done-screen').style.display = '';
       $('trivia-quiz-area').style.display   = 'none';
@@ -5941,7 +5998,7 @@ function _wrap(name, delay) {
 ['wfNext','todChoose','todDone','todPass','restartRing',
  'goHome','goToHome','triviaNext','triviaRestart',
  'triviaAnswer','horseStartRace','horseConfirmAndStart',
- 'dismissHorseModal','startGame','initHorse',
+ 'dismissHorseModal','startGame','initHorse','triviaCatPick',
 ].forEach(n => _wrap(n));
 
 // drawCard — vent på kortanimaSJON
