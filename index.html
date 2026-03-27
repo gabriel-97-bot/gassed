@@ -5569,7 +5569,7 @@ const S = {
     this.roomCode = code;
     this.isMaster = true;
     this.roomRef  = this.db.ref('rooms/' + code);
-    this.roomRef.onDisconnect().remove(); // slett rom når master kobler fra
+    // Ikke bruk onDisconnect().remove() — kortvarige nettverksmistet ville slettet rommet
     this._showBadge(code, false);
     this.push();
     return code;
@@ -5609,6 +5609,7 @@ const S = {
     this.roomRef.on('value', snap => {
       const st = snap.val();
       if (st) {
+        if (this._disconnectTimer) { clearTimeout(this._disconnectTimer); this._disconnectTimer = null; }
         if (!hasReceived) {
           hasReceived = true;
           clearTimeout(giveUp);
@@ -5617,7 +5618,12 @@ const S = {
         }
         this._apply(st);
       } else if (hasReceived) {
-        this._onDisconnected();
+        // null kan skje ved kortvarig nettavbrudd — vent litt før vi viser feil
+        if (this._disconnectTimer) clearTimeout(this._disconnectTimer);
+        this._disconnectTimer = setTimeout(() => {
+          // Sjekk om vi faktisk fortsatt er uten data
+          this._onDisconnected();
+        }, 8000);
       }
     });
     return true;
