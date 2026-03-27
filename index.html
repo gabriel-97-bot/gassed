@@ -952,14 +952,15 @@
       #screen-setup { padding-top: 40px; }
 
       /* ── Hjem ── */
-      #screen-home  { padding-top: 8px; }
-      .gassed-logo  { font-size: 2.2rem; letter-spacing: 4px; margin-bottom: 0; }
+      #screen-home    { padding-top: 8px; }
+      .gassed-logo    { font-size: 2.2rem; letter-spacing: 4px; margin-bottom: 0; }
       .screen-subtitle { font-size: 0.78rem; margin-bottom: 4px; }
-      .game-grid    { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
-      .game-card    { min-height: 76px; padding: 12px 8px 10px; gap: 5px; }
+      .game-grid      { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+      .game-card      { min-height: 76px; padding: 12px 8px 10px; gap: 5px; }
       .game-card-icon { font-size: 1.8rem; }
 
       /* ── Ring of Fire ── */
+      /* Tilgjengelig for kort: 100dvh - padding(52px) - ring-top(~86px) - gap(6px) ≈ 138px brukt */
       #screen-ring  { padding-top: 40px; gap: 6px; }
       .ring-top     { padding: 5px 14px 7px; margin-bottom: 2px; gap: 4px; }
       .ring-stats   { font-size: 0.82rem; gap: 18px; }
@@ -967,17 +968,21 @@
       .king-cup     { width: 24px; height: 28px; }
       .king-cup::before { width: 16px; height: 5px; top: -5px; }
       .card-area, .card {
-        width:  clamp(110px, 28vh, 180px);
-        height: clamp(154px, 39vh, 252px);
+        width:  clamp(130px, calc(100dvh - 206px), 157px);
+        height: clamp(182px, calc(100dvh - 138px), 220px);
       }
 
       /* ── Lykkehjulet ── */
-      #screen-wheel { padding: 40px 4px 8px; gap: 6px; }
-      .wheel-stage  { width: min(calc(100vh - 86px), calc(100vw - 8px)); }
+      /* Hjul-størrelse: 100dvh - padding(48px) - tittel(30px) - gap(12px) - spin-btn(72px) = 162px overhead */
+      /* overflow-y: auto slik at resultat-kortet kan scrolles frem */
+      #screen-wheel { padding: 40px 4px 8px; gap: 6px; overflow-y: auto; }
+      .wheel-stage  { width: min(calc(100dvh - 162px), calc(100vw - 8px)); }
 
       /* ── Nøtt eller Sannhet ── */
-      #screen-tod      { padding: 40px 4px 8px; gap: 6px; }
-      .tod-wheel-stage { width: min(calc(100vh - 106px), calc(100vw - 8px)); }
+      /* Overhead: padding(48px) + tittel(30px) + spiller-navn(24px) + gap(18px) + spin-btn(72px) = 192px */
+      /* overflow-y: auto for spørsmålskort-fasen */
+      #screen-tod      { padding: 40px 4px 8px; gap: 6px; overflow-y: auto; }
+      .tod-wheel-stage { width: min(calc(100dvh - 192px), calc(100vw - 8px)); }
 
       /* ── Jeg har aldri ── */
       #screen-waterfall { padding-top: 40px; }
