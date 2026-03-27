@@ -5548,7 +5548,7 @@ const S = {
   schedulePush(delay) {
     if (!this.isMaster || !this.roomRef) return;
     clearTimeout(this.pushTimer);
-    this.pushTimer = setTimeout(() => this.push(), delay ?? 320);
+    this.pushTimer = setTimeout(() => this.push(), delay ?? 50);
   },
 
   /* Send nåværende tilstand til Firebase */
@@ -5925,7 +5925,7 @@ function _wrap(name, delay) {
   if (!orig) return;
   window[name] = function() {
     orig.apply(this, arguments);
-    S.schedulePush(delay ?? 350);
+    S.schedulePush(delay ?? 50);
   };
 }
 
@@ -5935,7 +5935,7 @@ function _wrap(name, delay) {
   if (!orig) return;
   window.showScreen = function(id) {
     orig(id);
-    S.schedulePush(120);
+    S.schedulePush(0);
   };
 })();
 
