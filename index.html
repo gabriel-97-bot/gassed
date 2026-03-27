@@ -5709,11 +5709,19 @@ const S = {
 
       case 'screen-ring': {
         const fl = app.ring.flipped ?? false;
+        const pc = app.ring.pendingCard;
+        // Bruk relativ URL fra kortdata (ikke card-img.src som kan være file://)
+        let imgSrc = '';
+        if (fl && pc) {
+          const rn = CARD_RANK_NAME[pc.rank] ?? pc.rank;
+          const sn = CARD_SUIT_NAME[pc.suit?.symbol] ?? pc.suit?.symbol ?? '';
+          imgSrc = 'cards/' + rn + '_' + sn + '.png';
+        }
         st.ring = {
           cardsLeft:  app.ring.deck?.length ?? 0,
           kingsDrawn: app.ring.kingsDrawn ?? 0,
           flipped:    fl,
-          imgSrc:     fl ? (document.getElementById('card-img')?.src ?? '') : '',
+          imgSrc,
           badge:      fl ? (document.getElementById('rule-badge')?.textContent ?? '') : '',
           gameOver:   document.getElementById('ring-overlay')?.classList.contains('show') ?? false,
         };
@@ -5785,7 +5793,7 @@ const S = {
           deckText:     document.getElementById('horse-deck-badge')?.textContent ?? '',
           deckShow:     document.getElementById('horse-deck-badge')?.style.display !== 'none',
           flipCls:      document.getElementById('horse-flip-card')?.className ?? '',
-          cardSrc:      document.getElementById('horse-card-img')?.src ?? '',
+          cardSrc:      (function(){ const hc = app.horse?.lastCard; return hc ? 'cards/' + (CARD_RANK_NAME[hc.rank] ?? hc.rank) + '_' + (CARD_SUIT_NAME[hc.suit?.symbol] ?? '') + '.png' : ''; })(),
           bigSuit:      document.getElementById('horse-big-suit')?.textContent ?? '',
           modalShow:    document.getElementById('horse-hurdle-modal')?.style.display !== 'none',
           hhmIcon:      document.getElementById('hhm-icon')?.textContent ?? '',
@@ -6004,6 +6012,9 @@ const S = {
     if (badge) { badge.textContent = '⚠️ Koblet fra'; badge.style.background = 'rgba(180,30,30,0.8)'; }
   },
 };
+
+/* ── Eksporter S globalt så spillkode kan kalle S.schedulePush() ── */
+window.S = S;
 
 /* ── Globale funksjoner kalt fra HTML ── */
 window.sessionCreate = function() {
