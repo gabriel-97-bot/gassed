@@ -1016,12 +1016,12 @@
       border-radius: 12px;
       color: #fff;
       outline: none;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       text-align: center;
       transition: border-color 0.2s;
     }
-    #session-code-input::placeholder { color: rgba(255,255,255,0.22); letter-spacing: 1px; font-weight: 400; }
+    #session-code-input::placeholder { color: rgba(255,255,255,0.25); letter-spacing: 0px; font-weight: 400; text-transform: none; font-size: 0.78rem; }
     #session-code-input.error { border-color: rgba(239,43,45,0.7); animation: shake 0.3s; }
     @keyframes shake {
       0%,100% { transform: translateX(0); }
@@ -2107,8 +2107,8 @@
     <!-- Sesjonsdeling -->
     <div id="session-join-area">
       <div class="session-row">
-        <button id="session-share-btn" class="session-share-btn session-share-btn--small" onclick="sessionCreate()">📡 Del sesjon</button>
-        <input id="session-code-input" type="text" maxlength="5" placeholder="KODE"
+        <button id="session-share-btn" class="session-share-btn session-share-btn--small" onclick="sessionCreate()">🔗 Lag sesjon</button>
+        <input id="session-code-input" type="text" maxlength="5" placeholder="🚪 join sesjon"
                oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
                onkeydown="if(event.key==='Enter')sessionJoin()">
       </div>
@@ -2150,7 +2150,7 @@
 
     <div class="edit-players-link" onclick="openSettings()" data-t="home.editPlayers">Edit Players</div>
 
-    <button id="session-share-btn-home" class="session-share-btn session-share-btn--small" onclick="sessionCreate()">📡 Del sesjon med venner</button>
+    <button id="session-share-btn-home" class="session-share-btn session-share-btn--small" onclick="sessionCreate()">🔗 Lag sesjon</button>
   </div>
 
   <!-- Screen 3: Ring of Fire -->
@@ -5594,7 +5594,7 @@ const S = {
     let hasReceived = false;
     const giveUp = setTimeout(() => {
       if (!hasReceived) {
-        setStatus('❌ Fant ikke rommet. Sjekk at koden er riktig og at master har trykket Del sesjon.', 'err');
+        setStatus('❌ Fant ikke rommet. Sjekk koden og at verten har trykket Lag sesjon.', 'err');
         const badge = document.getElementById('session-badge');
         if (badge) { badge.textContent = '❌ Ikke funnet'; badge.style.background = 'rgba(180,30,30,0.8)'; }
       }
