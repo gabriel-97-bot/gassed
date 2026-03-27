@@ -986,6 +986,15 @@
       font-weight: 700;
       cursor: pointer;
     }
+    .session-share-btn--small {
+      margin-top: 6px;
+      padding: 7px 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      opacity: 0.65;
+      border-radius: 8px;
+    }
+    .session-share-btn--small:hover { opacity: 1; }
     #session-join-area {
       margin-top: 12px;
       display: flex;
@@ -2154,9 +2163,9 @@
       </div>
     </div>
 
-    <button id="session-share-btn-home" class="session-share-btn" onclick="sessionCreate()">📡 Del sesjon med venner</button>
-
     <div class="edit-players-link" onclick="openSettings()" data-t="home.editPlayers">Edit Players</div>
+
+    <button id="session-share-btn-home" class="session-share-btn session-share-btn--small" onclick="sessionCreate()">📡 Del sesjon med venner</button>
   </div>
 
   <!-- Screen 3: Ring of Fire -->
