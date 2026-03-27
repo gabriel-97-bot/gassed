@@ -29,6 +29,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Boogaloo&display=swap" rel="stylesheet">
+
+  <!-- Firebase SDK (real-time session sync) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
   <style>
     /* ═══════════════════════════════════════════════════════════════
        GASSED — Premium Design System v2
@@ -939,6 +944,109 @@
       .ring-top { padding: 6px 20px 8px; }
     }
 
+    /* ── Session badge (romkode-viser) ── */
+    #session-badge {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      background: rgba(15,15,35,0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 100px;
+      padding: 5px 16px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 2.5px;
+      white-space: nowrap;
+      display: none;
+      align-items: center;
+      user-select: all;
+      -webkit-user-select: all;
+    }
+    #session-badge.is-joiner {
+      background: rgba(0,40,120,0.78);
+      color: #aac8ff;
+      letter-spacing: 0.8px;
+    }
+
+    /* ── Sesjonsdeling (setup-skjerm) ── */
+    #session-share-btn {
+      margin-top: 8px;
+      width: 100%;
+      padding: 12px;
+      background: rgba(239,43,45,0.10);
+      border: 1px solid rgba(239,43,45,0.26);
+      border-radius: 12px;
+      color: var(--red);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    #session-join-area {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+    .join-divider {
+      font-size: 0.7rem;
+      color: rgba(238,242,255,0.32);
+      letter-spacing: 0.4px;
+    }
+    .join-row { display: flex; gap: 8px; width: 100%; }
+    #session-code-input {
+      flex: 1;
+      padding: 11px 14px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 12px;
+      color: #fff;
+      outline: none;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    #session-code-input::placeholder { color: rgba(255,255,255,0.22); letter-spacing: 1px; font-weight: 400; }
+    #session-code-input.error { border-color: rgba(239,43,45,0.7); animation: shake 0.3s; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-6px); }
+      75%      { transform: translateX( 6px); }
+    }
+    #session-join-btn {
+      padding: 11px 16px;
+      background: rgba(25,55,160,0.45);
+      border: 1px solid rgba(100,150,255,0.28);
+      border-radius: 12px;
+      color: #aac8ff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* ── Joiner-modus: deaktiver alle interaksjoner ── */
+    body.joiner-mode button:not(#session-badge),
+    body.joiner-mode input,
+    body.joiner-mode .game-card,
+    body.joiner-mode .card-area,
+    body.joiner-mode .horse-flip-area {
+      pointer-events: none !important;
+      opacity: 0.8;
+    }
+    body.joiner-mode #session-badge { pointer-events: auto !important; opacity: 1; }
+    body.joiner-mode #session-join-area,
+    body.joiner-mode #session-share-btn { display: none !important; }
+
     /* ── Landscape (phone rotated) ── */
     @media (orientation: landscape) and (max-width: 932px) {
 
@@ -1835,6 +1943,9 @@
 <!-- Back button -->
 <button class="back-btn" id="back-btn" onclick="confirmGoHome()">‹</button>
 
+<!-- Session romkode-badge (vises alltid øverst for master og joiner) -->
+<div id="session-badge"></div>
+
 <!-- Settings panel -->
 <div id="settings-overlay" onclick="closeSettings(event)">
   <div class="settings-panel" id="settings-panel">
@@ -1988,6 +2099,18 @@
     <button class="btn-primary" id="start-btn" onclick="goToHome()" disabled>
       <span data-t="setup.startBtn">Start →</span>
     </button>
+
+    <!-- Sesjonsdeling -->
+    <button id="session-share-btn" onclick="sessionCreate()">📡 Del sesjon med venner</button>
+
+    <div id="session-join-area">
+      <div class="join-divider">— eller bli med i en eksisterende sesjon —</div>
+      <div class="join-row">
+        <input id="session-code-input" type="text" maxlength="5" placeholder="KODE"
+               oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+        <button id="session-join-btn" onclick="sessionJoin()">Bli med →</button>
+      </div>
+    </div>
   </div>
 
   <!-- Screen 2: Home -->
@@ -5367,6 +5490,460 @@ document.addEventListener('click', function(e) {
 renderChips();
 updateAllText();
 showScreen('screen-setup');
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SESSION — Real-time synkronisering via Firebase Realtime DB
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+
+// ─── FIREBASE KONFIGURASJON ──────────────────────────────────────────────────
+// Fyll inn verdiene fra din Firebase-prosjekt-konsoll:
+//   console.firebase.google.com → Prosjektinnstillinger → Web-app → Legg til app
+//
+const FIREBASE_CONFIG = {
+  apiKey:            "DIN_API_NØKKEL",
+  authDomain:        "DITT_PROSJEKT.firebaseapp.com",
+  databaseURL:       "https://DITT_PROSJEKT-default-rtdb.firebaseio.com",
+  projectId:         "DITT_PROSJEKT",
+  storageBucket:     "DITT_PROSJEKT.appspot.com",
+  messagingSenderId: "DITT_SENDER_ID",
+  appId:             "DITT_APP_ID",
+};
+// ────────────────────────────────────────────────────────────────────────────
+
+const CONFIGURED = !FIREBASE_CONFIG.apiKey.startsWith('DIN_');
+
+/* ── Intern tilstand ── */
+const S = {
+  isMaster: false,
+  isJoiner: false,
+  roomCode: null,
+  roomRef:  null,
+  pushTimer: null,
+  db: null,
+
+  /* Koble til Firebase */
+  init() {
+    if (!CONFIGURED) return;
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+      this.db = firebase.database();
+    } catch(e) { console.warn('Firebase init:', e); }
+  },
+
+  /* Planlegg push (debounced) */
+  schedulePush(delay) {
+    if (!this.isMaster || !this.roomRef) return;
+    clearTimeout(this.pushTimer);
+    this.pushTimer = setTimeout(() => this.push(), delay ?? 320);
+  },
+
+  /* Send nåværende tilstand til Firebase */
+  push() {
+    if (!this.isMaster || !this.roomRef) return;
+    try { this.roomRef.set(this._capture()); } catch(e) {}
+  },
+
+  /* ── Opprett rom (master) ── */
+  createRoom() {
+    if (!this.db) {
+      alert('Firebase er ikke satt opp ennå.\nSe kommentarene i index.html (søk etter FIREBASE_CONFIG).');
+      return null;
+    }
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i = 0; i < 5; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    this.roomCode = code;
+    this.isMaster = true;
+    this.roomRef  = this.db.ref('rooms/' + code);
+    this.roomRef.onDisconnect().remove(); // slett rom når master kobler fra
+    this._showBadge(code, false);
+    this.push();
+    return code;
+  },
+
+  /* ── Bli med i rom (joiner) ── */
+  joinRoom(code) {
+    if (!this.db) {
+      alert('Firebase er ikke satt opp ennå.\nSe kommentarene i index.html (søk etter FIREBASE_CONFIG).');
+      return false;
+    }
+    const clean = code.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (clean.length !== 5) return false;
+    this.roomCode = clean;
+    this.isJoiner = true;
+    this.roomRef  = this.db.ref('rooms/' + clean);
+    this._showBadge(clean, true);
+    this._enterJoinerMode();
+    this.roomRef.on('value', snap => {
+      const st = snap.val();
+      if (st) this._apply(st);
+      else    this._onDisconnected();
+    });
+    return true;
+  },
+
+  /* ── Fang nåværende spilltilstand ── */
+  _capture() {
+    const screen = document.querySelector('.screen.active')?.id ?? 'screen-setup';
+    const st = {
+      ts:      Date.now(),
+      screen,
+      players: [...(app.players ?? [])],
+      lang:    app.lang ?? 'no',
+    };
+
+    switch (screen) {
+
+      case 'screen-ring': {
+        const fl = app.ring.flipped ?? false;
+        st.ring = {
+          cardsLeft:  app.ring.deck?.length ?? 0,
+          kingsDrawn: app.ring.kingsDrawn ?? 0,
+          flipped:    fl,
+          imgSrc:     fl ? (document.getElementById('card-img')?.src ?? '') : '',
+          badge:      fl ? (document.getElementById('rule-badge')?.textContent ?? '') : '',
+          gameOver:   document.getElementById('ring-overlay')?.classList.contains('show') ?? false,
+        };
+        break;
+      }
+
+      case 'screen-waterfall': {
+        st.nhie = {
+          text:      document.getElementById('wf-challenge-text')?.textContent ?? '',
+          drinkShow: document.getElementById('wf-nhie-drink-btn')?.style.display !== 'none',
+        };
+        break;
+      }
+
+      case 'screen-tod': {
+        st.tod = {
+          wheelAngle:    app.tod?.wheelAngle ?? 0,
+          playerName:    document.getElementById('tod-player-name')?.textContent ?? '',
+          pickVisible:   document.getElementById('tod-pick-btn')?.style.display !== 'none',
+          choiceVisible: document.getElementById('tod-choice-btns')?.style.display !== 'none',
+          qVisible:      document.getElementById('tod-question-card')?.classList.contains('visible') ?? false,
+          qType:         document.getElementById('tod-question-type')?.textContent ?? '',
+          qText:         document.getElementById('tod-question-text')?.textContent ?? '',
+          qPlayer:       document.getElementById('tod-question-player')?.textContent ?? '',
+          qCat:          document.getElementById('tod-category-badge')?.textContent ?? '',
+          qCatVisible:   document.getElementById('tod-category-badge')?.style.display !== 'none',
+        };
+        break;
+      }
+
+      case 'screen-wheel': {
+        st.wheel = {
+          outerAngle:  app.wheel?.outerAngle ?? 0,
+          innerAngle:  app.wheel?.innerAngle ?? 0,
+          resultShow:  document.getElementById('wheel-result-card')?.style.display !== 'none',
+          resultDesc:  document.getElementById('wheel-result-desc')?.textContent ?? '',
+        };
+        break;
+      }
+
+      case 'screen-trivia': {
+        const answerBtns = [...document.querySelectorAll('#trivia-answers .trivia-answer-btn')];
+        st.trivia = {
+          done:      document.getElementById('trivia-done-screen')?.style.display !== 'none',
+          playerInd: document.getElementById('trivia-player-indicator')?.textContent ?? '',
+          progress:  document.getElementById('trivia-progress')?.textContent ?? '',
+          qText:     document.getElementById('trivia-question-text')?.textContent ?? '',
+          answers:   answerBtns.map(b => ({ text: b.textContent.trim(), cls: b.className, dis: b.disabled })),
+          resultMsg: document.getElementById('trivia-result-msg')?.textContent ?? '',
+          resultCls: document.getElementById('trivia-result-msg')?.className ?? '',
+          nextText:  document.getElementById('trivia-next-btn')?.textContent ?? '',
+          nextShow:  document.getElementById('trivia-next-btn')?.style.display !== 'none',
+        };
+        break;
+      }
+
+      case 'screen-horse': {
+        st.horse = {
+          phase:        app.horse?.phase ?? 'betting',
+          betListHtml:  document.getElementById('horse-bet-list')?.innerHTML ?? '',
+          startDis:     document.getElementById('horse-start-btn')?.disabled ?? true,
+          trackHtml:    document.getElementById('horse-track-wrap')?.innerHTML ?? '',
+          hurdlesHtml:  document.getElementById('horse-hurdles-above')?.innerHTML ?? '',
+          eventMsg:     document.getElementById('horse-event-msg')?.textContent ?? '',
+          eventVis:     document.getElementById('horse-event-msg')?.style.visibility ?? 'hidden',
+          deckText:     document.getElementById('horse-deck-badge')?.textContent ?? '',
+          deckShow:     document.getElementById('horse-deck-badge')?.style.display !== 'none',
+          flipCls:      document.getElementById('horse-flip-card')?.className ?? '',
+          cardSrc:      document.getElementById('horse-card-img')?.src ?? '',
+          bigSuit:      document.getElementById('horse-big-suit')?.textContent ?? '',
+          modalShow:    document.getElementById('horse-hurdle-modal')?.style.display !== 'none',
+          hhmIcon:      document.getElementById('hhm-icon')?.textContent ?? '',
+          hhmTitle:     document.getElementById('hhm-title')?.textContent ?? '',
+          hhmDesc:      document.getElementById('hhm-desc')?.textContent ?? '',
+          winnerHtml:   document.getElementById('horse-winner-banner')?.innerHTML ?? '',
+          resultHtml:   document.getElementById('horse-result-panel')?.innerHTML ?? '',
+        };
+        break;
+      }
+    }
+
+    return st;
+  },
+
+  /* ── Bruk mottatt tilstand (joiner) ── */
+  _apply(st) {
+    if (!this.isJoiner || !st) return;
+
+    if (st.lang && st.lang !== app.lang) {
+      app.lang = st.lang;
+      if (typeof updateAllText === 'function') updateAllText();
+    }
+    if (st.players) app.players = [...st.players];
+    if (st.screen)  showScreen(st.screen);
+
+    if (st.screen === 'screen-home' && typeof updateHomePlayers === 'function') updateHomePlayers();
+    if (st.screen === 'screen-ring'      && st.ring)   this._applyRing(st.ring);
+    if (st.screen === 'screen-waterfall' && st.nhie)   this._applyNhie(st.nhie);
+    if (st.screen === 'screen-tod'       && st.tod)    this._applyTod(st.tod);
+    if (st.screen === 'screen-wheel'     && st.wheel)  this._applyWheel(st.wheel);
+    if (st.screen === 'screen-trivia'    && st.trivia) this._applyTrivia(st.trivia);
+    if (st.screen === 'screen-horse'     && st.horse)  this._applyHorse(st.horse);
+  },
+
+  _applyRing(r) {
+    const $ = id => document.getElementById(id);
+    $('ring-cards-left').textContent  = r.cardsLeft  ?? '';
+    $('ring-kings-drawn').textContent = r.kingsDrawn ?? 0;
+    for (let i = 1; i <= 4; i++)
+      $('cup-' + i)?.classList.toggle('filled', i <= (r.kingsDrawn ?? 0));
+    const card = $('card');
+    if (r.flipped && r.imgSrc) {
+      $('card-img').src = r.imgSrc;
+      $('rule-badge').textContent = r.badge ?? '';
+      card?.classList.add('flipped');
+    } else {
+      card?.classList.remove('flipped');
+    }
+    $('ring-overlay')?.classList.toggle('show', r.gameOver ?? false);
+  },
+
+  _applyNhie(n) {
+    const el = document.getElementById('wf-challenge-text');
+    if (el) el.textContent = n.text ?? '';
+    const drink = document.getElementById('wf-nhie-drink-btn');
+    if (drink) drink.style.display = n.drinkShow ? '' : 'none';
+  },
+
+  _applyTod(t) {
+    const $ = id => document.getElementById(id);
+    app.tod = app.tod || {};
+    app.tod.wheelAngle = t.wheelAngle ?? 0;
+    const canvas = $('tod-wheel-canvas');
+    if (canvas && canvas.offsetWidth > 0) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const sz  = Math.round(canvas.offsetWidth * dpr);
+      if (canvas.width !== sz) { canvas.width = sz; canvas.height = sz; }
+    }
+    if (typeof drawTodWheel === 'function') drawTodWheel();
+    $('tod-player-name').textContent    = t.playerName ?? '';
+    $('tod-pick-btn').style.display     = t.pickVisible   ? '' : 'none';
+    $('tod-choice-btns').style.display  = t.choiceVisible ? 'flex' : 'none';
+    $('tod-question-card')?.classList.toggle('visible', t.qVisible ?? false);
+    $('tod-question-type').textContent   = t.qType   ?? '';
+    $('tod-question-text').textContent   = t.qText   ?? '';
+    $('tod-question-player').textContent = t.qPlayer ?? '';
+    const cat = $('tod-category-badge');
+    if (cat) { cat.textContent = t.qCat ?? ''; cat.style.display = t.qCatVisible ? '' : 'none'; }
+  },
+
+  _applyWheel(w) {
+    app.wheel = app.wheel || {};
+    app.wheel.outerAngle = w.outerAngle ?? 0;
+    app.wheel.innerAngle = w.innerAngle ?? 0;
+    const canvas = document.getElementById('wheel-canvas');
+    if (canvas && canvas.offsetWidth > 0) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const sz  = Math.round(canvas.offsetWidth * dpr);
+      if (canvas.width !== sz) { canvas.width = sz; canvas.height = sz; }
+    }
+    if (typeof drawWheels === 'function') drawWheels();
+    const res = document.getElementById('wheel-result-card');
+    if (res) {
+      res.style.display = w.resultShow ? '' : 'none';
+      const desc = document.getElementById('wheel-result-desc');
+      if (desc) desc.textContent = w.resultDesc ?? '';
+    }
+  },
+
+  _applyTrivia(t) {
+    const $ = id => document.getElementById(id);
+    if (t.done) {
+      $('trivia-done-screen').style.display = '';
+      $('trivia-quiz-area').style.display   = 'none';
+      return;
+    }
+    $('trivia-done-screen').style.display = 'none';
+    $('trivia-quiz-area').style.display   = '';
+    $('trivia-player-indicator').textContent = t.playerInd ?? '';
+    $('trivia-progress').textContent         = t.progress  ?? '';
+    $('trivia-question-text').textContent    = t.qText     ?? '';
+    const answersEl = $('trivia-answers');
+    if (answersEl && t.answers) {
+      answersEl.innerHTML = '';
+      t.answers.forEach(a => {
+        const btn = document.createElement('button');
+        btn.className = a.cls;
+        btn.textContent = a.text;
+        btn.disabled = a.dis;
+        answersEl.appendChild(btn);
+      });
+    }
+    const msg = $('trivia-result-msg');
+    if (msg) { msg.textContent = t.resultMsg ?? ''; msg.className = t.resultCls ?? 'trivia-result-msg'; }
+    const nxt = $('trivia-next-btn');
+    if (nxt) { nxt.textContent = t.nextText ?? ''; nxt.style.display = t.nextShow ? '' : 'none'; }
+  },
+
+  _applyHorse(h) {
+    const $ = id => document.getElementById(id);
+    ['betting','racing','finished'].forEach(p =>
+      $('horse-phase-' + p)?.style?.setProperty('display', h.phase === p ? '' : 'none')
+    );
+    const betList = $('horse-bet-list');
+    if (betList) betList.innerHTML = h.betListHtml ?? '';
+    const startBtn = $('horse-start-btn');
+    if (startBtn) startBtn.disabled = h.startDis ?? true;
+    const track = $('horse-track-wrap');
+    if (track) track.innerHTML = h.trackHtml ?? '';
+    const hurdlesEl = $('horse-hurdles-above');
+    if (hurdlesEl) hurdlesEl.innerHTML = h.hurdlesHtml ?? '';
+    const evMsg = $('horse-event-msg');
+    if (evMsg) { evMsg.textContent = h.eventMsg ?? ''; evMsg.style.visibility = h.eventVis ?? 'hidden'; }
+    const deck = $('horse-deck-badge');
+    if (deck) { deck.textContent = h.deckText ?? ''; deck.style.display = h.deckShow ? '' : 'none'; }
+    $('horse-flip-card') && ($('horse-flip-card').className = h.flipCls ?? '');
+    const cImg = $('horse-card-img');
+    if (cImg && h.cardSrc) cImg.src = h.cardSrc;
+    const bSuit = $('horse-big-suit');
+    if (bSuit) bSuit.textContent = h.bigSuit ?? '';
+    const modal = $('horse-hurdle-modal');
+    if (modal) {
+      modal.style.display = h.modalShow ? 'flex' : 'none';
+      if (h.modalShow) {
+        $('hhm-icon').textContent  = h.hhmIcon  ?? '';
+        $('hhm-title').textContent = h.hhmTitle ?? '';
+        $('hhm-desc').textContent  = h.hhmDesc  ?? '';
+      }
+    }
+    const winner = $('horse-winner-banner');
+    if (winner) winner.innerHTML = h.winnerHtml ?? '';
+    const result = $('horse-result-panel');
+    if (result) result.innerHTML = h.resultHtml ?? '';
+  },
+
+  _showBadge(code, isJoiner) {
+    const badge = document.getElementById('session-badge');
+    if (!badge) return;
+    badge.style.display = 'flex';
+    badge.textContent   = (isJoiner ? '👁 ' : '🔗 ') + code;
+    badge.classList.toggle('is-joiner', isJoiner);
+    badge.title = isJoiner
+      ? 'Du ser det samme som masterspilleren'
+      : 'Del denne koden med de andre spillerne';
+  },
+
+  _enterJoinerMode() {
+    document.body.classList.add('joiner-mode');
+  },
+
+  _onDisconnected() {
+    const badge = document.getElementById('session-badge');
+    if (badge) { badge.textContent = '⚠️ Koblet fra'; badge.style.background = 'rgba(180,30,30,0.8)'; }
+  },
+};
+
+/* ── Globale funksjoner kalt fra HTML ── */
+window.sessionCreate = function() {
+  const code = S.createRoom();
+  if (!code) return;
+  const btn = document.getElementById('session-share-btn');
+  if (btn) {
+    btn.textContent = '🔗 Kode: ' + code + '  (del med vennene dine!)';
+    btn.style.cssText += ';background:rgba(239,43,45,0.22);color:#fff;border-color:rgba(239,43,45,0.5)';
+    btn.onclick = null; // ikke opprett nytt rom ved nytt klikk
+  }
+  navigator.clipboard?.writeText(code).catch(() => {});
+};
+
+window.sessionJoin = function() {
+  const input = document.getElementById('session-code-input');
+  const code  = (input?.value ?? '').trim();
+  if (!S.joinRoom(code)) {
+    if (input) { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 1200); }
+  }
+};
+
+/* ── Krokfunksjoner: push tilstand etter hver handling ── */
+function _wrap(name, delay) {
+  const orig = window[name];
+  if (!orig) return;
+  window[name] = function() {
+    orig.apply(this, arguments);
+    S.schedulePush(delay ?? 350);
+  };
+}
+
+// Skjermbytte — rask push
+(function() {
+  const orig = window.showScreen;
+  if (!orig) return;
+  window.showScreen = function(id) {
+    orig(id);
+    S.schedulePush(120);
+  };
+})();
+
+// Enkle handlinger
+['wfNext','todChoose','todDone','todPass','restartRing',
+ 'goHome','goToHome','triviaNext','triviaRestart',
+ 'triviaAnswer','horseStartRace','horseConfirmAndStart',
+ 'dismissHorseModal','startGame','initHorse',
+].forEach(n => _wrap(n));
+
+// drawCard — vent på kortanimaSJON
+_wrap('drawCard', 700);
+
+// horseFlip — vent på kortanimasjon
+_wrap('horseFlip', 500);
+
+// spinWheels — vent til hjulet stopper (~10s)
+(function() {
+  const orig = window.spinWheels;
+  if (!orig) return;
+  window.spinWheels = function() {
+    orig();
+    const t = setInterval(() => {
+      if (!app.wheel?.spinning) { clearInterval(t); S.push(); }
+    }, 200);
+    setTimeout(() => clearInterval(t), 15000);
+  };
+})();
+
+// todPickPlayer — vent til hjulet stopper (~4s)
+(function() {
+  const orig = window.todPickPlayer;
+  if (!orig) return;
+  window.todPickPlayer = function() {
+    orig();
+    const t = setInterval(() => {
+      if (!app.tod?.spinning) { clearInterval(t); S.push(); }
+    }, 200);
+    setTimeout(() => clearInterval(t), 8000);
+  };
+})();
+
+/* ── Start ── */
+S.init();
+
+})();
 </script>
 </body>
 </html>
