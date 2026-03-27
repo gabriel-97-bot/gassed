@@ -3808,6 +3808,7 @@ function triviaShowCatPicker() {
   document.getElementById('tcat-player-name').textContent = player + ' sin tur';
   document.querySelectorAll('.tcat-opt').forEach(b => b.classList.remove('tcat-selected'));
   document.getElementById('trivia-cat-modal').style.display = 'flex';
+  S.schedulePush(50);
 }
 
 const CAT_DATA = {
@@ -5746,7 +5747,9 @@ const S = {
           resultCls:   document.getElementById('trivia-result-msg')?.className ?? '',
           nextText:    document.getElementById('trivia-next-btn')?.textContent ?? '',
           nextShow:    document.getElementById('trivia-next-btn')?.style.display !== 'none',
-          catReveal:   app.trivia.catRevealTs ? { cat: app.trivia.category, ts: app.trivia.catRevealTs } : null,
+          catReveal:    app.trivia.catRevealTs ? { cat: app.trivia.category, ts: app.trivia.catRevealTs } : null,
+          catModalShow: document.getElementById('trivia-cat-modal')?.style.display !== 'none',
+          catModalPlayer: document.getElementById('tcat-player-name')?.textContent ?? '',
         };
         break;
       }
@@ -5866,6 +5869,15 @@ const S = {
 
   _applyTrivia(t) {
     const $ = id => document.getElementById(id);
+    // Kategori-modal
+    const modal = $('trivia-cat-modal');
+    if (modal) {
+      modal.style.display = t.catModalShow ? 'flex' : 'none';
+      if (t.catModalShow && t.catModalPlayer) {
+        $('tcat-player-name').textContent = t.catModalPlayer;
+        document.querySelectorAll('.tcat-opt').forEach(b => b.classList.remove('tcat-selected'));
+      }
+    }
     if (t.catReveal && t.catReveal.ts && t.catReveal.ts !== this._lastCatRevealTs) {
       this._lastCatRevealTs = t.catReveal.ts;
       showCatReveal(t.catReveal.cat);
