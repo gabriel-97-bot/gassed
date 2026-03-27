@@ -5705,6 +5705,19 @@ const S = {
       lang:    app.lang ?? 'no',
     };
 
+    /* ── Globale overlays (uavhengig av skjerm) ── */
+    st.overlays = {
+      gim: {
+        show:      document.getElementById('game-instructions-modal')?.style.display !== 'none',
+        icon:      document.getElementById('gim-icon')?.textContent ?? '',
+        title:     document.getElementById('gim-title')?.textContent ?? '',
+        rulesHtml: document.getElementById('gim-rules')?.innerHTML ?? '',
+      },
+      todCat: {
+        show: document.getElementById('tod-category-modal')?.style.display !== 'none',
+      },
+    };
+
     switch (screen) {
 
       case 'screen-ring': {
@@ -5820,6 +5833,7 @@ const S = {
     if (st.players) app.players = [...st.players];
     if (st.screen)  showScreen(st.screen);
 
+    if (st.overlays) this._applyOverlays(st.overlays);
     if (st.screen === 'screen-home' && typeof updateHomePlayers === 'function') updateHomePlayers();
     if (st.screen === 'screen-ring'      && st.ring)   this._applyRing(st.ring);
     if (st.screen === 'screen-waterfall' && st.nhie)   this._applyNhie(st.nhie);
@@ -5827,6 +5841,23 @@ const S = {
     if (st.screen === 'screen-wheel'     && st.wheel)  this._applyWheel(st.wheel);
     if (st.screen === 'screen-trivia'    && st.trivia) this._applyTrivia(st.trivia);
     if (st.screen === 'screen-horse'     && st.horse)  this._applyHorse(st.horse);
+  },
+
+  _applyOverlays(o) {
+    const $ = id => document.getElementById(id);
+    const gim = $('game-instructions-modal');
+    if (gim && o.gim) {
+      gim.style.display = o.gim.show ? 'flex' : 'none';
+      if (o.gim.show) {
+        $('gim-icon').textContent  = o.gim.icon      ?? '';
+        $('gim-title').textContent = o.gim.title     ?? '';
+        $('gim-rules').innerHTML   = o.gim.rulesHtml ?? '';
+      }
+    }
+    const todCat = $('tod-category-modal');
+    if (todCat && o.todCat) {
+      todCat.style.display = o.todCat.show ? 'flex' : 'none';
+    }
   },
 
   _applyRing(r) {
@@ -6062,16 +6093,18 @@ function _wrap(name, delay) {
  'goHome','goToHome','triviaNext','triviaRestart',
  'triviaAnswer','horseStartRace','horseConfirmAndStart',
  'dismissHorseModal','startGame','initHorse',
+ 'dismissInstructions','selectTodCategory',
 ].forEach(n => _wrap(n));
 
-// drawCard — vent til animasjon er ferdig (poll animating-flagg)
+// drawCard — push under animasjon så joiner ser kortvendings-animasjonen
 (function() {
   const orig = window.drawCard;
   if (!orig) return;
   window.drawCard = function() {
     orig.apply(this, arguments);
     const t = setInterval(() => {
-      if (!app.ring?.animating) { clearInterval(t); S.push(); }
+      S.push();
+      if (!app.ring?.animating) clearInterval(t);
     }, 80);
     setTimeout(() => clearInterval(t), 3000);
   };
