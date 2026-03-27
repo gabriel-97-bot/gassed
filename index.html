@@ -1022,6 +1022,14 @@
       25%      { transform: translateX(-6px); }
       75%      { transform: translateX( 6px); }
     }
+    #session-join-status {
+      font-size: 0.8rem;
+      min-height: 18px;
+      text-align: center;
+      color: rgba(238,242,255,0.55);
+    }
+    #session-join-status.ok  { color: #7dffba; }
+    #session-join-status.err { color: #ff8080; }
     #session-join-btn {
       padding: 11px 16px;
       background: rgba(25,55,160,0.45);
@@ -2110,6 +2118,7 @@
                oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
         <button id="session-join-btn" onclick="sessionJoin()">Bli med →</button>
       </div>
+      <div id="session-join-status"></div>
     </div>
   </div>
 
@@ -5567,22 +5576,49 @@ const S = {
   },
 
   /* ── Bli med i rom (joiner) ── */
-  joinRoom(code) {
+  joinRoom(code, statusEl) {
+    const setStatus = (msg, cls) => {
+      if (!statusEl) return;
+      statusEl.textContent = msg;
+      statusEl.className   = cls || '';
+    };
+
     if (!this.db) {
-      alert('Firebase er ikke satt opp ennå.\nSe kommentarene i index.html (søk etter FIREBASE_CONFIG).');
+      setStatus('❌ Firebase er ikke koblet til', 'err');
       return false;
     }
     const clean = code.toUpperCase().replace(/[^A-Z0-9]/g, '');
     if (clean.length !== 5) return false;
+
     this.roomCode = clean;
     this.isJoiner = true;
     this.roomRef  = this.db.ref('rooms/' + clean);
     this._showBadge(clean, true);
     this._enterJoinerMode();
+    setStatus('⏳ Kobler til…');
+
+    let hasReceived = false;
+    const giveUp = setTimeout(() => {
+      if (!hasReceived) {
+        setStatus('❌ Fant ikke rommet. Sjekk at koden er riktig og at master har trykket Del sesjon.', 'err');
+        const badge = document.getElementById('session-badge');
+        if (badge) { badge.textContent = '❌ Ikke funnet'; badge.style.background = 'rgba(180,30,30,0.8)'; }
+      }
+    }, 10000);
+
     this.roomRef.on('value', snap => {
       const st = snap.val();
-      if (st) this._apply(st);
-      else    this._onDisconnected();
+      if (st) {
+        if (!hasReceived) {
+          hasReceived = true;
+          clearTimeout(giveUp);
+          setStatus('✓ Tilkoblet!', 'ok');
+          setTimeout(() => setStatus(''), 2500);
+        }
+        this._apply(st);
+      } else if (hasReceived) {
+        this._onDisconnected();
+      }
     });
     return true;
   },
@@ -5875,9 +5911,10 @@ window.sessionCreate = function() {
 };
 
 window.sessionJoin = function() {
-  const input = document.getElementById('session-code-input');
-  const code  = (input?.value ?? '').trim();
-  if (!S.joinRoom(code)) {
+  const input  = document.getElementById('session-code-input');
+  const status = document.getElementById('session-join-status');
+  const code   = (input?.value ?? '').trim();
+  if (!S.joinRoom(code, status)) {
     if (input) { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 1200); }
   }
 };
