@@ -968,10 +968,30 @@
       -webkit-user-select: all;
     }
     #session-badge.is-joiner {
-      background: rgba(0,40,120,0.78);
+      background: rgba(0,30,100,0.88);
+      border-color: rgba(100,150,255,0.35);
       color: #aac8ff;
       letter-spacing: 0.8px;
+      gap: 6px;
     }
+
+    /* ── Joiner splash-velkomst ── */
+    #joiner-splash {
+      position: fixed; inset: 0; z-index: 2000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+      background: rgba(6,6,20,0.97);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      animation: joinerSplashIn 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    #joiner-splash.hiding { animation: joinerSplashOut 0.5s ease forwards; pointer-events: none; }
+    .jspl-icon  { font-size: 4rem; animation: splashIconPop 0.5s cubic-bezier(0.22,1,0.36,1) 0.05s both; line-height: 1; }
+    .jspl-title { font-size: 1.9rem; font-weight: 900; color: #fff; animation: splashFadeUp 0.4s ease 0.15s both; }
+    .jspl-sub   { font-size: 1rem; color: rgba(150,190,255,0.9); font-weight: 600; animation: splashFadeUp 0.4s ease 0.25s both; }
+    .jspl-hint  { font-size: 0.8rem; color: rgba(255,255,255,0.38); margin-top: 6px; animation: splashFadeUp 0.4s ease 0.35s both; letter-spacing: 0.3px; }
+    @keyframes joinerSplashIn  { from { opacity:0; transform:scale(0.92); } to { opacity:1; transform:scale(1); } }
+    @keyframes joinerSplashOut { from { opacity:1; } to { opacity:0; } }
+    @keyframes splashIconPop   { 0%{transform:scale(0) rotate(-15deg)} 70%{transform:scale(1.18)} 100%{transform:scale(1)} }
+    @keyframes splashFadeUp    { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
 
     /* ── Sesjonsdeling (setup-skjerm) ── */
     .session-share-btn {
@@ -5950,15 +5970,34 @@ const S = {
     const badge = document.getElementById('session-badge');
     if (!badge) return;
     badge.style.display = 'flex';
-    badge.textContent   = (isJoiner ? '👁 ' : '🔗 ') + code;
+    badge.innerHTML = isJoiner
+      ? '👁 <span style="opacity:0.6;font-weight:400;letter-spacing:0.5px">Tilskuer</span> · ' + code
+      : '🔗 ' + code;
     badge.classList.toggle('is-joiner', isJoiner);
     badge.title = isJoiner
-      ? 'Du ser det samme som masterspilleren'
+      ? 'Du er tilskuer — du kan ikke styre spillet'
       : 'Del denne koden med de andre spillerne';
+  },
+
+  _showJoinerSplash() {
+    const el = document.createElement('div');
+    el.id = 'joiner-splash';
+    el.innerHTML = `
+      <div class="jspl-icon">👁️</div>
+      <div class="jspl-title">Tilskuermodus</div>
+      <div class="jspl-sub">Du ser masterens skjerm</div>
+      <div class="jspl-hint">Du kan ikke styre — bare følge med</div>
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => {
+      el.classList.add('hiding');
+      setTimeout(() => el.remove(), 500);
+    }, 2800);
   },
 
   _enterJoinerMode() {
     document.body.classList.add('joiner-mode');
+    this._showJoinerSplash();
   },
 
   _onDisconnected() {
