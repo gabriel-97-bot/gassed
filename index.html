@@ -996,23 +996,25 @@
     }
     .session-share-btn--small:hover { opacity: 1; }
     #session-join-area {
-      margin-top: 12px;
+      margin-top: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       width: 100%;
+      opacity: 0.7;
     }
+    #session-join-area:focus-within { opacity: 1; }
     .join-divider {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: rgba(238,242,255,0.32);
       letter-spacing: 0.4px;
     }
-    .join-row { display: flex; gap: 8px; width: 100%; }
+    .join-row { display: flex; gap: 6px; width: 100%; }
     #session-code-input {
       flex: 1;
-      padding: 11px 14px;
-      font-size: 1.05rem;
+      padding: 8px 10px;
+      font-size: 0.9rem;
       font-weight: 700;
       background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255,255,255,0.13);
@@ -1032,20 +1034,20 @@
       75%      { transform: translateX( 6px); }
     }
     #session-join-status {
-      font-size: 0.8rem;
-      min-height: 18px;
+      font-size: 0.72rem;
+      min-height: 16px;
       text-align: center;
       color: rgba(238,242,255,0.55);
     }
     #session-join-status.ok  { color: #7dffba; }
     #session-join-status.err { color: #ff8080; }
     #session-join-btn {
-      padding: 11px 16px;
+      padding: 8px 12px;
       background: rgba(25,55,160,0.45);
       border: 1px solid rgba(100,150,255,0.28);
-      border-radius: 12px;
+      border-radius: 8px;
       color: #aac8ff;
-      font-size: 0.9rem;
+      font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
@@ -2118,7 +2120,7 @@
     </button>
 
     <!-- Sesjonsdeling -->
-    <button id="session-share-btn" class="session-share-btn" onclick="sessionCreate()">📡 Del sesjon med venner</button>
+    <button id="session-share-btn" class="session-share-btn session-share-btn--small" onclick="sessionCreate()">📡 Del sesjon med venner</button>
 
     <div id="session-join-area">
       <div class="join-divider">— eller bli med i en eksisterende sesjon —</div>
