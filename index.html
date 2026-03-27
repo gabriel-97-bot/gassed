@@ -939,6 +939,57 @@
       .ring-top { padding: 6px 20px 8px; }
     }
 
+    /* ── Landscape (phone rotated) ── */
+    @media (orientation: landscape) and (max-width: 932px) {
+
+      /* Generelt */
+      .screen         { padding: 40px 16px 12px; }
+      .screen-title   { font-size: 1.35rem; margin-bottom: 2px; }
+      .back-btn       { top: 8px; left: 10px; }
+      #settings-btn   { top: 8px; right: 10px; }
+
+      /* ── Oppsett ── */
+      #screen-setup { padding-top: 40px; }
+
+      /* ── Hjem ── */
+      #screen-home  { padding-top: 8px; }
+      .gassed-logo  { font-size: 2.2rem; letter-spacing: 4px; margin-bottom: 0; }
+      .screen-subtitle { font-size: 0.78rem; margin-bottom: 4px; }
+      .game-grid    { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+      .game-card    { min-height: 76px; padding: 12px 8px 10px; gap: 5px; }
+      .game-card-icon { font-size: 1.8rem; }
+
+      /* ── Ring of Fire ── */
+      #screen-ring  { padding-top: 40px; gap: 6px; }
+      .ring-top     { padding: 5px 14px 7px; margin-bottom: 2px; gap: 4px; }
+      .ring-stats   { font-size: 0.82rem; gap: 18px; }
+      .kings-row    { gap: 8px; }
+      .king-cup     { width: 24px; height: 28px; }
+      .king-cup::before { width: 16px; height: 5px; top: -5px; }
+      .card-area, .card {
+        width:  clamp(110px, 28vh, 180px);
+        height: clamp(154px, 39vh, 252px);
+      }
+
+      /* ── Lykkehjulet ── */
+      #screen-wheel { padding: 40px 4px 8px; gap: 6px; }
+      .wheel-stage  { width: min(calc(100vh - 86px), calc(100vw - 8px)); }
+
+      /* ── Nøtt eller Sannhet ── */
+      #screen-tod      { padding: 40px 4px 8px; gap: 6px; }
+      .tod-wheel-stage { width: min(calc(100vh - 106px), calc(100vw - 8px)); }
+
+      /* ── Jeg har aldri ── */
+      #screen-waterfall { padding-top: 40px; }
+
+      /* ── Trivia ── */
+      #screen-trivia { padding-top: 40px; }
+
+      /* ── Veddeløpet ── */
+      #screen-horse { padding-top: 40px; }
+
+    }
+
     /* ── Veddeløpet ── */
     /* ── Horse race – layout ── */
     #screen-horse { gap: 10px; padding-top: 64px; overflow-y: auto; }
