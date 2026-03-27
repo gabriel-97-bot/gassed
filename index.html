@@ -1063,7 +1063,6 @@
     body.joiner-mode .card-area,
     body.joiner-mode .horse-flip-area {
       pointer-events: none !important;
-      opacity: 0.8;
     }
     body.joiner-mode #session-badge { pointer-events: auto !important; opacity: 1; }
     body.joiner-mode #session-join-area,
@@ -3849,8 +3848,8 @@ function showCatReveal(cat) {
   if (screen) screen.appendChild(el);
   setTimeout(() => {
     el.classList.add('hiding');
-    setTimeout(() => el.remove(), 320);
-  }, 1500);
+    setTimeout(() => el.remove(), 250);
+  }, 950);
 }
 
 function triviaCatPick(cat) {
@@ -3859,12 +3858,12 @@ function triviaCatPick(cat) {
   // Highlight valgt knapp
   document.querySelectorAll('.tcat-opt').forEach(b => b.classList.remove('tcat-selected'));
   event?.target?.closest('.tcat-opt')?.classList.add('tcat-selected');
-  S.schedulePush(260); // tidlig push: sender catRevealTs til joiner
+  S.schedulePush(200); // tidlig push: sender catRevealTs til joiner
   setTimeout(() => {
     document.getElementById('trivia-cat-modal').style.display = 'none';
     showCatReveal(cat);
-    setTimeout(() => { triviaRender(); S.schedulePush(80); }, 1820);
-  }, 250);
+    setTimeout(() => { triviaRender(); S.schedulePush(80); }, 1200);
+  }, 150);
 }
 
 function triviaRender() {
@@ -5908,7 +5907,7 @@ const S = {
       return;
     }
     $('trivia-done-screen').style.display = 'none';
-    $('trivia-quiz-area').style.display   = '';
+    $('trivia-quiz-area').style.display   = t.catModalShow ? 'none' : '';
     $('trivia-player-indicator').textContent = t.playerInd ?? '';
     $('trivia-progress').textContent         = t.progress  ?? '';
     $('trivia-question-text').textContent    = t.qText     ?? '';
@@ -6054,34 +6053,46 @@ function _wrap(name, delay) {
  'dismissHorseModal','startGame','initHorse',
 ].forEach(n => _wrap(n));
 
-// drawCard — vent på kortanimaSJON
-_wrap('drawCard', 700);
+// drawCard — vent til animasjon er ferdig (poll animating-flagg)
+(function() {
+  const orig = window.drawCard;
+  if (!orig) return;
+  window.drawCard = function() {
+    orig.apply(this, arguments);
+    const t = setInterval(() => {
+      if (!app.ring?.animating) { clearInterval(t); S.push(); }
+    }, 80);
+    setTimeout(() => clearInterval(t), 3000);
+  };
+})();
 
 // horseFlip — vent på kortanimasjon
 _wrap('horseFlip', 500);
 
-// spinWheels — vent til hjulet stopper (~10s)
+// spinWheels — push hvert 300ms under spin, så joiner ser animasjonen
 (function() {
   const orig = window.spinWheels;
   if (!orig) return;
   window.spinWheels = function() {
     orig();
     const t = setInterval(() => {
-      if (!app.wheel?.spinning) { clearInterval(t); S.push(); }
-    }, 200);
+      S.push();
+      if (!app.wheel?.spinning) clearInterval(t);
+    }, 300);
     setTimeout(() => clearInterval(t), 15000);
   };
 })();
 
-// todPickPlayer — vent til hjulet stopper (~4s)
+// todPickPlayer — push hvert 300ms under spin
 (function() {
   const orig = window.todPickPlayer;
   if (!orig) return;
   window.todPickPlayer = function() {
     orig();
     const t = setInterval(() => {
-      if (!app.tod?.spinning) { clearInterval(t); S.push(); }
-    }, 200);
+      S.push();
+      if (!app.tod?.spinning) clearInterval(t);
+    }, 300);
     setTimeout(() => clearInterval(t), 8000);
   };
 })();
