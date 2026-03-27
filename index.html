@@ -3806,6 +3806,7 @@ function initTrivia() {
 function triviaShowCatPicker() {
   const player = app.players[app.trivia.playerIdx % app.players.length];
   document.getElementById('tcat-player-name').textContent = player + ' sin tur';
+  document.querySelectorAll('.tcat-opt').forEach(b => b.classList.remove('tcat-selected'));
   document.getElementById('trivia-cat-modal').style.display = 'flex';
 }
 
@@ -3837,10 +3838,11 @@ function triviaCatPick(cat) {
   // Highlight valgt knapp
   document.querySelectorAll('.tcat-opt').forEach(b => b.classList.remove('tcat-selected'));
   event?.target?.closest('.tcat-opt')?.classList.add('tcat-selected');
+  S.schedulePush(260); // tidlig push: sender catRevealTs til joiner
   setTimeout(() => {
     document.getElementById('trivia-cat-modal').style.display = 'none';
     showCatReveal(cat);
-    setTimeout(() => triviaRender(), 1820);
+    setTimeout(() => { triviaRender(); S.schedulePush(80); }, 1820);
   }, 250);
 }
 
@@ -5998,7 +6000,7 @@ function _wrap(name, delay) {
 ['wfNext','todChoose','todDone','todPass','restartRing',
  'goHome','goToHome','triviaNext','triviaRestart',
  'triviaAnswer','horseStartRace','horseConfirmAndStart',
- 'dismissHorseModal','startGame','initHorse','triviaCatPick',
+ 'dismissHorseModal','startGame','initHorse',
 ].forEach(n => _wrap(n));
 
 // drawCard — vent på kortanimaSJON
