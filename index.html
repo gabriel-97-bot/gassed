@@ -535,6 +535,20 @@
     /* Session btn on home: auto width */
     #session-share-btn-home { width: auto; align-self: center; }
 
+    /* ── Gassed sub-game return button (floats over ring/wheel screen) ── */
+    #gassed-sub-next {
+      display: none; position: absolute;
+      bottom: 32px; left: 50%; transform: translateX(-50%);
+      z-index: 100; white-space: nowrap;
+      background: var(--red); border: none; border-radius: 16px;
+      color: #fff; font-size: 1.05rem; font-weight: 800;
+      padding: 15px 36px; cursor: pointer;
+      box-shadow: 0 4px 24px rgba(239,43,45,0.45);
+      transition: transform 0.15s, opacity 0.2s;
+    }
+    #gassed-sub-next.visible { display: block; }
+    #gassed-sub-next:active { transform: translateX(-50%) scale(0.97); }
+
     /* ── Screen: Gassed (main game) ── */
     #screen-gassed { gap: 0; padding: 50px 16px 24px; justify-content: flex-start; }
     .gs-player-header { text-align: center; padding: 0 0 16px; width: 100%; }
@@ -2727,6 +2741,9 @@
     <div class="jeo-progress" id="jeo-progress"></div>
   </div>
 
+  <!-- Gassed: floating return button shown during ring/wheel sub-game -->
+  <button id="gassed-sub-next" onclick="gassedReturnFromSub()">Neste spiller →</button>
+
   <!-- Screen: Gassed (main combined game) -->
   <div class="screen" id="screen-gassed">
     <div class="gs-player-header">
@@ -3960,6 +3977,11 @@ function confirmGoHome() {
     goHome();
     return;
   }
+  // Inside a Gassed sub-game (ring/wheel) → return to Gassed instead of home
+  if (app.gassed?.inSubGame) {
+    gassedReturnFromSub();
+    return;
+  }
   const inGame = GAME_SCREENS.some(id => document.getElementById(id)?.classList.contains('active'));
   if (inGame) {
     document.getElementById('confirm-exit-modal').style.display = 'flex';
@@ -3971,6 +3993,8 @@ function confirmGoHome() {
 function goHome() {
   app.currentGame = null;
   if (app.gassed?.countdownTimer) { clearInterval(app.gassed.countdownTimer); app.gassed.countdownTimer = null; }
+  if (app.gassed) app.gassed.inSubGame = false;
+  document.getElementById('gassed-sub-next')?.classList.remove('visible');
   showScreen('screen-home');
   document.getElementById('back-btn').classList.remove('visible');
 }
@@ -4690,10 +4714,12 @@ function spinWheels() {
 
 function showWheelResult(playerIdx, challengeIdx) {
   SFX.wheelReveal();
-  var player = app.players[playerIdx];
   var ch = WHEEL_CHALLENGES[challengeIdx];
   document.getElementById('wheel-result-desc').textContent = ch.desc || '';
   document.getElementById('wheel-result-card').style.display = '';
+  if (app.gassed?.inSubGame) {
+    document.getElementById('gassed-sub-next').classList.add('visible');
+  }
 }
 
 function getGameInstructions() {
@@ -5521,12 +5547,13 @@ function checkRingEndState(cardData) {
     setTimeout(function() {
       SFX.gameOver();
       document.getElementById('ring-overlay').classList.add('show');
-      
       document.getElementById('card-area').style.cursor = 'default';
     }, 300);
   } else if (app.ring.deck.length === 0) {
-    
     document.getElementById('card-area').style.cursor = 'default';
+  }
+  if (app.gassed?.inSubGame) {
+    setTimeout(() => document.getElementById('gassed-sub-next').classList.add('visible'), 500);
   }
 }
 
@@ -6342,31 +6369,22 @@ function gassedTurn() {
   const type = Math.floor(Math.random() * 4);
 
   if (type === 0) {
-    // ── Ring of Fire card ──
-    if (g.deck.length === 0) g.deck = shuffle(buildDeck());
-    const card = g.deck.pop();
-    const rules = getRules();
-    const rule = rules[card.rank];
-    const rankName = CARD_RANK_NAME[card.rank];
-    const suitName = CARD_SUIT_NAME[card.suit.symbol];
-    const rankNo = CARD_RANK_NO[card.rank] || card.rank;
-    const suitNo = CARD_SUIT_NO[card.suit.symbol] || card.suit.symbol;
-    $('gs-type-badge').textContent = '🔥 Ring of Fire';
-    $('gs-type-badge').className = 'gs-type-badge gs-type-ring';
-    $('gs-main-icon').textContent = card.suit.symbol;
-    $('gs-main-text').textContent = suitNo + ' ' + rankNo + ' — ' + rule.name;
-    $('gs-sub-text').textContent = interpolate(rule.desc, playerName);
-    $('gs-mini-card').style.display = '';
-    $('gs-mini-card-img').src = 'cards/' + rankName + '_' + suitName + '.png';
+    // ── Ring of Fire — vis selve ring-skjermen ──
+    g.inSubGame = true;
+    initRing();
+    showScreen('screen-ring');
+    setTimeout(() => drawCard(), 120);
+    S.schedulePush(50);
+    return;
 
   } else if (type === 1) {
-    // ── Lykkehjulet ──
-    const ch = WHEEL_CHALLENGES[Math.floor(Math.random() * WHEEL_CHALLENGES.length)];
-    $('gs-type-badge').textContent = isNo ? '🎡 Lykkehjulet' : '🎡 Lucky Wheel';
-    $('gs-type-badge').className = 'gs-type-badge gs-type-wheel';
-    $('gs-main-icon').textContent = ch.emoji;
-    $('gs-main-text').textContent = ch.label;
-    $('gs-sub-text').textContent = ch.desc;
+    // ── Lykkehjulet — vis selve hjul-skjermen ──
+    g.inSubGame = true;
+    showScreen('screen-wheel');
+    initWheel();
+    setTimeout(() => spinWheels(), 600);
+    S.schedulePush(50);
+    return;
 
   } else if (type === 2) {
     // ── Jeg har aldri ──
@@ -6425,6 +6443,13 @@ function gassedTurn() {
 }
 
 function gassedNext() {
+  gassedTurn();
+}
+
+function gassedReturnFromSub() {
+  app.gassed.inSubGame = false;
+  document.getElementById('gassed-sub-next').classList.remove('visible');
+  showScreen('screen-gassed');
   gassedTurn();
 }
 
@@ -6834,7 +6859,7 @@ function _wrap(name, delay) {
  'dismissHorseModal','startGame','initHorse',
  'dismissInstructions','selectTodCategory',
  'jeoReveal','jeoMark','jeoAssignTeam','jeoStartGame','jeoClose','jeoCloseOverlay',
- 'gassedNext',
+ 'gassedNext','gassedReturnFromSub',
 ].forEach(n => _wrap(n));
 
 // drawCard — push under animasjon så joiner ser kortvendings-animasjonen
