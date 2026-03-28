@@ -482,36 +482,58 @@
 
     /* ── Screen 2: Home ── */
     #screen-home { padding-top: 20px; justify-content: center; }
-    .gassed-home-start {
-      width: 100%; max-width: 320px;
-      background: linear-gradient(135deg, var(--red) 0%, #c0392b 100%);
-      border: none; border-radius: 20px; color: #fff;
-      font-size: 1.4rem; font-weight: 900; letter-spacing: 0.5px;
-      padding: 22px 0; cursor: pointer; margin: 8px 0 20px;
-      box-shadow: 0 8px 40px rgba(239,43,45,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
-      transition: transform 0.18s, box-shadow 0.18s;
+    .home-game-grid {
+      width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;
     }
-    .gassed-home-start:active { transform: scale(0.97); box-shadow: 0 4px 16px rgba(239,43,45,0.3); }
-    .home-other-games {
-      width: 100%; max-width: 320px; margin-bottom: 16px;
-    }
-    .home-other-label {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: rgba(255,255,255,0.35);
-      text-align: center; margin-bottom: 10px;
-    }
-    .home-other-row {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-    }
-    .home-other-btn {
+    .home-game-btn {
       background: var(--surface);
+      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
       border: 1px solid var(--border);
-      border-radius: 14px; color: rgba(255,255,255,0.75);
-      font-size: 0.8rem; font-weight: 700; padding: 12px 8px;
-      cursor: pointer; transition: background 0.15s, border-color 0.15s;
-      text-align: center;
+      border-radius: 20px; cursor: pointer;
+      display: flex; align-items: center; gap: 14px;
+      text-align: left; padding: 16px 18px;
+      transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
+      position: relative; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07);
     }
-    .home-other-btn:active { background: var(--surface-hi); }
+    .home-game-btn::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 3px; border-radius: 20px 20px 0 0;
+    }
+    .home-game-btn:active { transform: scale(0.97); }
+    .home-game-btn-icon { font-size: 2rem; flex-shrink: 0; line-height: 1; }
+    .home-game-btn-body { display: flex; flex-direction: column; gap: 2px; }
+    .home-game-btn-title {
+      font-size: 1rem; font-weight: 800; color: #fff; letter-spacing: 0.3px;
+    }
+    .home-game-btn-sub {
+      font-size: 0.72rem; color: rgba(255,255,255,0.45); font-weight: 600;
+    }
+    /* Gassed — bigger */
+    .home-game-btn.hgb-gassed {
+      padding: 22px 20px; border-radius: 22px;
+      box-shadow: 0 6px 32px rgba(239,43,45,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .home-game-btn.hgb-gassed::before { background: var(--red); }
+    .home-game-btn.hgb-gassed:active  { box-shadow: 0 2px 10px rgba(239,43,45,0.15); }
+    .home-game-btn.hgb-gassed .home-game-btn-icon { font-size: 2.6rem; }
+    .home-game-btn.hgb-gassed .home-game-btn-title { font-size: 1.3rem; }
+    /* Other games row */
+    .home-small-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .home-game-btn.hgb-small {
+      flex-direction: column; align-items: flex-start;
+      padding: 14px 14px 12px; border-radius: 16px; gap: 6px;
+    }
+    .home-game-btn.hgb-small .home-game-btn-icon { font-size: 1.6rem; }
+    .home-game-btn.hgb-small .home-game-btn-title { font-size: 0.82rem; }
+    .home-game-btn.hgb-tod::before    { background: linear-gradient(90deg,var(--red),var(--navy)); }
+    .home-game-btn.hgb-trivia::before { background: var(--gold); }
+    .home-game-btn.hgb-horse::before  { background: linear-gradient(90deg,var(--gold),#002868); }
+    .home-game-btn.hgb-jeopardy::before { background: #0a3db5; }
+    /* Session btn on home: auto width */
+    #session-share-btn-home { width: auto; align-self: center; }
 
     /* ── Screen: Gassed (main game) ── */
     #screen-gassed { gap: 0; padding: 50px 16px 24px; justify-content: flex-start; }
@@ -2444,17 +2466,33 @@
   <!-- Screen 2: Home -->
   <div class="screen" id="screen-home">
     <div class="gassed-logo">Gassed</div>
-    <div class="screen-subtitle" id="home-players-subtitle"></div>
 
-    <button class="gassed-home-start" onclick="startGame('gassed')">🍺 Start spillet</button>
+    <div class="home-game-grid">
+      <button class="home-game-btn hgb-gassed" onclick="startGame('gassed')">
+        <div class="home-game-btn-icon">🍺</div>
+        <div class="home-game-btn-body">
+          <div class="home-game-btn-title">Gassed</div>
+          <div class="home-game-btn-sub">Ring of Fire · Hjulet · Jeg har aldri · Musikk</div>
+        </div>
+      </button>
 
-    <div class="home-other-games">
-      <div class="home-other-label">Andre spill</div>
-      <div class="home-other-row">
-        <button class="home-other-btn" onclick="startGame('tod')">😏 Nøtt eller Sannhet</button>
-        <button class="home-other-btn" onclick="startGame('trivia')">🧠 Trivia Quiz</button>
-        <button class="home-other-btn" onclick="startGame('horse')">🐎 Veddeløpet</button>
-        <button class="home-other-btn" onclick="startGame('jeopardy')">🍺 Jeopardy</button>
+      <div class="home-small-row">
+        <button class="home-game-btn hgb-small hgb-tod" onclick="startGame('tod')">
+          <div class="home-game-btn-icon">😏</div>
+          <div class="home-game-btn-title">Nøtt eller Sannhet</div>
+        </button>
+        <button class="home-game-btn hgb-small hgb-trivia" onclick="startGame('trivia')">
+          <div class="home-game-btn-icon">🧠</div>
+          <div class="home-game-btn-title">Trivia Quiz</div>
+        </button>
+        <button class="home-game-btn hgb-small hgb-horse" onclick="startGame('horse')">
+          <div class="home-game-btn-icon">🐎</div>
+          <div class="home-game-btn-title">Veddeløpet</div>
+        </button>
+        <button class="home-game-btn hgb-small hgb-jeopardy" onclick="startGame('jeopardy')">
+          <div class="home-game-btn-icon">🍺</div>
+          <div class="home-game-btn-title">Jeopardy</div>
+        </button>
       </div>
     </div>
 
