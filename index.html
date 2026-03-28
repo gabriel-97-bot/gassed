@@ -492,6 +492,26 @@
       transition: transform 0.18s, box-shadow 0.18s;
     }
     .gassed-home-start:active { transform: scale(0.97); box-shadow: 0 4px 16px rgba(239,43,45,0.3); }
+    .home-other-games {
+      width: 100%; max-width: 320px; margin-bottom: 16px;
+    }
+    .home-other-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.35);
+      text-align: center; margin-bottom: 10px;
+    }
+    .home-other-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .home-other-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px; color: rgba(255,255,255,0.75);
+      font-size: 0.8rem; font-weight: 700; padding: 12px 8px;
+      cursor: pointer; transition: background 0.15s, border-color 0.15s;
+      text-align: center;
+    }
+    .home-other-btn:active { background: var(--surface-hi); }
 
     /* ── Screen: Gassed (main game) ── */
     #screen-gassed { gap: 0; padding: 50px 16px 24px; justify-content: flex-start; }
@@ -2427,6 +2447,16 @@
     <div class="screen-subtitle" id="home-players-subtitle"></div>
 
     <button class="gassed-home-start" onclick="startGame('gassed')">🍺 Start spillet</button>
+
+    <div class="home-other-games">
+      <div class="home-other-label">Andre spill</div>
+      <div class="home-other-row">
+        <button class="home-other-btn" onclick="startGame('tod')">😏 Nøtt eller Sannhet</button>
+        <button class="home-other-btn" onclick="startGame('trivia')">🧠 Trivia Quiz</button>
+        <button class="home-other-btn" onclick="startGame('horse')">🐎 Veddeløpet</button>
+        <button class="home-other-btn" onclick="startGame('jeopardy')">🍺 Jeopardy</button>
+      </div>
+    </div>
 
     <div class="edit-players-link" onclick="openSettings()" data-t="home.editPlayers">Endre spillere</div>
 
