@@ -481,7 +481,79 @@
     .setup-hint { font-size: 0.77rem; color: var(--dim); text-align: center; margin-bottom: 6px; }
 
     /* ── Screen 2: Home ── */
-    #screen-home { padding-top: 20px; }
+    #screen-home { padding-top: 20px; justify-content: center; }
+    .gassed-home-start {
+      width: 100%; max-width: 320px;
+      background: linear-gradient(135deg, var(--red) 0%, #c0392b 100%);
+      border: none; border-radius: 20px; color: #fff;
+      font-size: 1.4rem; font-weight: 900; letter-spacing: 0.5px;
+      padding: 22px 0; cursor: pointer; margin: 8px 0 20px;
+      box-shadow: 0 8px 40px rgba(239,43,45,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .gassed-home-start:active { transform: scale(0.97); box-shadow: 0 4px 16px rgba(239,43,45,0.3); }
+
+    /* ── Screen: Gassed (main game) ── */
+    #screen-gassed { gap: 0; padding: 50px 16px 24px; justify-content: flex-start; }
+    .gs-player-header { text-align: center; padding: 0 0 16px; width: 100%; }
+    .gs-turn-label {
+      color: rgba(255,255,255,0.45); font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;
+    }
+    .gs-player-name { color: #fff; font-size: 2.2rem; font-weight: 900; }
+    .gs-card {
+      flex: 1; width: 100%;
+      background: var(--surface);
+      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+      border: 1.5px solid var(--border-hi); border-radius: 24px;
+      padding: 28px 20px 24px;
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center; gap: 10px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      margin-bottom: 16px; overflow: hidden;
+    }
+    .gs-type-badge {
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 5px 14px; border-radius: 100px;
+      border: 1px solid; margin-bottom: 4px;
+    }
+    .gs-type-ring  { background: rgba(239,43,45,0.15); color: #ff8a8a; border-color: rgba(239,43,45,0.3); }
+    .gs-type-wheel { background: rgba(37,99,235,0.15); color: #90b8ff; border-color: rgba(37,99,235,0.3); }
+    .gs-type-nhie  { background: rgba(255,207,0,0.12); color: #ffd95e; border-color: rgba(255,207,0,0.25); }
+    .gs-type-music { background: rgba(160,0,220,0.15); color: #d480ff; border-color: rgba(160,0,220,0.3); }
+    .gs-main-icon { font-size: 3.2rem; line-height: 1; margin: 6px 0 2px; }
+    .gs-nhie-prefix {
+      color: rgba(255,255,255,0.5); font-size: 0.85rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .gs-main-text {
+      color: #fff; font-size: 1.25rem; font-weight: 800;
+      line-height: 1.35; max-width: 300px;
+    }
+    .gs-sub-text {
+      color: rgba(255,255,255,0.65); font-size: 0.95rem;
+      line-height: 1.5; max-width: 300px;
+    }
+    .gs-mini-card {
+      width: 90px; height: 126px; border-radius: 10px;
+      overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+      flex-shrink: 0; margin: 4px 0;
+    }
+    .gs-mini-card img { width: 100%; height: 100%; object-fit: cover; }
+    .gs-countdown-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 4px; margin: 6px 0;
+    }
+    .gs-countdown-ring {
+      width: 88px; height: 88px;
+      border: 5px solid rgba(160,0,220,0.35); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(160,0,220,0.1); transition: all 0.4s;
+    }
+    .gs-countdown-num { font-size: 2.6rem; font-weight: 900; color: #d480ff; line-height: 1; }
+    .gs-countdown-label { color: rgba(255,255,255,0.4); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; }
+    .gs-countdown-urgent .gs-countdown-ring { border-color: rgba(239,43,45,0.55); background: rgba(239,43,45,0.12); }
+    .gs-countdown-urgent .gs-countdown-num { color: #ff7070; }
 
     .game-grid {
       display: grid; grid-template-columns: 1fr 1fr;
@@ -540,6 +612,8 @@
     .game-card.wheel::before  { background: linear-gradient(90deg,#002868,var(--red)); }
     .game-card.wheel:hover    { box-shadow: 0 14px 48px rgba(0,40,104,0.2), 0 4px 12px rgba(0,0,0,0.35); }
     .game-card.wheel::after   { background: radial-gradient(ellipse at 50% 0%, rgba(0,40,104,0.14), transparent 65%); }
+
+    .game-card.jeopardy { background: linear-gradient(135deg, #05348b 0%, #0a3db5 100%); }
 
     .game-card-icon { font-size: 3.2rem; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4)); }
     .game-card-title {
@@ -773,6 +847,197 @@
     .restart-btn:hover { transform: translateY(-2px); }
     .restart-btn:active { transform: translateY(2px); }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ── Jeopardy ── */
+    #screen-jeopardy {
+      padding: 48px 8px 24px;
+    }
+    .jeo-header {
+      font-size: 1.2rem; font-weight: 800; color: #ffcf00;
+      text-align: center; margin-bottom: 10px; letter-spacing: 1px;
+    }
+    /* Scoreboard */
+.jeo-turn-banner {
+      width: 100%; text-align: center;
+      background: rgba(255,207,0,0.15);
+      border: 1.5px solid rgba(255,207,0,0.4);
+      border-radius: 10px; padding: 10px 16px;
+      color: #ffcf00; font-size: 0.9rem; font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .jeo-ov-team-badge {
+      background: rgba(255,207,0,0.2);
+      border: 1.5px solid rgba(255,207,0,0.5);
+      border-radius: 100px; padding: 6px 18px;
+      color: #ffcf00; font-size: 0.88rem; font-weight: 800;
+      margin-bottom: 22px; letter-spacing: 0.3px;
+    }
+    .jeo-scoreboard {
+      display: flex; gap: 10px; margin-bottom: 14px; width: 100%;
+    }
+    .jeo-score-item {
+      flex: 1; background: rgba(255,207,0,0.1);
+      border: 1.5px solid rgba(255,207,0,0.3);
+      border-radius: 12px; padding: 10px 8px; text-align: center;
+    }
+    .jeo-score-team {
+      color: rgba(255,207,0,0.8); font-size: 0.65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;
+    }
+    .jeo-score-pts {
+      color: #ffcf00; font-size: 1.6rem; font-weight: 900; line-height: 1.1;
+    }
+    /* Board (flexbox) */
+    .jeo-board {
+      display: flex; flex-direction: column;
+      width: 100%; gap: 5px;
+    }
+    .jeo-board-header {
+      display: flex; gap: 5px;
+    }
+    .jeo-board-row {
+      display: flex; gap: 5px;
+    }
+    .jeo-cat-header {
+      flex: 1; background: #05348b;
+      color: #ffcf00;
+      font-weight: 800; font-size: 0.55rem;
+      text-align: center; padding: 9px 4px;
+      text-transform: uppercase; letter-spacing: 0.4px;
+      line-height: 1.2; border-radius: 6px;
+    }
+    .jeo-tile {
+      flex: 1; background: #0a3db5;
+      color: #ffcf00;
+      font-size: 1.05rem; font-weight: 900;
+      text-align: center; padding: 0 2px;
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+      border-radius: 6px;
+      min-height: 46px; display: flex; align-items: center; justify-content: center;
+    }
+    .jeo-tile:active { background: #1a5cd8; }
+    .jeo-tile.jeo-used {
+      background: #021030;
+      color: transparent;
+      cursor: default;
+      pointer-events: none;
+    }
+    .jeo-progress {
+      text-align: center; color: rgba(255,255,255,0.45);
+      font-size: 0.75rem; margin-top: 12px;
+    }
+    /* Jeopardy team setup modal */
+    #jeo-team-modal {
+      display: none; position: fixed; inset: 0;
+      background: #05348b; z-index: 360;
+      flex-direction: column; align-items: center;
+      padding: 36px 24px 28px; overflow-y: auto; gap: 0;
+    }
+    #jeo-team-modal.show { display: flex; }
+    .jeo-tm-title {
+      color: #ffcf00; font-size: 1.35rem; font-weight: 900;
+      margin-bottom: 22px; text-align: center;
+    }
+    .jeo-tm-teams {
+      display: flex; gap: 12px; width: 100%; margin-bottom: 22px;
+    }
+    .jeo-tm-team {
+      flex: 1; background: rgba(255,207,0,0.1);
+      border: 1.5px solid rgba(255,207,0,0.3);
+      border-radius: 12px; padding: 12px 8px; text-align: center;
+    }
+    .jeo-tm-team-name {
+      color: #ffcf00; font-weight: 800; font-size: 0.95rem; margin-bottom: 6px;
+    }
+    .jeo-tm-members {
+      color: rgba(255,255,255,0.65); font-size: 0.75rem; line-height: 1.4; min-height: 18px;
+    }
+    .jeo-tm-players {
+      width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px;
+    }
+    .jeo-tm-player {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px;
+    }
+    .jeo-tm-player-name {
+      flex: 1; color: #fff; font-weight: 700; font-size: 0.95rem;
+    }
+    .jeo-tm-btns { display: flex; gap: 8px; }
+    .jeo-tm-btn {
+      border: 1.5px solid rgba(255,207,0,0.4);
+      background: transparent; color: rgba(255,207,0,0.6);
+      border-radius: 8px; padding: 8px 14px;
+      font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.15s;
+    }
+    .jeo-tm-btn.jeo-tm-btn-active {
+      background: #ffcf00; color: #05348b; border-color: #ffcf00;
+    }
+    .jeo-btn-start-game {
+      background: #ffcf00; color: #05348b;
+      border: none; border-radius: 14px;
+      padding: 16px 0; font-size: 1.05rem; font-weight: 900;
+      cursor: pointer; width: 100%; max-width: 320px;
+    }
+    /* Jeopardy overlay (fullscreen question/answer) */
+    #jeo-overlay {
+      display: none; position: fixed; inset: 0;
+      background: #05348b; z-index: 350;
+      flex-direction: column; align-items: center; justify-content: center;
+      padding: 40px 28px; text-align: center;
+      gap: 0; overflow-y: auto;
+    }
+    #jeo-overlay.show { display: flex; }
+    .jeo-ov-cat {
+      color: rgba(255,207,0,0.65); font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 18px;
+    }
+    .jeo-ov-question {
+      color: #fff; font-size: 1.5rem; font-weight: 700;
+      line-height: 1.4; max-width: 340px; margin-bottom: 28px;
+    }
+    .jeo-ov-stakes {
+      color: #ffcf00; font-size: 3.2rem; font-weight: 900;
+      margin-bottom: 4px; line-height: 1;
+    }
+    .jeo-ov-stakes-label {
+      color: rgba(255,207,0,0.55); font-size: 0.75rem; margin-bottom: 36px;
+    }
+    .jeo-ov-answer {
+      color: #4dff99; font-size: 1.35rem; font-weight: 700;
+      max-width: 320px; margin-bottom: 28px; line-height: 1.35;
+    }
+    .jeo-ov-result {
+      font-size: 1.15rem; font-weight: 700;
+      max-width: 320px; margin-bottom: 24px; line-height: 1.4;
+    }
+    .jeo-verdict-label {
+      color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
+    }
+    .jeo-verdict-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px; width: 100%; max-width: 320px;
+    }
+    .jeo-verdict-team {
+      flex: 1; color: #fff; font-size: 0.95rem; font-weight: 700; text-align: left;
+    }
+    .jeo-btn {
+      border: none; border-radius: 14px;
+      padding: 15px 0; font-size: 1rem; font-weight: 800;
+      cursor: pointer; width: 100%; max-width: 320px; margin-bottom: 12px;
+    }
+    .jeo-btn-sm {
+      padding: 10px 14px; font-size: 0.82rem; width: auto; margin-bottom: 0; border-radius: 10px;
+    }
+    .jeo-btn-reveal { background: #ffcf00; color: #05348b; }
+    .jeo-btn-correct { background: #00c44a; color: #fff; }
+    .jeo-btn-wrong   { background: #cc2200; color: #fff; }
+    .jeo-btn-close   { background: rgba(255,255,255,0.12); color: #fff; font-size: 0.9rem; }
+    .jeo-gameover {
+      text-align: center; padding: 40px 20px;
+    }
 
     /* ── Screen 4: Gassed ── */
     #screen-waterfall { gap: 14px; }
@@ -2161,34 +2426,9 @@
     <div class="gassed-logo">Gassed</div>
     <div class="screen-subtitle" id="home-players-subtitle"></div>
 
-    <div class="game-grid">
-      <div class="game-card ring" onclick="startGame('ring')">
-        <div class="game-card-icon">🔥</div>
-        <div class="game-card-title" data-t="games.ring">Ring of Fire</div>
-      </div>
-      <div class="game-card water" onclick="startGame('waterfall')">
-        <div class="game-card-icon">🙈</div>
-        <div class="game-card-title" data-t="games.waterfall">Jeg har aldri</div>
-      </div>
-      <div class="game-card tod" onclick="startGame('tod')">
-        <div class="game-card-icon">😏</div>
-        <div class="game-card-title" data-t="games.tod">Truth or Dare</div>
-      </div>
-      <div class="game-card trivia" onclick="startGame('trivia')">
-        <div class="game-card-icon">🧠</div>
-        <div class="game-card-title" data-t="games.trivia">Trivia Quiz</div>
-      </div>
-      <div class="game-card horse" onclick="startGame('horse')">
-        <div class="game-card-icon">🐎</div>
-        <div class="game-card-title" data-t="games.horse">Veddeløpet</div>
-      </div>
-      <div class="game-card wheel" onclick="startGame('wheel')">
-        <div class="game-card-icon">🎡</div>
-        <div class="game-card-title" data-t="games.wheel">Lykkehjulet</div>
-      </div>
-    </div>
+    <button class="gassed-home-start" onclick="startGame('gassed')">🍺 Start spillet</button>
 
-    <div class="edit-players-link" onclick="openSettings()" data-t="home.editPlayers">Edit Players</div>
+    <div class="edit-players-link" onclick="openSettings()" data-t="home.editPlayers">Endre spillere</div>
 
     <button id="session-share-btn-home" class="session-share-btn session-share-btn--small" onclick="sessionCreate()">🔗 Lag sesjon</button>
   </div>
@@ -2233,6 +2473,30 @@
     <h2 data-t="ring.gameOver">GAME OVER</h2>
     <p id="ring-overlay-msg" data-t="ring.gameOverMsg">All 4 Kings! Drink the King's Cup!</p>
     <button class="restart-btn" onclick="restartRing()" data-t="ring.playAgain">Play Again</button>
+  </div>
+
+  <!-- Jeopardy Team Setup Modal -->
+  <div id="jeo-team-modal"></div>
+
+  <!-- Jeopardy Question Overlay -->
+  <div id="jeo-overlay">
+    <div class="jeo-ov-cat" id="jeo-ov-cat"></div>
+    <div id="jeo-state-q">
+      <div class="jeo-ov-team-badge" id="jeo-ov-team"></div>
+      <div class="jeo-ov-question" id="jeo-ov-question"></div>
+      <div class="jeo-ov-stakes" id="jeo-ov-stakes"></div>
+      <div class="jeo-ov-stakes-label" id="jeo-ov-stakes-label"></div>
+      <button class="jeo-btn jeo-btn-reveal" onclick="jeoReveal()">Vis svar 👁</button>
+    </div>
+    <div id="jeo-state-a" style="display:none">
+      <div class="jeo-ov-question" id="jeo-ov-question-a"></div>
+      <div class="jeo-ov-answer" id="jeo-ov-answer"></div>
+      <div id="jeo-verdict-teams"></div>
+    </div>
+    <div id="jeo-state-result" style="display:none">
+      <div class="jeo-ov-result" id="jeo-ov-result"></div>
+      <button class="jeo-btn jeo-btn-close" onclick="jeoClose()">Lukk ✕</button>
+    </div>
   </div>
 
   <!-- Screen 4: Gassed (Waterfall + NHIE combined) -->
@@ -2389,6 +2653,40 @@
 
   </div>
 
+  <!-- Screen: Jeopardy -->
+  <div class="screen" id="screen-jeopardy">
+    <div class="jeo-header" data-t="jeopardy.title">🍺 Jeopardy</div>
+    <div id="jeo-board-wrap"></div>
+    <div class="jeo-progress" id="jeo-progress"></div>
+  </div>
+
+  <!-- Screen: Gassed (main combined game) -->
+  <div class="screen" id="screen-gassed">
+    <div class="gs-player-header">
+      <div class="gs-turn-label" id="gs-turn-label">sin tur</div>
+      <div class="gs-player-name" id="gs-player-name"></div>
+    </div>
+
+    <div class="gs-card" id="gs-card">
+      <div class="gs-type-badge" id="gs-type-badge"></div>
+      <div class="gs-main-icon" id="gs-main-icon"></div>
+      <div class="gs-nhie-prefix" id="gs-nhie-prefix" style="display:none"></div>
+      <div class="gs-main-text" id="gs-main-text"></div>
+      <div class="gs-sub-text" id="gs-sub-text"></div>
+      <div class="gs-mini-card" id="gs-mini-card" style="display:none">
+        <img id="gs-mini-card-img" src="" alt="">
+      </div>
+      <div class="gs-countdown-wrap" id="gs-countdown-wrap" style="display:none">
+        <div class="gs-countdown-ring">
+          <div class="gs-countdown-num" id="gs-countdown-num">10</div>
+        </div>
+        <div class="gs-countdown-label">sekunder</div>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="gassedNext()">Neste →</button>
+  </div>
+
 </div><!-- #app -->
 
 </div><!-- .phone-frame -->
@@ -2487,6 +2785,8 @@
     'screen-trivia':    '🧠',
     'screen-horse':     '🐎',
     'screen-wheel':     '🎡',
+    'screen-jeopardy':  '🍺',
+    'screen-gassed':    '🍺',
   };
 
   let active = null;
@@ -2578,7 +2878,8 @@ const T = {
       tod: 'Truth or Dare',
       horse: 'Darby Race',
       trivia: 'Trivia Quiz',
-      wheel: 'Wheel of Fortune'
+      wheel: 'Wheel of Fortune',
+      jeopardy: 'Jeopardy',
     },
     ring: {
       title: '🔥 Ring of Fire',
@@ -2643,6 +2944,18 @@ const T = {
       catFilm: 'Movies',
     },
     wheel: { title: '🎡 Wheel of Fortune', spinBtn: 'SPIN!' },
+    jeopardy: {
+      title: '🍺 Jeopardy',
+      progress: 'questions used',
+      stakesLabel: 'drinks at stake',
+      revealBtn: 'Reveal answer 👁',
+      correctBtn: '✅ Correct',
+      wrongBtn: '❌ Wrong',
+      correctMsg: '🎉 Correct! Give out {d} drink(s) to anyone!',
+      wrongMsg: '😅 Wrong! The answer was: {a}. Drink {d}!',
+      gameOver: 'Game Over!',
+      playAgain: '↩ Play again',
+    },
     hcr: { label: 'The hurdle card is revealed!' },
     cem: { title: 'Quit the game?', sub: 'All game progress will be lost.', continue: 'Keep playing', quit: 'Quit' },
     gim: { start: 'Start the game' },
@@ -2666,7 +2979,8 @@ const T = {
       tod: 'Nøtt eller Sannhet',
       horse: 'Veddeløpet',
       trivia: 'Trivia Quiz',
-      wheel: 'Lykkehjulet'
+      wheel: 'Lykkehjulet',
+      jeopardy: 'Jeopardy',
     },
     ring: {
       title: '🔥 Ring of Fire',
@@ -2731,6 +3045,18 @@ const T = {
       catFilm: 'Film',
     },
     wheel: { title: '🎡 Lykkehjulet', spinBtn: 'SNURR!' },
+    jeopardy: {
+      title: '🍺 Jeopardy',
+      progress: 'spørsmål brukt',
+      stakesLabel: 'drikker på spill',
+      revealBtn: 'Vis svar 👁',
+      correctBtn: '✅ Riktig',
+      wrongBtn: '❌ Feil',
+      correctMsg: '🎉 Riktig! Del ut {d} drikk til hvem du vil!',
+      wrongMsg: '😅 Feil! Svaret var: {a}. Drikk {d}!',
+      gameOver: 'Spillet er ferdig!',
+      playAgain: '↩ Spill igjen',
+    },
     hcr: { label: 'Hinderkortet avsløres!' },
     cem: { title: 'Avslutte spillet?', sub: 'All fremdrift i spillet går tapt.', continue: 'Fortsett spillet', quit: 'Avslutt' },
     gim: { start: 'Start spillet' },
@@ -3523,10 +3849,11 @@ function getInitial(name) {
 // SCREEN MANAGEMENT
 // ─────────────────────────────────────────────
 function showScreen(id) {
+  if (document.querySelector('.screen.active')?.id === id) return;
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
-  const isGame = ['screen-ring','screen-waterfall','screen-tod','screen-horse','screen-trivia','screen-wheel'].includes(id);
+  const isGame = ['screen-ring','screen-waterfall','screen-tod','screen-horse','screen-trivia','screen-wheel','screen-jeopardy'].includes(id);
   const isRing = id === 'screen-ring';
 
   document.getElementById('back-btn').classList.toggle('visible', isGame || id === 'screen-home');
@@ -3544,7 +3871,7 @@ function showScreen(id) {
 
 }
 
-const GAME_SCREENS = ['screen-ring','screen-waterfall','screen-tod','screen-horse','screen-trivia','screen-wheel'];
+const GAME_SCREENS = ['screen-ring','screen-waterfall','screen-tod','screen-horse','screen-trivia','screen-wheel','screen-jeopardy','screen-gassed'];
 
 function selectTodCategory(cat) {
   app.tod.category = cat;
@@ -3555,6 +3882,17 @@ function selectTodCategory(cat) {
 }
 
 function confirmGoHome() {
+  // Jeopardy question overlay open → close it, stay on board
+  if (document.getElementById('jeo-overlay')?.classList.contains('show')) {
+    jeoCloseOverlay();
+    return;
+  }
+  // Jeopardy team modal open → exit to home
+  if (document.getElementById('jeo-team-modal')?.classList.contains('show')) {
+    document.getElementById('jeo-team-modal').classList.remove('show');
+    goHome();
+    return;
+  }
   const inGame = GAME_SCREENS.some(id => document.getElementById(id)?.classList.contains('active'));
   if (inGame) {
     document.getElementById('confirm-exit-modal').style.display = 'flex';
@@ -4349,6 +4687,21 @@ function getGameInstructions() {
         { icon: '♾️', text: no ? 'Snurr så mange ganger dere vil.' : 'Spin as many times as you like.' },
       ],
     },
+    jeopardy: {
+      icon: '🍺',
+      title: app.lang === 'en' ? 'Jeopardy' : 'Jeopardy',
+      rules: app.lang === 'en' ? [
+        { icon: '🎯', text: 'Pick a category and point value' },
+        { icon: '✅', text: 'Answer correctly → give out that many drinks' },
+        { icon: '❌', text: 'Answer wrong → drink that many yourself' },
+        { icon: '🏆', text: 'Play through all 25 questions' },
+      ] : [
+        { icon: '🎯', text: 'Velg en kategori og poengverdi' },
+        { icon: '✅', text: 'Riktig svar → del ut så mange drikker' },
+        { icon: '❌', text: 'Feil svar → drikk selv' },
+        { icon: '🏆', text: 'Spill gjennom alle 25 spørsmål' },
+      ],
+    },
   };
 }
 
@@ -4383,6 +4736,8 @@ function launchGame(gameId) {
   else if (gameId === 'horse') { initHorse(); }
   else if (gameId === 'trivia') { initTrivia(); showScreen('screen-trivia'); }
   else if (gameId === 'wheel')  { showScreen('screen-wheel'); initWheel(); }
+  else if (gameId === 'jeopardy') { initJeopardy(); showScreen('screen-jeopardy'); }
+  else if (gameId === 'gassed')   { startGassed(); }
 }
 
 // ─────────────────────────────────────────────
@@ -5562,6 +5917,450 @@ document.addEventListener('click', function(e) {
 }, true);
 
 // ─────────────────────────────────────────────
+// JEOPARDY
+// ─────────────────────────────────────────────
+const JEO_Q = {
+  no: [
+    { name: '🍺 Drikke', qs: [
+      { q: 'I hvilken by ble Guinness-bryggeriet grunnlagt?', a: 'Dublin', d: 1 },
+      { q: 'Hva er tequila laget av?', a: 'Blå agave', d: 2 },
+      { q: 'Hvilken frukt er cointreau laget av?', a: 'Appelsin', d: 3 },
+      { q: 'Hva heter den japanske risalkoholen?', a: 'Sake', d: 4 },
+      { q: 'I hvilken region i Frankrike produseres cognac?', a: 'Cognac (Charente)', d: 5 },
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er hovedstaden i Australia?', a: 'Canberra', d: 1 },
+      { q: 'Hvilken elv er verdens lengste?', a: 'Nilen', d: 2 },
+      { q: 'I hvilket land ligger Machu Picchu?', a: 'Peru', d: 3 },
+      { q: 'Hva heter verdens minste land?', a: 'Vatikanstaten', d: 4 },
+      { q: 'Hvilken by ligger på to kontinenter?', a: 'Istanbul', d: 5 },
+    ]},
+    { name: '🎬 Film & TV', qs: [
+      { q: 'Hvem spilte Jack i Titanic (1997)?', a: 'Leonardo DiCaprio', d: 1 },
+      { q: 'Hvilken serie handler om Walter White?', a: 'Breaking Bad', d: 2 },
+      { q: 'Hvem regisserte Inception?', a: 'Christopher Nolan', d: 3 },
+      { q: 'Hvilken skuespiller spilte Joker i The Dark Knight?', a: 'Heath Ledger', d: 4 },
+      { q: 'Hva heter protagonisten i "The Witcher"-serien?', a: 'Geralt of Rivia', d: 5 },
+    ]},
+    { name: '🎵 Musikk', qs: [
+      { q: 'Hvem sang "Billie Jean"?', a: 'Michael Jackson', d: 1 },
+      { q: 'Hvilken norsk artist laget "Faded"?', a: 'Alan Walker', d: 2 },
+      { q: 'Hvilken gruppe sang "Bohemian Rhapsody"?', a: 'Queen', d: 3 },
+      { q: 'Hva heter Beyoncés ektemann?', a: 'Jay-Z', d: 4 },
+      { q: 'Hvilken by er kjent som "Music City" i USA?', a: 'Nashville', d: 5 },
+    ]},
+    { name: '🥳 Fest', qs: [
+      { q: 'Hva betyr "Skål" i drikkekontekst?', a: 'Cheers / Helse', d: 1 },
+      { q: 'I hvilken by startet Oktoberfest?', a: 'München', d: 2 },
+      { q: 'Hva kalles feiringen 17. mars i Irland?', a: 'St. Patrick\'s Day', d: 3 },
+      { q: 'Hva er den tradisjonelle brasilianske festdrinken?', a: 'Caipirinha', d: 4 },
+      { q: 'I hvilken by holdes det berømte Mardi Gras i USA?', a: 'New Orleans', d: 5 },
+    ]},
+  ],
+  en: [
+    { name: '🍺 Drinks', qs: [
+      { q: 'In which city was the Guinness brewery founded?', a: 'Dublin', d: 1 },
+      { q: 'What is tequila made from?', a: 'Blue agave', d: 2 },
+      { q: 'Which fruit is cointreau made from?', a: 'Orange', d: 3 },
+      { q: 'What is the Japanese rice alcohol called?', a: 'Sake', d: 4 },
+      { q: 'In which region of France is cognac produced?', a: 'Cognac (Charente)', d: 5 },
+    ]},
+    { name: '🌍 Geography', qs: [
+      { q: 'What is the capital of Australia?', a: 'Canberra', d: 1 },
+      { q: 'Which river is the longest in the world?', a: 'The Nile', d: 2 },
+      { q: 'In which country is Machu Picchu located?', a: 'Peru', d: 3 },
+      { q: 'What is the world\'s smallest country?', a: 'Vatican City', d: 4 },
+      { q: 'Which city lies on two continents?', a: 'Istanbul', d: 5 },
+    ]},
+    { name: '🎬 Film & TV', qs: [
+      { q: 'Who played Jack in Titanic (1997)?', a: 'Leonardo DiCaprio', d: 1 },
+      { q: 'Which series features Walter White?', a: 'Breaking Bad', d: 2 },
+      { q: 'Who directed Inception?', a: 'Christopher Nolan', d: 3 },
+      { q: 'Which actor played the Joker in The Dark Knight?', a: 'Heath Ledger', d: 4 },
+      { q: 'Who is the protagonist of "The Witcher" series?', a: 'Geralt of Rivia', d: 5 },
+    ]},
+    { name: '🎵 Music', qs: [
+      { q: 'Who sang "Billie Jean"?', a: 'Michael Jackson', d: 1 },
+      { q: 'Which Norwegian artist created "Faded"?', a: 'Alan Walker', d: 2 },
+      { q: 'Which band sang "Bohemian Rhapsody"?', a: 'Queen', d: 3 },
+      { q: 'What is Beyoncé\'s husband\'s name?', a: 'Jay-Z', d: 4 },
+      { q: 'Which city is known as "Music City" in the USA?', a: 'Nashville', d: 5 },
+    ]},
+    { name: '🥳 Party', qs: [
+      { q: 'What does "Skål" mean in Norwegian when drinking?', a: 'Cheers', d: 1 },
+      { q: 'In which city did Oktoberfest originate?', a: 'Munich', d: 2 },
+      { q: 'What is the March 17th celebration in Ireland called?', a: 'St. Patrick\'s Day', d: 3 },
+      { q: 'What is the traditional Brazilian party drink?', a: 'Caipirinha', d: 4 },
+      { q: 'In which US city is the famous Mardi Gras held?', a: 'New Orleans', d: 5 },
+    ]},
+  ],
+};
+
+app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0 };
+
+function initJeopardy() {
+  app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0 };
+  _jeoShowTeamSetup();
+}
+
+function _jeoData() { return JEO_Q[app.lang] || JEO_Q.no; }
+
+function _jeoShowTeamSetup() {
+  const isNo = app.lang !== 'en';
+  app.jeopardy.teams = [
+    { name: isNo ? 'Lag 1' : 'Team 1', players: [], score: 0 },
+    { name: isNo ? 'Lag 2' : 'Team 2', players: [], score: 0 },
+  ];
+  _jeoRenderTeamSetup();
+  document.getElementById('jeo-team-modal').classList.add('show');
+  S.schedulePush(50);
+}
+
+function _jeoRenderTeamSetup() {
+  const modal = document.getElementById('jeo-team-modal');
+  if (!modal) return;
+  const isNo = app.lang !== 'en';
+  const players = app.players;
+  const teams = app.jeopardy.teams;
+  let html = `<div class="jeo-tm-title">👥 ${isNo ? 'Velg lag' : 'Choose teams'}</div>`;
+  html += `<div class="jeo-tm-teams">`;
+  teams.forEach((t, ti) => {
+    const memberNames = t.players.join(', ') || (isNo ? '(ingen)' : '(none)');
+    html += `<div class="jeo-tm-team"><div class="jeo-tm-team-name">${t.name}</div><div class="jeo-tm-members">${memberNames}</div></div>`;
+  });
+  html += `</div><div class="jeo-tm-players">`;
+  players.forEach((p, pi) => {
+    const assignedTeam = teams.findIndex(t => t.players.includes(p));
+    html += `<div class="jeo-tm-player"><span class="jeo-tm-player-name">${p}</span><div class="jeo-tm-btns">`;
+    teams.forEach((t, ti) => {
+      const active = assignedTeam === ti ? ' jeo-tm-btn-active' : '';
+      html += `<button class="jeo-tm-btn${active}" onclick="jeoAssignTeam(${pi},${ti})">${t.name}</button>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div><button class="jeo-btn-start-game" onclick="jeoStartGame()">🎮 ${isNo ? 'Start spillet!' : 'Start game!'}</button>`;
+  modal.innerHTML = html;
+}
+
+function jeoAssignTeam(pi, ti) {
+  const p = app.players[pi];
+  app.jeopardy.teams.forEach(t => { t.players = t.players.filter(x => x !== p); });
+  app.jeopardy.teams[ti].players.push(p);
+  _jeoRenderTeamSetup();
+  S.schedulePush(50);
+}
+
+function jeoStartGame() {
+  app.jeopardy.teamsSet = true;
+  document.getElementById('jeo-team-modal').classList.remove('show');
+  _jeoRenderBoard();
+  S.schedulePush(50);
+}
+
+function _jeoRenderBoard() {
+  const data = _jeoData();
+  const total = data[0].qs.length * data.length;
+  const wrap = document.getElementById('jeo-board-wrap');
+  if (!wrap) return;
+  const teams = app.jeopardy.teams || [];
+  const ct = app.jeopardy.currentTeam ?? 0;
+  const isNo = app.lang !== 'en';
+  let html = '';
+  // Scoreboard
+  if (teams.length) {
+    html += '<div class="jeo-scoreboard">';
+    teams.forEach((t, ti) => {
+      const active = ti === ct ? ' style="border-color:#ffcf00;background:rgba(255,207,0,0.2)"' : '';
+      html += `<div class="jeo-score-item"${active}><div class="jeo-score-team">${t.name}</div><div class="jeo-score-pts">$${t.score}</div></div>`;
+    });
+    html += '</div>';
+  }
+  // Turn banner
+  if (teams[ct]) {
+    html += `<div class="jeo-turn-banner">🎯 ${isNo ? `${teams[ct].name} sin tur` : `${teams[ct].name}'s turn`}</div>`;
+  }
+  // Board header
+  html += '<div class="jeo-board"><div class="jeo-board-header">';
+  data.forEach(c => { html += `<div class="jeo-cat-header">${c.name}</div>`; });
+  html += '</div>';
+  // Rows
+  for (let qi = 0; qi < data[0].qs.length; qi++) {
+    const pts = (qi + 1) * 100;
+    html += '<div class="jeo-board-row">';
+    data.forEach((cat, ci) => {
+      const key = ci + '-' + qi;
+      const used = app.jeopardy.used.includes(key);
+      html += used
+        ? `<div class="jeo-tile jeo-used"></div>`
+        : `<div class="jeo-tile" onclick="jeoOpen(${ci},${qi})">$${pts}</div>`;
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+  wrap.innerHTML = html;
+  const prog = document.getElementById('jeo-progress');
+  if (prog) prog.textContent = app.jeopardy.done + ' / ' + total + ' ' + (app.lang === 'en' ? 'questions used' : 'spørsmål brukt');
+}
+
+function jeoOpen(ci, qi) {
+  const data = _jeoData();
+  const cat = data[ci]; const q = cat.qs[qi];
+  app.jeopardy.current = { ci, qi };
+  const $ = id => document.getElementById(id);
+  const pts = (qi + 1) * 100;
+  const ct = app.jeopardy.currentTeam ?? 0;
+  const currentTeamName = (app.jeopardy.teams || [])[ct]?.name ?? '';
+  $('jeo-ov-cat').textContent = cat.name;
+  const teamEl = $('jeo-ov-team');
+  if (teamEl) teamEl.textContent = app.lang === 'en' ? `${currentTeamName}'s turn` : `${currentTeamName} svarer`;
+  $('jeo-ov-question').textContent = q.q;
+  $('jeo-ov-stakes').textContent = '$' + pts;
+  $('jeo-ov-stakes-label').textContent = app.lang === 'en' ? 'points' : 'poeng';
+  $('jeo-ov-question-a').textContent = q.q;
+  $('jeo-ov-answer').textContent = q.a;
+  $('jeo-state-q').style.display = '';
+  $('jeo-state-a').style.display = 'none';
+  $('jeo-state-result').style.display = 'none';
+  $('jeo-overlay').classList.add('show');
+  S.schedulePush(50);
+}
+
+function jeoReveal() {
+  const { qi } = app.jeopardy.current;
+  const pts = (qi + 1) * 100;
+  const teams = app.jeopardy.teams || [];
+  const ct = app.jeopardy.currentTeam ?? 0;
+  const team = teams[ct];
+  const isNo = app.lang !== 'en';
+  document.getElementById('jeo-state-q').style.display = 'none';
+  document.getElementById('jeo-state-a').style.display = '';
+  document.getElementById('jeo-state-result').style.display = 'none';
+  const verdictDiv = document.getElementById('jeo-verdict-teams');
+  if (verdictDiv && team) {
+    verdictDiv.innerHTML =
+      `<div class="jeo-verdict-row">` +
+      `<button class="jeo-btn jeo-btn-correct jeo-btn-sm" onclick="jeoMark(${ct},true)">✅ Riktig (+$${pts})</button>` +
+      `<button class="jeo-btn jeo-btn-wrong jeo-btn-sm" onclick="jeoMark(${ct},false)">❌ Feil (-$${pts})</button>` +
+      `</div>`;
+  }
+  S.schedulePush(50);
+}
+
+function jeoMark(teamIdx, correct) {
+  const { ci, qi } = app.jeopardy.current;
+  const pts = (qi + 1) * 100;
+  const teams = app.jeopardy.teams;
+  const team = teams[teamIdx];
+  const isNo = app.lang !== 'en';
+  if (correct) {
+    team.score += pts;
+  } else {
+    team.score -= pts;
+  }
+  app.jeopardy.used.push(ci + '-' + qi);
+  app.jeopardy.done++;
+  app.jeopardy.currentTeam = (teamIdx + 1) % teams.length;
+  const resultEl = document.getElementById('jeo-ov-result');
+  if (correct) {
+    resultEl.style.cssText = 'color:#4dff99';
+    resultEl.textContent = isNo
+      ? `🎉 Riktig! ${team.name} får +$${pts}! (Totalt: $${team.score})`
+      : `🎉 Correct! ${team.name} gets +$${pts}! (Total: $${team.score})`;
+  } else {
+    const q = _jeoData()[ci].qs[qi];
+    resultEl.style.cssText = 'color:#ff6644';
+    resultEl.textContent = isNo
+      ? `😅 Feil! Svar: ${q.a}. ${team.name} mister $${pts}. (Totalt: $${team.score})`
+      : `😅 Wrong! Answer: ${q.a}. ${team.name} loses $${pts}. (Total: $${team.score})`;
+  }
+  document.getElementById('jeo-state-q').style.display = 'none';
+  document.getElementById('jeo-state-a').style.display = 'none';
+  document.getElementById('jeo-state-result').style.display = '';
+  _jeoRenderBoard();
+  S.schedulePush(50);
+}
+
+function jeoCloseOverlay() {
+  document.getElementById('jeo-overlay').classList.remove('show');
+  app.jeopardy.current = null;
+  S.schedulePush(50);
+}
+
+function jeoClose() {
+  document.getElementById('jeo-overlay').classList.remove('show');
+  app.jeopardy.current = null;
+  const data = _jeoData();
+  const total = data[0].qs.length * data.length;
+  if (app.jeopardy.done >= total) {
+    const isNo = app.lang !== 'en';
+    const teams = app.jeopardy.teams || [];
+    const sorted = [...teams].sort((a, b) => b.score - a.score);
+    let scoreHtml = sorted.map(t =>
+      `<div style="color:#ffcf00;font-size:1.1rem;font-weight:800;margin-bottom:6px">${t.name}: $${t.score}</div>`
+    ).join('');
+    const winner = sorted[0];
+    document.getElementById('jeo-board-wrap').innerHTML =
+      `<div class="jeo-gameover"><div style="font-size:3rem;margin-bottom:16px">🏆</div>` +
+      `<div style="font-size:1.4rem;font-weight:800;color:#ffcf00;margin-bottom:18px">${isNo ? 'Spillet er over!' : 'Game Over!'}</div>` +
+      scoreHtml +
+      (winner ? `<div style="color:#fff;font-size:1rem;margin:14px 0 22px">${isNo ? `🥇 Vinner: ${winner.name}!` : `🥇 Winner: ${winner.name}!`}</div>` : '') +
+      `<button class="btn-secondary" onclick="initJeopardy();S.schedulePush(50);" style="margin-bottom:12px">${isNo ? '↩ Spill igjen' : '↩ Play again'}</button>` +
+      `<button class="btn-secondary" onclick="goHome()" style="opacity:0.6">${isNo ? '🏠 Hjem' : '🏠 Home'}</button></div>`;
+  }
+  S.schedulePush(50);
+}
+
+// ─────────────────────────────────────────────
+// GASSED — COMBINED GAME
+// ─────────────────────────────────────────────
+const MUSIC_CHALLENGES = {
+  no: [
+    { word: 'LOVE',  prompt: 'Syng en sang med ordet LOVE' },
+    { word: 'SWEET', prompt: 'Syng en sang med ordet SWEET' },
+    { word: 'WORLD', prompt: 'Syng en sang med ordet WORLD' },
+  ],
+  en: [
+    { word: 'LOVE',  prompt: 'Sing a song with the word LOVE' },
+    { word: 'SWEET', prompt: 'Sing a song with the word SWEET' },
+    { word: 'WORLD', prompt: 'Sing a song with the word WORLD' },
+  ],
+};
+
+app.gassed = { lastPlayer: -1, nhieUsed: new Set(), musicOrder: [], musicIdx: 0, deck: [], countdownTimer: null };
+
+function startGassed() {
+  if (app.gassed.countdownTimer) { clearInterval(app.gassed.countdownTimer); app.gassed.countdownTimer = null; }
+  app.gassed = {
+    lastPlayer: -1,
+    nhieUsed: new Set(),
+    musicOrder: shuffle([0, 1, 2]),
+    musicIdx: 0,
+    deck: shuffle(buildDeck()),
+    countdownTimer: null,
+  };
+  gassedTurn();
+  showScreen('screen-gassed');
+}
+
+function gassedTurn() {
+  const g = app.gassed;
+  const isNo = app.lang !== 'en';
+  const $ = id => document.getElementById(id);
+
+  if (g.countdownTimer) { clearInterval(g.countdownTimer); g.countdownTimer = null; }
+
+  // Pick player (not same as last)
+  const players = app.players;
+  let pi;
+  if (players.length <= 1) {
+    pi = 0;
+  } else {
+    const candidates = players.map((_, i) => i).filter(i => i !== g.lastPlayer);
+    pi = candidates[Math.floor(Math.random() * candidates.length)];
+  }
+  g.lastPlayer = pi;
+  const playerName = players[pi];
+
+  $('gs-player-name').textContent = playerName;
+  $('gs-turn-label').textContent = isNo ? 'sin tur' : 'your turn';
+
+  // Reset card areas
+  $('gs-countdown-wrap').style.display = 'none';
+  $('gs-mini-card').style.display = 'none';
+  $('gs-nhie-prefix').style.display = 'none';
+  $('gs-countdown-wrap').className = 'gs-countdown-wrap';
+
+  // Pick activity: 0=ring, 1=wheel, 2=nhie, 3=music
+  const type = Math.floor(Math.random() * 4);
+
+  if (type === 0) {
+    // ── Ring of Fire card ──
+    if (g.deck.length === 0) g.deck = shuffle(buildDeck());
+    const card = g.deck.pop();
+    const rules = getRules();
+    const rule = rules[card.rank];
+    const rankName = CARD_RANK_NAME[card.rank];
+    const suitName = CARD_SUIT_NAME[card.suit.symbol];
+    const rankNo = CARD_RANK_NO[card.rank] || card.rank;
+    const suitNo = CARD_SUIT_NO[card.suit.symbol] || card.suit.symbol;
+    $('gs-type-badge').textContent = '🔥 Ring of Fire';
+    $('gs-type-badge').className = 'gs-type-badge gs-type-ring';
+    $('gs-main-icon').textContent = card.suit.symbol;
+    $('gs-main-text').textContent = suitNo + ' ' + rankNo + ' — ' + rule.name;
+    $('gs-sub-text').textContent = interpolate(rule.desc, playerName);
+    $('gs-mini-card').style.display = '';
+    $('gs-mini-card-img').src = 'cards/' + rankName + '_' + suitName + '.png';
+
+  } else if (type === 1) {
+    // ── Lykkehjulet ──
+    const ch = WHEEL_CHALLENGES[Math.floor(Math.random() * WHEEL_CHALLENGES.length)];
+    $('gs-type-badge').textContent = isNo ? '🎡 Lykkehjulet' : '🎡 Lucky Wheel';
+    $('gs-type-badge').className = 'gs-type-badge gs-type-wheel';
+    $('gs-main-icon').textContent = ch.emoji;
+    $('gs-main-text').textContent = ch.label;
+    $('gs-sub-text').textContent = ch.desc;
+
+  } else if (type === 2) {
+    // ── Jeg har aldri ──
+    const pool = CONTENT.nhie[app.lang];
+    const available = pool.map((_, i) => i).filter(i => !g.nhieUsed.has(i));
+    let idx;
+    if (available.length === 0) { g.nhieUsed = new Set(); idx = Math.floor(Math.random() * pool.length); }
+    else idx = available[Math.floor(Math.random() * available.length)];
+    g.nhieUsed.add(idx);
+    $('gs-type-badge').textContent = isNo ? '🙈 Jeg har aldri' : '🙈 Never Have I Ever';
+    $('gs-type-badge').className = 'gs-type-badge gs-type-nhie';
+    $('gs-main-icon').textContent = '🙈';
+    $('gs-nhie-prefix').textContent = isNo ? 'Jeg har aldri…' : 'Never have I ever…';
+    $('gs-nhie-prefix').style.display = '';
+    $('gs-main-text').textContent = interpolate(pool[idx], playerName);
+    $('gs-sub-text').textContent = isNo
+      ? '🍺 De som har gjort det — drikk!'
+      : '🍺 Those who have done it — drink!';
+
+  } else {
+    // ── Musikk-utfordring ──
+    const musicList = MUSIC_CHALLENGES[app.lang] || MUSIC_CHALLENGES.no;
+    const mi = g.musicOrder[g.musicIdx % g.musicOrder.length];
+    g.musicIdx++;
+    if (g.musicIdx >= g.musicOrder.length) {
+      g.musicOrder = shuffle([0, 1, 2]);
+      g.musicIdx = 0;
+    }
+    const mc = musicList[mi];
+    $('gs-type-badge').textContent = isNo ? '🎵 Musikk' : '🎵 Music';
+    $('gs-type-badge').className = 'gs-type-badge gs-type-music';
+    $('gs-main-icon').textContent = '🎵';
+    $('gs-main-text').textContent = mc.prompt;
+    $('gs-sub-text').textContent = isNo
+      ? 'Klarer du det ikke innen 10 sekunder = drikk 3 slurker!'
+      : 'Can\'t do it in 10 seconds = drink 3 sips!';
+    // Countdown
+    let count = 10;
+    $('gs-countdown-num').textContent = '10';
+    $('gs-countdown-wrap').style.display = '';
+    g.countdownTimer = setInterval(() => {
+      count--;
+      const numEl = $('gs-countdown-num');
+      if (!numEl) { clearInterval(g.countdownTimer); return; }
+      numEl.textContent = count <= 0 ? '💀' : count;
+      if (count <= 3) $('gs-countdown-wrap').className = 'gs-countdown-wrap gs-countdown-urgent';
+      if (count <= 0) {
+        clearInterval(g.countdownTimer);
+        g.countdownTimer = null;
+        $('gs-sub-text').textContent = isNo ? '🍺🍺🍺 Drikk 3 slurker!' : '🍺🍺🍺 Drink 3 sips!';
+      }
+    }, 1000);
+  }
+
+  S.schedulePush(50);
+}
+
+function gassedNext() {
+  gassedTurn();
+}
+
+// ─────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────
 renderChips();
@@ -5620,7 +6419,9 @@ const S = {
   /* Send nåværende tilstand til Firebase */
   push() {
     if (!this.isMaster || !this.roomRef) return;
-    try { this.roomRef.set(this._capture()); } catch(e) {}
+    let data;
+    try { data = this._capture(); } catch(e) { console.error('[S.push] capture error:', e); return; }
+    this.roomRef.set(data).catch(e => console.error('[S.push] Firebase feil:', e));
   },
 
   /* ── Opprett rom (master) ── */
@@ -5698,149 +6499,133 @@ const S = {
   /* ── Fang nåværende spilltilstand ── */
   _capture() {
     const screen = document.querySelector('.screen.active')?.id ?? 'screen-setup';
+    const screenEl = document.getElementById(screen);
+    const gimEl = document.getElementById('game-instructions-modal');
     const st = {
-      ts:      Date.now(),
+      ts:          Date.now(),
       screen,
-      players: [...(app.players ?? [])],
-      lang:    app.lang ?? 'no',
-    };
-
-    /* ── Globale overlays (uavhengig av skjerm) ── */
-    st.overlays = {
-      gim: {
-        show:      document.getElementById('game-instructions-modal')?.style.display !== 'none',
-        icon:      document.getElementById('gim-icon')?.textContent ?? '',
-        title:     document.getElementById('gim-title')?.textContent ?? '',
-        rulesHtml: document.getElementById('gim-rules')?.innerHTML ?? '',
+      players:     [...(app.players ?? [])],
+      lang:        app.lang ?? 'no',
+      screenHtml:  screenEl?.innerHTML ?? '',
+      canvasAngles: {
+        outerAngle: app.wheel?.outerAngle ?? 0,
+        innerAngle:  app.wheel?.innerAngle  ?? 0,
+        todAngle:    app.tod?.wheelAngle    ?? 0,
       },
-      todCat: {
-        show: document.getElementById('tod-category-modal')?.style.display !== 'none',
+      catReveal: app.trivia?.catRevealTs
+        ? { cat: app.trivia.category, ts: app.trivia.catRevealTs }
+        : null,
+      overlays: {
+        gim: {
+          show:      gimEl ? gimEl.style.display !== 'none' : false,
+          icon:      document.getElementById('gim-icon')?.textContent     ?? '',
+          title:     document.getElementById('gim-title')?.textContent    ?? '',
+          rulesHtml: document.getElementById('gim-rules')?.innerHTML      ?? '',
+        },
+        todCat: {
+          show: document.getElementById('tod-category-modal')?.style.display !== 'none',
+        },
+        ringOver: {
+          show: document.getElementById('ring-overlay')?.classList.contains('show') ?? false,
+          msg:  document.getElementById('ring-overlay-msg')?.textContent ?? '',
+        },
+        triviaCat: (function() {
+          const m = document.getElementById('trivia-cat-modal');
+          if (!m) return { show: false };
+          const sel = m.querySelector('.tcat-selected')?.dataset?.cat ?? '';
+          return {
+            show:   m.style.display !== 'none',
+            player: document.getElementById('tcat-player-name')?.textContent ?? '',
+            sel,
+          };
+        })(),
+        jeoOver: (function() {
+          const el = document.getElementById('jeo-overlay');
+          if (!el) return { show: false };
+          return {
+            show: el.classList.contains('show'),
+            html: el.innerHTML,
+          };
+        })(),
+        jeoTeam: (function() {
+          const el = document.getElementById('jeo-team-modal');
+          if (!el) return { show: false };
+          return {
+            show: el.classList.contains('show'),
+            html: el.innerHTML,
+          };
+        })(),
       },
     };
-
-    switch (screen) {
-
-      case 'screen-ring': {
-        const fl = app.ring.flipped ?? false;
-        const pc = app.ring.pendingCard;
-        // Bruk relativ URL fra kortdata (ikke card-img.src som kan være file://)
-        let imgSrc = '';
-        if (fl && pc) {
-          const rn = CARD_RANK_NAME[pc.rank] ?? pc.rank;
-          const sn = CARD_SUIT_NAME[pc.suit?.symbol] ?? pc.suit?.symbol ?? '';
-          imgSrc = 'cards/' + rn + '_' + sn + '.png';
-        }
-        st.ring = {
-          cardsLeft:  app.ring.deck?.length ?? 0,
-          kingsDrawn: app.ring.kingsDrawn ?? 0,
-          flipped:    fl,
-          imgSrc,
-          badge:      fl ? (document.getElementById('rule-badge')?.textContent ?? '') : '',
-          gameOver:   document.getElementById('ring-overlay')?.classList.contains('show') ?? false,
-        };
-        break;
-      }
-
-      case 'screen-waterfall': {
-        st.nhie = {
-          text:      document.getElementById('wf-challenge-text')?.textContent ?? '',
-          drinkShow: document.getElementById('wf-nhie-drink-btn')?.style.display !== 'none',
-        };
-        break;
-      }
-
-      case 'screen-tod': {
-        st.tod = {
-          wheelAngle:    app.tod?.wheelAngle ?? 0,
-          playerName:    document.getElementById('tod-player-name')?.textContent ?? '',
-          pickVisible:   document.getElementById('tod-pick-btn')?.style.display !== 'none',
-          choiceVisible: document.getElementById('tod-choice-btns')?.style.display !== 'none',
-          qVisible:      document.getElementById('tod-question-card')?.classList.contains('visible') ?? false,
-          qType:         document.getElementById('tod-question-type')?.textContent ?? '',
-          qText:         document.getElementById('tod-question-text')?.textContent ?? '',
-          qPlayer:       document.getElementById('tod-question-player')?.textContent ?? '',
-          qCat:          document.getElementById('tod-category-badge')?.textContent ?? '',
-          qCatVisible:   document.getElementById('tod-category-badge')?.style.display !== 'none',
-        };
-        break;
-      }
-
-      case 'screen-wheel': {
-        st.wheel = {
-          outerAngle:  app.wheel?.outerAngle ?? 0,
-          innerAngle:  app.wheel?.innerAngle ?? 0,
-          resultShow:  document.getElementById('wheel-result-card')?.style.display !== 'none',
-          resultDesc:  document.getElementById('wheel-result-desc')?.textContent ?? '',
-        };
-        break;
-      }
-
-      case 'screen-trivia': {
-        const answerBtns = [...document.querySelectorAll('#trivia-answers .trivia-answer-btn')];
-        st.trivia = {
-          done:        document.getElementById('trivia-done-screen')?.style.display !== 'none',
-          playerInd:   document.getElementById('trivia-player-indicator')?.textContent ?? '',
-          progress:    document.getElementById('trivia-progress')?.textContent ?? '',
-          qText:       document.getElementById('trivia-question-text')?.textContent ?? '',
-          answers:     answerBtns.map(b => ({ text: b.textContent.trim(), cls: b.className, dis: b.disabled })),
-          resultMsg:   document.getElementById('trivia-result-msg')?.textContent ?? '',
-          resultCls:   document.getElementById('trivia-result-msg')?.className ?? '',
-          nextText:    document.getElementById('trivia-next-btn')?.textContent ?? '',
-          nextShow:    document.getElementById('trivia-next-btn')?.style.display !== 'none',
-          catReveal:    app.trivia.catRevealTs ? { cat: app.trivia.category, ts: app.trivia.catRevealTs } : null,
-          catModalShow: document.getElementById('trivia-cat-modal')?.style.display !== 'none',
-          catModalPlayer: document.getElementById('tcat-player-name')?.textContent ?? '',
-        };
-        break;
-      }
-
-      case 'screen-horse': {
-        st.horse = {
-          phase:        app.horse?.phase ?? 'betting',
-          betListHtml:  document.getElementById('horse-bet-list')?.innerHTML ?? '',
-          startDis:     document.getElementById('horse-start-btn')?.disabled ?? true,
-          trackHtml:    document.getElementById('horse-track-wrap')?.innerHTML ?? '',
-          hurdlesHtml:  document.getElementById('horse-hurdles-above')?.innerHTML ?? '',
-          eventMsg:     document.getElementById('horse-event-msg')?.textContent ?? '',
-          eventVis:     document.getElementById('horse-event-msg')?.style.visibility ?? 'hidden',
-          deckText:     document.getElementById('horse-deck-badge')?.textContent ?? '',
-          deckShow:     document.getElementById('horse-deck-badge')?.style.display !== 'none',
-          flipCls:      document.getElementById('horse-flip-card')?.className ?? '',
-          cardSrc:      (function(){ const hc = app.horse?.lastCard; return hc ? 'cards/' + (CARD_RANK_NAME[hc.rank] ?? hc.rank) + '_' + (CARD_SUIT_NAME[hc.suit?.symbol] ?? '') + '.png' : ''; })(),
-          bigSuit:      document.getElementById('horse-big-suit')?.textContent ?? '',
-          modalShow:    document.getElementById('horse-hurdle-modal')?.style.display !== 'none',
-          hhmIcon:      document.getElementById('hhm-icon')?.textContent ?? '',
-          hhmTitle:     document.getElementById('hhm-title')?.textContent ?? '',
-          hhmDesc:      document.getElementById('hhm-desc')?.textContent ?? '',
-          winnerHtml:   document.getElementById('horse-winner-banner')?.innerHTML ?? '',
-          resultHtml:   document.getElementById('horse-result-panel')?.innerHTML ?? '',
-        };
-        break;
-      }
-    }
-
     return st;
   },
 
   /* ── Bruk mottatt tilstand (joiner) ── */
   _apply(st) {
     if (!this.isJoiner || !st) return;
-
     if (st.lang && st.lang !== app.lang) {
       app.lang = st.lang;
       if (typeof updateAllText === 'function') updateAllText();
     }
     if (st.players) app.players = [...st.players];
-    if (st.screen)  showScreen(st.screen);
+    if (st.screen) showScreen(st.screen);
 
+    // Sett skjermens fulle HTML direkte
+    const screenEl = st.screen ? document.getElementById(st.screen) : null;
+    if (screenEl && typeof st.screenHtml === 'string' && st.screenHtml.length > 10) {
+      screenEl.innerHTML = st.screenHtml;
+      // Normaliser absolutte bilde-URLer til relative
+      screenEl.querySelectorAll('img[src]').forEach(img => {
+        const src = img.getAttribute('src') || '';
+        if (!src || src.startsWith('cards/') || src.startsWith('Kortstokk/')) return;
+        const ci = src.indexOf('/cards/');
+        if (ci !== -1) { img.src = 'cards/' + src.slice(ci + 7); return; }
+        const ki = src.indexOf('/Kortstokk/');
+        if (ki !== -1) { img.src = 'Kortstokk/' + src.slice(ki + 11); return; }
+        // Fallback: http/https → bruk pathname; file:// → bruk filnavn
+        if (src.startsWith('http://') || src.startsWith('https://')) {
+          try { img.src = new URL(src).pathname.replace(/^\//, ''); } catch(e) {}
+        } else if (src.startsWith('file://')) {
+          img.src = src.slice(src.lastIndexOf('/') + 1);
+        }
+      });
+    }
+
+    // Tegn canvas-hjul på nytt (canvas-innhold er ikke i innerHTML)
+    if (st.canvasAngles) {
+      if (st.screen === 'screen-wheel') {
+        app.wheel = app.wheel || {};
+        app.wheel.outerAngle = st.canvasAngles.outerAngle ?? 0;
+        app.wheel.innerAngle  = st.canvasAngles.innerAngle  ?? 0;
+        const c = document.getElementById('wheel-canvas');
+        if (c && c.offsetWidth > 0) {
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const sz = Math.round(c.offsetWidth * dpr);
+          if (c.width !== sz) { c.width = sz; c.height = sz; }
+        }
+        if (typeof drawWheels === 'function') drawWheels();
+      }
+      if (st.screen === 'screen-tod') {
+        app.tod = app.tod || {};
+        app.tod.wheelAngle = st.canvasAngles.todAngle ?? 0;
+        const c = document.getElementById('tod-wheel-canvas');
+        if (c && c.offsetWidth > 0) {
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const sz = Math.round(c.offsetWidth * dpr);
+          if (c.width !== sz) { c.width = sz; c.height = sz; }
+        }
+        if (typeof drawTodWheel === 'function') drawTodWheel();
+      }
+    }
+
+    // Kategori-avsløring-animasjon (trivia) — timestamp-basert deduplisering
+    if (st.catReveal && st.catReveal.ts && st.catReveal.ts !== this._lastCatRevealTs) {
+      this._lastCatRevealTs = st.catReveal.ts;
+      if (typeof showCatReveal === 'function') showCatReveal(st.catReveal.cat);
+    }
+
+    // Overlays utenfor #app
     if (st.overlays) this._applyOverlays(st.overlays);
-    if (st.screen === 'screen-home' && typeof updateHomePlayers === 'function') updateHomePlayers();
-    if (st.screen === 'screen-ring'      && st.ring)   this._applyRing(st.ring);
-    if (st.screen === 'screen-waterfall' && st.nhie)   this._applyNhie(st.nhie);
-    if (st.screen === 'screen-tod'       && st.tod)    this._applyTod(st.tod);
-    if (st.screen === 'screen-wheel'     && st.wheel)  this._applyWheel(st.wheel);
-    if (st.screen === 'screen-trivia'    && st.trivia) this._applyTrivia(st.trivia);
-    if (st.screen === 'screen-horse'     && st.horse)  this._applyHorse(st.horse);
   },
 
   _applyOverlays(o) {
@@ -5855,153 +6640,39 @@ const S = {
       }
     }
     const todCat = $('tod-category-modal');
-    if (todCat && o.todCat) {
-      todCat.style.display = o.todCat.show ? 'flex' : 'none';
-    }
-  },
+    if (todCat && o.todCat) todCat.style.display = o.todCat.show ? 'flex' : 'none';
 
-  _applyRing(r) {
-    const $ = id => document.getElementById(id);
-    $('ring-cards-left').textContent  = r.cardsLeft  ?? '';
-    $('ring-kings-drawn').textContent = r.kingsDrawn ?? 0;
-    for (let i = 1; i <= 4; i++)
-      $('cup-' + i)?.classList.toggle('filled', i <= (r.kingsDrawn ?? 0));
-    const card = $('card');
-    if (r.flipped && r.imgSrc) {
-      $('card-img').src = r.imgSrc;
-      $('rule-badge').textContent = r.badge ?? '';
-      card?.classList.add('flipped');
-    } else {
-      card?.classList.remove('flipped');
-    }
-    $('ring-overlay')?.classList.toggle('show', r.gameOver ?? false);
-  },
-
-  _applyNhie(n) {
-    const el = document.getElementById('wf-challenge-text');
-    if (el) el.textContent = n.text ?? '';
-    const drink = document.getElementById('wf-nhie-drink-btn');
-    if (drink) drink.style.display = n.drinkShow ? '' : 'none';
-  },
-
-  _applyTod(t) {
-    const $ = id => document.getElementById(id);
-    app.tod = app.tod || {};
-    app.tod.wheelAngle = t.wheelAngle ?? 0;
-    const canvas = $('tod-wheel-canvas');
-    if (canvas && canvas.offsetWidth > 0) {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const sz  = Math.round(canvas.offsetWidth * dpr);
-      if (canvas.width !== sz) { canvas.width = sz; canvas.height = sz; }
-    }
-    if (typeof drawTodWheel === 'function') drawTodWheel();
-    $('tod-player-name').textContent    = t.playerName ?? '';
-    $('tod-pick-btn').style.display     = t.pickVisible   ? '' : 'none';
-    $('tod-choice-btns').style.display  = t.choiceVisible ? 'flex' : 'none';
-    $('tod-question-card')?.classList.toggle('visible', t.qVisible ?? false);
-    $('tod-question-type').textContent   = t.qType   ?? '';
-    $('tod-question-text').textContent   = t.qText   ?? '';
-    $('tod-question-player').textContent = t.qPlayer ?? '';
-    const cat = $('tod-category-badge');
-    if (cat) { cat.textContent = t.qCat ?? ''; cat.style.display = t.qCatVisible ? '' : 'none'; }
-  },
-
-  _applyWheel(w) {
-    app.wheel = app.wheel || {};
-    app.wheel.outerAngle = w.outerAngle ?? 0;
-    app.wheel.innerAngle = w.innerAngle ?? 0;
-    const canvas = document.getElementById('wheel-canvas');
-    if (canvas && canvas.offsetWidth > 0) {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const sz  = Math.round(canvas.offsetWidth * dpr);
-      if (canvas.width !== sz) { canvas.width = sz; canvas.height = sz; }
-    }
-    if (typeof drawWheels === 'function') drawWheels();
-    const res = document.getElementById('wheel-result-card');
-    if (res) {
-      res.style.display = w.resultShow ? '' : 'none';
-      const desc = document.getElementById('wheel-result-desc');
-      if (desc) desc.textContent = w.resultDesc ?? '';
-    }
-  },
-
-  _applyTrivia(t) {
-    const $ = id => document.getElementById(id);
-    // Kategori-modal
-    const modal = $('trivia-cat-modal');
-    if (modal) {
-      modal.style.display = t.catModalShow ? 'flex' : 'none';
-      if (t.catModalShow && t.catModalPlayer) {
-        $('tcat-player-name').textContent = t.catModalPlayer;
-        document.querySelectorAll('.tcat-opt').forEach(b => b.classList.remove('tcat-selected'));
+    const ringOver = $('ring-overlay');
+    if (ringOver && o.ringOver) {
+      ringOver.classList.toggle('show', o.ringOver.show);
+      if (o.ringOver.msg) {
+        const msg = $('ring-overlay-msg');
+        if (msg) msg.textContent = o.ringOver.msg;
       }
     }
-    if (t.catReveal && t.catReveal.ts && t.catReveal.ts !== this._lastCatRevealTs) {
-      this._lastCatRevealTs = t.catReveal.ts;
-      showCatReveal(t.catReveal.cat);
-    }
-    if (t.done) {
-      $('trivia-done-screen').style.display = '';
-      $('trivia-quiz-area').style.display   = 'none';
-      return;
-    }
-    $('trivia-done-screen').style.display = 'none';
-    $('trivia-quiz-area').style.display   = t.catModalShow ? 'none' : '';
-    $('trivia-player-indicator').textContent = t.playerInd ?? '';
-    $('trivia-progress').textContent         = t.progress  ?? '';
-    $('trivia-question-text').textContent    = t.qText     ?? '';
-    const answersEl = $('trivia-answers');
-    if (answersEl && t.answers) {
-      answersEl.innerHTML = '';
-      t.answers.forEach(a => {
-        const btn = document.createElement('button');
-        btn.className = a.cls;
-        btn.textContent = a.text;
-        btn.disabled = a.dis;
-        answersEl.appendChild(btn);
-      });
-    }
-    const msg = $('trivia-result-msg');
-    if (msg) { msg.textContent = t.resultMsg ?? ''; msg.className = t.resultCls ?? 'trivia-result-msg'; }
-    const nxt = $('trivia-next-btn');
-    if (nxt) { nxt.textContent = t.nextText ?? ''; nxt.style.display = t.nextShow ? '' : 'none'; }
-  },
 
-  _applyHorse(h) {
-    const $ = id => document.getElementById(id);
-    ['betting','racing','finished'].forEach(p =>
-      $('horse-phase-' + p)?.style?.setProperty('display', h.phase === p ? '' : 'none')
-    );
-    const betList = $('horse-bet-list');
-    if (betList) betList.innerHTML = h.betListHtml ?? '';
-    const startBtn = $('horse-start-btn');
-    if (startBtn) startBtn.disabled = h.startDis ?? true;
-    const track = $('horse-track-wrap');
-    if (track) track.innerHTML = h.trackHtml ?? '';
-    const hurdlesEl = $('horse-hurdles-above');
-    if (hurdlesEl) hurdlesEl.innerHTML = h.hurdlesHtml ?? '';
-    const evMsg = $('horse-event-msg');
-    if (evMsg) { evMsg.textContent = h.eventMsg ?? ''; evMsg.style.visibility = h.eventVis ?? 'hidden'; }
-    const deck = $('horse-deck-badge');
-    if (deck) { deck.textContent = h.deckText ?? ''; deck.style.display = h.deckShow ? '' : 'none'; }
-    $('horse-flip-card') && ($('horse-flip-card').className = h.flipCls ?? '');
-    const cImg = $('horse-card-img');
-    if (cImg && h.cardSrc) cImg.src = h.cardSrc;
-    const bSuit = $('horse-big-suit');
-    if (bSuit) bSuit.textContent = h.bigSuit ?? '';
-    const modal = $('horse-hurdle-modal');
-    if (modal) {
-      modal.style.display = h.modalShow ? 'flex' : 'none';
-      if (h.modalShow) {
-        $('hhm-icon').textContent  = h.hhmIcon  ?? '';
-        $('hhm-title').textContent = h.hhmTitle ?? '';
-        $('hhm-desc').textContent  = h.hhmDesc  ?? '';
+    const triviaCat = $('trivia-cat-modal');
+    if (triviaCat && o.triviaCat) {
+      triviaCat.style.display = o.triviaCat.show ? 'flex' : 'none';
+      if (o.triviaCat.show) {
+        const pn = $('tcat-player-name');
+        if (pn) pn.textContent = o.triviaCat.player ?? '';
+        triviaCat.querySelectorAll('.tcat-opt').forEach(b => {
+          b.classList.toggle('tcat-selected', b.dataset.cat === o.triviaCat.sel);
+        });
       }
     }
-    const winner = $('horse-winner-banner');
-    if (winner) winner.innerHTML = h.winnerHtml ?? '';
-    const result = $('horse-result-panel');
-    if (result) result.innerHTML = h.resultHtml ?? '';
+
+    const jeoOver = $('jeo-overlay');
+    if (jeoOver && o.jeoOver) {
+      if (o.jeoOver.show && typeof o.jeoOver.html === 'string') jeoOver.innerHTML = o.jeoOver.html;
+      jeoOver.classList.toggle('show', o.jeoOver.show);
+    }
+    const jeoTeam = $('jeo-team-modal');
+    if (jeoTeam && o.jeoTeam) {
+      if (o.jeoTeam.show && typeof o.jeoTeam.html === 'string') jeoTeam.innerHTML = o.jeoTeam.html;
+      jeoTeam.classList.toggle('show', o.jeoTeam.show);
+    }
   },
 
   _showBadge(code, isJoiner) {
@@ -6094,6 +6765,8 @@ function _wrap(name, delay) {
  'triviaAnswer','horseStartRace','horseConfirmAndStart',
  'dismissHorseModal','startGame','initHorse',
  'dismissInstructions','selectTodCategory',
+ 'jeoReveal','jeoMark','jeoAssignTeam','jeoStartGame','jeoClose','jeoCloseOverlay',
+ 'gassedNext',
 ].forEach(n => _wrap(n));
 
 // drawCard — push under animasjon så joiner ser kortvendings-animasjonen
