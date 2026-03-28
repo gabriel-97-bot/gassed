@@ -3970,6 +3970,7 @@ function confirmGoHome() {
 
 function goHome() {
   app.currentGame = null;
+  if (app.gassed?.countdownTimer) { clearInterval(app.gassed.countdownTimer); app.gassed.countdownTimer = null; }
   showScreen('screen-home');
   document.getElementById('back-btn').classList.remove('visible');
 }
