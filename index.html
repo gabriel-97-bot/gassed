@@ -692,10 +692,16 @@
       padding: 20px 0 16px; border-bottom: none;
     }
     .gs-turn-label {
-      color: rgba(255,255,255,0.45); font-size: 0.75rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;
+      font-family: 'Boogaloo', sans-serif;
+      color: rgba(239,159,39,0.6); font-size: 1rem; font-weight: 400;
+      text-transform: uppercase; letter-spacing: 4px; margin-bottom: 2px;
     }
-    .gs-player-name { color: #fff; font-size: 2rem; font-weight: 900; }
+    .gs-player-name {
+      font-family: 'Boogaloo', sans-serif;
+      color: #EF9F27; font-size: clamp(2rem, 9vw, 3.2rem); font-weight: 400;
+      text-transform: uppercase; letter-spacing: 4px; line-height: 1;
+      filter: drop-shadow(0 2px 12px rgba(239,159,39,0.55));
+    }
     .gs-card-divider {
       width: calc(100% + 44px); height: 1px;
       background: var(--border-hi); flex-shrink: 0;
