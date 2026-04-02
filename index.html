@@ -6821,7 +6821,6 @@ function startGassed() {
     turnCount: 0,
     lastSubType: -1,
   };
-  showScreen('screen-gassed');
   gassedTurn();
 }
 
@@ -6980,6 +6979,7 @@ function gassedTurn() {
     $('gs-countdown-wrap').style.display = '';
   }
 
+  showScreen('screen-gassed');
   S.schedulePush(50);
 }
 
