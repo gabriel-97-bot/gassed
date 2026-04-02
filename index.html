@@ -3921,6 +3921,22 @@ const SFX = (() => {
         }
       } catch(e) {}
     },
+    // Enkelt klikk — brukes i sanntid synkronisert med hjulvinkelen
+    wheelTick() {
+      try {
+        const ctx = _ctx || (_ctx = new (window.AudioContext || window.webkitAudioContext)());
+        const master = ctx.createGain(); master.gain.value = 0.18; master.connect(ctx.destination);
+        const osc = ctx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.value = 880 + Math.random() * 180;
+        const env = ctx.createGain();
+        env.gain.setValueAtTime(0.001, ctx.currentTime);
+        env.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.004);
+        env.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.026);
+        osc.connect(env); env.connect(master);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.032);
+      } catch(e) {}
+    },
     // Hjul stopper: fjæring thud
     wheelLand() {
       const { c, g } = out(0.32);
@@ -4883,7 +4899,6 @@ function spinWheels() {
   if (app.wheel.spinning) return;
   app.wheel.spinning = true;
   SFX.wheelSpin();
-  SFX.wheelClickLoop(12000);
   document.getElementById('wheel-result-card').style.display = 'none';
   document.getElementById('wheel-spin-btn').disabled = true;
 
@@ -4915,6 +4930,13 @@ function spinWheels() {
   var oDur = 12000;  // outer (challenge) stops last — maximum suspense
   var t0 = performance.now();
 
+  // Track segment crossings for real-time click sounds
+  var oTickSize = TWO_PI / 12;  // 12 virtual pegs on outer wheel
+  var iTickSize = TWO_PI / Math.max(n, 4) * 0.5;  // ticks based on inner segments
+  var oLastTick = Math.floor(oStart / oTickSize);
+  var iLastTick = Math.floor(iStart / iTickSize);
+  var iStopped = false;
+
   function frame(now) {
     var elapsed = now - t0;
     var ot = Math.min(elapsed / oDur, 1);
@@ -4922,6 +4944,17 @@ function spinWheels() {
 
     app.wheel.outerAngle = oStart + (oFinal - oStart) * easeOutQuint(ot);
     app.wheel.innerAngle = iStart + (iFinal - iStart) * easeOutQuint(it);
+
+    // Outer wheel clicks — always active until outer stops
+    var oCurTick = Math.floor(app.wheel.outerAngle / oTickSize);
+    if (oCurTick !== oLastTick) { SFX.wheelTick(); oLastTick = oCurTick; }
+
+    // Inner wheel clicks — only while it's still spinning
+    if (!iStopped) {
+      var iCurTick = Math.floor(app.wheel.innerAngle / iTickSize);
+      if (iCurTick !== iLastTick) { SFX.wheelTick(); iLastTick = iCurTick; }
+      if (it >= 1) iStopped = true;
+    }
 
     drawWheels();
 
