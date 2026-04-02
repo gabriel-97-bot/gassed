@@ -1740,6 +1740,23 @@
       transition: top 1.05s cubic-bezier(0.25, 0, 0.5, 1) !important;
       filter: drop-shadow(0 0 12px rgba(255,50,50,0.75)) drop-shadow(0 2px 8px rgba(0,0,0,0.8));
     }
+    .horse-track-wrap.race-finishing { overflow: visible; }
+    .horse-piece.race-winner {
+      transition: top 0.65s ease-in !important;
+      z-index: 20;
+      filter: drop-shadow(0 0 20px rgba(255,220,0,1)) drop-shadow(0 2px 8px rgba(0,0,0,0.8));
+    }
+    @keyframes horseFireworkFloat {
+      0%   { transform: translateY(0) scale(0.4) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-80px) scale(1.5) rotate(25deg); opacity: 0; }
+    }
+    .horse-firework-emoji {
+      position: absolute;
+      font-size: 1.8rem;
+      pointer-events: none;
+      z-index: 10;
+      animation: horseFireworkFloat var(--fw-dur, 0.9s) ease-out forwards;
+    }
 
     /* Hurdle marks — horizontal lines across the lane */
     .hurdle-mark {
@@ -5528,8 +5545,46 @@ function checkHorseWin() {
   const winner = activeSuits.find(s => app.horse.positions[s.key] >= HORSE_FINISH);
   if (winner) {
     app.horse.winner = winner.key;
-    SFX.raceWin();
-    setTimeout(() => showHorseResults(winner), 400);
+    animateHorseFinish(winner);
+  }
+}
+
+function animateHorseFinish(winner) {
+  SFX.raceWin();
+  const wrap  = document.getElementById('horse-track-wrap');
+  const piece = document.getElementById(`horse-piece-${winner.key}`);
+
+  // Allow horse to go above the finish line
+  if (wrap) wrap.classList.add('race-finishing');
+
+  // Animate horse crossing the finish line upward
+  if (piece) {
+    piece.classList.add('race-winner');
+    void piece.offsetHeight; // force reflow so transition fires
+    piece.style.top = '-60px';
+  }
+
+  // Spawn fireworks emojis across the track
+  spawnHorseFireworks(wrap);
+
+  // Show winner popup after animation
+  setTimeout(() => showHorseResults(winner), 1600);
+}
+
+function spawnHorseFireworks(container) {
+  if (!container) return;
+  const emojis = ['🎆','🎇','✨','🎊','🎉','⭐','🌟'];
+  for (let i = 0; i < 18; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'horse-firework-emoji';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = (4 + Math.random() * 90) + '%';
+      el.style.top  = (5 + Math.random() * 70) + '%';
+      el.style.setProperty('--fw-dur', (0.7 + Math.random() * 0.6) + 's');
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 1500);
+    }, i * 50);
   }
 }
 
