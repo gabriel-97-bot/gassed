@@ -701,9 +701,11 @@
       background: var(--border-hi); flex-shrink: 0;
     }
     .gs-type-badge { display: none; }
-    /* Hide player name for group challenges */
+    /* Hide player name + divider for pure group challenges */
     .gs-card--group .gs-player-header,
     .gs-card--group .gs-card-divider { display: none; }
+    /* Type-header cards: repurpose player header for type label, hide divider only */
+    .gs-card--type-header .gs-card-divider { display: none; }
     .gs-main-icon { display: none; }
     .gs-nhie-prefix {
       color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 700;
@@ -728,14 +730,34 @@
       gap: 4px; margin: 6px 0;
     }
     .gs-countdown-ring {
-      width: 88px; height: 88px;
-      border: 5px solid rgba(160,0,220,0.35); border-radius: 50%;
+      width: 96px; height: 96px;
+      border: 4px solid rgba(160,0,220,0.25); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(160,0,220,0.1); transition: all 0.4s;
+      background: conic-gradient(#d480ff 360deg, rgba(160,0,220,0.12) 360deg);
+      transition: background 0.85s linear;
+      position: relative;
     }
-    .gs-countdown-num { font-size: 2.6rem; font-weight: 900; color: #d480ff; line-height: 1; }
+    .gs-countdown-ring::after {
+      content: ''; position: absolute;
+      width: 7px; height: 7px; background: #d480ff;
+      border-radius: 50%; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    }
+    .gs-countdown-inner {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: #0d0f1e;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .gs-countdown-num { font-size: 2.4rem; font-weight: 900; color: #d480ff; line-height: 1; }
     .gs-countdown-label { color: rgba(255,255,255,0.4); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; }
-    .gs-countdown-urgent .gs-countdown-ring { border-color: rgba(239,43,45,0.55); background: rgba(239,43,45,0.12); }
+    .gs-countdown-start-btn {
+      background: rgba(160,0,220,0.15); border: 1px solid rgba(160,0,220,0.4);
+      border-radius: 12px; color: #d480ff;
+      font-size: 0.88rem; font-weight: 700; padding: 8px 20px;
+      cursor: pointer; margin-top: 2px;
+    }
+    .gs-countdown-urgent .gs-countdown-ring { border-color: rgba(239,43,45,0.4); }
+    .gs-countdown-urgent .gs-countdown-inner { }
     .gs-countdown-urgent .gs-countdown-num { color: #ff7070; }
 
     .game-grid {
@@ -2918,10 +2940,13 @@
         <img id="gs-mini-card-img" src="" alt="">
       </div>
       <div class="gs-countdown-wrap" id="gs-countdown-wrap" style="display:none">
-        <div class="gs-countdown-ring">
-          <div class="gs-countdown-num" id="gs-countdown-num">10</div>
+        <div class="gs-countdown-ring" id="gs-countdown-ring">
+          <div class="gs-countdown-inner">
+            <div class="gs-countdown-num" id="gs-countdown-num">10</div>
+          </div>
         </div>
-        <div class="gs-countdown-label">sekunder</div>
+        <div class="gs-countdown-label" id="gs-countdown-label">sekunder</div>
+        <button class="gs-countdown-start-btn" id="gs-countdown-start-btn" onclick="gassedStartCountdown()" style="display:none">▶ Start nedtelling</button>
       </div>
       <div style="flex:1"></div>
     </div>
@@ -3874,6 +3899,29 @@ const SFX = (() => {
       src.start();
     },
 
+    // Lykkehjul: klikkelyder som bremser ned over hele spinntiden
+    wheelClickLoop(durationMs) {
+      try {
+        const ctx = _ctx || (_ctx = new (window.AudioContext || window.webkitAudioContext)());
+        const master = ctx.createGain(); master.gain.value = 0.18; master.connect(ctx.destination);
+        const totalClicks = 55;
+        for (let i = 0; i < totalClicks; i++) {
+          // easeOutQuint maps uniform i to decelerated time
+          const t = 1 - Math.pow(1 - i / totalClicks, 5);
+          const delay = t * durationMs / 1000;
+          const osc = ctx.createOscillator();
+          osc.type = 'triangle';
+          osc.frequency.value = 900 + Math.random() * 150;
+          const env = ctx.createGain();
+          env.gain.setValueAtTime(0.001, ctx.currentTime + delay);
+          env.gain.linearRampToValueAtTime(1, ctx.currentTime + delay + 0.004);
+          env.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.028);
+          osc.connect(env); env.connect(master);
+          osc.start(ctx.currentTime + delay);
+          osc.stop(ctx.currentTime + delay + 0.035);
+        }
+      } catch(e) {}
+    },
     // Hjul stopper: fjæring thud
     wheelLand() {
       const { c, g } = out(0.32);
@@ -4836,6 +4884,7 @@ function spinWheels() {
   if (app.wheel.spinning) return;
   app.wheel.spinning = true;
   SFX.wheelSpin();
+  SFX.wheelClickLoop(12000);
   document.getElementById('wheel-result-card').style.display = 'none';
   document.getElementById('wheel-spin-btn').disabled = true;
 
@@ -4863,8 +4912,8 @@ function spinWheels() {
 
   var oStart = app.wheel.outerAngle;
   var iStart = app.wheel.innerAngle;
-  var iDur = 6000;   // inner (player) stops first
-  var oDur = 10000;  // outer (challenge) stops last — maximum suspense
+  var iDur = 8000;   // inner (player) stops first
+  var oDur = 12000;  // outer (challenge) stops last — maximum suspense
   var t0 = performance.now();
 
   function frame(now) {
@@ -6747,7 +6796,7 @@ const GASSED_TYPE_POOL = [
   4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 ];
 
-app.gassed = { lastPlayer: -1, nhieUsed: new Set(), borstUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0 };
+app.gassed = { lastPlayer: -1, nhieUsed: new Set(), borstUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0, lastSubType: -1 };
 
 function gassedShowIntro() {
   document.getElementById('gassed-intro').classList.add('show');
@@ -6771,6 +6820,7 @@ function startGassed() {
     deck: shuffle(buildDeck()),
     countdownTimer: null,
     turnCount: 0,
+    lastSubType: -1,
   };
   showScreen('screen-gassed');
   gassedTurn();
@@ -6803,14 +6853,19 @@ function gassedTurn() {
   $('gs-mini-card').style.display = 'none';
   $('gs-nhie-prefix').style.display = 'none';
   $('gs-countdown-wrap').className = 'gs-countdown-wrap';
-  $('gs-card').classList.remove('gs-card--group');
+  $('gs-card').classList.remove('gs-card--group', 'gs-card--type-header');
 
   // Pick activity from weighted pool: 0=ring, 1=wheel, 2=nhie, 3=music, 4=borst
   if (g.typeIdx >= g.typeOrder.length) {
     g.typeOrder = shuffle([...GASSED_TYPE_POOL]);
     g.typeIdx = 0;
   }
-  const type = g.typeOrder[g.typeIdx++];
+  let type = g.typeOrder[g.typeIdx++];
+  // Avoid the same sub-game appearing twice in a row (wheel-then-wheel looks like a bug)
+  if ((type === 0 || type === 1) && type === g.lastSubType && g.typeIdx < g.typeOrder.length) {
+    type = g.typeOrder[g.typeIdx++];
+  }
+  if (type === 0 || type === 1) g.lastSubType = type;
 
   if (type === 0) {
     // ── Ring of Fire — vis selve ring-skjermen ──
@@ -6848,19 +6903,17 @@ function gassedTurn() {
   }
 
   if (type === 2) {
-    // ── Jeg har aldri ── (group challenge — hide player name)
-    $('gs-card').classList.add('gs-card--group');
+    // ── Jeg har aldri ──
+    if (!(g.nhieUsed instanceof Set)) g.nhieUsed = new Set();
+    $('gs-card').classList.add('gs-card--type-header');
+    $('gs-turn-label').textContent = '';
+    $('gs-player-name').textContent = isNo ? 'Jeg har aldri' : 'Never Have I Ever';
     const pool = CONTENT.nhie[app.lang];
     const available = pool.map((_, i) => i).filter(i => !g.nhieUsed.has(i));
     let idx;
     if (available.length === 0) { g.nhieUsed = new Set(); idx = Math.floor(Math.random() * pool.length); }
     else idx = available[Math.floor(Math.random() * available.length)];
     g.nhieUsed.add(idx);
-    $('gs-type-badge').textContent = isNo ? '🙈 Jeg har aldri' : '🙈 Never Have I Ever';
-    $('gs-type-badge').className = 'gs-type-badge gs-type-nhie';
-    $('gs-main-icon').textContent = '🙈';
-    $('gs-nhie-prefix').textContent = isNo ? 'Jeg har aldri…' : 'Never have I ever…';
-    $('gs-nhie-prefix').style.display = '';
     $('gs-main-text').textContent = interpolate(pool[idx], playerName);
     $('gs-sub-text').textContent = isNo
       ? '🍺 De som har gjort det — drikk!'
@@ -6868,6 +6921,7 @@ function gassedTurn() {
 
   } else if (type === 4) {
     // ── Børst-utfordring ──
+    if (!(g.borstUsed instanceof Set)) g.borstUsed = new Set();
     const bpool = BORST_CHALLENGES[app.lang] || BORST_CHALLENGES.no;
     const bavail = bpool.map((_, i) => i).filter(i => !g.borstUsed.has(i));
     let bidx;
@@ -6875,31 +6929,26 @@ function gassedTurn() {
     else bidx = bavail[Math.floor(Math.random() * bavail.length)];
     g.borstUsed.add(bidx);
     const bc = bpool[bidx];
-    const typeLabels = {
-      dilemma:    isNo ? '🤔 Ville du heller'           : '🤔 Would you rather',
-      mostlikely: isNo ? '👆 Hvem ville mest sannsynlig' : '👆 Who is most likely',
-      category:   isNo ? '🗂 Kategori'                  : '🗂 Category',
-      challenge:  isNo ? '⚡ Utfordring'                : '⚡ Challenge',
-      drikkif:    isNo ? '🍺 Drikk hvis'                : '🍺 Drink if',
-      regel:      isNo ? '📜 Ny regel'                  : '📜 New rule',
-      gruppelek:  isNo ? '🎮 Gruppe-lek'                : '🎮 Group game',
-    };
-    const typeClasses = {
-      dilemma:'gs-type-dilemma', mostlikely:'gs-type-mostlikely',
-      category:'gs-type-category', challenge:'gs-type-challenge',
-      drikkif:'gs-type-nhie', regel:'gs-type-wheel', gruppelek:'gs-type-ring',
-    };
-    const typeIcons = { dilemma:'🤔', mostlikely:'👆', category:'🗂️', challenge:'⚡', drikkif:'🍺', regel:'📜', gruppelek:'🎮' };
-    const GROUP_BTYPES = new Set(['mostlikely', 'category', 'drikkif', 'regel', 'dilemma']);
-    if (GROUP_BTYPES.has(bc.type)) $('gs-card').classList.add('gs-card--group');
-    if (bc.type === 'dilemma') {
-      $('gs-nhie-prefix').textContent = isNo ? '👍 Tommel opp  /  👎 Tommel ned' : '👍 Thumbs up  /  👎 Thumbs down';
-      $('gs-nhie-prefix').style.display = '';
+    // Types shown with a prominent type label in the player-header slot
+    const TYPE_HEADER_BTYPES = { dilemma: true, category: true, regel: true };
+    // Types that hide the player header entirely
+    const GROUP_BTYPES = new Set(['mostlikely', 'drikkif', 'gruppelek']);
+    if (GROUP_BTYPES.has(bc.type)) {
+      $('gs-card').classList.add('gs-card--group');
+    } else if (TYPE_HEADER_BTYPES[bc.type]) {
+      $('gs-card').classList.add('gs-card--type-header');
+      $('gs-turn-label').textContent = '';
+      const typeHeaders = {
+        dilemma:  isNo ? '👍 Tommel opp  /  👎 Tommel ned' : '👍 Thumbs up  /  👎 Thumbs down',
+        category: isNo ? 'Kategori' : 'Category',
+        regel:    isNo ? 'Regel' : 'Rule',
+      };
+      $('gs-player-name').textContent = typeHeaders[bc.type];
     }
-    $('gs-type-badge').textContent = typeLabels[bc.type] || bc.type;
-    $('gs-type-badge').className = 'gs-type-badge ' + (typeClasses[bc.type] || 'gs-type-challenge');
-    $('gs-main-icon').textContent = typeIcons[bc.type] || '⚡';
-    $('gs-main-text').textContent = interpolate(bc.text, playerName).replace(/\[playerName\]/g, playerName || '');
+    // Strip "Kategorien er: " prefix from category card text
+    let cardText = interpolate(bc.text, playerName).replace(/\[playerName\]/g, playerName || '');
+    if (bc.type === 'category') cardText = cardText.replace(/^Kategorien er:\s*/i, '');
+    $('gs-main-text').textContent = cardText;
     $('gs-sub-text').textContent = bc.type === 'dilemma'
       ? (isNo ? '🍺 De i undertall drikker 2 slurker!' : '🍺 The minority drinks 2 sips!')
       : bc.sub;
@@ -6921,22 +6970,15 @@ function gassedTurn() {
     $('gs-sub-text').textContent = isNo
       ? 'Klarer du det ikke innen 10 sekunder = drikk 3 slurker!'
       : 'Can\'t do it in 10 seconds = drink 3 sips!';
-    // Countdown
-    let count = 10;
+    // Show countdown — player must press start
     $('gs-countdown-num').textContent = '10';
+    const ring = $('gs-countdown-ring');
+    if (ring) ring.style.background = 'conic-gradient(#d480ff 360deg, rgba(160,0,220,0.12) 360deg)';
+    const lbl = $('gs-countdown-label');
+    if (lbl) lbl.textContent = isNo ? 'Trykk for å starte' : 'Tap to start';
+    const startBtn = $('gs-countdown-start-btn');
+    if (startBtn) startBtn.style.display = '';
     $('gs-countdown-wrap').style.display = '';
-    g.countdownTimer = setInterval(() => {
-      count--;
-      const numEl = $('gs-countdown-num');
-      if (!numEl) { clearInterval(g.countdownTimer); return; }
-      numEl.textContent = count <= 0 ? '💀' : count;
-      if (count <= 3) $('gs-countdown-wrap').className = 'gs-countdown-wrap gs-countdown-urgent';
-      if (count <= 0) {
-        clearInterval(g.countdownTimer);
-        g.countdownTimer = null;
-        $('gs-sub-text').textContent = isNo ? '🍺🍺🍺 Drikk 3 slurker!' : '🍺🍺🍺 Drink 3 sips!';
-      }
-    }, 1000);
   }
 
   S.schedulePush(50);
@@ -6953,6 +6995,32 @@ function gassedReturnFromSub() {
   const ca = document.getElementById('card-area');
   if (ca) { ca.style.cursor = ''; ca.style.pointerEvents = ''; }
   gassedTurn(); // gassedTurn handles showScreen to avoid flashing stale card content
+}
+
+function gassedStartCountdown() {
+  const g = app.gassed;
+  const $ = id => document.getElementById(id);
+  const isNo = app.lang !== 'en';
+  const startBtn = $('gs-countdown-start-btn');
+  if (startBtn) startBtn.style.display = 'none';
+  const lbl = $('gs-countdown-label');
+  if (lbl) lbl.textContent = isNo ? 'sekunder' : 'seconds';
+  let count = 10;
+  const ring = $('gs-countdown-ring');
+  g.countdownTimer = setInterval(() => {
+    count--;
+    const numEl = $('gs-countdown-num');
+    if (!numEl) { clearInterval(g.countdownTimer); return; }
+    numEl.textContent = count <= 0 ? '💀' : count;
+    const arc = Math.max(0, count * 36);
+    if (ring) ring.style.background = `conic-gradient(#d480ff ${arc}deg, rgba(160,0,220,0.12) ${arc}deg)`;
+    if (count <= 3) $('gs-countdown-wrap').className = 'gs-countdown-wrap gs-countdown-urgent';
+    if (count <= 0) {
+      clearInterval(g.countdownTimer);
+      g.countdownTimer = null;
+      $('gs-sub-text').textContent = isNo ? '🍺🍺🍺 Drikk 3 slurker!' : '🍺🍺🍺 Drink 3 sips!';
+    }
+  }, 1000);
 }
 
 // ─────────────────────────────────────────────
