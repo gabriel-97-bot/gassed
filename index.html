@@ -366,6 +366,19 @@
       box-shadow: 0 4px 0 rgba(0,0,0,0.45), 0 8px 28px rgba(41,121,255,0.35);
       position: relative; overflow: hidden;
     }
+    #start-btn {
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 2rem; font-weight: 400; letter-spacing: 1px;
+      background: linear-gradient(135deg, var(--red), #c0192b);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.45), 0 8px 28px rgba(239,43,45,0.4);
+    }
+    #start-btn:hover {
+      background: linear-gradient(135deg, #ff3b3b, #e02030);
+      box-shadow: 0 6px 0 rgba(0,0,0,0.45), 0 14px 36px rgba(239,43,45,0.55);
+    }
+    #start-btn:active {
+      box-shadow: 0 1px 0 rgba(0,0,0,0.45), 0 4px 12px rgba(239,43,45,0.2);
+    }
     .btn-primary::after {
       content: ''; position: absolute; inset: 0; border-radius: inherit;
       background: linear-gradient(180deg,rgba(255,255,255,0.14) 0%,transparent 55%);
@@ -425,6 +438,38 @@
     /* ── Screen 1: Setup ── */
     #screen-setup { gap: 0; padding-top: 64px; }
 
+    .player-add-field {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px dashed rgba(255,255,255,0.22);
+      border-radius: 16px; padding: 0 14px;
+      height: 62px; cursor: text; margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+    .player-add-field:focus-within {
+      border-style: solid; border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.07);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.08);
+    }
+    .player-add-field .paf-icon {
+      font-size: 1.5rem; color: rgba(255,255,255,0.3);
+      transition: color 0.2s; flex-shrink: 0; line-height: 1;
+    }
+    .player-add-field:focus-within .paf-icon { color: rgba(255,255,255,0.8); }
+    .player-add-field input {
+      flex: 1; background: none; border: none; outline: none;
+      color: #fff; font-size: 1.1rem; font-weight: 600;
+    }
+    .player-add-field input::placeholder { color: rgba(255,255,255,0.35); font-weight: 500; }
+    .player-add-field .paf-btn {
+      width: 38px; height: 38px; border-radius: 11px; border: none;
+      background: var(--red); color: #fff; font-size: 1.4rem;
+      cursor: pointer; flex-shrink: 0;
+      opacity: 0; transform: scale(0.7);
+      transition: opacity 0.18s, transform 0.18s;
+    }
+    .player-add-field:focus-within .paf-btn { opacity: 1; transform: scale(1); }
+
     .setup-input-row { display: flex; gap: 10px; margin-bottom: 12px; }
 
     .setup-input-row input {
@@ -458,11 +503,11 @@
     .player-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; min-height: 42px; }
 
     .player-chip {
-      display: flex; align-items: center; gap: 6px;
-      background: rgba(239,43,45,0.14);
-      border: 1px solid rgba(239,43,45,0.35);
-      border-radius: 100px; padding: 7px 14px;
-      font-size: 0.88rem; color: var(--text); font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px; padding: 10px 18px;
+      font-size: 1.1rem; color: var(--text); font-weight: 700;
       animation: chipPop 0.32s cubic-bezier(0.34,1.56,0.64,1);
     }
     @keyframes chipPop {
@@ -481,9 +526,9 @@
     .setup-hint { font-size: 0.77rem; color: var(--dim); text-align: center; margin-bottom: 6px; }
 
     /* ── Screen 2: Home ── */
-    #screen-home { padding-top: 20px; justify-content: center; }
+    #screen-home { padding-top: 94px; justify-content: flex-start; }
     .home-game-grid {
-      width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;
+      width: 100%; flex: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 0;
     }
     .home-game-btn {
       background: var(--surface);
@@ -503,37 +548,115 @@
     .home-game-btn:active { transform: scale(0.97); }
     .home-game-btn-icon { font-size: 2rem; flex-shrink: 0; line-height: 1; }
     .home-game-btn-body { display: flex; flex-direction: column; gap: 2px; }
+    .home-tagline {
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 2rem; color: #fff;
+      text-align: center; letter-spacing: 0.5px; line-height: 1.25;
+      margin-bottom: 18px;
+    }
+    .home-tagline span { color: var(--red); }
+    .home-bottom-bar {
+      width: 100%; display: flex; flex-direction: column; align-items: center;
+      gap: 12px; padding-top: 16px; margin-top: auto;
+    }
+    .home-session-panel {
+      width: 100%; display: grid; grid-template-columns: 1fr 1px 1fr;
+      align-items: center;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px; padding: 4px; overflow: hidden;
+    }
+    .hsp-share-btn {
+      padding: 13px 16px; background: none; border: none;
+      color: rgba(255,255,255,0.8); font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; border-radius: 14px; text-align: center;
+      transition: background 0.2s; white-space: nowrap; overflow: hidden;
+    }
+    .hsp-share-btn:active { background: rgba(255,255,255,0.09); }
+    .hsp-divider {
+      width: 1px; height: 28px; background: rgba(255,255,255,0.15);
+      justify-self: center;
+    }
+    .hsp-join {
+      display: flex; align-items: center; min-width: 0; padding-left: 10px;
+    }
+    .hsp-join input {
+      width: 100%; background: none; border: none; outline: none;
+      color: rgba(255,255,255,0.8); font-size: 0.88rem; font-weight: 600;
+      padding: 13px 16px; text-align: center; letter-spacing: 3px;
+    }
+    .hsp-join input::placeholder {
+      color: rgba(255,255,255,0.35); letter-spacing: 0; font-weight: 500;
+    }
     .home-game-btn-title {
-      font-size: 1rem; font-weight: 800; color: #fff; letter-spacing: 0.3px;
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 1.15rem; font-weight: 400; color: #fff; letter-spacing: 0.5px;
     }
     .home-game-btn-sub {
       font-size: 0.72rem; color: rgba(255,255,255,0.45); font-weight: 600;
     }
+    .hgb-team-badge {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); margin-top: 2px;
+    }
     /* Gassed — bigger */
     .home-game-btn.hgb-gassed {
-      padding: 22px 20px; border-radius: 22px;
+      flex: 0 0 auto; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+      padding: 14px 20px; border-radius: 22px;
       box-shadow: 0 6px 32px rgba(239,43,45,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
     }
     .home-game-btn.hgb-gassed::before { background: var(--red); }
     .home-game-btn.hgb-gassed:active  { box-shadow: 0 2px 10px rgba(239,43,45,0.15); }
-    .home-game-btn.hgb-gassed .home-game-btn-icon { font-size: 2.6rem; }
-    .home-game-btn.hgb-gassed .home-game-btn-title { font-size: 1.3rem; }
+    .home-game-btn.hgb-gassed .home-game-btn-icon { font-size: 2rem; }
+    .home-game-btn.hgb-gassed .home-game-btn-title { font-size: 3rem; letter-spacing: 1px; }
+    /* Gassed intro overlay */
+    #gassed-intro {
+      display: none; position: absolute; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      flex-direction: column; align-items: center; justify-content: center;
+      padding: 28px 24px; gap: 0;
+    }
+    #gassed-intro.show { display: flex; }
+    .gi-logo { font-size: 3rem; font-weight: 900; color: #fff; margin-bottom: 4px; }
+    .gi-tagline { color: rgba(255,255,255,0.6); font-size: 0.95rem; font-weight: 400; margin-bottom: 28px; text-align: center; line-height: 1.5; }
+    .gi-modes {
+      width: 100%; display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px;
+    }
+    .gi-mode {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .gi-mode-icon { font-size: 1.2rem; flex-shrink: 0; }
+    .gi-mode-title { color: rgba(255,255,255,0.85); font-size: 0.95rem; font-weight: 600; }
+    .gi-start-btn {
+      width: 100%; padding: 16px; border-radius: 18px; border: none;
+      background: var(--red); color: #fff; font-size: 1.1rem; font-weight: 900;
+      cursor: pointer; box-shadow: 0 4px 24px rgba(239,43,45,0.4);
+    }
     /* Other games row */
     .home-small-row {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      flex: 0 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 88px; gap: 10px;
     }
     .home-game-btn.hgb-small {
-      flex-direction: column; align-items: flex-start;
-      padding: 14px 14px 12px; border-radius: 16px; gap: 6px;
+      flex-direction: column; align-items: flex-start; height: 100%;
+      padding: 10px 12px 10px; border-radius: 14px; gap: 4px;
     }
-    .home-game-btn.hgb-small .home-game-btn-icon { font-size: 1.6rem; }
-    .home-game-btn.hgb-small .home-game-btn-title { font-size: 0.82rem; }
+    .home-game-btn.hgb-small .home-game-btn-icon { font-size: 1.3rem; }
+    .home-game-btn.hgb-small .home-game-btn-title { font-size: 3.1vw; white-space: nowrap; }
     .home-game-btn.hgb-tod::before    { background: linear-gradient(90deg,var(--red),var(--navy)); }
     .home-game-btn.hgb-trivia::before { background: var(--gold); }
     .home-game-btn.hgb-horse::before  { background: linear-gradient(90deg,var(--gold),#002868); }
     .home-game-btn.hgb-jeopardy::before { background: #0a3db5; }
-    /* Session btn on home: auto width */
-    #session-share-btn-home { width: auto; align-self: center; }
+    /* Session btn on home: outline share style */
+    #session-share-btn-home {
+      width: auto; align-self: center; margin-top: 0;
+      font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.85);
+      background: transparent; border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 20px; padding: 8px 20px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    #session-share-btn-home:active { border-color: rgba(255,255,255,0.7); color: #fff; }
 
     /* ── Gassed sub-game return button (floats over ring/wheel screen) ── */
     #gassed-sub-next {
@@ -550,44 +673,47 @@
     #gassed-sub-next:active { transform: translateX(-50%) scale(0.97); }
 
     /* ── Screen: Gassed (main game) ── */
-    #screen-gassed { gap: 0; padding: 50px 16px 24px; justify-content: flex-start; }
-    .gs-player-header { text-align: center; padding: 0 0 16px; width: 100%; }
+    #screen-gassed { gap: 0; padding: 72px 16px 16px; justify-content: flex-start; }
+    .gs-card {
+      flex: 1; width: 100%;
+      max-height: calc(100dvh - 220px);
+      background: var(--surface);
+      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+      border: 1.5px solid var(--border-hi); border-radius: 24px;
+      padding: 0 22px 24px;
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center; gap: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      margin-bottom: 20px; overflow: hidden;
+    }
+    .gs-player-header {
+      width: 100%; text-align: center;
+      padding: 20px 0 16px; border-bottom: none;
+    }
     .gs-turn-label {
       color: rgba(255,255,255,0.45); font-size: 0.75rem; font-weight: 700;
       text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;
     }
-    .gs-player-name { color: #fff; font-size: 2.2rem; font-weight: 900; }
-    .gs-card {
-      flex: 1; width: 100%;
-      background: var(--surface);
-      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
-      border: 1.5px solid var(--border-hi); border-radius: 24px;
-      padding: 28px 20px 24px;
-      display: flex; flex-direction: column;
-      align-items: center; text-align: center; gap: 10px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-      margin-bottom: 16px; overflow: hidden;
+    .gs-player-name { color: #fff; font-size: 2rem; font-weight: 900; }
+    .gs-card-divider {
+      width: calc(100% + 44px); height: 1px;
+      background: var(--border-hi); flex-shrink: 0;
     }
-    .gs-type-badge {
-      font-size: 0.72rem; font-weight: 800; letter-spacing: 1.5px;
-      text-transform: uppercase; padding: 5px 14px; border-radius: 100px;
-      border: 1px solid; margin-bottom: 4px;
-    }
-    .gs-type-ring  { background: rgba(239,43,45,0.15); color: #ff8a8a; border-color: rgba(239,43,45,0.3); }
-    .gs-type-wheel { background: rgba(37,99,235,0.15); color: #90b8ff; border-color: rgba(37,99,235,0.3); }
-    .gs-type-nhie  { background: rgba(255,207,0,0.12); color: #ffd95e; border-color: rgba(255,207,0,0.25); }
-    .gs-type-music { background: rgba(160,0,220,0.15); color: #d480ff; border-color: rgba(160,0,220,0.3); }
-    .gs-main-icon { font-size: 3.2rem; line-height: 1; margin: 6px 0 2px; }
+    .gs-type-badge { display: none; }
+    /* Hide player name for group challenges */
+    .gs-card--group .gs-player-header,
+    .gs-card--group .gs-card-divider { display: none; }
+    .gs-main-icon { display: none; }
     .gs-nhie-prefix {
-      color: rgba(255,255,255,0.5); font-size: 0.85rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 700;
+      letter-spacing: 0.5px;
     }
     .gs-main-text {
-      color: #fff; font-size: 1.25rem; font-weight: 800;
-      line-height: 1.35; max-width: 300px;
+      color: #fff; font-size: 1.65rem; font-weight: 800;
+      line-height: 1.3; max-width: 320px;
     }
     .gs-sub-text {
-      color: rgba(255,255,255,0.65); font-size: 0.95rem;
+      color: rgba(255,255,255,0.65); font-size: 1rem;
       line-height: 1.5; max-width: 300px;
     }
     .gs-mini-card {
@@ -692,7 +818,7 @@
       font-family: 'Georgia', serif;
       color: #f5e6c8;
       background: transparent;   /* ild-canvas lyser gjennom */
-      padding-top: 60px;
+      padding-top: 60px; padding-bottom: 96px;
     }
     .ring-top {
       display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -719,12 +845,20 @@
       backdrop-filter: blur(6px); transition: opacity 0.2s;
     }
     #mute-btn:active { opacity: 0.6; }
-    .ring-stats {
-      display: flex; gap: 32px; font-size: 1rem;
-      color: #dbbe88; letter-spacing: 1px;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+    .ring-stats { display: none; }
+    /* Gassed sub-game player banner (ring + wheel) */
+    .gassed-player-banner {
+      display: none; width: 100%; text-align: center;
+      padding: 20px 0 8px;
     }
-    .ring-stats strong { color: #ffab30; }
+    .gassed-player-banner.visible { display: block; }
+    .gassed-player-banner .gpb-label {
+      color: rgba(255,255,255,0.45); font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 2px;
+    }
+    .gassed-player-banner .gpb-name {
+      color: #fff; font-size: 1.9rem; font-weight: 900; line-height: 1.1;
+    }
     .kings-row { display: flex; gap: 12px; }
     .king-cup {
       width: 34px; height: 38px;
@@ -748,11 +882,11 @@
     /* Card area */
     .card-area {
       perspective: 1200px;
-      width: clamp(220px,38vh,300px); height: clamp(308px,53vh,420px);
-      cursor: pointer; margin: 8px 0; flex-shrink: 0;
+      width: clamp(190px,30vh,250px); height: clamp(266px,42vh,350px);
+      cursor: pointer; margin: 4px 0; flex-shrink: 0;
     }
     .card {
-      width: clamp(220px,38vh,300px); height: clamp(308px,53vh,420px);
+      width: clamp(190px,30vh,250px); height: clamp(266px,42vh,350px);
       border-radius: 14px; position: relative;
       transform-style: preserve-3d;
       transition: transform 0.4s cubic-bezier(0.45,0,0.55,1);
@@ -2261,6 +2395,7 @@
 
       /* Push content well below Dynamic Island (island ~y=49, buttons end ~y=108) */
       .screen { padding-top: 124px; }
+      #screen-home { padding-top: 162px; }
 
       /* Screens with their own top structure */
       #screen-ring  { padding-top: 110px; }
@@ -2405,18 +2540,18 @@
     <div class="tcm-opts">
       <button class="tcm-opt" id="tcm-chill"   onclick="selectTodCategory('chill')">
         <span class="tcm-emoji">😌</span>
-        <span class="tcm-name" data-t="tod.chillName">Chill</span>
-        <span class="tcm-desc" data-t="tod.chillDesc">Avslappet og trygt</span>
+        <span class="tcm-name" data-t="tod.chillName">Brisen</span>
+        <span class="tcm-desc" data-t="tod.chillDesc">Lett og avslappet</span>
       </button>
       <button class="tcm-opt" id="tcm-leken"   onclick="selectTodCategory('leken')">
-        <span class="tcm-emoji">🎉</span>
-        <span class="tcm-name" data-t="tod.lekenName">Leken</span>
+        <span class="tcm-emoji">🍺</span>
+        <span class="tcm-name" data-t="tod.lekenName">Gassed</span>
         <span class="tcm-desc" data-t="tod.lekenDesc">Gøy og litt flaut</span>
       </button>
       <button class="tcm-opt" id="tcm-faggang" onclick="selectTodCategory('faggang')">
         <span class="tcm-emoji">🔥</span>
-        <span class="tcm-name" data-t="tod.fagName">Få gang</span>
-        <span class="tcm-desc" data-t="tod.fagDesc">Tøft og utfordrende</span>
+        <span class="tcm-name" data-t="tod.fagName">Naughty Naughty</span>
+        <span class="tcm-desc" data-t="tod.fagDesc">Vågalt og utfordrende</span>
       </button>
     </div>
   </div>
@@ -2453,36 +2588,25 @@
     <div class="screen-subtitle" data-t="setup.subtitle">Add players to get started</div>
 
     <div class="panel" style="width:100%;margin-bottom:16px;">
-      <div class="setup-input-row">
-        <input type="text" id="player-input" data-t-placeholder="setup.inputPlaceholder" placeholder="Player name..." maxlength="20" />
-        <button class="add-btn" onclick="addPlayer()">+</button>
+      <div class="player-add-field" onclick="document.getElementById('player-input').focus()">
+        <span class="paf-icon">＋</span>
+        <input type="text" id="player-input" data-t-placeholder="setup.inputPlaceholder" placeholder="Legg til spiller..." maxlength="20"
+               onkeydown="if(event.key==='Enter')addPlayer()" />
       </div>
       <div class="player-chips" id="player-chips"></div>
       <div class="setup-hint" id="setup-hint" data-t="setup.minHint">Need at least 2 players</div>
     </div>
 
-    <button class="btn-primary" id="start-btn" onclick="goToHome()" disabled>
-      <span data-t="setup.startBtn">Start →</span>
-    </button>
+    <button class="btn-primary" id="start-btn" onclick="goToHome()" disabled>Ferdig</button>
 
-    <!-- Sesjonsdeling -->
-    <div id="session-join-area">
-      <div class="session-row">
-        <button id="session-share-btn" class="session-share-btn session-share-btn--small" onclick="sessionCreate()">🔗 Lag sesjon</button>
-        <input id="session-code-input" type="text" maxlength="5" placeholder="🚪 join sesjon"
-               oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
-               onkeydown="if(event.key==='Enter')sessionJoin()">
-      </div>
-      <div id="session-join-status"></div>
-    </div>
   </div>
 
   <!-- Screen 2: Home -->
   <div class="screen" id="screen-home">
-    <div class="gassed-logo">Gassed</div>
+    <div class="home-tagline">Fyll glasset. Velg et spill.<br><span>Let's get Gassed!</span></div>
 
     <div class="home-game-grid">
-      <button class="home-game-btn hgb-gassed" onclick="startGame('gassed')">
+      <button class="home-game-btn hgb-gassed" onclick="gassedShowIntro()">
         <div class="home-game-btn-icon">🍺</div>
         <div class="home-game-btn-body">
           <div class="home-game-btn-title">Gassed</div>
@@ -2505,30 +2629,39 @@
         <button class="home-game-btn hgb-small hgb-jeopardy" onclick="startGame('jeopardy')">
           <div class="home-game-btn-icon">🍺</div>
           <div class="home-game-btn-title">Jeopardy</div>
+          <div class="hgb-team-badge">👥 Lagspill</div>
         </button>
       </div>
     </div>
 
-    <div class="edit-players-link" onclick="openSettings()" data-t="home.editPlayers">Endre spillere</div>
-
-    <button id="session-share-btn-home" class="session-share-btn session-share-btn--small" onclick="sessionCreate()">🔗 Lag sesjon</button>
+    <div class="home-bottom-bar">
+      <div class="home-session-panel">
+        <button class="hsp-share-btn" onclick="sessionCreate()">↗ Del sesjon</button>
+        <div class="hsp-divider"></div>
+        <div class="hsp-join">
+          <input id="session-code-input" type="text" maxlength="5" placeholder="🚪 Skriv kode"
+                 oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+                 onkeydown="if(event.key==='Enter')sessionJoin()" />
+        </div>
+      </div>
+      <div id="session-join-status"></div>
+      <div class="edit-players-link" onclick="openSettings()" data-t="home.editPlayers">Endre spillere</div>
+    </div>
   </div>
 
   <!-- Screen 3: Ring of Fire -->
   <div class="screen" id="screen-ring">
     <div class="ring-top">
+      <div class="gassed-player-banner" id="ring-gassed-player">
+        <div class="gpb-label">Spiller</div>
+        <div class="gpb-name" id="ring-gassed-player-name"></div>
+      </div>
       <div class="ring-title-row">
         <div class="ring-title" data-t="ring.title">🔥 Ring of Fire</div>
       </div>
       <div class="ring-stats">
         <div><span data-t="ring.statsCards">Kort:</span> <strong id="ring-cards-left">52</strong></div>
         <div><span data-t="ring.statsKings">Konger:</span> <strong id="ring-kings-drawn">0</strong>/4</div>
-      </div>
-      <div class="kings-row">
-        <div class="king-cup" id="cup-1"></div>
-        <div class="king-cup" id="cup-2"></div>
-        <div class="king-cup" id="cup-3"></div>
-        <div class="king-cup" id="cup-4"></div>
       </div>
     </div>
 
@@ -2542,6 +2675,11 @@
           <div class="card-rule-badge" id="rule-badge"></div>
         </div>
       </div>
+    </div>
+
+    <div class="rule-panel empty" id="rule-panel">
+      <div class="rule-name" id="rule-name"></div>
+      <div class="rule-desc" id="rule-desc">Trykk på kortet for å trekke</div>
     </div>
 
 
@@ -2746,12 +2884,13 @@
 
   <!-- Screen: Gassed (main combined game) -->
   <div class="screen" id="screen-gassed">
-    <div class="gs-player-header">
-      <div class="gs-turn-label" id="gs-turn-label">sin tur</div>
-      <div class="gs-player-name" id="gs-player-name"></div>
-    </div>
-
     <div class="gs-card" id="gs-card">
+      <div class="gs-player-header">
+        <div class="gs-turn-label" id="gs-turn-label">Spiller:</div>
+        <div class="gs-player-name" id="gs-player-name"></div>
+      </div>
+      <div class="gs-card-divider"></div>
+      <div style="flex:1"></div>
       <div class="gs-type-badge" id="gs-type-badge"></div>
       <div class="gs-main-icon" id="gs-main-icon"></div>
       <div class="gs-nhie-prefix" id="gs-nhie-prefix" style="display:none"></div>
@@ -2766,9 +2905,39 @@
         </div>
         <div class="gs-countdown-label">sekunder</div>
       </div>
+      <div style="flex:1"></div>
     </div>
 
     <button class="btn-primary" onclick="gassedNext()">Neste →</button>
+  </div>
+
+  <!-- Gassed intro overlay -->
+  <div id="gassed-intro">
+    <div class="gi-logo">🍺 Gassed</div>
+    <div class="gi-tagline">Det ultimate drikkespillet for grupper</div>
+    <div class="gi-modes">
+      <div class="gi-mode">
+        <div class="gi-mode-icon">🎯</div>
+        <div class="gi-mode-title">Én spiller om gangen får en utfordring</div>
+      </div>
+      <div class="gi-mode">
+        <div class="gi-mode-icon">🎲</div>
+        <div class="gi-mode-title">Spillet velger tilfeldig aktivitet hver runde</div>
+      </div>
+      <div class="gi-mode">
+        <div class="gi-mode-icon">🔥</div>
+        <div class="gi-mode-title">Ring of Fire, Lykkehjulet, Jeg har aldri, Utfordringer, Kategori, Drikk hvis og mer</div>
+      </div>
+      <div class="gi-mode">
+        <div class="gi-mode-icon">🍺</div>
+        <div class="gi-mode-title">Trykk "Neste" for å gå videre til neste spiller</div>
+      </div>
+      <div class="gi-mode">
+        <div class="gi-mode-icon">🥂</div>
+        <div class="gi-mode-title">Hvert 20. kort er et skål-kort — alle fyller glasset og skåler!</div>
+      </div>
+    </div>
+    <button class="gi-start-btn" onclick="gassedIntroStart()">La oss begynne! 🍺</button>
   </div>
 
 </div><!-- #app -->
@@ -2990,9 +3159,9 @@ const T = {
       pass: '🍺 Pass (drink 2)',
       catTitle: 'Choose your vibe',
       catSub: 'This determines which questions and challenges you get',
-      chillName: 'Chill', chillDesc: 'Relaxed and safe',
-      lekenName: 'Playful', lekenDesc: 'Fun and a little embarrassing',
-      fagName: 'Get Going', fagDesc: 'Tough and challenging',
+      chillName: 'Brisen', chillDesc: 'Light and relaxed',
+      lekenName: 'Gassed', lekenDesc: 'Fun and a little embarrassing',
+      fagName: 'Naughty Naughty', fagDesc: 'Bold and daring',
     },
     horse: {
       betSubtitle: 'Place your bets — pick your horse!',
@@ -3091,9 +3260,9 @@ const T = {
       pass: '🍺 Gi opp (drikk 2 slurker)',
       catTitle: 'Velg stemning',
       catSub: 'Dette bestemmer hvilke spørsmål og utfordringer dere får',
-      chillName: 'Chill', chillDesc: 'Avslappet og trygt',
-      lekenName: 'Leken', lekenDesc: 'Gøy og litt flaut',
-      fagName: 'Få gang', fagDesc: 'Tøft og utfordrende',
+      chillName: 'Brisen', chillDesc: 'Lett og avslappet',
+      lekenName: 'Gassed', lekenDesc: 'Gøy og litt flaut',
+      fagName: 'Naughty Naughty', fagDesc: 'Vågalt og utfordrende',
     },
     horse: {
       betSubtitle: 'Legg inn veddemålene — velg din hest!',
@@ -3289,26 +3458,20 @@ const CONTENT = {
       "kysset noen i dette rommet",
       "kysset en fremmed",
       "løyet for å unngå planer",
-      "ghostet noen jeg likte",
+      "ghostet noen",
       "sendt fulle meldinger til eksen min",
-      "sendt en saftig melding til feil person",
       "sovnet på en fest",
       "stalket eksens nye partner på nett",
       "kastet opp av å drikke for mye",
       "våknet uten å huske noe fra kvelden",
       "kysset noen av samme kjønn",
       "hatt en hemmelig forelskelse på {player}",
-      "blitt tatt i å lyge",
       "jukset på en prøve eller eksamen",
       "bada naken",
       "gjort noe ulovlig og sluppet unna",
-      "grått på kino",
-      "later som jeg liker noens matlaging",
-      "snakket stygt om noen i dette rommet",
       "vært på en datingapp",
       "matchet med noen jeg kjente i virkeligheten",
       "brukt en hel dag i senga og gjort ingenting",
-      "later som om jeg hadde sett noe bare for å virke kul",
       "stjålet noe lite",
       "hatt en hemmelig konto på sosiale medier"
     ]
@@ -3439,7 +3602,8 @@ const CONTENT = {
         "Read out the last 5 messages you received. All of them. No exceptions.",
         "Send 'I think about you more than you know 😌' to a contact. No explanation allowed.",
         "Everyone votes guilty or not guilty about something you did recently. Majority guilty: drink 4.",
-        "Do your most seductive dance move solo. Group rates — average under 5: drink 3."
+        "Do your most seductive dance move solo. Group rates — average under 5: drink 3.",
+        "Kiss someone of the same gender — or drink 4 sips."
       ],
       no: [
         "Hvisk noe genuint forførerisk til {player}. De gir karakter 1–10. Under 6: drikk 3.",
@@ -3449,7 +3613,8 @@ const CONTENT = {
         "Les opp de siste 5 meldingene du mottok. Alle. Ingen unntak.",
         "Send 'Jeg tenker på deg mer enn du vet 😌' til en kontakt. Ingen forklaring tillatt.",
         "Alle stemmer skyldig eller ikke skyldig om noe du har gjort nylig. Flertall skyldig: drikk 4.",
-        "Gjør ditt beste forføreriske danseMove alene. Gruppen gir karakter — under 5 i snitt: drikk 3."
+        "Gjør ditt beste forføreriske danseMove alene. Gruppen gir karakter — under 5 i snitt: drikk 3.",
+        "Kyss noen av samme kjønn — eller drikk 4 slurker."
       ]
     }
   },
@@ -3937,7 +4102,7 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
-  const isGame = ['screen-ring','screen-waterfall','screen-tod','screen-horse','screen-trivia','screen-wheel','screen-jeopardy'].includes(id);
+  const isGame = ['screen-ring','screen-waterfall','screen-tod','screen-horse','screen-trivia','screen-wheel','screen-jeopardy','screen-gassed'].includes(id);
   const isRing = id === 'screen-ring';
 
   document.getElementById('back-btn').classList.toggle('visible', isGame || id === 'screen-home');
@@ -3966,6 +4131,11 @@ function selectTodCategory(cat) {
 }
 
 function confirmGoHome() {
+  // Gassed intro open → dismiss it
+  if (document.getElementById('gassed-intro')?.classList.contains('show')) {
+    document.getElementById('gassed-intro').classList.remove('show');
+    return;
+  }
   // Jeopardy question overlay open → close it, stay on board
   if (document.getElementById('jeo-overlay')?.classList.contains('show')) {
     jeoCloseOverlay();
@@ -3995,6 +4165,7 @@ function goHome() {
   if (app.gassed?.countdownTimer) { clearInterval(app.gassed.countdownTimer); app.gassed.countdownTimer = null; }
   if (app.gassed) app.gassed.inSubGame = false;
   document.getElementById('gassed-sub-next')?.classList.remove('visible');
+  document.getElementById('gassed-intro')?.classList.remove('show');
   showScreen('screen-home');
   document.getElementById('back-btn').classList.remove('visible');
 }
@@ -4380,20 +4551,8 @@ const WHEEL_CHALLENGES = [
     desc: 'Alle spillerne tar 2 slurker!' },
   { label: 'Gratis',           lines: ['Gratis'],              emoji: '😇', color: '#14532d',
     desc: 'Flaks! Du slipper unna — ingen straff denne runden.' },
-  { label: 'Duell',            lines: ['Duell'],               emoji: '⚔️', color: '#78350f',
-    desc: 'Velg en motstander. Stein, saks, papir — taperen drikker 3 slurker!' },
-  { label: 'Lag en regel',     lines: ['Lag en', 'regel'],     emoji: '👑', color: '#4a044e',
-    desc: 'Bestem en regel alle må følge ut runden. Brytes den, drikker den skyldige 2 slurker.' },
   { label: 'Chugg',            lines: ['Chugg'],               emoji: '🥤', color: '#1e3a5f',
-    desc: 'Drikk så mye du kan uten å stoppe — den som drikker kortest må ta 3 slurker til!' },
-  { label: 'Venstre drikker',  lines: ['Venstre', 'drikker'],  emoji: '⬅️', color: '#064e3b',
-    desc: 'Personen til venstre for deg tar 2 slurker.' },
-  { label: 'Høyre drikker',    lines: ['Høyre', 'drikker'],    emoji: '➡️', color: '#1e40af',
-    desc: 'Personen til høyre for deg tar 2 slurker.' },
-  { label: 'Nøtt eller Sannhet', lines: ['Nøtt eller', 'Sannhet'], emoji: '🔥', color: '#9a3412',
-    desc: 'Velg Sannhet eller Nøtt. En annen spiller bestemmer utfordringen — nekter du, drikker du 4!' },
-  { label: 'Foss',             lines: ['Foss 🌊'],              emoji: '🌊', color: '#0c4a6e',
-    desc: 'Start å drikke — alle drikker etter deg i rekkefølge. Ingen stopper før personen foran dem slutter.' },
+    desc: 'Shiiet, Chugg drikken din!' },
 ];
 
 const WHEEL_PLAYER_COLORS = ['#7f1d1d','#1e3a8a','#3b0764','#14532d','#78350f','#164e63','#4a044e','#065f46'];
@@ -4704,7 +4863,7 @@ function spinWheels() {
       requestAnimationFrame(frame);
     } else {
       app.wheel.spinning = false;
-      document.getElementById('wheel-spin-btn').disabled = false;
+      if (!app.gassed?.inSubGame) document.getElementById('wheel-spin-btn').disabled = false;
       showWheelResult(playerIdx, challengeIdx);
     }
   }
@@ -5427,7 +5586,7 @@ const RULES_EN = {
   'A':  { name: 'Waterfall',         desc: 'Everyone starts drinking. You can\'t stop until the person to your left stops. The last person to start is the first allowed to stop.' },
   '2':  { name: 'You',               desc: '{player} drinks!' },
   '3':  { name: 'Me',                desc: 'You drink!' },
-  '4':  { name: 'Floor',             desc: 'Everyone must touch the floor. Last one to do it drinks.' },
+  '4':  { name: 'Thumb Master',       desc: 'At any point, put your thumb on the table. Everyone must follow — last one down drinks 3 sips! Lasts until the next 4 is drawn.' },
   '5':  { name: 'Guys',              desc: 'All guys drink.' },
   '6':  { name: 'Chicks',            desc: 'All girls drink.' },
   '7':  { name: 'Heaven',            desc: 'Everyone points to the sky. Last one drinks.' },
@@ -5443,7 +5602,7 @@ const RULES_NO = {
   'A':  { name: 'Foss',              desc: 'Alle begynner å drikke. Du kan ikke stoppe før personen til venstre for deg stopper.' },
   '2':  { name: 'Du',                desc: '{player} drikker!' },
   '3':  { name: 'Meg',               desc: 'Du drikker!' },
-  '4':  { name: 'Gulv',              desc: 'Alle må ta på gulvet. Siste person drikker.' },
+  '4':  { name: 'Tommel',            desc: 'Personen som får denne kan når som helst legge tommelen på bordet. Alle andre må følge — sist ned drikker 3 slurker! Gjelder til neste 4 trekkes.' },
   '5':  { name: 'Gutter',            desc: 'Alle gutter drikker.' },
   '6':  { name: 'Jenter',            desc: 'Alle jenter drikker.' },
   '7':  { name: 'Himmel',            desc: 'Alle peker mot himmelen. Siste person drikker.' },
@@ -5496,7 +5655,23 @@ function resetRingCardDisplay() {
 }
 
 function setRingRulePanel(cardData) {
-  // Rule panel removed — no-op
+  const panel = document.getElementById('rule-panel');
+  const nameEl = document.getElementById('rule-name');
+  const descEl = document.getElementById('rule-desc');
+  if (!panel) return;
+  if (!cardData) {
+    panel.className = 'rule-panel empty';
+    nameEl.textContent = '';
+    descEl.textContent = app.lang === 'no' ? 'Trykk på kortet for å trekke' : 'Tap the card to draw';
+    return;
+  }
+  const rules = getRules();
+  const rule = rules[cardData.rank];
+  if (!rule) return;
+  panel.className = 'rule-panel';
+  nameEl.textContent = rule.name;
+  const playerName = app.players[app.ring.lastPlayerIdx ?? 0] || '';
+  descEl.textContent = rule.desc.replace('{player}', playerName);
 }
 
 const FLIP_MS = 380;
@@ -5553,6 +5728,10 @@ function checkRingEndState(cardData) {
     document.getElementById('card-area').style.cursor = 'default';
   }
   if (app.gassed?.inSubGame) {
+    // Disable further draws — one card per turn
+    const ca = document.getElementById('card-area');
+    ca.style.cursor = 'default';
+    ca.style.pointerEvents = 'none';
     setTimeout(() => document.getElementById('gassed-sub-next').classList.add('visible'), 500);
   }
 }
@@ -6321,20 +6500,224 @@ const MUSIC_CHALLENGES = {
   ],
 };
 
-app.gassed = { lastPlayer: -1, nhieUsed: new Set(), musicOrder: [], musicIdx: 0, deck: [], countdownTimer: null };
+const BORST_CHALLENGES = {
+  no: [
+    // ── VILLE DU HELLER (24) ──
+    { type:'dilemma', text:'Ville du heller aldri drikke alkohol igjen, eller aldri spise pizza igjen?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller alltid lukte svette, eller alltid høre en pipetone?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller miste all musikk eller alle filmer for alltid?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller aldri bruke sosiale medier igjen, eller aldri se streaming igjen?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller alltid si akkurat det du tenker, eller aldri klare å lyve?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller alltid fryse eller alltid svette?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller ha 10 venner du stoler 50% på, eller 1 venn du stoler 100% på?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller se alt i slow motion, eller alt i dobbel hastighet?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller leve til 200 men alltid føle deg 80, eller leve til 80 men alltid se ut som 25?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller aldri kunne danse igjen, eller aldri kunne synge igjen?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller vite datoen du dør, eller måten du dør på?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller bo alene på en øde øy i 1 år, eller dele lite rom med 10 fremmede i 1 år?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller aldri spise sjokolade igjen, eller aldri drikke kaffe igjen?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller alltid være litt beruset, eller aldri bli beruset uansett hva du drikker?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller gi fra deg mobilen i 1 uke, eller ikke dusje på 1 uke?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller alltid komme 30 min for sent, eller alltid komme 1 time for tidlig?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller aldri trene igjen, eller trene obligatorisk 2 timer hver dag?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller ikke ha nese, eller ikke ha ører?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller ha uendelig penger men ingen venner, eller lite penger men mange gode venner?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller alltid glemme navn på folk, eller alltid glemme ansikter?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller reise tilbake i tid 10 år, eller fremover 10 år?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller ha evnen til å lese tanker, eller evnen til å bli usynlig?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller aldri spise sukker igjen, eller aldri spise salt igjen?', sub:'De i undertall drikker 2 slurker!' },
+    { type:'dilemma', text:'Ville du heller alltid snakke høyt uten å vite det, eller alltid synge i stedet for å snakke?', sub:'De i undertall drikker 2 slurker!' },
+    // ── HVEM VILLE MEST SANNSYNLIG (21) ──
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig stikke av fra regningen?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig bli berømt?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig gifte seg i Las Vegas?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig våkne opp et ukjent sted?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig bli arrestert?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig overleve en zombie-apokalypse?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig bli millionær?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig snakke med en fremmed i 3 timer på bussen?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig sende en melding til feil person?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig bli med i et reality-show?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig spise mat de fant på gulvet?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig blitt lurt av en svindler?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig ha en hemmelig kjæreste?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig glemme bursdagen til sin beste venn?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig snuble på scenen foran mange mennesker?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig si "jeg elsker deg" som den første i et nytt forhold?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig klage på maten på en restaurant?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig bli president?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig dukke opp i en avisoverskrift?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig sette i gang en slåsskamp?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem ville mest sannsynlig ikke bli eldre enn 60?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem blir fullest i kveld?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem er mest sannsynlig til å få napp i kveld?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    { type:'mostlikely', text:'Hvem er mest på telefonen?', sub:'Alle peker samtidig — den med flest pekefingre drikker 3 slurker!' },
+    // ── KATEGORI (20) ──
+    { type:'category', text:'Kategorien er: Land i Europa', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Ting som er røde', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Norske artister eller band', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Filmtitler', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Ting du finner på et kjøkken', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Ting man ikke vil gjøre full', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Klesmerker', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Dyr som lever i havet', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Fotballag fra Premier League', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: TV-serier på Netflix', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Ting du alltid glemmer å kjøpe', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Ting man sier unnskyldning for', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Kjendiser med fornavn på S', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Ting på et bad', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Superhelter', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Norske steder', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Ting du finner i en ryggsekk', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Verdenshovedsteder', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Ting du gjør om morgenen', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    { type:'category', text:'Kategorien er: Ting som er klebrige', sub:'Én om gangen rundt bordet — den som gjentar eller stopper drikker!' },
+    // ── UTFORDRING (19) ──
+    { type:'challenge', text:'Gjør din beste dansemove!', sub:'Klarer/tørr du det ikke → drikk 4 slurker' },
+    { type:'challenge', text:'Si tungen-tvisteren 3 ganger fort: "Røde reker på et rødt rekefat"', sub:'Rorer du til → drikk 2 slurker' },
+    { type:'challenge', text:'Etterlign en person i rommet til resten gjetter hvem det er', sub:'Ingen gjetter innen 30 sek → drikk 2 slurker' },
+    { type:'challenge', text:'Fortell en vits. Ler ingen → drikk 3 slurker', sub:'Ler alle → alle andre drikker 1 slurk!' },
+    { type:'challenge', text:'Vis de siste 3 bildene på telefonen din til resten', sub:'Nekter du → drikk 3 slurker' },
+    { type:'challenge', text:'Hold planken i 20 sekunder', sub:'Klarer du det ikke → drikk 2 slurker' },
+    { type:'challenge', text:'Snakk med britisk aksent til det er din tur igjen', sub:'Glemmer du → drikk 2 slurker' },
+    { type:'challenge', text:'Ring den siste personen du chattet med og si "Savner deg!"', sub:'Tørr du ikke → drikk 3 slurker' },
+    { type:'challenge', text:'Imiter lyden av et dyr til resten gjetter riktig', sub:'Ingen gjetter → drikk 2 slurker' },
+    { type:'challenge', text:'Si alfabetet baklengs så fort du kan', sub:'Tar det over 30 sek → drikk 2 slurker' },
+    { type:'challenge', text:'Speil personen til venstre — kopier alle bevegelsene i 60 sekunder', sub:'Slutter du → drikk 2 slurker' },
+    { type:'challenge', text:'Ta en selfie med alle i rommet og vis den', sub:'Nekter du → drikk 3 slurker' },
+    { type:'challenge', text:'Gjør 10 push-ups', sub:'Klarer du det ikke → drikk 3 slurker' },
+    { type:'challenge', text:'Si 3 land som starter på bokstaven F på 10 sekunder', sub:'Klarer du det ikke → drikk 2 slurker' },
+    { type:'challenge', text:'Les opp den siste meldingen du sendte til en tilfeldig kontakt', sub:'Nekter du → drikk 3 slurker' },
+    { type:'challenge', text:'Wink til alle i gruppen én etter én uten å le', sub:'Ler du → drikk 2 slurker' },
+    { type:'challenge', text:'Beskriv en film ved hjelp av bare kroppsspråk til noen gjetter', sub:'Ingen gjetter på 45 sek → drikk 2 slurker' },
+    { type:'challenge', text:'Si tre sannheter og én løgn om deg selv — alle gjetter løgnen', sub:'Alle gjetter riktig → drikk 2 slurker' },
+    { type:'challenge', text:'Snakk sørlandsk dialekt til det er din tur igjen', sub:'Glemmer du → drikk 2 slurker' },
+    // ── DRIKK HVIS (15) ──
+    { type:'drikkif', text:'Drikk 3 slurker hvis du sto opp etter klokken 12 i dag eller i helgen', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du sjekket Instagram de siste 30 minuttene', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du noen gang har stukket av fra en kjedelig fest', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du aldri har møtt opp på en avtale du bekreftet', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du har smakt på mat i butikken før du kjøpte den', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har stekt grandis etter en kveld ute og glemt den i ovnen', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har googlet deg selv', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har planlagt en perfekt replikk men aldri sagt den', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du aldri har sett Game of Thrones', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har ventet på at den andre skal tekste først', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har glemt en viktig bursdag', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har sideswipa på Snapchat', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du noen gang har spist middag rett fra kjelen', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du har vært sur på noen du ikke kjenner på internett', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du ikke kan svømme 100 meter uten pause', sub:'Kjenner du deg igjen → drikk!' },
+    // ── NY REGEL (15) ──
+    { type:'regel', text:'Ny regel: Alle må snakke i tredjeperson til neste runde', sub:'Bryter du regelen → drikk 2 slurker!' },
+    { type:'regel', text:'Ny regel: Ingen kan si ordet "drikk" — sier du det, drikker du selv!', sub:'Gjelder til neste "Ny regel"-kort' },
+    { type:'regel', text:'Ny regel: Du må banke 3 ganger på bordet FØR du drikker', sub:'Glemmer du → drikk dobbelt!' },
+    { type:'regel', text:'Ny regel: Alle svar må starte med "Sannsynligvis..."', sub:'Glemmer du → drikk 2 slurker!' },
+    { type:'regel', text:'Ny regel: Du kan bare drikke med venstre hånd', sub:'Glemmer du → drikk dobbelt!' },
+    { type:'regel', text:'Ny regel: Alle hvitsker i stedet for å snakke', sub:'Snakker du høyt → drikk 2 slurker!' },
+    { type:'regel', text:'Ny regel: Ingen kan peke med fingeren — pek med albuen', sub:'Peker du med fingeren → drikk 2 slurker!' },
+    { type:'regel', text:'Ny regel: Forbudt å bruke navnene til noen i rommet', sub:'Sier du et navn → drikk 2 slurker!' },
+    { type:'regel', text:'Ny regel: Alle legger tommelen på bordet nå — sist til å legge den ned drikker 3 slurker! Du er tommelmester til neste "Ny regel"-kort.', sub:'Hold øye med hverandre!' },
+    { type:'regel', text:'Ny regel: Alle avslutter setningene sine med "...men det er bare min mening"', sub:'Glemmer du → drikk 2 slurker!' },
+    { type:'regel', text:'Ny regel: Forbudt å bruke mobilen til annet enn spillet', sub:'Tar du opp mobilen → drikk 2 slurker!' },
+    { type:'regel', text:'Ny regel: Forbudt å le — ler du, drikker du!', sub:'Gjelder til neste "Ny regel"-kort' },
+    { type:'regel', text:'Ny regel: Alle må nikke etter alt de sier', sub:'Glemmer du → drikk 2 slurker!' },
+    { type:'regel', text:'Ny regel: Du velger én person som drikker dobbelt av alt til neste "Ny regel"-kort', sub:'Velg klokt!' },
+    // ── GRUPPE-LEK (12) ──
+    { type:'gruppelek', text:'Vannfall! [playerName] begynner å drikke. Neste starter når [playerName] stopper, og slik videre rundt bordet.', sub:'Ingen stopper før personen til venstre stopper!' },
+    { type:'gruppelek', text:'Høyre eller venstre: Pek på personen du helst vil ha ved siden av deg i en slåsskamp', sub:'Den med færrest pekefingre drikker 3 slurker!' },
+    { type:'gruppelek', text:'Hot take: Alle sier én kontroversiell mening. Flertallet stemmer hvem de er mest uenige med — den personen drikker!', sub:'Vær ærlig!' },
+    { type:'gruppelek', text:'Hviskeleiken: Hvisk en setning til personen ved siden av deg — rundt bordet. Siste sier det høyt.', sub:'Stemmer det ikke → alle drikker!' },
+    { type:'gruppelek', text:'Alle peker på den personen som er mest sannsynlig å bli rik. Den som får flest pekefingre fordeler 4 slurker!', sub:'Alle peker samtidig!' },
+    { type:'gruppelek', text:'Bilder: Alle viser ett pinlig bilde fra telefonen sin', sub:'Morsomste bilde → alle andre drikker 1 slurk!' },
+    { type:'gruppelek', text:'Spons: Alle holder pusten — sist til å gi opp fordeler 4 slurker!', sub:'Ingen juksing!' },
+    { type:'gruppelek', text:'Alle skriver ned noe de aldri har fortalt noen i gruppen — les opp anonymt, gruppen gjetter hvem', sub:'Riktig gjett → den som gjetter fordeler 2 slurker!' },
+    { type:'gruppelek', text:'Alle sier ett ord som beskriver personen til venstre. Personen til venstre drikker 1 slurk for hvert positivt ord og 2 for hvert negativt!', sub:'Vær ærlig — det er poenget!' },
+    { type:'gruppelek', text:'Hvem kan ta flest push-ups? Den som mener de kan ta flest, må bevise det!', sub:'Klarer du antallet → del ut 10 slurker. Klarer du det ikke → drikk 4!' },
+    { type:'gruppelek', text:'Alle som har hår — skål for de skalla i rommet! 🥂', sub:'Skalla drikker 0, alle andre drikker 2!' },
+    { type:'gruppelek', text:'Alle skål! 🥂', sub:'Fyll glasset og skål!' },
+    { type:'challenge', text:'Du ser sexy ut i dag 😏', sub:'Drikk 6 slurker!' },
+    { type:'challenge', text:'Det ser ut som du trenger litt hjelp med å bli Gassed', sub:'Drikk 3 slurker!' },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du har ligget med noen i rommet', sub:'Kjenner du deg igjen → drikk!' },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du har hatt trekant', sub:'Kjenner du deg igjen → drikk!' },
+  ],
+  en: [
+    { type:'dilemma', text:'Would you rather never drink alcohol again, or never eat pizza again?', sub:'Those who disagree drink 2 sips!' },
+    { type:'dilemma', text:'Would you rather always smell like sweat, or always hear a ringing noise?', sub:'Those who disagree drink 2 sips!' },
+    { type:'dilemma', text:'Would you rather lose all music or all movies forever?', sub:'Those who disagree drink 2 sips!' },
+    { type:'dilemma', text:'Would you rather never use social media again, or never watch streaming again?', sub:'Those who disagree drink 2 sips!' },
+    { type:'dilemma', text:'Would you rather always say exactly what you think, or never be able to lie?', sub:'Those who disagree drink 2 sips!' },
+    { type:'dilemma', text:'Would you rather always be slightly drunk, or never be able to get drunk?', sub:'Those who disagree drink 2 sips!' },
+    { type:'dilemma', text:'Would you rather know the date you die, or the way you die?', sub:'Those who disagree drink 2 sips!' },
+    { type:'mostlikely', text:'Who is most likely to dine and dash?', sub:'Everyone points at once — most fingers = drink 3 sips!' },
+    { type:'mostlikely', text:'Who is most likely to become famous?', sub:'Everyone points at once — most fingers = drink 3 sips!' },
+    { type:'mostlikely', text:'Who is most likely to get married in Vegas?', sub:'Everyone points at once — most fingers = drink 3 sips!' },
+    { type:'mostlikely', text:'Who is most likely to wake up somewhere they don\'t recognize?', sub:'Everyone points at once — most fingers = drink 3 sips!' },
+    { type:'mostlikely', text:'Who is most likely to get arrested?', sub:'Everyone points at once — most fingers = drink 3 sips!' },
+    { type:'mostlikely', text:'Who is most likely to survive a zombie apocalypse?', sub:'Everyone points at once — most fingers = drink 3 sips!' },
+    { type:'mostlikely', text:'Who is most likely to become a millionaire?', sub:'Everyone points at once — most fingers = drink 3 sips!' },
+    { type:'category', text:'Category: Countries in Europe', sub:'One at a time around the table — repeat or stop = drink!' },
+    { type:'category', text:'Category: Things that are red', sub:'One at a time around the table — repeat or stop = drink!' },
+    { type:'category', text:'Category: Netflix shows', sub:'One at a time around the table — repeat or stop = drink!' },
+    { type:'category', text:'Category: Superheroes', sub:'One at a time around the table — repeat or stop = drink!' },
+    { type:'category', text:'Category: Things you find in a kitchen', sub:'One at a time around the table — repeat or stop = drink!' },
+    { type:'challenge', text:'Do your best dance move for 10 seconds!', sub:'Can\'t do it → drink 2 sips' },
+    { type:'challenge', text:'Say a tongue twister 3 times: "She sells seashells by the seashore"', sub:'Can\'t do it → drink 2 sips' },
+    { type:'challenge', text:'Imitate a celebrity until someone guesses who it is', sub:'No one guesses in 30 sec → drink 2 sips' },
+    { type:'challenge', text:'Tell a joke. Nobody laughs → drink 3 sips', sub:'Everyone laughs → everyone else drinks!' },
+    { type:'challenge', text:'Show the last 3 photos on your phone', sub:'Refuse → drink 3 sips' },
+    { type:'challenge', text:'Say 3 truths and 1 lie — everyone guesses the lie', sub:'Everyone guesses right → drink 2 sips' },
+    { type:'drikkif', text:'Drink 2 sips if you\'ve sent a message you regretted immediately', sub:'You know who you are → drink!' },
+    { type:'drikkif', text:'Drink 2 sips if you\'ve googled yourself', sub:'You know who you are → drink!' },
+    { type:'drikkif', text:'Drink 2 sips if you\'ve laughed at a joke you didn\'t understand', sub:'You know who you are → drink!' },
+    { type:'drikkif', text:'Drink 3 sips if you\'ve never watched Game of Thrones', sub:'You know who you are → drink!' },
+    { type:'drikkif', text:'Drink 2 sips if you\'ve read a message and waited over an hour to reply', sub:'You know who you are → drink!' },
+    { type:'regel', text:'New rule: Everyone must speak in third person until the next round', sub:'Break the rule → drink 2 sips!' },
+    { type:'regel', text:'New rule: Nobody can say the word "drink" — say it and you drink yourself!', sub:'Lasts until the next rule card' },
+    { type:'regel', text:'New rule: You can only drink with your left hand', sub:'Forget → drink double!' },
+    { type:'gruppelek', text:'Waterfall! [playerName] starts drinking. Next person starts when [playerName] stops, and so on around the table.', sub:'Nobody stops until the person to their left stops!' },
+    { type:'gruppelek', text:'Everyone whisper a sentence to the person next to them — last person says it aloud.', sub:'Doesn\'t match → everyone drinks!' },
+  ],
+};
+
+// Weighted type pool: 40 entries — music appears exactly once
+// 0=ring(8), 1=wheel(6), 2=nhie(6), 3=music(1), 4=borst(19)
+const GASSED_TYPE_POOL = [
+  0,0,0,0,0,0,0,0,
+  1,1,1,1,1,1,
+  2,2,2,2,2,2,
+  3,
+  4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+];
+
+app.gassed = { lastPlayer: -1, nhieUsed: new Set(), borstUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0 };
+
+function gassedShowIntro() {
+  document.getElementById('gassed-intro').classList.add('show');
+}
+
+function gassedIntroStart() {
+  document.getElementById('gassed-intro').classList.remove('show');
+  startGame('gassed');
+}
 
 function startGassed() {
   if (app.gassed.countdownTimer) { clearInterval(app.gassed.countdownTimer); app.gassed.countdownTimer = null; }
   app.gassed = {
     lastPlayer: -1,
     nhieUsed: new Set(),
+    borstUsed: new Set(),
     musicOrder: shuffle([0, 1, 2]),
     musicIdx: 0,
+    typeOrder: shuffle([...GASSED_TYPE_POOL]),
+    typeIdx: 0,
     deck: shuffle(buildDeck()),
     countdownTimer: null,
+    turnCount: 0,
   };
-  gassedTurn();
   showScreen('screen-gassed');
+  gassedTurn();
 }
 
 function gassedTurn() {
@@ -6357,23 +6740,29 @@ function gassedTurn() {
   const playerName = players[pi];
 
   $('gs-player-name').textContent = playerName;
-  $('gs-turn-label').textContent = isNo ? 'sin tur' : 'your turn';
+  $('gs-turn-label').textContent = isNo ? 'Spiller:' : 'Player:';
 
   // Reset card areas
   $('gs-countdown-wrap').style.display = 'none';
   $('gs-mini-card').style.display = 'none';
   $('gs-nhie-prefix').style.display = 'none';
   $('gs-countdown-wrap').className = 'gs-countdown-wrap';
+  $('gs-card').classList.remove('gs-card--group');
 
-  // Pick activity: 0=ring, 1=wheel, 2=nhie, 3=music
-  const type = Math.floor(Math.random() * 4);
+  // Pick activity from weighted pool: 0=ring, 1=wheel, 2=nhie, 3=music, 4=borst
+  if (g.typeIdx >= g.typeOrder.length) {
+    g.typeOrder = shuffle([...GASSED_TYPE_POOL]);
+    g.typeIdx = 0;
+  }
+  const type = g.typeOrder[g.typeIdx++];
 
   if (type === 0) {
     // ── Ring of Fire — vis selve ring-skjermen ──
     g.inSubGame = true;
     initRing();
     showScreen('screen-ring');
-    setTimeout(() => drawCard(), 120);
+    const ringPlayer = $('ring-gassed-player');
+    if (ringPlayer) { ringPlayer.classList.add('visible'); $('ring-gassed-player-name').textContent = playerName; }
     S.schedulePush(50);
     return;
 
@@ -6382,12 +6771,29 @@ function gassedTurn() {
     g.inSubGame = true;
     showScreen('screen-wheel');
     initWheel();
-    setTimeout(() => spinWheels(), 600);
     S.schedulePush(50);
     return;
+  }
 
-  } else if (type === 2) {
-    // ── Jeg har aldri ──
+  // All card types show on the gassed screen — navigate here before updating content
+  // (must come after sub-game checks to avoid flashing stale card when returning from sub-game)
+  showScreen('screen-gassed');
+
+  // ── Skål-kort hvert 20. trekk ──
+  g.turnCount++;
+  if (g.turnCount > 1 && g.turnCount % 20 === 0) {
+    $('gs-card').classList.add('gs-card--group');
+    $('gs-main-text').textContent = '🥂 Skål!';
+    $('gs-sub-text').textContent = isNo
+      ? 'Alle fyller glasset og skåler — ingen slipper unna! 🍺'
+      : 'Everyone fills their glass and cheers — no exceptions! 🍺';
+    $('gs-sub-text').style.display = '';
+    return;
+  }
+
+  if (type === 2) {
+    // ── Jeg har aldri ── (group challenge — hide player name)
+    $('gs-card').classList.add('gs-card--group');
     const pool = CONTENT.nhie[app.lang];
     const available = pool.map((_, i) => i).filter(i => !g.nhieUsed.has(i));
     let idx;
@@ -6403,6 +6809,44 @@ function gassedTurn() {
     $('gs-sub-text').textContent = isNo
       ? '🍺 De som har gjort det — drikk!'
       : '🍺 Those who have done it — drink!';
+
+  } else if (type === 4) {
+    // ── Børst-utfordring ──
+    const bpool = BORST_CHALLENGES[app.lang] || BORST_CHALLENGES.no;
+    const bavail = bpool.map((_, i) => i).filter(i => !g.borstUsed.has(i));
+    let bidx;
+    if (bavail.length === 0) { g.borstUsed = new Set(); bidx = Math.floor(Math.random() * bpool.length); }
+    else bidx = bavail[Math.floor(Math.random() * bavail.length)];
+    g.borstUsed.add(bidx);
+    const bc = bpool[bidx];
+    const typeLabels = {
+      dilemma:    isNo ? '🤔 Ville du heller'           : '🤔 Would you rather',
+      mostlikely: isNo ? '👆 Hvem ville mest sannsynlig' : '👆 Who is most likely',
+      category:   isNo ? '🗂 Kategori'                  : '🗂 Category',
+      challenge:  isNo ? '⚡ Utfordring'                : '⚡ Challenge',
+      drikkif:    isNo ? '🍺 Drikk hvis'                : '🍺 Drink if',
+      regel:      isNo ? '📜 Ny regel'                  : '📜 New rule',
+      gruppelek:  isNo ? '🎮 Gruppe-lek'                : '🎮 Group game',
+    };
+    const typeClasses = {
+      dilemma:'gs-type-dilemma', mostlikely:'gs-type-mostlikely',
+      category:'gs-type-category', challenge:'gs-type-challenge',
+      drikkif:'gs-type-nhie', regel:'gs-type-wheel', gruppelek:'gs-type-ring',
+    };
+    const typeIcons = { dilemma:'🤔', mostlikely:'👆', category:'🗂️', challenge:'⚡', drikkif:'🍺', regel:'📜', gruppelek:'🎮' };
+    const GROUP_BTYPES = new Set(['mostlikely', 'category', 'drikkif', 'regel', 'dilemma']);
+    if (GROUP_BTYPES.has(bc.type)) $('gs-card').classList.add('gs-card--group');
+    if (bc.type === 'dilemma') {
+      $('gs-nhie-prefix').textContent = isNo ? '👍 Tommel opp  /  👎 Tommel ned' : '👍 Thumbs up  /  👎 Thumbs down';
+      $('gs-nhie-prefix').style.display = '';
+    }
+    $('gs-type-badge').textContent = typeLabels[bc.type] || bc.type;
+    $('gs-type-badge').className = 'gs-type-badge ' + (typeClasses[bc.type] || 'gs-type-challenge');
+    $('gs-main-icon').textContent = typeIcons[bc.type] || '⚡';
+    $('gs-main-text').textContent = interpolate(bc.text, playerName).replace(/\[playerName\]/g, playerName || '');
+    $('gs-sub-text').textContent = bc.type === 'dilemma'
+      ? (isNo ? '🍺 De i undertall drikker 2 slurker!' : '🍺 The minority drinks 2 sips!')
+      : bc.sub;
 
   } else {
     // ── Musikk-utfordring ──
@@ -6449,8 +6893,10 @@ function gassedNext() {
 function gassedReturnFromSub() {
   app.gassed.inSubGame = false;
   document.getElementById('gassed-sub-next').classList.remove('visible');
-  showScreen('screen-gassed');
-  gassedTurn();
+  document.getElementById('ring-gassed-player')?.classList.remove('visible');
+  const ca = document.getElementById('card-area');
+  if (ca) { ca.style.cursor = ''; ca.style.pointerEvents = ''; }
+  gassedTurn(); // gassedTurn handles showScreen to avoid flashing stale card content
 }
 
 // ─────────────────────────────────────────────
