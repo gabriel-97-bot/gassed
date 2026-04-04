@@ -5270,6 +5270,11 @@ function spinWheels() {
     }
   }
 
+  var _spinPushInterval = setInterval(function() {
+    S.push();
+    if (!app.wheel.spinning) clearInterval(_spinPushInterval);
+  }, 80);
+
   requestAnimationFrame(frame);
 }
 
@@ -6305,6 +6310,11 @@ function todPickPlayer() {
       document.getElementById('tod-choice-btns').style.display = 'flex';
     }
   }
+  var _todSpinPushInterval = setInterval(function() {
+    S.push();
+    if (!app.tod.spinning) clearInterval(_todSpinPushInterval);
+  }, 80);
+
   requestAnimationFrame(frame);
 }
 
