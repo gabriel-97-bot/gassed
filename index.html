@@ -7570,6 +7570,9 @@ const S = {
             html: el.innerHTML,
           };
         })(),
+        gassedIntro: {
+          show: document.getElementById('gassed-intro')?.classList.contains('show') ?? false,
+        },
       },
     };
     return st;
@@ -7687,6 +7690,10 @@ const S = {
     if (jeoTeam && o.jeoTeam) {
       if (o.jeoTeam.show && typeof o.jeoTeam.html === 'string') jeoTeam.innerHTML = o.jeoTeam.html;
       jeoTeam.classList.toggle('show', o.jeoTeam.show);
+    }
+    const gassedIntroEl = $('gassed-intro');
+    if (gassedIntroEl && o.gassedIntro) {
+      gassedIntroEl.classList.toggle('show', o.gassedIntro.show);
     }
   },
 
