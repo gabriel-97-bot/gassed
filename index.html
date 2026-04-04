@@ -313,9 +313,10 @@
 
     /* ── Shared atoms ── */
     .screen-title {
-      font-size: 1.95rem; font-weight: 800;
-      letter-spacing: 2px; text-transform: uppercase;
-      color: var(--text); margin-bottom: 4px; text-align: center;
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 0.95rem; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(239,159,39,0.6); margin-bottom: 4px; text-align: center;
       text-shadow: 0 0 40px rgba(201,168,76,0.22);
       width: 100%;
     }
@@ -646,7 +647,7 @@
       padding: 10px 12px 10px; border-radius: 14px; gap: 4px;
     }
     .home-game-btn.hgb-small .home-game-btn-icon { font-size: 1.3rem; }
-    .home-game-btn.hgb-small .home-game-btn-title { font-size: 3.1vw; white-space: nowrap; }
+    .home-game-btn.hgb-small .home-game-btn-title { font-size: 1.2rem; white-space: nowrap; }
     .home-game-btn.hgb-tod::before    { background: linear-gradient(90deg,var(--red),var(--navy)); }
     .home-game-btn.hgb-trivia::before { background: var(--gold); }
     .home-game-btn.hgb-horse::before  { background: linear-gradient(90deg,var(--gold),#002868); }
@@ -701,57 +702,55 @@
     #gassed-sub-next.visible { display: block; }
     #gassed-sub-next:active { transform: translateX(-50%) scale(0.97); }
 
-    /* ── Screen: Gassed (main game) ── */
-    #screen-gassed { gap: 0; padding: 72px 16px 16px; justify-content: flex-start; }
-    .gs-card {
-      flex: 1; width: 100%;
-      max-height: calc(100dvh - 220px);
-      background: var(--surface);
-      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
-      border: 1.5px solid var(--border-hi); border-radius: 24px;
-      padding: 0 22px 24px;
+    /* ── Screen: Gassed (main game) — landscape-first Picolo-style layout ── */
+    #screen-gassed {
       display: flex; flex-direction: column;
-      align-items: center; text-align: center; gap: 12px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-      margin-bottom: 20px; overflow: hidden;
+      padding: 48px 0 0; gap: 0; justify-content: flex-start;
+      background: #1a1a1a;
     }
+    /* Top bar: player info */
     .gs-player-header {
-      width: 100%; text-align: center;
-      padding: 20px 0 16px; border-bottom: none;
+      flex-shrink: 0; width: 100%; height: 40px;
+      display: flex; flex-direction: row; align-items: center;
+      justify-content: center; gap: 10px; padding: 0 20px;
     }
-    .gs-turn-label {
-      font-family: 'Boogaloo', sans-serif;
-      color: rgba(239,159,39,0.6); font-size: 1rem; font-weight: 400;
-      text-transform: uppercase; letter-spacing: 4px; margin-bottom: 2px;
-    }
+    .gs-turn-label { display: none; }
     .gs-player-name {
       font-family: 'Boogaloo', sans-serif;
-      color: #EF9F27; font-size: clamp(2rem, 9vw, 3.2rem); font-weight: 400;
-      text-transform: uppercase; letter-spacing: 4px; line-height: 1;
-      filter: drop-shadow(0 2px 12px rgba(239,159,39,0.55));
+      color: rgba(239,159,39,0.6); font-size: 0.95rem; font-weight: 400;
+      text-transform: uppercase; letter-spacing: 3px; line-height: 1;
     }
-    .gs-card-divider {
-      width: calc(100% + 44px); height: 1px;
-      background: var(--border-hi); flex-shrink: 0;
+    /* Challenge content area — no card chrome */
+    .gs-card {
+      flex: 1; width: 100%; max-height: none; margin: 0;
+      background: transparent; border: none; border-radius: 0; box-shadow: none;
+      padding: 12px 24px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; gap: 10px; overflow: hidden;
     }
+    /* Group challenges: full height (no top bar) */
+    #screen-gassed:has(#gs-card.gs-card--group) .gs-player-header,
+    #screen-gassed:has(#gs-card.gs-card--nhie) .gs-player-header { display: none; }
     .gs-type-badge { display: none; }
-    /* Hide player name + divider for pure group challenges */
-    .gs-card--group .gs-player-header,
-    .gs-card--group .gs-card-divider { display: none; }
-    /* Type-header cards: repurpose player header for type label — divider stays visible */
     .gs-main-icon { display: none; }
     .gs-nhie-prefix {
-      color: rgba(255,255,255,0.55); font-size: 0.95rem; font-weight: 700;
-      letter-spacing: 0.5px;
+      font-family: 'Boogaloo', sans-serif;
+      color: rgba(239,159,39,0.6); font-size: 0.95rem; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+      margin-bottom: -4px;
     }
     .gs-main-text {
-      color: #fff; font-size: 1.65rem; font-weight: 800;
-      line-height: 1.3; max-width: 320px;
+      font-family: 'Boogaloo', sans-serif;
+      color: #EF9F27; font-size: 2.2rem; font-weight: 400;
+      line-height: 1.2; max-width: 90%;
     }
     .gs-sub-text {
       color: rgba(255,255,255,0.65); font-size: 1rem;
-      line-height: 1.5; max-width: 300px;
+      line-height: 1.45; max-width: 85%;
     }
+    /* Gassed is tap-to-advance — make whole screen feel clickable */
+    #screen-gassed { cursor: pointer; }
     .gs-mini-card {
       width: 90px; height: 126px; border-radius: 10px;
       overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,0.5);
@@ -878,21 +877,18 @@
     }
     .ring-top {
       display: flex; flex-direction: column; align-items: center; gap: 6px;
-      background: rgba(0,0,0,0.08);
-      border-radius: 18px; padding: 12px 28px 14px;
-      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255,140,0,0.18);
+      background: transparent;
+      border-radius: 18px; padding: 8px 28px 10px;
       margin-bottom: 10px; width: 100%;
-      box-shadow: none;
     }
     .ring-title-row {
       display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center;
     }
     .ring-title {
-      font-size: clamp(1.4rem,3.5vh,2.4rem);
-      letter-spacing: 4px; text-transform: uppercase; color: #ffab30;
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 0.95rem; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase; color: rgba(239,159,39,0.6);
       white-space: nowrap;
-      text-shadow: 0 0 20px rgba(255,120,0,0.95), 0 1px 0 rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,0.9);
     }
     #mute-btn {
       background: rgba(0,0,0,0.3); border: 1px solid rgba(255,140,0,0.3);
@@ -908,12 +904,11 @@
       padding: 20px 0 8px;
     }
     .gassed-player-banner.visible { display: block; }
-    .gassed-player-banner .gpb-label {
-      color: rgba(255,255,255,0.45); font-size: 0.65rem; font-weight: 700;
-      letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 2px;
-    }
+    .gassed-player-banner .gpb-label { display: none; }
     .gassed-player-banner .gpb-name {
-      color: #fff; font-size: 1.9rem; font-weight: 900; line-height: 1.1;
+      font-family: 'Boogaloo', sans-serif;
+      color: rgba(239,159,39,0.6); font-size: 0.95rem; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase; line-height: 1.1;
     }
     .kings-row { display: flex; gap: 12px; }
     .king-cup {
@@ -1447,7 +1442,7 @@
     /* ── Responsive ── */
     @media (max-width: 390px) {
       .game-card-title { font-size: 0.68rem; }
-      .screen-title { font-size: 1.6rem; }
+      .screen-title { font-size: 0.85rem; }
     }
     @media (max-height: 700px) {
       .screen { padding-top: 58px; }
@@ -1567,6 +1562,36 @@
     #session-join-status.err { color: #ff8080; }
     #session-code-input { flex: 1; }
 
+    /* ── Setup-screen join section ── */
+    #setup-join-area {
+      width: 100%; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      margin-top: 16px; padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    #setup-join-label {
+      font-size: 0.72rem; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase;
+    }
+    #setup-code-input {
+      flex: 1; padding: 10px 12px; font-size: 0.95rem; font-weight: 700;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 12px; color: #fff; outline: none;
+      letter-spacing: 3px; text-transform: uppercase; text-align: center;
+      transition: border-color 0.2s;
+    }
+    #setup-code-input::placeholder { color: rgba(255,255,255,0.35); letter-spacing: 0; font-weight: 400; text-transform: none; font-size: 0.82rem; }
+    #setup-code-input.error { border-color: rgba(239,43,45,0.7); animation: shake 0.3s; }
+    #setup-join-btn {
+      padding: 10px 16px; border-radius: 12px; border: none; cursor: pointer;
+      background: rgba(255,255,255,0.12); color: #fff; font-size: 0.88rem; font-weight: 600;
+      transition: background 0.2s;
+    }
+    #setup-join-btn:active { background: rgba(255,255,255,0.2); }
+    #setup-join-status {
+      font-size: 0.72rem; min-height: 16px; text-align: center; color: rgba(238,242,255,0.55);
+    }
+    #setup-join-status.ok  { color: #7dffba; }
+    #setup-join-status.err { color: #ff8080; }
+
     /* ── Joiner-modus: deaktiver alle interaksjoner ── */
     body.joiner-mode button:not(#session-badge),
     body.joiner-mode input,
@@ -1584,7 +1609,7 @@
 
       /* ── Generelt ── */
       .screen       { padding: 36px 12px 8px; }
-      .screen-title { font-size: 1.2rem; margin-bottom: 2px; }
+      .screen-title { font-size: 0.95rem; margin-bottom: 2px; }
       .back-btn     { top: 8px; left: 10px; }
       #settings-btn { top: 8px; right: 10px; }
 
@@ -1619,19 +1644,18 @@
       }
       .rule-panel { grid-area: rules; align-self: center; font-size: 0.95rem; }
 
-      /* ── Lykkehjulet: hjul til venstre, snurr-knapp til høyre ── */
+      /* ── Lykkehjulet: hjul sentrert, snurr-knapp ved siden ── */
       #screen-wheel {
-        display: grid;
-        grid-template-areas: "title  title" "wheel  button" "result result";
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto 1fr auto;
-        padding: 36px 12px 8px; gap: 8px;
-        overflow: hidden; align-items: start;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: flex-start;
+        padding: 36px 12px 8px; gap: 6px; overflow: hidden;
       }
-      #screen-wheel .screen-title { grid-area: title; text-align: center; justify-self: center; }
-      .wheel-stage   { grid-area: wheel; width: min(calc(100dvh - 76px), 46vw); align-self: center; }
-      .wheel-spin-btn  { grid-area: button; align-self: center; justify-self: center; }
-      #wheel-result-card { grid-area: result; }
+      .wheel-main {
+        flex: 1; flex-direction: row; align-items: center;
+        justify-content: center; gap: 20px;
+      }
+      .wheel-stage { width: min(calc(100dvh - 76px), 44vw); }
+      .wheel-spin-btn { width: 68px; height: 68px; font-size: 0.68rem; }
 
       /* ── Nøtt eller Sannhet: hjul til venstre, kontroller til høyre ── */
       #screen-tod {
@@ -1658,23 +1682,11 @@
       .tod-question-text { font-size: 1.1rem; padding: 8px 16px 6px; }
       .tod-action-btns { padding: 8px 16px 12px; }
 
-      /* ── Gassed: kompakt header øverst, tekst sentrert ── */
-      #screen-gassed { padding: 36px 12px 8px; gap: 6px; position: relative; overflow: hidden; }
-      .gs-card {
-        flex: 1; max-height: none; padding: 6px 16px 8px;
-        margin-bottom: 0; gap: 4px;
-      }
-      .gs-player-header { padding: 4px 0 4px; }
-      .gs-turn-label  { font-size: 0.72rem; letter-spacing: 2px; margin-bottom: 0; }
-      .gs-player-name { font-size: 1.4rem; letter-spacing: 2px; line-height: 1; filter: none; }
-      .gs-card-divider { display: none; }
-      .gs-main-text   { font-size: 1.5rem; max-width: 100%; line-height: 1.25; }
-      .gs-sub-text    { font-size: 0.88rem; }
-      /* Neste-knapp kompakt, høyre side */
-      #screen-gassed > .btn-primary {
-        width: auto; align-self: flex-end; padding: 10px 22px; font-size: 0.95rem;
-      }
-
+      /* ── Gassed: real mobile landscape — scale up fonts ── */
+      #screen-gassed { background: #1a1a1a; padding-top: 36px; }
+      .gs-player-name { font-size: 0.95rem; }
+      .gs-main-text   { font-size: clamp(2rem, 5.5vw, 3.5rem); }
+      .gs-sub-text    { font-size: clamp(0.9rem, 1.8vw, 1.1rem); }
       /* ── Jeg har aldri ── */
       #screen-waterfall { padding: 36px 12px 8px; gap: 10px; }
       .wf-challenge-text { font-size: 1.4rem; line-height: 1.4; min-height: auto; }
@@ -2399,7 +2411,14 @@
     .trivia-done-sub { font-size: 0.9rem; color: var(--muted); }
 
     /* ── Lykkehjulet ── */
-    #screen-wheel { gap: 10px; padding: 64px 4px 10px; overflow: hidden; align-items: center; }
+    #screen-wheel {
+      gap: 8px; padding: 64px 4px 10px; overflow: hidden;
+      align-items: center;
+    }
+    .wheel-main {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 10px; flex: 1; justify-content: center;
+    }
     .wheel-stage { width: min(420px, calc(100vw - 8px)); aspect-ratio: 1; flex-shrink: 0; }
     .wheel-stage canvas { width: 100%; height: 100%; display: block; }
     .wheel-spin-btn {
@@ -2417,24 +2436,29 @@
       0%,100% { box-shadow: 0 0 0 4px rgba(239,43,45,0.15), 0 0 20px rgba(239,43,45,0.35); }
       50%      { box-shadow: 0 0 0 8px rgba(239,43,45,0.1), 0 0 44px rgba(239,43,45,0.75), 0 0 60px rgba(239,43,45,0.15); }
     }
+    /* Result overlay — glass rectangle over the wheel */
     .wheel-result-card {
-      padding: 20px 22px; width: 100%;
-      background: var(--surface);
-      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
-      border: 1px solid rgba(201,168,76,0.35);
-      border-radius: 20px; text-align: center; flex-shrink: 0;
-      animation: wResultPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
-      box-shadow: 0 8px 36px rgba(201,168,76,0.16), inset 0 1px 0 rgba(201,168,76,0.1);
-      position: relative; overflow: hidden;
+      position: absolute; inset: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      cursor: pointer;
+      animation: wResultFade 0.25s ease;
     }
-    .wheel-result-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, #EF2B2D, #C9A84C, #002868);
+    @keyframes wResultFade { from { opacity: 0; } to { opacity: 1; } }
+    .wheel-result-glass {
+      background: rgba(255,255,255,0.09);
+      backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 28px; padding: 32px 40px;
+      text-align: center; max-width: min(340px, 85%);
+      box-shadow: 0 8px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+      animation: wResultPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
     }
     @keyframes wResultPop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .wheel-result-player { font-size: 1.6rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-    .wheel-result-challenge { font-size: 1.2rem; font-weight: 700; color: #C9A84C; margin-bottom: 6px; }
-    .wheel-result-desc { font-size: 1rem; font-weight: 500; color: var(--text); line-height: 1.5; text-align: center; }
+    .wheel-result-player { font-family: 'Boogaloo', sans-serif; font-size: 1.8rem; color: #EF9F27; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+    .wheel-result-desc { font-size: 1.1rem; font-weight: 600; color: #fff; line-height: 1.5; text-align: center; }
+    .wheel-result-hint { margin-top: 16px; font-size: 0.72rem; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; }
 
     /* ══════════════════════════════════════════════════
        DESKTOP: iPhone 15 Pro preview frame
@@ -2599,7 +2623,7 @@
       }
       /* ── Game screen layouts inside landscape frame (682×314px) ── */
       body.game-active .screen      { padding: 36px 12px 8px; }
-      body.game-active .screen-title { font-size: 1.1rem; margin-bottom: 2px; }
+      body.game-active .screen-title { font-size: 0.95rem; margin-bottom: 2px; }
       body.game-active .back-btn    { top: 8px; left: 10px; }
       body.game-active #settings-btn { top: 8px; right: 10px; }
       body.game-active #screen-home { padding-top: 36px; }
@@ -2627,19 +2651,16 @@
       body.game-active .card-area, body.game-active .card { width: 105px; height: 148px; }
       body.game-active .rule-panel { grid-area: rules; align-self: center; font-size: 0.88rem; }
 
-      /* Lykkehjulet: hjul venstre, snurr-knapp høyre */
+      /* Lykkehjulet: hjul sentrert, snurr-knapp ved siden */
       body.game-active #screen-wheel {
-        display: grid;
-        grid-template-areas: "title title" "wheel button" "result result";
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto 1fr auto;
-        padding: 36px 12px 8px; gap: 8px;
-        overflow: hidden; align-items: start;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: flex-start;
+        padding: 36px 12px 8px; gap: 6px; overflow: hidden;
       }
-      body.game-active #screen-wheel .screen-title { grid-area: title; text-align: center; justify-self: center; }
-      body.game-active .wheel-stage    { grid-area: wheel; width: 220px; align-self: center; }
-      body.game-active .wheel-spin-btn { grid-area: button; align-self: center; justify-self: center; width: 60px; height: 60px; font-size: 0.6rem; }
-      body.game-active #wheel-result-card { grid-area: result; }
+      body.game-active #screen-wheel .screen-title { text-align: center; }
+      body.game-active .wheel-main { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 16px; }
+      body.game-active .wheel-stage    { width: 220px; align-self: center; }
+      body.game-active .wheel-spin-btn { width: 58px; height: 58px; font-size: 0.58rem; }
 
       /* Nøtt eller Sannhet: hjul venstre, kontroller høyre */
       body.game-active #screen-tod {
@@ -2664,24 +2685,33 @@
       body.game-active .tod-question-text { font-size: 1rem; padding: 6px 14px 4px; }
       body.game-active .tod-action-btns { padding: 6px 14px 10px; }
 
-      /* Gassed: kompakt header øverst, tekst sentrert */
-      body.game-active #screen-gassed {
-        padding: 36px 12px 8px; gap: 6px; position: relative; overflow: hidden;
-      }
-      body.game-active .gs-card {
-        flex: 1; max-height: none; padding: 6px 16px 8px; margin-bottom: 0; gap: 4px;
-      }
-      body.game-active .gs-player-header { padding: 4px 0 4px; }
-      body.game-active .gs-turn-label    { font-size: 0.68rem; letter-spacing: 2px; margin-bottom: 0; }
-      body.game-active .gs-player-name   { font-size: 1.25rem; letter-spacing: 2px; line-height: 1; filter: none; }
-      body.game-active .gs-card-divider  { display: none; }
-      body.game-active .gs-main-text     { font-size: 1.35rem; max-width: 100%; line-height: 1.2; }
-      body.game-active .gs-sub-text      { font-size: 0.82rem; }
-      /* Neste-knapp kompakt, høyre kant */
-      body.game-active #screen-gassed > .btn-primary {
-        width: auto; align-self: flex-end; padding: 9px 18px; font-size: 0.88rem;
-      }
+      /* Gassed: desktop phone frame (682×314) — tighter sizes */
+      body.game-active #screen-gassed { background: #1a1a1a; padding-top: 36px; }
+      body.game-active .gs-player-header { height: 48px; }
+      body.game-active .gs-player-name   { font-size: 0.95rem; }
+      body.game-active .gs-main-text     { font-size: 1.9rem; }
+      body.game-active .gs-sub-text      { font-size: 0.88rem; }
+      /* Hide rotate-prompt in desktop frame — visual landscape handled by frame */
+      body.game-active #rotate-prompt { display: none; }
 
+    }
+
+    /* ── Layer 2: CSS rotate fallback for Safari iPhone ──
+       When game is active and device is held portrait, rotate the frame
+       90° so content visually appears landscape. */
+    @media (max-width: 539px) {
+      body.game-active.device-portrait .phone-frame {
+        position: fixed;
+        width: 100dvw;
+        height: 100dvh;
+        top: calc(50dvh - 50dvw);
+        left: calc(50dvw - 50dvh);
+        transform: rotate(-90deg);
+        transform-origin: center center;
+        overflow: hidden;
+      }
+      /* CSS rotate handles the orientation — hide the prompt overlay */
+      body.game-active.device-portrait #rotate-prompt { display: none; }
     }
   </style>
 </head>
@@ -2861,6 +2891,17 @@
     </div>
 
     <button class="btn-primary" id="start-btn" onclick="goToHome()" disabled>Klar</button>
+
+    <div id="setup-join-area">
+      <div id="setup-join-label">Bli med i sesjon</div>
+      <div class="session-row">
+        <input id="setup-code-input" type="text" maxlength="5" placeholder="Skriv kode"
+               oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+               onkeydown="if(event.key==='Enter')setupSessionJoin()" />
+        <button id="setup-join-btn" onclick="setupSessionJoin()">Bli med →</button>
+      </div>
+      <div id="setup-join-status"></div>
+    </div>
 
   </div>
 
@@ -3052,12 +3093,19 @@
   <!-- Screen: Lykkehjulet -->
   <div class="screen" id="screen-wheel">
     <div class="screen-title" data-t="wheel.title">🎡 Lykkehjulet</div>
-    <div class="wheel-stage">
-      <canvas id="wheel-canvas" width="320" height="320"></canvas>
+    <div class="wheel-main">
+      <div class="wheel-stage">
+        <canvas id="wheel-canvas" width="320" height="320"></canvas>
+      </div>
+      <button class="wheel-spin-btn" id="wheel-spin-btn" data-t="wheel.spinBtn" onclick="spinWheels()">SNURR!</button>
     </div>
-    <button class="wheel-spin-btn" id="wheel-spin-btn" data-t="wheel.spinBtn" onclick="spinWheels()">SNURR!</button>
-    <div id="wheel-result-card" class="wheel-result-card" style="display:none">
-      <div class="wheel-result-desc" id="wheel-result-desc"></div>
+    <!-- Result overlay: tap to dismiss -->
+    <div id="wheel-result-card" class="wheel-result-card" style="display:none" onclick="this.style.display='none'">
+      <div class="wheel-result-glass">
+        <div class="wheel-result-player" id="wheel-result-player"></div>
+        <div class="wheel-result-desc" id="wheel-result-desc"></div>
+        <div class="wheel-result-hint">Trykk for å fortsette</div>
+      </div>
     </div>
   </div>
 
@@ -3152,14 +3200,15 @@
   <button id="gassed-sub-next" onclick="gassedReturnFromSub()">Neste spiller →</button>
 
   <!-- Screen: Gassed (main combined game) -->
-  <div class="screen" id="screen-gassed">
+  <div class="screen" id="screen-gassed" onclick="if(!event.target.closest('button'))gassedNext()">
+    <!-- Top bar: player info -->
+    <div class="gs-player-header">
+      <div class="gs-turn-label" id="gs-turn-label">Spiller:</div>
+      <div class="gs-player-name" id="gs-player-name"></div>
+    </div>
+
+    <!-- Challenge content area (tap anywhere to advance) -->
     <div class="gs-card" id="gs-card">
-      <div class="gs-player-header">
-        <div class="gs-turn-label" id="gs-turn-label">Spiller:</div>
-        <div class="gs-player-name" id="gs-player-name"></div>
-      </div>
-      <div class="gs-card-divider"></div>
-      <div style="flex:1"></div>
       <div class="gs-type-badge" id="gs-type-badge"></div>
       <div class="gs-main-icon" id="gs-main-icon"></div>
       <div class="gs-nhie-prefix" id="gs-nhie-prefix" style="display:none"></div>
@@ -3169,18 +3218,14 @@
         <img id="gs-mini-card-img" src="" alt="">
       </div>
       <div class="gs-countdown-wrap" id="gs-countdown-wrap" style="display:none">
-        <div class="gs-countdown-ring" id="gs-countdown-ring">
+        <div class="gs-countdown-ring" id="gs-countdown-ring" onclick="gassedStartCountdown()">
           <div class="gs-countdown-inner">
             <div class="gs-countdown-num" id="gs-countdown-num">10</div>
           </div>
         </div>
         <div class="gs-countdown-label" id="gs-countdown-label">sekunder</div>
-        <button class="gs-countdown-start-btn" id="gs-countdown-start-btn" onclick="gassedStartCountdown()" style="display:none">▶ Start nedtelling</button>
       </div>
-      <div style="flex:1"></div>
     </div>
-
-    <button class="btn-primary" onclick="gassedNext()">Neste →</button>
   </div>
 
   <!-- Gassed intro overlay -->
@@ -3309,7 +3354,6 @@
     'screen-tod':       '😏',
     'screen-trivia':    '🧠',
     'screen-horse':     '🐎',
-    'screen-wheel':     '🎡',
     'screen-jeopardy':  '🍺',
     'screen-gassed':    '🍺',
   };
@@ -3731,7 +3775,7 @@ const CONTENT = {
       "kysset en fremmed",
       "løyet for å unngå planer",
       "ghostet noen",
-      "sendt fulle meldinger til eksen min",
+      "sendt fylla meldinger til eksen min",
       "sovnet på en fest",
       "stalket eksens nye partner på nett",
       "kastet opp av å drikke for mye",
@@ -4432,7 +4476,9 @@ function showScreen(id) {
   // Landscape mode: lock orientation on game screens, portrait on home/setup
   document.body.classList.toggle('game-active', isGame);
   if (isGame) {
-    try { screen.orientation?.lock('landscape-primary').catch(() => {}); } catch(e) {}
+    // Attempt orientation lock (works on Android; silently fails on iOS Safari)
+    try { screen.orientation?.lock('landscape').catch(() => {}); } catch(e) {}
+    // CSS rotate fallback handled automatically via body.device-portrait + CSS
   } else {
     try { screen.orientation?.unlock(); } catch(e) {}
   }
@@ -4932,11 +4978,37 @@ function drawConcentricWheels(canvas, outerSegs, innerSegs, outerAngle, innerAng
     ctx.lineWidth = 1.8;
     ctx.stroke();
 
-    // Label: emoji + short text, at mid-radius of ring
+    // Label: emoji + short text, centered at mid-radius of ring
     var midR = (outerR + innerR + 3) / 2;
     var lx = cx + midR * Math.cos(mid);
     var ly = cy + midR * Math.sin(mid);
 
+    var lineH = Math.round(S * 0.034);
+    var lines = outerSegs[i].lines;
+    var emojiH = Math.round(S * 0.042);
+    var blockGap = Math.round(S * 0.008);
+    var totalH = emojiH + blockGap + lines.length * lineH;
+    var startY = -Math.round(totalH / 2);
+    var emojiCY = startY + Math.round(emojiH / 2);
+
+    // Draw emoji upright at its global canvas position (avoids iOS skewing on rotated ctx)
+    // Point (0, emojiCY) in rotated local space maps to:
+    //   gx = lx - emojiCY * sin(mid + PI/2) = lx - emojiCY * cos(mid)
+    //   gy = ly + emojiCY * cos(mid + PI/2) = ly - emojiCY * sin(mid)
+    var emojiGX = lx - emojiCY * Math.cos(mid);
+    var emojiGY = ly - emojiCY * Math.sin(mid);
+    ctx.save();
+    ctx.translate(emojiGX, emojiGY);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = 'rgba(0,0,0,0.9)';
+    ctx.shadowBlur = 4;
+    ctx.font = Math.round(S * 0.050) + 'px "Apple Color Emoji","Noto Color Emoji","Segoe UI Emoji",serif';
+    ctx.fillText(outerSegs[i].emoji, 0, 0);
+    ctx.restore();
+
+    // Draw text lines in rotated context (tangential, reads along ring)
     ctx.save();
     ctx.translate(lx, ly);
     ctx.rotate(mid + Math.PI / 2);
@@ -4944,16 +5016,10 @@ function drawConcentricWheels(canvas, outerSegs, innerSegs, outerAngle, innerAng
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#fff';
     ctx.shadowColor = 'rgba(0,0,0,0.95)';
-    ctx.shadowBlur = 5;
-    var lineH = Math.round(S * 0.034);
-    var lines = outerSegs[i].lines;
-    var totalTextH = lines.length * lineH;
-    ctx.font = Math.round(S * 0.052) + 'px serif';
-    ctx.fillText(outerSegs[i].emoji, 0, -Math.round(S * 0.024) - totalTextH / 2);
     ctx.shadowBlur = 3;
     ctx.font = 'bold ' + Math.round(S * 0.033) + 'px -apple-system,sans-serif';
     for (var li = 0; li < lines.length; li++) {
-      ctx.fillText(lines[li], 0, Math.round(S * 0.020) + li * lineH - (totalTextH - lineH) / 2);
+      ctx.fillText(lines[li], 0, startY + emojiH + blockGap + Math.round(lineH / 2) + li * lineH);
     }
     ctx.shadowBlur = 0;
     ctx.restore();
@@ -5185,14 +5251,20 @@ function spinWheels() {
 
     // Outer wheel clicks — always active until outer stops
     var oCurTick = Math.floor(app.wheel.outerAngle / oTickSize);
-    if (oCurTick !== oLastTick) { SFX.wheelTick(); oLastTick = oCurTick; }
+    var oTicked = oCurTick !== oLastTick;
+    oLastTick = oCurTick;
 
     // Inner wheel clicks — only while it's still spinning
+    var iTicked = false;
     if (!iStopped) {
       var iCurTick = Math.floor(app.wheel.innerAngle / iTickSize);
-      if (iCurTick !== iLastTick) { SFX.wheelTick(); iLastTick = iCurTick; }
+      iTicked = iCurTick !== iLastTick;
+      iLastTick = iCurTick;
       if (it >= 1) iStopped = true;
     }
+
+    // Fire at most one tick sound per frame to prevent audio overload
+    if (oTicked || iTicked) SFX.wheelTick();
 
     drawWheels();
 
@@ -5211,6 +5283,7 @@ function spinWheels() {
 function showWheelResult(playerIdx, challengeIdx) {
   SFX.wheelReveal();
   var ch = WHEEL_CHALLENGES[challengeIdx];
+  document.getElementById('wheel-result-player').textContent = app.players[playerIdx] || '';
   document.getElementById('wheel-result-desc').textContent = ch.desc || '';
   document.getElementById('wheel-result-card').style.display = '';
   if (app.gassed?.inSubGame) {
@@ -6552,6 +6625,15 @@ window.addEventListener('resize', () => {
   if (app.horse && app.horse.phase === 'racing') updateAllHorsePositions();
 });
 
+// Track portrait/landscape so CSS rotate fallback fires on game screens
+(function _trackOrientation() {
+  function update() {
+    document.body.classList.toggle('device-portrait', window.innerHeight > window.innerWidth);
+  }
+  window.addEventListener('resize', update);
+  update();
+})();
+
 // ─────────────────────────────────────────────
 // GLOBAL CLICK SOUND — spiller tap-lyd på alle knapper
 // ─────────────────────────────────────────────
@@ -6960,7 +7042,6 @@ const BORST_CHALLENGES = {
     { type:'challenge', text:'Imiter lyden av et dyr til resten gjetter riktig', sub:'Ingen gjetter → drikk 2 slurker' },
     { type:'challenge', text:'Si alfabetet baklengs så fort du kan', sub:'Tar det over 30 sek → drikk 2 slurker' },
     { type:'challenge', text:'Speil personen til venstre — kopier alle bevegelsene i 60 sekunder', sub:'Slutter du → drikk 2 slurker' },
-    { type:'challenge', text:'Ta en selfie med alle i rommet og vis den', sub:'Nekter du → drikk 3 slurker' },
     { type:'challenge', text:'Gjør 10 push-ups', sub:'Klarer du det ikke → drikk 3 slurker' },
     { type:'challenge', text:'Si 3 land som starter på bokstaven F på 10 sekunder', sub:'Klarer du det ikke → drikk 2 slurker' },
     { type:'challenge', text:'Les opp den siste meldingen du sendte til en tilfeldig kontakt', sub:'Nekter du → drikk 3 slurker' },
@@ -7073,6 +7154,7 @@ function gassedShowIntro() {
 
 function gassedIntroStart() {
   document.getElementById('gassed-intro').classList.remove('show');
+  showScreen('screen-gassed'); // enter game-mode immediately so back-btn is guarded
   startGame('gassed');
 }
 
@@ -7121,7 +7203,10 @@ function gassedTurn() {
   $('gs-mini-card').style.display = 'none';
   $('gs-nhie-prefix').style.display = 'none';
   $('gs-countdown-wrap').className = 'gs-countdown-wrap';
-  $('gs-card').classList.remove('gs-card--group', 'gs-card--type-header');
+  $('gs-card').classList.remove('gs-card--group', 'gs-card--nhie', 'gs-card--type-header');
+  $('gs-type-badge').className = 'gs-type-badge';
+  $('gs-main-text').textContent = '';
+  $('gs-sub-text').textContent = '';
 
   // Pick activity from weighted pool: 0=ring, 1=wheel, 2=nhie, 3=music, 4=borst
   if (g.typeIdx >= g.typeOrder.length) {
@@ -7154,10 +7239,6 @@ function gassedTurn() {
     return;
   }
 
-  // All card types show on the gassed screen — navigate here before updating content
-  // (must come after sub-game checks to avoid flashing stale card when returning from sub-game)
-  showScreen('screen-gassed');
-
   // ── Skål-kort hvert 20. trekk ──
   g.turnCount++;
   if (g.turnCount > 1 && g.turnCount % 20 === 0) {
@@ -7167,15 +7248,17 @@ function gassedTurn() {
       ? 'Alle fyller glasset og skåler — ingen slipper unna! 🍺'
       : 'Everyone fills their glass and cheers — no exceptions! 🍺';
     $('gs-sub-text').style.display = '';
+    showScreen('screen-gassed');
+    S.schedulePush(50);
     return;
   }
 
   if (type === 2) {
     // ── Jeg har aldri ──
+    $('gs-card').classList.add('gs-card--nhie');
     if (!(g.nhieUsed instanceof Set)) g.nhieUsed = new Set();
-    $('gs-card').classList.add('gs-card--type-header');
-    $('gs-turn-label').textContent = '';
-    $('gs-player-name').textContent = isNo ? 'Jeg har aldri' : 'Never Have I Ever';
+    $('gs-nhie-prefix').textContent = isNo ? 'Jeg har aldri' : 'Never Have I Ever';
+    $('gs-nhie-prefix').style.display = '';
     const pool = CONTENT.nhie[app.lang];
     const available = pool.map((_, i) => i).filter(i => !g.nhieUsed.has(i));
     let idx;
@@ -7238,16 +7321,21 @@ function gassedTurn() {
     $('gs-sub-text').textContent = isNo
       ? 'Klarer du det ikke innen 10 sekunder = drikk 3 slurker!'
       : 'Can\'t do it in 10 seconds = drink 3 sips!';
-    // Show countdown — player must press start
+    // Show countdown ring — tap ring to start
     $('gs-countdown-num').textContent = '10';
     const ring = $('gs-countdown-ring');
-    if (ring) ring.style.background = 'conic-gradient(#d480ff 360deg, rgba(160,0,220,0.12) 360deg)';
+    if (ring) {
+      ring.style.background = 'conic-gradient(#d480ff 360deg, rgba(160,0,220,0.12) 360deg)';
+      ring.onclick = gassedStartCountdown;
+      ring.style.cursor = 'pointer';
+    }
     const lbl = $('gs-countdown-label');
     if (lbl) lbl.textContent = isNo ? 'Trykk for å starte' : 'Tap to start';
-    const startBtn = $('gs-countdown-start-btn');
-    if (startBtn) startBtn.style.display = '';
     $('gs-countdown-wrap').style.display = '';
   }
+
+  // Safety guard: never show an empty card — skip to next turn if content is missing
+  if (!$('gs-main-text').textContent) { gassedTurn(); return; }
 
   showScreen('screen-gassed');
   S.schedulePush(50);
@@ -7268,14 +7356,14 @@ function gassedReturnFromSub() {
 
 function gassedStartCountdown() {
   const g = app.gassed;
+  if (g.countdownTimer) return; // already running
   const $ = id => document.getElementById(id);
   const isNo = app.lang !== 'en';
-  const startBtn = $('gs-countdown-start-btn');
-  if (startBtn) startBtn.style.display = 'none';
+  const ring = $('gs-countdown-ring');
+  if (ring) { ring.onclick = null; ring.style.cursor = 'default'; }
   const lbl = $('gs-countdown-label');
   if (lbl) lbl.textContent = isNo ? 'sekunder' : 'seconds';
   let count = 10;
-  const ring = $('gs-countdown-ring');
   g.countdownTimer = setInterval(() => {
     count--;
     const numEl = $('gs-countdown-num');
@@ -7665,6 +7753,15 @@ window.sessionCreate = function() {
 window.sessionJoin = function() {
   const input  = document.getElementById('session-code-input');
   const status = document.getElementById('session-join-status');
+  const code   = (input?.value ?? '').trim();
+  if (!S.joinRoom(code, status)) {
+    if (input) { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 1200); }
+  }
+};
+
+window.setupSessionJoin = function() {
+  const input  = document.getElementById('setup-code-input');
+  const status = document.getElementById('setup-join-status');
   const code   = (input?.value ?? '').trim();
   if (!S.joinRoom(code, status)) {
     if (input) { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 1200); }
