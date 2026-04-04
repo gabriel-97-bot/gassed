@@ -661,6 +661,32 @@
     }
     #session-share-btn-home:active { border-color: rgba(255,255,255,0.7); color: #fff; }
 
+    /* ── Rotate prompt (portrait warning inside a game on mobile) ── */
+    #rotate-prompt {
+      display: none;
+      position: fixed; inset: 0; z-index: 9000;
+      background: var(--bg);
+      flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    }
+    /* Show only in portrait orientation when game is active (real mobile) */
+    @media (orientation: portrait) {
+      body.game-active #rotate-prompt { display: flex; }
+    }
+    .rotate-icon {
+      font-size: 4rem; animation: rotateSpin 2s ease-in-out infinite;
+    }
+    @keyframes rotateSpin {
+      0%   { transform: rotate(0deg); }
+      40%  { transform: rotate(90deg); }
+      60%  { transform: rotate(90deg); }
+      100% { transform: rotate(90deg); }
+    }
+    .rotate-text {
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 1.8rem; letter-spacing: 3px; text-transform: uppercase;
+      color: #EF9F27;
+    }
+
     /* ── Gassed sub-game return button (floats over ring/wheel screen) ── */
     #gassed-sub-next {
       display: none; position: absolute;
@@ -2466,6 +2492,74 @@
         body { padding-top: 12px; }
       }
 
+      /* ── Landscape game mode — phone frame rotates sideways ── */
+      body.game-active {
+        padding: 32px;
+        align-items: center;
+        justify-content: center;
+      }
+      /* Outer bezel — landscape: 852+28 wide × 393+28 tall */
+      body.game-active .phone-outer {
+        width: 704px;          /* (852+28) × 0.8 */
+        border-radius: 46px;
+        transform: none;
+        box-shadow:
+          0 0 0 1px #3a3a3c,
+          0 0 0 3px #0d0d0d,
+          0 40px 80px rgba(0,0,0,0.92),
+          0 12px 32px rgba(0,0,0,0.6),
+          inset 0 1px 0 rgba(255,255,255,0.07);
+      }
+      /* Volume buttons — now on top */
+      body.game-active .phone-outer::before {
+        top: -4px; left: 102px;
+        width: 24px; height: 4px;
+        border-radius: 2px 2px 0 0;
+        box-shadow: 38px 0 0 #2c2c2e, 72px 0 0 #2c2c2e;
+      }
+      /* Power button — now on bottom */
+      body.game-active .phone-outer::after {
+        bottom: -4px; top: auto;
+        right: 128px; left: auto;
+        width: 64px; height: 4px;
+        border-radius: 0 0 2px 2px;
+      }
+      /* Screen area — landscape: 852×393 at 0.8 scale */
+      body.game-active .phone-frame {
+        width: 682px;
+        height: 314px;
+        border-radius: 34px;
+      }
+      /* Dynamic Island — left side in landscape */
+      body.game-active .phone-frame::before {
+        top: 50%; left: 10px; bottom: auto;
+        transform: translateY(-50%);
+        width: 30px; height: 101px;
+        border-radius: 16px;
+      }
+      /* Home indicator — right side */
+      body.game-active .phone-frame::after {
+        top: 50%; right: 6px; bottom: auto; left: auto;
+        transform: translateY(-50%);
+        width: 4px; height: 107px;
+      }
+      /* Game screen layouts inside landscape frame */
+      body.game-active .screen         { padding: 36px 12px 8px; }
+      body.game-active #screen-home    { padding-top: 36px; }
+      body.game-active #screen-ring    { padding-top: 36px; }
+      body.game-active #screen-horse   { padding-top: 36px; overflow-y: auto; }
+      body.game-active #screen-wheel   { padding: 36px 4px 6px; gap: 4px; overflow-y: auto; }
+      body.game-active #screen-tod     { padding: 36px 4px 6px; gap: 4px; overflow-y: auto; }
+      body.game-active #screen-waterfall { padding-top: 36px; }
+      body.game-active #screen-trivia  { padding-top: 36px; }
+      body.game-active #screen-gassed  { padding: 36px 12px 8px; }
+      body.game-active .screen-title   { font-size: 1.2rem; margin-bottom: 0; }
+      body.game-active .back-btn       { top: 8px; left: 10px; }
+      body.game-active #settings-btn   { top: 8px; right: 10px; }
+      body.game-active .wheel-stage    { width: min(240px, calc(100% - 8px)); }
+      body.game-active .tod-wheel-stage { width: min(210px, calc(100% - 8px)); }
+      body.game-active .gs-card        { max-height: calc(314px - 84px); }
+
     }
   </style>
 </head>
@@ -2924,6 +3018,12 @@
     <div class="jeo-header" data-t="jeopardy.title">🍺 Jeopardy</div>
     <div id="jeo-board-wrap"></div>
     <div class="jeo-progress" id="jeo-progress"></div>
+  </div>
+
+  <!-- Rotate prompt: shown in portrait when inside a game on real mobile -->
+  <div id="rotate-prompt">
+    <div class="rotate-icon">⟳</div>
+    <div class="rotate-text">Snu telefonen</div>
   </div>
 
   <!-- Gassed: floating return button shown during ring/wheel sub-game -->
@@ -4206,6 +4306,14 @@ function showScreen(id) {
   // Corks only on home/setup; game screens get their own emoji
   if (window.corkCanvasHide) window.corkCanvasHide(isGame);
   if (window.setFloatingEmoji) window.setFloatingEmoji(id);
+
+  // Landscape mode: lock orientation on game screens, portrait on home/setup
+  document.body.classList.toggle('game-active', isGame);
+  if (isGame) {
+    try { screen.orientation?.lock('landscape-primary').catch(() => {}); } catch(e) {}
+  } else {
+    try { screen.orientation?.unlock(); } catch(e) {}
+  }
 
 }
 
