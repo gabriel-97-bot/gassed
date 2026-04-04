@@ -1588,11 +1588,10 @@
     #setup-join-status.ok  { color: #7dffba; }
     #setup-join-status.err { color: #ff8080; }
 
-    /* ── Joiner-modus: deaktiver alle interaksjoner ── */
-    body.joiner-mode #app,
-    body.joiner-mode #settings-btn,
-    body.joiner-mode #back-btn { pointer-events: none !important; }
-    body.joiner-mode #session-badge { pointer-events: auto !important; opacity: 1; }
+    /* ── Joiner-modus: deaktiver ALLE interaksjoner ── */
+    body.joiner-mode * { pointer-events: none !important; }
+    body.joiner-mode #session-badge,
+    body.joiner-mode #session-badge * { pointer-events: auto !important; }
     body.joiner-mode #session-join-area,
     body.joiner-mode .session-share-btn { display: none !important; }
 
