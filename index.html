@@ -7249,89 +7249,93 @@ function gassedTurn() {
     return;
   }
 
-  if (type === 2) {
-    // ── Jeg har aldri ──
-    $('gs-card').classList.add('gs-card--nhie');
-    if (!(g.nhieUsed instanceof Set)) g.nhieUsed = new Set();
-    $('gs-nhie-prefix').textContent = isNo ? 'Jeg har aldri' : 'Never Have I Ever';
-    $('gs-nhie-prefix').style.display = '';
-    const pool = CONTENT.nhie[app.lang];
-    const available = pool.map((_, i) => i).filter(i => !g.nhieUsed.has(i));
-    let idx;
-    if (available.length === 0) { g.nhieUsed = new Set(); idx = Math.floor(Math.random() * pool.length); }
-    else idx = available[Math.floor(Math.random() * available.length)];
-    g.nhieUsed.add(idx);
-    $('gs-main-text').textContent = interpolate(pool[idx], playerName);
-    $('gs-sub-text').textContent = isNo
-      ? '🍺 De som har gjort det — drikk!'
-      : '🍺 Those who have done it — drink!';
+  try {
+    if (type === 2) {
+      // ── Jeg har aldri ──
+      $('gs-card').classList.add('gs-card--nhie');
+      if (!(g.nhieUsed instanceof Set)) g.nhieUsed = new Set();
+      $('gs-nhie-prefix').textContent = isNo ? 'Jeg har aldri' : 'Never Have I Ever';
+      $('gs-nhie-prefix').style.display = '';
+      const pool = CONTENT.nhie[app.lang];
+      const available = pool.map((_, i) => i).filter(i => !g.nhieUsed.has(i));
+      let idx;
+      if (available.length === 0) { g.nhieUsed = new Set(); idx = Math.floor(Math.random() * pool.length); }
+      else idx = available[Math.floor(Math.random() * available.length)];
+      g.nhieUsed.add(idx);
+      $('gs-main-text').textContent = interpolate(pool[idx], playerName);
+      $('gs-sub-text').textContent = isNo
+        ? '🍺 De som har gjort det — drikk!'
+        : '🍺 Those who have done it — drink!';
 
-  } else if (type === 4) {
-    // ── Børst-utfordring ──
-    if (!(g.borstUsed instanceof Set)) g.borstUsed = new Set();
-    const bpool = BORST_CHALLENGES[app.lang] || BORST_CHALLENGES.no;
-    const bavail = bpool.map((_, i) => i).filter(i => !g.borstUsed.has(i));
-    let bidx;
-    if (bavail.length === 0) { g.borstUsed = new Set(); bidx = Math.floor(Math.random() * bpool.length); }
-    else bidx = bavail[Math.floor(Math.random() * bavail.length)];
-    g.borstUsed.add(bidx);
-    const bc = bpool[bidx];
-    // Types shown with a prominent type label in the player-header slot
-    const TYPE_HEADER_BTYPES = { dilemma: true, category: true, regel: true };
-    // Types that hide the player header entirely
-    const GROUP_BTYPES = new Set(['mostlikely', 'drikkif', 'gruppelek']);
-    if (GROUP_BTYPES.has(bc.type)) {
-      $('gs-card').classList.add('gs-card--group');
-    } else if (TYPE_HEADER_BTYPES[bc.type]) {
-      $('gs-card').classList.add('gs-card--type-header');
-      $('gs-turn-label').textContent = '';
-      const typeHeaders = {
-        dilemma:  isNo ? '👍 Tommel opp  /  👎 Tommel ned' : '👍 Thumbs up  /  👎 Thumbs down',
-        category: isNo ? 'Kategori' : 'Category',
-        regel:    isNo ? 'Regel' : 'Rule',
-      };
-      $('gs-player-name').textContent = typeHeaders[bc.type];
-    }
-    // Strip "Kategorien er: " prefix from category card text
-    let cardText = interpolate(bc.text, playerName).replace(/\[playerName\]/g, playerName || '');
-    if (bc.type === 'category') cardText = cardText.replace(/^Kategorien er:\s*/i, '');
-    $('gs-main-text').textContent = cardText;
-    $('gs-sub-text').textContent = bc.type === 'dilemma'
-      ? (isNo ? '🍺 De i undertall drikker 2 slurker!' : '🍺 The minority drinks 2 sips!')
-      : bc.sub;
+    } else if (type === 4) {
+      // ── Børst-utfordring ──
+      if (!(g.borstUsed instanceof Set)) g.borstUsed = new Set();
+      const bpool = BORST_CHALLENGES[app.lang] || BORST_CHALLENGES.no;
+      const bavail = bpool.map((_, i) => i).filter(i => !g.borstUsed.has(i));
+      let bidx;
+      if (bavail.length === 0) { g.borstUsed = new Set(); bidx = Math.floor(Math.random() * bpool.length); }
+      else bidx = bavail[Math.floor(Math.random() * bavail.length)];
+      g.borstUsed.add(bidx);
+      const bc = bpool[bidx];
+      // Types shown with a prominent type label in the player-header slot
+      const TYPE_HEADER_BTYPES = { dilemma: true, category: true, regel: true };
+      // Types that hide the player header entirely
+      const GROUP_BTYPES = new Set(['mostlikely', 'drikkif', 'gruppelek']);
+      if (GROUP_BTYPES.has(bc.type)) {
+        $('gs-card').classList.add('gs-card--group');
+      } else if (TYPE_HEADER_BTYPES[bc.type]) {
+        $('gs-card').classList.add('gs-card--type-header');
+        $('gs-turn-label').textContent = '';
+        const typeHeaders = {
+          dilemma:  isNo ? '👍 Tommel opp  /  👎 Tommel ned' : '👍 Thumbs up  /  👎 Thumbs down',
+          category: isNo ? 'Kategori' : 'Category',
+          regel:    isNo ? 'Regel' : 'Rule',
+        };
+        $('gs-player-name').textContent = typeHeaders[bc.type];
+      }
+      // Strip "Kategorien er: " prefix from category card text
+      let cardText = interpolate(bc.text, playerName).replace(/\[playerName\]/g, playerName || '');
+      if (bc.type === 'category') cardText = cardText.replace(/^Kategorien er:\s*/i, '');
+      $('gs-main-text').textContent = cardText;
+      $('gs-sub-text').textContent = bc.type === 'dilemma'
+        ? (isNo ? '🍺 De i undertall drikker 2 slurker!' : '🍺 The minority drinks 2 sips!')
+        : (bc.sub || '');
 
-  } else {
-    // ── Musikk-utfordring ──
-    const musicList = MUSIC_CHALLENGES[app.lang] || MUSIC_CHALLENGES.no;
-    const mi = g.musicOrder[g.musicIdx % g.musicOrder.length];
-    g.musicIdx++;
-    if (g.musicIdx >= g.musicOrder.length) {
-      g.musicOrder = shuffle([0, 1, 2]);
-      g.musicIdx = 0;
+    } else {
+      // ── Musikk-utfordring ──
+      if (!g.musicOrder?.length) { g.musicOrder = shuffle([0, 1, 2]); g.musicIdx = 0; }
+      const musicList = MUSIC_CHALLENGES[app.lang] || MUSIC_CHALLENGES.no;
+      const mi = g.musicOrder[g.musicIdx % g.musicOrder.length];
+      g.musicIdx++;
+      if (g.musicIdx >= g.musicOrder.length) { g.musicOrder = shuffle([0, 1, 2]); g.musicIdx = 0; }
+      const mc = musicList[mi];
+      if (!mc?.prompt) throw new Error('missing music prompt');
+      $('gs-type-badge').textContent = isNo ? '🎵 Musikk' : '🎵 Music';
+      $('gs-type-badge').className = 'gs-type-badge gs-type-music';
+      $('gs-main-icon').textContent = '🎵';
+      $('gs-main-text').textContent = mc.prompt;
+      $('gs-sub-text').textContent = isNo
+        ? 'Klarer du det ikke innen 10 sekunder = drikk 3 slurker!'
+        : 'Can\'t do it in 10 seconds = drink 3 sips!';
+      // Show countdown ring — tap ring to start
+      $('gs-countdown-num').textContent = '10';
+      const ring = $('gs-countdown-ring');
+      if (ring) {
+        ring.style.background = 'conic-gradient(#d480ff 360deg, rgba(160,0,220,0.12) 360deg)';
+        ring.onclick = gassedStartCountdown;
+        ring.style.cursor = 'pointer';
+      }
+      const lbl = $('gs-countdown-label');
+      if (lbl) lbl.textContent = isNo ? 'Trykk for å starte' : 'Tap to start';
+      $('gs-countdown-wrap').style.display = '';
     }
-    const mc = musicList[mi];
-    $('gs-type-badge').textContent = isNo ? '🎵 Musikk' : '🎵 Music';
-    $('gs-type-badge').className = 'gs-type-badge gs-type-music';
-    $('gs-main-icon').textContent = '🎵';
-    $('gs-main-text').textContent = mc.prompt;
-    $('gs-sub-text').textContent = isNo
-      ? 'Klarer du det ikke innen 10 sekunder = drikk 3 slurker!'
-      : 'Can\'t do it in 10 seconds = drink 3 sips!';
-    // Show countdown ring — tap ring to start
-    $('gs-countdown-num').textContent = '10';
-    const ring = $('gs-countdown-ring');
-    if (ring) {
-      ring.style.background = 'conic-gradient(#d480ff 360deg, rgba(160,0,220,0.12) 360deg)';
-      ring.onclick = gassedStartCountdown;
-      ring.style.cursor = 'pointer';
-    }
-    const lbl = $('gs-countdown-label');
-    if (lbl) lbl.textContent = isNo ? 'Trykk for å starte' : 'Tap to start';
-    $('gs-countdown-wrap').style.display = '';
+  } catch(e) {
+    // Noe gikk galt — hopp over dette kortet og prøv neste
+    $('gs-main-text').textContent = '';
   }
 
-  // Safety guard: never show an empty card — skip to next turn if content is missing
-  if (!$('gs-main-text').textContent) { gassedTurn(); return; }
+  // Safety guard: aldri vis et tomt kort — hopp til neste runde hvis innhold mangler
+  if (!$('gs-main-text').textContent?.trim()) { gassedTurn(); return; }
 
   showScreen('screen-gassed');
   S.schedulePush(50);
