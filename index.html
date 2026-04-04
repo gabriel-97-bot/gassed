@@ -7142,11 +7142,12 @@ app.gassed = { lastPlayer: -1, nhieUsed: new Set(), borstUsed: new Set(), musicO
 
 function gassedShowIntro() {
   document.getElementById('gassed-intro').classList.add('show');
+  const bb = document.getElementById('back-btn');
+  if (bb) bb.classList.remove('visible');
 }
 
 function gassedIntroStart() {
   document.getElementById('gassed-intro').classList.remove('show');
-  showScreen('screen-gassed'); // enter game-mode immediately so back-btn is guarded
   startGame('gassed');
 }
 
