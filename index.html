@@ -5227,6 +5227,10 @@ function spinWheels() {
   var oDur = 12000;  // outer (challenge) stops last — maximum suspense
   var t0 = performance.now();
 
+  // Store spin params so joiner can replay the animation locally
+  app.wheel.spinParams = { oStart, oFinal, iStart, iFinal, oDur, iDur, startedAt: Date.now() };
+  S.push();
+
   // Track segment crossings for real-time click sounds
   var oTickSize = TWO_PI / 12;  // 12 virtual pegs on outer wheel
   var iTickSize = TWO_PI / Math.max(n, 4) * 0.5;  // ticks based on inner segments
@@ -7542,6 +7546,7 @@ const S = {
         innerAngle:  app.wheel?.innerAngle  ?? 0,
         todAngle:    app.tod?.wheelAngle    ?? 0,
       },
+      wheelSpinParams: (app.wheel?.spinning && app.wheel?.spinParams) ? app.wheel.spinParams : null,
       catReveal: app.trivia?.catRevealTs
         ? { cat: app.trivia.category, ts: app.trivia.catRevealTs }
         : null,
@@ -7649,6 +7654,38 @@ const S = {
         }
         if (typeof drawTodWheel === 'function') drawTodWheel();
       }
+    }
+
+    // Lykkehjul: kjør lokal animasjon på joiner for jevn visning
+    if (st.wheelSpinParams && !app._joinerWheelAnim) {
+      const p = st.wheelSpinParams;
+      app.wheel = app.wheel || {};
+      const serverElapsed = Date.now() - p.startedAt;
+      const localT0 = performance.now() - serverElapsed;
+      app._joinerWheelAnim = true;
+      const canvas = document.getElementById('wheel-canvas');
+      if (canvas && canvas.offsetWidth > 0) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const sz = Math.round(canvas.offsetWidth * dpr);
+        if (canvas.width !== sz) { canvas.width = sz; canvas.height = sz; }
+      }
+      function joinerWheelFrame(now) {
+        if (!app._joinerWheelAnim) return;
+        const elapsed = now - localT0;
+        const ot = Math.min(elapsed / p.oDur, 1);
+        const it = Math.min(elapsed / p.iDur, 1);
+        app.wheel.outerAngle = p.oStart + (p.oFinal - p.oStart) * easeOutQuint(ot);
+        app.wheel.innerAngle = p.iStart + (p.iFinal - p.iStart) * easeOutQuint(it);
+        if (typeof drawWheels === 'function') drawWheels();
+        if (ot < 1 || it < 1) {
+          requestAnimationFrame(joinerWheelFrame);
+        } else {
+          app._joinerWheelAnim = false;
+        }
+      }
+      requestAnimationFrame(joinerWheelFrame);
+    } else if (!st.wheelSpinParams) {
+      app._joinerWheelAnim = false;
     }
 
     // Kategori-avsløring-animasjon (trivia) — timestamp-basert deduplisering
