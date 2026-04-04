@@ -5377,11 +5377,13 @@ function startGame(gameId) {
     .map(r => `<li><span class="gim-rule-icon">${r.icon}</span><span>${r.text}</span></li>`)
     .join('');
   document.getElementById('game-instructions-modal').style.display = 'flex';
+  S.schedulePush(50);
 }
 
 function dismissInstructions() {
   document.getElementById('game-instructions-modal').style.display = 'none';
   if (_gimLaunchId) { const id = _gimLaunchId; _gimLaunchId = null; launchGame(id); }
+  S.schedulePush(50);
 }
 
 function launchGame(gameId) {
