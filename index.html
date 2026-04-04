@@ -3119,7 +3119,7 @@
       <button class="wheel-spin-btn" id="wheel-spin-btn" data-t="wheel.spinBtn" onclick="spinWheels()">SNURR!</button>
     </div>
     <!-- Result overlay: tap to dismiss -->
-    <div id="wheel-result-card" class="wheel-result-card" style="display:none" onclick="this.style.display='none'">
+    <div id="wheel-result-card" class="wheel-result-card" style="display:none" onclick="app.gassed?.inSubGame ? gassedReturnFromSub() : (this.style.display='none')">
       <div class="wheel-result-glass">
         <div class="wheel-result-player" id="wheel-result-player"></div>
         <div class="wheel-result-desc" id="wheel-result-desc"></div>
@@ -5274,11 +5274,6 @@ function spinWheels() {
     }
   }
 
-  var _spinPushInterval = setInterval(function() {
-    S.push();
-    if (!app.wheel.spinning) clearInterval(_spinPushInterval);
-  }, 80);
-
   requestAnimationFrame(frame);
 }
 
@@ -5291,6 +5286,7 @@ function showWheelResult(playerIdx, challengeIdx) {
   if (app.gassed?.inSubGame) {
     document.getElementById('gassed-sub-next').classList.add('visible');
   }
+  S.push();
 }
 
 function getGameInstructions() {
@@ -7360,6 +7356,7 @@ function gassedNext() {
 }
 
 function gassedReturnFromSub() {
+  if (!app.gassed?.inSubGame) return;
   app.gassed.inSubGame = false;
   document.getElementById('gassed-sub-next').classList.remove('visible');
   document.getElementById('ring-gassed-player')?.classList.remove('visible');
