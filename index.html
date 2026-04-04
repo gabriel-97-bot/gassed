@@ -1580,13 +1580,7 @@
     }
     #setup-code-input::placeholder { color: rgba(255,255,255,0.35); letter-spacing: 0; font-weight: 400; text-transform: none; font-size: 0.82rem; }
     #setup-code-input.error { border-color: rgba(239,43,45,0.7); animation: shake 0.3s; }
-    #setup-join-btn {
-      padding: 10px 16px; border-radius: 12px; border: none; cursor: pointer;
-      background: rgba(255,255,255,0.12); color: #fff; font-size: 0.88rem; font-weight: 600;
-      transition: background 0.2s;
-    }
-    #setup-join-btn:active { background: rgba(255,255,255,0.2); }
-    #setup-join-status {
+#setup-join-status {
       font-size: 0.72rem; min-height: 16px; text-align: center; color: rgba(238,242,255,0.55);
     }
     #setup-join-status.ok  { color: #7dffba; }
@@ -2895,10 +2889,9 @@
     <div id="setup-join-area">
       <div id="setup-join-label">Bli med i sesjon</div>
       <div class="session-row">
-        <input id="setup-code-input" type="text" maxlength="5" placeholder="Skriv kode"
+        <input id="setup-code-input" type="text" maxlength="5" placeholder="Skriv kode og trykk Enter"
                oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
                onkeydown="if(event.key==='Enter')setupSessionJoin()" />
-        <button id="setup-join-btn" onclick="setupSessionJoin()">Bli med →</button>
       </div>
       <div id="setup-join-status"></div>
     </div>
