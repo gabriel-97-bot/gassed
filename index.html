@@ -7199,22 +7199,10 @@ function gassedTurn() {
     pi = candidates[Math.floor(Math.random() * candidates.length)];
   }
   g.lastPlayer = pi;
-  const playerName = players[pi];
-
-  $('gs-player-name').textContent = playerName;
-  $('gs-turn-label').textContent = isNo ? 'Spiller:' : 'Player:';
-
-  // Reset card areas
-  $('gs-countdown-wrap').style.display = 'none';
-  $('gs-mini-card').style.display = 'none';
-  $('gs-nhie-prefix').style.display = 'none';
-  $('gs-countdown-wrap').className = 'gs-countdown-wrap';
-  $('gs-card').classList.remove('gs-card--group', 'gs-card--nhie', 'gs-card--type-header');
-  $('gs-type-badge').className = 'gs-type-badge';
-  $('gs-main-text').textContent = '';
-  $('gs-sub-text').textContent = '';
+  const playerName = players[pi] || '';
 
   // Pick activity from weighted pool: 0=ring, 1=wheel, 2=nhie, 3=music, 4=borst
+  // Do this BEFORE any screen-gassed DOM access so sub-game types 0/1 skip it entirely
   if (g.typeIdx >= g.typeOrder.length) {
     g.typeOrder = shuffle([...GASSED_TYPE_POOL]);
     g.typeIdx = 0;
@@ -7232,7 +7220,7 @@ function gassedTurn() {
     initRing();
     showScreen('screen-ring');
     const ringPlayer = $('ring-gassed-player');
-    if (ringPlayer) { ringPlayer.classList.add('visible'); $('ring-gassed-player-name').textContent = playerName; }
+    if (ringPlayer) { ringPlayer.classList.add('visible'); const rpn = $('ring-gassed-player-name'); if (rpn) rpn.textContent = playerName; }
     S.schedulePush(50);
     return;
 
@@ -7244,6 +7232,18 @@ function gassedTurn() {
     S.schedulePush(50);
     return;
   }
+
+  // Reset screen-gassed card areas (only reached for types 2/3/4)
+  const _pn = $('gs-player-name'); if (_pn) _pn.textContent = playerName;
+  const _tl = $('gs-turn-label'); if (_tl) _tl.textContent = isNo ? 'Spiller:' : 'Player:';
+  const _cw = $('gs-countdown-wrap');
+  if (_cw) { _cw.style.display = 'none'; _cw.className = 'gs-countdown-wrap'; }
+  const _mc = $('gs-mini-card'); if (_mc) _mc.style.display = 'none';
+  const _np = $('gs-nhie-prefix'); if (_np) _np.style.display = 'none';
+  const _ca = $('gs-card'); if (_ca) _ca.classList.remove('gs-card--group', 'gs-card--nhie', 'gs-card--type-header');
+  const _tb = $('gs-type-badge'); if (_tb) _tb.className = 'gs-type-badge';
+  const _mt = $('gs-main-text'); if (_mt) _mt.textContent = '';
+  const _st = $('gs-sub-text'); if (_st) _st.textContent = '';
 
   // ── Skål-kort hvert 20. trekk ──
   g.turnCount++;
