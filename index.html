@@ -1587,13 +1587,9 @@
     #setup-join-status.err { color: #ff8080; }
 
     /* ── Joiner-modus: deaktiver alle interaksjoner ── */
-    body.joiner-mode button:not(#session-badge),
-    body.joiner-mode input,
-    body.joiner-mode .game-card,
-    body.joiner-mode .card-area,
-    body.joiner-mode .horse-flip-area {
-      pointer-events: none !important;
-    }
+    body.joiner-mode #app,
+    body.joiner-mode #settings-btn,
+    body.joiner-mode #back-btn { pointer-events: none !important; }
     body.joiner-mode #session-badge { pointer-events: auto !important; opacity: 1; }
     body.joiner-mode #session-join-area,
     body.joiner-mode .session-share-btn { display: none !important; }
