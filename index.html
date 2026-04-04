@@ -1582,56 +1582,110 @@
     /* ── Landscape (phone rotated) ── */
     @media (orientation: landscape) and (max-width: 932px) {
 
-      /* Generelt */
-      .screen         { padding: 40px 16px 12px; }
-      .screen-title   { font-size: 1.35rem; margin-bottom: 2px; }
-      .back-btn       { top: 8px; left: 10px; }
-      #settings-btn   { top: 8px; right: 10px; }
+      /* ── Generelt ── */
+      .screen       { padding: 36px 12px 8px; }
+      .screen-title { font-size: 1.2rem; margin-bottom: 2px; }
+      .back-btn     { top: 8px; left: 10px; }
+      #settings-btn { top: 8px; right: 10px; }
 
       /* ── Oppsett ── */
-      #screen-setup { padding-top: 40px; }
+      #screen-setup { padding-top: 36px; }
 
       /* ── Hjem ── */
-      #screen-home    { padding-top: 8px; }
-      .gassed-logo    { font-size: 2.2rem; letter-spacing: 4px; margin-bottom: 0; }
+      #screen-home { padding-top: 8px; }
+      .gassed-logo { font-size: 2.2rem; letter-spacing: 4px; margin-bottom: 0; }
       .screen-subtitle { font-size: 0.78rem; margin-bottom: 4px; }
-      .game-grid      { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
-      .game-card      { min-height: 76px; padding: 12px 8px 10px; gap: 5px; }
+      .game-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+      .game-card { min-height: 76px; padding: 12px 8px 10px; gap: 5px; }
       .game-card-icon { font-size: 1.8rem; }
 
-      /* ── Ring of Fire ── */
-      /* Tilgjengelig for kort: 100dvh - padding(52px) - ring-top(~86px) - gap(6px) ≈ 138px brukt */
-      #screen-ring  { padding-top: 40px; gap: 6px; }
-      .ring-top     { padding: 5px 14px 7px; margin-bottom: 2px; gap: 4px; }
-      .ring-stats   { font-size: 0.82rem; gap: 18px; }
-      .kings-row    { gap: 8px; }
-      .king-cup     { width: 24px; height: 28px; }
+      /* ── Ring of Fire: kort til venstre, regel-panel til høyre ── */
+      #screen-ring {
+        display: grid;
+        grid-template-areas: "top   top" "card  rules";
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
+        padding: 36px 12px 8px; gap: 8px; align-items: start;
+      }
+      .ring-top  { grid-area: top; padding: 0; margin-bottom: 0; gap: 6px; }
+      .ring-stats { font-size: 0.82rem; gap: 18px; }
+      .kings-row { gap: 8px; }
+      .king-cup  { width: 24px; height: 28px; }
       .king-cup::before { width: 16px; height: 5px; top: -5px; }
+      .card-area { grid-area: card; align-self: center; }
       .card-area, .card {
-        width:  clamp(130px, calc(100dvh - 206px), 157px);
-        height: clamp(182px, calc(100dvh - 138px), 220px);
+        width:  clamp(110px, calc(100dvh - 210px), 145px);
+        height: clamp(155px, calc(100dvh - 150px), 200px);
+      }
+      .rule-panel { grid-area: rules; align-self: center; font-size: 0.95rem; }
+
+      /* ── Lykkehjulet: hjul til venstre, snurr-knapp til høyre ── */
+      #screen-wheel {
+        display: grid;
+        grid-template-areas: "title  title" "wheel  button" "result result";
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr auto;
+        padding: 36px 12px 8px; gap: 8px;
+        overflow: hidden; align-items: start;
+      }
+      #screen-wheel .screen-title { grid-area: title; text-align: center; justify-self: center; }
+      .wheel-stage   { grid-area: wheel; width: min(calc(100dvh - 76px), 46vw); align-self: center; }
+      .wheel-spin-btn  { grid-area: button; align-self: center; justify-self: center; }
+      #wheel-result-card { grid-area: result; }
+
+      /* ── Nøtt eller Sannhet: hjul til venstre, kontroller til høyre ── */
+      #screen-tod {
+        display: grid;
+        grid-template-areas: "title  title" "wheel  right";
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
+        padding: 36px 12px 8px; gap: 8px;
+        overflow: hidden; position: relative; align-items: start;
+      }
+      #screen-tod .screen-title  { grid-area: title; text-align: center; justify-self: center; }
+      .tod-wheel-stage { grid-area: wheel; width: min(calc(100dvh - 80px), 44vw); align-self: center; }
+      .tod-player-name { grid-area: right; align-self: center; justify-self: center; font-size: 1.2rem; }
+      .tod-spin-btn    { grid-area: right; align-self: center; justify-self: center; }
+      .tod-choice-btns { grid-area: right; align-self: center; justify-self: center; flex-direction: column; gap: 8px; }
+      /* Spørsmålskort legges over hele skjermen som overlay */
+      .tod-question-card.visible {
+        position: absolute; inset: 36px 0 0;
+        z-index: 10; border-radius: 0; overflow-y: auto;
+        margin: 0; padding: 0;
+      }
+      .tod-card-header { padding: 12px 16px 8px; }
+      .tod-question-type { font-size: 1.6rem; }
+      .tod-question-text { font-size: 1.1rem; padding: 8px 16px 6px; }
+      .tod-action-btns { padding: 8px 16px 12px; }
+
+      /* ── Gassed: kompakt header øverst, tekst sentrert ── */
+      #screen-gassed { padding: 36px 12px 8px; gap: 6px; position: relative; overflow: hidden; }
+      .gs-card {
+        flex: 1; max-height: none; padding: 6px 16px 8px;
+        margin-bottom: 0; gap: 4px;
+      }
+      .gs-player-header { padding: 4px 0 4px; }
+      .gs-turn-label  { font-size: 0.72rem; letter-spacing: 2px; margin-bottom: 0; }
+      .gs-player-name { font-size: 1.4rem; letter-spacing: 2px; line-height: 1; filter: none; }
+      .gs-card-divider { display: none; }
+      .gs-main-text   { font-size: 1.5rem; max-width: 100%; line-height: 1.25; }
+      .gs-sub-text    { font-size: 0.88rem; }
+      /* Neste-knapp kompakt, høyre side */
+      #screen-gassed > .btn-primary {
+        width: auto; align-self: flex-end; padding: 10px 22px; font-size: 0.95rem;
       }
 
-      /* ── Lykkehjulet ── */
-      /* Hjul-størrelse: 100dvh - padding(48px) - tittel(30px) - gap(12px) - spin-btn(72px) = 162px overhead */
-      /* overflow-y: auto slik at resultat-kortet kan scrolles frem */
-      #screen-wheel { padding: 40px 4px 8px; gap: 6px; overflow-y: auto; }
-      .wheel-stage  { width: min(calc(100dvh - 162px), calc(100vw - 8px)); }
-
-      /* ── Nøtt eller Sannhet ── */
-      /* Overhead: padding(48px) + tittel(30px) + spiller-navn(24px) + gap(18px) + spin-btn(72px) = 192px */
-      /* overflow-y: auto for spørsmålskort-fasen */
-      #screen-tod      { padding: 40px 4px 8px; gap: 6px; overflow-y: auto; }
-      .tod-wheel-stage { width: min(calc(100dvh - 192px), calc(100vw - 8px)); }
-
       /* ── Jeg har aldri ── */
-      #screen-waterfall { padding-top: 40px; }
+      #screen-waterfall { padding: 36px 12px 8px; gap: 10px; }
+      .wf-challenge-text { font-size: 1.4rem; line-height: 1.4; min-height: auto; }
 
-      /* ── Trivia ── */
-      #screen-trivia { padding-top: 40px; }
+      /* ── Trivia: 2-kolonne svar ── */
+      #screen-trivia { padding: 36px 12px 8px; gap: 6px; }
+      .trivia-question-text { font-size: 1.05rem; }
+      .trivia-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 
       /* ── Veddeløpet ── */
-      #screen-horse { padding-top: 40px; }
+      #screen-horse { padding-top: 36px; }
 
     }
 
@@ -2543,22 +2597,90 @@
         transform: translateY(-50%);
         width: 4px; height: 107px;
       }
-      /* Game screen layouts inside landscape frame */
-      body.game-active .screen         { padding: 36px 12px 8px; }
-      body.game-active #screen-home    { padding-top: 36px; }
-      body.game-active #screen-ring    { padding-top: 36px; }
-      body.game-active #screen-horse   { padding-top: 36px; overflow-y: auto; }
-      body.game-active #screen-wheel   { padding: 36px 4px 6px; gap: 4px; overflow-y: auto; }
-      body.game-active #screen-tod     { padding: 36px 4px 6px; gap: 4px; overflow-y: auto; }
-      body.game-active #screen-waterfall { padding-top: 36px; }
-      body.game-active #screen-trivia  { padding-top: 36px; }
-      body.game-active #screen-gassed  { padding: 36px 12px 8px; }
-      body.game-active .screen-title   { font-size: 1.2rem; margin-bottom: 0; }
-      body.game-active .back-btn       { top: 8px; left: 10px; }
-      body.game-active #settings-btn   { top: 8px; right: 10px; }
-      body.game-active .wheel-stage    { width: min(240px, calc(100% - 8px)); }
-      body.game-active .tod-wheel-stage { width: min(210px, calc(100% - 8px)); }
-      body.game-active .gs-card        { max-height: calc(314px - 84px); }
+      /* ── Game screen layouts inside landscape frame (682×314px) ── */
+      body.game-active .screen      { padding: 36px 12px 8px; }
+      body.game-active .screen-title { font-size: 1.1rem; margin-bottom: 2px; }
+      body.game-active .back-btn    { top: 8px; left: 10px; }
+      body.game-active #settings-btn { top: 8px; right: 10px; }
+      body.game-active #screen-home { padding-top: 36px; }
+      body.game-active #screen-horse { padding-top: 36px; overflow-y: auto; }
+      body.game-active #screen-waterfall { padding: 36px 12px 8px; gap: 10px; }
+      body.game-active .wf-challenge-text { font-size: 1.3rem; line-height: 1.35; min-height: auto; }
+      body.game-active #screen-trivia { padding: 36px 12px 8px; gap: 6px; }
+      body.game-active .trivia-question-text { font-size: 0.98rem; }
+      body.game-active .trivia-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+      /* Ring of Fire: kort venstre, regel høyre */
+      body.game-active #screen-ring {
+        display: grid;
+        grid-template-areas: "top top" "card rules";
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
+        padding: 36px 12px 8px; gap: 8px; align-items: start;
+      }
+      body.game-active .ring-top   { grid-area: top; padding: 0; margin-bottom: 0; }
+      body.game-active .ring-stats { font-size: 0.78rem; gap: 14px; }
+      body.game-active .kings-row  { gap: 6px; }
+      body.game-active .king-cup   { width: 20px; height: 24px; }
+      body.game-active .king-cup::before { width: 14px; height: 4px; top: -4px; }
+      body.game-active .card-area  { grid-area: card; align-self: center; }
+      body.game-active .card-area, body.game-active .card { width: 105px; height: 148px; }
+      body.game-active .rule-panel { grid-area: rules; align-self: center; font-size: 0.88rem; }
+
+      /* Lykkehjulet: hjul venstre, snurr-knapp høyre */
+      body.game-active #screen-wheel {
+        display: grid;
+        grid-template-areas: "title title" "wheel button" "result result";
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr auto;
+        padding: 36px 12px 8px; gap: 8px;
+        overflow: hidden; align-items: start;
+      }
+      body.game-active #screen-wheel .screen-title { grid-area: title; text-align: center; justify-self: center; }
+      body.game-active .wheel-stage    { grid-area: wheel; width: 220px; align-self: center; }
+      body.game-active .wheel-spin-btn { grid-area: button; align-self: center; justify-self: center; width: 60px; height: 60px; font-size: 0.6rem; }
+      body.game-active #wheel-result-card { grid-area: result; }
+
+      /* Nøtt eller Sannhet: hjul venstre, kontroller høyre */
+      body.game-active #screen-tod {
+        display: grid;
+        grid-template-areas: "title title" "wheel right";
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
+        padding: 36px 12px 8px; gap: 8px;
+        overflow: hidden; position: relative; align-items: start;
+      }
+      body.game-active #screen-tod .screen-title { grid-area: title; text-align: center; justify-self: center; }
+      body.game-active .tod-wheel-stage { grid-area: wheel; width: 196px; align-self: center; }
+      body.game-active .tod-player-name { grid-area: right; align-self: center; justify-self: center; font-size: 1.1rem; }
+      body.game-active .tod-spin-btn    { grid-area: right; align-self: center; justify-self: center; }
+      body.game-active .tod-choice-btns { grid-area: right; align-self: center; justify-self: center; flex-direction: column; gap: 6px; }
+      body.game-active .tod-question-card.visible {
+        position: absolute; inset: 36px 0 0;
+        z-index: 10; border-radius: 0; overflow-y: auto; margin: 0; padding: 0;
+      }
+      body.game-active .tod-card-header { padding: 10px 14px 6px; }
+      body.game-active .tod-question-type { font-size: 1.4rem; }
+      body.game-active .tod-question-text { font-size: 1rem; padding: 6px 14px 4px; }
+      body.game-active .tod-action-btns { padding: 6px 14px 10px; }
+
+      /* Gassed: kompakt header øverst, tekst sentrert */
+      body.game-active #screen-gassed {
+        padding: 36px 12px 8px; gap: 6px; position: relative; overflow: hidden;
+      }
+      body.game-active .gs-card {
+        flex: 1; max-height: none; padding: 6px 16px 8px; margin-bottom: 0; gap: 4px;
+      }
+      body.game-active .gs-player-header { padding: 4px 0 4px; }
+      body.game-active .gs-turn-label    { font-size: 0.68rem; letter-spacing: 2px; margin-bottom: 0; }
+      body.game-active .gs-player-name   { font-size: 1.25rem; letter-spacing: 2px; line-height: 1; filter: none; }
+      body.game-active .gs-card-divider  { display: none; }
+      body.game-active .gs-main-text     { font-size: 1.35rem; max-width: 100%; line-height: 1.2; }
+      body.game-active .gs-sub-text      { font-size: 0.82rem; }
+      /* Neste-knapp kompakt, høyre kant */
+      body.game-active #screen-gassed > .btn-primary {
+        width: auto; align-self: flex-end; padding: 9px 18px; font-size: 0.88rem;
+      }
 
     }
   </style>
