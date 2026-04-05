@@ -690,18 +690,6 @@
     }
 
     /* ── Gassed sub-game return button (floats over ring/wheel screen) ── */
-    #gassed-sub-next {
-      display: none; position: absolute;
-      bottom: 32px; left: 50%; transform: translateX(-50%);
-      z-index: 100; white-space: nowrap;
-      background: var(--red); border: none; border-radius: 16px;
-      color: #fff; font-size: 1.05rem; font-weight: 800;
-      padding: 15px 36px; cursor: pointer;
-      box-shadow: 0 4px 24px rgba(239,43,45,0.45);
-      transition: transform 0.15s, opacity 0.2s;
-    }
-    #gassed-sub-next.visible { display: block; }
-    #gassed-sub-next:active { transform: translateX(-50%) scale(0.97); }
 
     /* ── Screen: Gassed (main game) — landscape-first Picolo-style layout ── */
     #screen-gassed {
@@ -920,17 +908,6 @@
     #mute-btn:active { opacity: 0.6; }
     .ring-stats { display: none; }
     /* Gassed sub-game player banner (ring + wheel) */
-    .gassed-player-banner {
-      display: none; width: 100%; text-align: center;
-      padding: 20px 0 8px;
-    }
-    .gassed-player-banner.visible { display: block; }
-    .gassed-player-banner .gpb-label { display: none; }
-    .gassed-player-banner .gpb-name {
-      font-family: 'Boogaloo', sans-serif;
-      color: rgba(239,159,39,0.6); font-size: 0.95rem; font-weight: 400;
-      letter-spacing: 3px; text-transform: uppercase; line-height: 1.1;
-    }
     .kings-row { display: flex; gap: 12px; }
     .king-cup {
       width: 34px; height: 38px;
@@ -2993,10 +2970,6 @@
   <!-- Screen 3: Ring of Fire -->
   <div class="screen" id="screen-ring">
     <div class="ring-top">
-      <div class="gassed-player-banner" id="ring-gassed-player">
-        <div class="gpb-label">Spiller</div>
-        <div class="gpb-name" id="ring-gassed-player-name"></div>
-      </div>
       <div class="ring-title-row">
         <div class="ring-title" data-t="ring.title">🔥 Ring of Fire</div>
       </div>
@@ -3234,7 +3207,6 @@
   </div>
 
   <!-- Gassed: floating return button shown during ring/wheel sub-game -->
-  <button id="gassed-sub-next" onclick="gassedReturnFromSub()">Neste spiller →</button>
 
   <!-- Screen: Gassed (main combined game) -->
   <div class="screen" id="screen-gassed" onclick="gassedTapNav(event)">
@@ -4539,7 +4511,6 @@ function goHome() {
   app.currentGame = null;
   if (app.gassed?.countdownTimer) { clearInterval(app.gassed.countdownTimer); app.gassed.countdownTimer = null; }
   if (app.gassed) app.gassed.inSubGame = false;
-  document.getElementById('gassed-sub-next')?.classList.remove('visible');
   document.getElementById('gassed-intro')?.classList.remove('show');
   showScreen('screen-home');
   document.getElementById('back-btn').classList.remove('visible');
@@ -6188,13 +6159,6 @@ function checkRingEndState(cardData) {
   } else if (app.ring.deck.length === 0) {
     document.getElementById('card-area').style.cursor = 'default';
   }
-  if (app.gassed?.inSubGame) {
-    // Disable further draws — one card per turn
-    const ca = document.getElementById('card-area');
-    ca.style.cursor = 'default';
-    ca.style.pointerEvents = 'none';
-    setTimeout(() => document.getElementById('gassed-sub-next').classList.add('visible'), 500);
-  }
 }
 
 function restartRing() {
@@ -7155,13 +7119,12 @@ const BORST_CHALLENGES = {
 };
 
 // Weighted type pool: 40 entries — music appears exactly once, wheel exactly twice
-// 0=ring(8), 1=wheel(2), 2=nhie(6), 3=music(1), 4=borst(23)
+// 1=wheel(2), 2=nhie(6), 3=music(1), 4=borst(31)
 const GASSED_TYPE_POOL = [
-  0,0,0,0,0,0,0,0,
   1,1,
   2,2,2,2,2,2,
   3,
-  4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+  4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 ];
 
 app.gassed = { lastPlayer: -1, nhieUsed: new Set(), borstUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [] };
@@ -7268,23 +7231,13 @@ function gassedTurn(skipCapture) {
     g.typeIdx = 0;
   }
   let type = g.typeOrder[g.typeIdx++];
-  // Avoid the same sub-game appearing twice in a row (wheel-then-wheel looks like a bug)
-  if ((type === 0 || type === 1) && type === g.lastSubType && g.typeIdx < g.typeOrder.length) {
+  // Avoid wheel appearing twice in a row
+  if (type === 1 && type === g.lastSubType && g.typeIdx < g.typeOrder.length) {
     type = g.typeOrder[g.typeIdx++];
   }
-  if (type === 0 || type === 1) g.lastSubType = type;
+  if (type === 1) g.lastSubType = type;
 
-  if (type === 0) {
-    // ── Ring of Fire — vis selve ring-skjermen ──
-    g.inSubGame = true;
-    initRing();
-    showScreen('screen-ring');
-    const ringPlayer = $('ring-gassed-player');
-    if (ringPlayer) { ringPlayer.classList.add('visible'); const rpn = $('ring-gassed-player-name'); if (rpn) rpn.textContent = playerName; }
-    S.schedulePush(50);
-    return;
-
-  } else if (type === 1) {
+  if (type === 1) {
     // ── Lykkehjulet — vis selve hjul-skjermen ──
     g.inSubGame = true;
     showScreen('screen-wheel');
@@ -7498,8 +7451,6 @@ function gassedTapNav(event) {
 function gassedReturnFromSub() {
   if (!app.gassed?.inSubGame) return;
   app.gassed.inSubGame = false;
-  document.getElementById('gassed-sub-next').classList.remove('visible');
-  document.getElementById('ring-gassed-player')?.classList.remove('visible');
   const ca = document.getElementById('card-area');
   if (ca) { ca.style.cursor = ''; ca.style.pointerEvents = ''; }
   // A slide that triggered the sub-game may have left animation classes on gs-card.
