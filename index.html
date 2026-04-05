@@ -8071,7 +8071,7 @@ S.init();
   const copyBtn = document.createElement('button');
   copyBtn.textContent = '📋';
   copyBtn.title = 'Kopier debug-info';
-  copyBtn.style.cssText = 'position:fixed;bottom:6px;right:6px;z-index:10000;background:#0f0;color:#000;border:none;border-radius:4px;padding:4px 10px;font:bold 13px monospace;cursor:pointer;';
+  copyBtn.style.cssText = 'position:fixed;bottom:6px;left:6px;z-index:10000;background:#0f0;color:#000;border:none;border-radius:4px;padding:4px 10px;font:bold 13px monospace;cursor:pointer;';
   copyBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(snapshot()).then(() => {
       copyBtn.textContent = '✅';
