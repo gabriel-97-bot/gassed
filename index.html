@@ -7202,7 +7202,7 @@ function _gassedCaptureCard() {
   const $ = id => document.getElementById(id);
   return {
     playerName:    $('gs-player-name')?.textContent ?? '',
-    cardClass:     $('gs-card')?.className ?? '',
+    cardClass:     ($('gs-card')?.className ?? '').replace(/\s*gs-card--(exit|enter)-\S+/g, '').trim(),
     prefixText:    $('gs-nhie-prefix')?.textContent ?? '',
     prefixShow:    $('gs-nhie-prefix')?.style.display !== 'none',
     mainText:      $('gs-main-text')?.textContent ?? '',
