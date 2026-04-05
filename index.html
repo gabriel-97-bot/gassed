@@ -5282,9 +5282,6 @@ function showWheelResult(playerIdx, challengeIdx) {
   document.getElementById('wheel-result-player').textContent = app.players[playerIdx] || '';
   document.getElementById('wheel-result-desc').textContent = ch.desc || '';
   document.getElementById('wheel-result-card').style.display = '';
-  if (app.gassed?.inSubGame) {
-    document.getElementById('gassed-sub-next').classList.add('visible');
-  }
   S.push();
 }
 
