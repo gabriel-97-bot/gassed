@@ -7155,14 +7155,14 @@ const BORST_CHALLENGES = {
   ],
 };
 
-// Weighted type pool: 40 entries — music appears exactly once
-// 0=ring(8), 1=wheel(6), 2=nhie(6), 3=music(1), 4=borst(19)
+// Weighted type pool: 40 entries — music appears exactly once, wheel exactly twice
+// 0=ring(8), 1=wheel(2), 2=nhie(6), 3=music(1), 4=borst(23)
 const GASSED_TYPE_POOL = [
   0,0,0,0,0,0,0,0,
-  1,1,1,1,1,1,
+  1,1,
   2,2,2,2,2,2,
   3,
-  4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+  4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 ];
 
 app.gassed = { lastPlayer: -1, nhieUsed: new Set(), borstUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [] };
