@@ -758,6 +758,18 @@
       flex-shrink: 0; margin: 4px 0;
     }
     .gs-mini-card img { width: 100%; height: 100%; object-fit: cover; }
+    /* ── Tap-hint arrows (left = prev, right = next) ── */
+    .gs-tap-hint {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 1.6rem; font-weight: 200;
+      color: rgba(255,255,255,0.1);
+      pointer-events: none; z-index: 1; line-height: 1;
+      transition: color 0.15s;
+    }
+    .gs-tap-hint-left  { left: 10px; }
+    .gs-tap-hint-right { right: 10px; }
+    #screen-gassed:active .gs-tap-hint { color: rgba(255,255,255,0.22); }
+
     .gs-countdown-wrap {
       display: flex; flex-direction: column; align-items: center;
       gap: 4px; margin: 6px 0;
@@ -3218,7 +3230,9 @@
   <button id="gassed-sub-next" onclick="gassedReturnFromSub()">Neste spiller →</button>
 
   <!-- Screen: Gassed (main combined game) -->
-  <div class="screen" id="screen-gassed" onclick="if(!event.target.closest('button'))gassedNext()">
+  <div class="screen" id="screen-gassed" onclick="gassedTapNav(event)">
+    <div class="gs-tap-hint gs-tap-hint-left">‹</div>
+    <div class="gs-tap-hint gs-tap-hint-right">›</div>
     <!-- Top bar: player info -->
     <div class="gs-player-header">
       <div class="gs-turn-label" id="gs-turn-label">Spiller:</div>
@@ -7146,7 +7160,7 @@ const GASSED_TYPE_POOL = [
   4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 ];
 
-app.gassed = { lastPlayer: -1, nhieUsed: new Set(), borstUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0, lastSubType: -1 };
+app.gassed = { lastPlayer: -1, nhieUsed: new Set(), borstUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [] };
 
 function gassedShowIntro() {
   document.getElementById('gassed-intro').classList.add('show');
@@ -7174,14 +7188,58 @@ function startGassed() {
     countdownTimer: null,
     turnCount: 0,
     lastSubType: -1,
+    cardHistory: [],
   };
   gassedTurn();
+}
+
+function _gassedCaptureCard() {
+  const $ = id => document.getElementById(id);
+  return {
+    playerName:    $('gs-player-name')?.textContent ?? '',
+    cardClass:     $('gs-card')?.className ?? '',
+    prefixText:    $('gs-nhie-prefix')?.textContent ?? '',
+    prefixShow:    $('gs-nhie-prefix')?.style.display !== 'none',
+    mainText:      $('gs-main-text')?.textContent ?? '',
+    subText:       $('gs-sub-text')?.textContent ?? '',
+    typeBadgeText: $('gs-type-badge')?.textContent ?? '',
+    typeBadgeClass:$('gs-type-badge')?.className ?? '',
+    miniShow:      $('gs-mini-card')?.style.display !== 'none',
+    miniSrc:       $('gs-mini-card-img')?.src ?? '',
+  };
+}
+
+function _gassedRestoreCard(st) {
+  const $ = id => document.getElementById(id);
+  if (app.gassed?.countdownTimer) { clearInterval(app.gassed.countdownTimer); app.gassed.countdownTimer = null; }
+  $('gs-player-name').textContent  = st.playerName;
+  $('gs-card').className           = st.cardClass;
+  const pfx = $('gs-nhie-prefix');
+  pfx.textContent  = st.prefixText;
+  pfx.style.display = st.prefixShow ? '' : 'none';
+  $('gs-main-text').textContent    = st.mainText;
+  $('gs-sub-text').textContent     = st.subText;
+  const tb = $('gs-type-badge');
+  tb.textContent = st.typeBadgeText;
+  tb.className   = st.typeBadgeClass;
+  const mini = $('gs-mini-card');
+  mini.style.display = st.miniShow ? '' : 'none';
+  if (st.miniShow && st.miniSrc) $('gs-mini-card-img').src = st.miniSrc;
+  $('gs-countdown-wrap').style.display = 'none';
+  $('gs-countdown-wrap').className = 'gs-countdown-wrap';
+  $('gs-countdown-num').textContent = '10';
 }
 
 function gassedTurn() {
   const g = app.gassed;
   const isNo = app.lang !== 'en';
   const $ = id => document.getElementById(id);
+
+  // Lagre nåværende kort i historikk før vi går videre
+  if ($('gs-main-text')?.textContent?.trim()) {
+    g.cardHistory.push(_gassedCaptureCard());
+    if (g.cardHistory.length > 20) g.cardHistory.shift();
+  }
 
   if (g.countdownTimer) { clearInterval(g.countdownTimer); g.countdownTimer = null; }
 
@@ -7373,6 +7431,24 @@ function gassedTurn() {
 
 function gassedNext() {
   gassedTurn();
+}
+
+function gassedPrev() {
+  const history = app.gassed?.cardHistory;
+  if (!history?.length) return;
+  _gassedRestoreCard(history.pop());
+  showScreen('screen-gassed');
+  S.schedulePush(50);
+}
+
+function gassedTapNav(event) {
+  if (event.target.closest('button, [onclick]') && event.target !== event.currentTarget) return;
+  const rect = event.currentTarget.getBoundingClientRect();
+  if (event.clientX >= rect.left + rect.width / 2) {
+    gassedNext();
+  } else {
+    gassedPrev();
+  }
 }
 
 function gassedReturnFromSub() {
@@ -7870,7 +7946,7 @@ function _wrap(name, delay) {
  'dismissHorseModal','startGame','initHorse',
  'dismissInstructions','selectTodCategory',
  'jeoReveal','jeoMark','jeoAssignTeam','jeoStartGame','jeoClose','jeoCloseOverlay',
- 'gassedNext','gassedReturnFromSub',
+ 'gassedNext','gassedPrev','gassedReturnFromSub',
 ].forEach(n => _wrap(n));
 
 // drawCard — push under animasjon så joiner ser kortvendings-animasjonen
