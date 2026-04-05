@@ -7442,7 +7442,7 @@ function gassedPrev() {
 }
 
 function gassedTapNav(event) {
-  if (event.target.closest('button, [onclick]') && event.target !== event.currentTarget) return;
+  if (event.target.closest('button')) return;
   const rect = event.currentTarget.getBoundingClientRect();
   if (event.clientX >= rect.left + rect.width / 2) {
     gassedNext();
