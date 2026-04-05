@@ -735,11 +735,14 @@
     #screen-gassed:has(#gs-card.gs-card--nhie) .gs-player-header { display: none; }
     .gs-type-badge { display: none; }
     .gs-main-icon { display: none; }
+    .gs-text-group {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 2px;
+    }
     .gs-nhie-prefix {
       font-family: 'Boogaloo', sans-serif;
       color: rgba(239,159,39,0.6); font-size: 0.95rem; font-weight: 400;
       letter-spacing: 3px; text-transform: uppercase;
-      margin-bottom: -4px;
     }
     .gs-main-text {
       font-family: 'Boogaloo', sans-serif;
@@ -3243,8 +3246,10 @@
     <div class="gs-card" id="gs-card">
       <div class="gs-type-badge" id="gs-type-badge"></div>
       <div class="gs-main-icon" id="gs-main-icon"></div>
-      <div class="gs-nhie-prefix" id="gs-nhie-prefix" style="display:none"></div>
-      <div class="gs-main-text" id="gs-main-text"></div>
+      <div class="gs-text-group">
+        <div class="gs-nhie-prefix" id="gs-nhie-prefix" style="display:none"></div>
+        <div class="gs-main-text" id="gs-main-text"></div>
+      </div>
       <div class="gs-sub-text" id="gs-sub-text"></div>
       <div class="gs-mini-card" id="gs-mini-card" style="display:none">
         <img id="gs-mini-card-img" src="" alt="">
