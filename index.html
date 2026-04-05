@@ -8050,5 +8050,83 @@ S.init();
 
 })();
 </script>
+
+<!-- ── Debug overlay (aktiveres med ?debug i URL) ── -->
+<script>
+(function() {
+  if (!location.search.includes('debug')) return;
+
+  // Panel HTML
+  const panel = document.createElement('div');
+  panel.id = 'dbg-panel';
+  panel.style.cssText = [
+    'position:fixed','bottom:0','left:0','right:0','z-index:9999',
+    'background:rgba(0,0,0,0.82)','color:#0f0','font:11px/1.5 monospace',
+    'padding:6px 8px','max-height:38vh','overflow-y:auto',
+    'border-top:1px solid #0f0','pointer-events:none','white-space:pre-wrap',
+  ].join(';');
+  document.body.appendChild(panel);
+
+  // Event log (rolling, last 30)
+  const log = [];
+  const origConsoleError = console.error.bind(console);
+  console.error = function(...a) { origConsoleError(...a); addLog('ERR ' + a.join(' ')); };
+  window.addEventListener('error', e => addLog('UNCAUGHT ' + e.message + ' @ ' + e.filename + ':' + e.lineno));
+
+  function addLog(msg) {
+    const t = new Date().toISOString().slice(11,23);
+    log.push(t + '  ' + msg);
+    if (log.length > 30) log.shift();
+  }
+
+  // Patch key gassed functions to log calls
+  function patchAfter(name, fn) {
+    const orig = window[name];
+    if (typeof orig !== 'function') return;
+    window[name] = function(...a) {
+      const r = orig.apply(this, a);
+      fn(a, r);
+      return r;
+    };
+  }
+  // Log navigations
+  const origNext = window.gassedNext;
+  window.gassedNext = function() { addLog('→ gassedNext'); return origNext?.apply(this, arguments); };
+  const origPrev = window.gassedPrev;
+  window.gassedPrev = function() { addLog('← gassedPrev'); return origPrev?.apply(this, arguments); };
+  const origReturn = window.gassedReturnFromSub;
+  window.gassedReturnFromSub = function() { addLog('↩ gassedReturnFromSub'); return origReturn?.apply(this, arguments); };
+
+  function $ (id) { return document.getElementById(id); }
+
+  function snapshot() {
+    const g = window.app?.gassed;
+    const card = $('gs-card');
+    const screen = document.querySelector('.screen.active')?.id ?? '—';
+    const mainTxt = $('gs-main-text')?.textContent?.trim() ?? '';
+    const pfx = $('gs-nhie-prefix');
+    const cardCls = card?.className ?? '—';
+    const lines = [
+      '── GASSED DEBUG (' + new Date().toISOString().slice(11,19) + ') ──',
+      'screen    : ' + screen,
+      'mainText  : ' + (mainTxt ? '"' + mainTxt.slice(0,50) + (mainTxt.length>50?'…':'"') : '⚠️  EMPTY'),
+      'prefix    : ' + (pfx?.style.display==='none' ? '(hidden)' : '"' + (pfx?.textContent??'') + '"'),
+      'cardClass : ' + cardCls,
+      'history   : ' + (g?.cardHistory?.length ?? '—') + ' entries',
+      '_sliding  : ' + (g?._sliding ?? '—'),
+      'inSubGame : ' + (g?.inSubGame ?? '—'),
+      'turnCount : ' + (g?.turnCount ?? '—'),
+      'typeIdx   : ' + (g?.typeIdx ?? '—') + '/' + (g?.typeOrder?.length ?? '—'),
+      '',
+      '── LOG ──',
+      ...log.slice(-12),
+    ];
+    return lines.join('\n');
+  }
+
+  setInterval(() => { panel.textContent = snapshot(); }, 400);
+  addLog('Debug panel aktiv');
+})();
+</script>
 </body>
 </html>
