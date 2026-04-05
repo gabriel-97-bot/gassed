@@ -7235,13 +7235,14 @@ function _gassedRestoreCard(st) {
   $('gs-countdown-num').textContent = '10';
 }
 
-function gassedTurn() {
+function gassedTurn(skipCapture) {
   const g = app.gassed;
   const isNo = app.lang !== 'en';
   const $ = id => document.getElementById(id);
 
   // Lagre nåværende kort i historikk før vi går videre
-  if ($('gs-main-text')?.textContent?.trim()) {
+  // skipCapture=true when called from gassedNext (capture already done before animation)
+  if (!skipCapture && $('gs-main-text')?.textContent?.trim()) {
     g.cardHistory.push(_gassedCaptureCard());
     if (g.cardHistory.length > 20) g.cardHistory.shift();
   }
@@ -7441,11 +7442,17 @@ function _gassedSlide(dir, callback) {
   if (app.gassed) app.gassed._sliding = true;
   const exitCls  = dir === 'next' ? 'gs-card--exit-left'  : 'gs-card--exit-right';
   const enterCls = dir === 'next' ? 'gs-card--enter-right' : 'gs-card--enter-left';
+  // Remove any stale animation classes, force reflow so animation always starts fresh
   card.classList.remove('gs-card--exit-left','gs-card--exit-right','gs-card--enter-left','gs-card--enter-right');
+  void card.offsetWidth;
   card.classList.add(exitCls);
   setTimeout(function() {
     callback();
-    card.classList.remove(exitCls);
+    // Remove ALL animation classes — callback (_gassedRestoreCard) may have set
+    // gs-card.className directly, which already removed the exit class. Explicitly
+    // stripping all classes here guarantees a clean baseline before the enter animation.
+    card.classList.remove('gs-card--exit-left','gs-card--exit-right','gs-card--enter-left','gs-card--enter-right');
+    void card.offsetWidth; // force reflow so enter animation always triggers
     card.classList.add(enterCls);
     setTimeout(function() {
       card.classList.remove(enterCls);
@@ -7455,7 +7462,15 @@ function _gassedSlide(dir, callback) {
 }
 
 function gassedNext() {
-  _gassedSlide('next', gassedTurn);
+  if (app.gassed?._sliding) return;
+  // Capture card state NOW — before any animation class touches gs-card.
+  // This guarantees the snapshot is always clean (no exit/enter class, correct content).
+  const g = app.gassed;
+  if (g && document.getElementById('gs-main-text')?.textContent?.trim()) {
+    g.cardHistory.push(_gassedCaptureCard());
+    if (g.cardHistory.length > 20) g.cardHistory.shift();
+  }
+  _gassedSlide('next', () => gassedTurn(true));
 }
 
 function gassedPrev() {
@@ -7489,6 +7504,11 @@ function gassedReturnFromSub() {
   document.getElementById('ring-gassed-player')?.classList.remove('visible');
   const ca = document.getElementById('card-area');
   if (ca) { ca.style.cursor = ''; ca.style.pointerEvents = ''; }
+  // A slide that triggered the sub-game may have left animation classes on gs-card.
+  // Clear them and reset _sliding so the card appears cleanly on return.
+  const card = document.getElementById('gs-card');
+  if (card) card.classList.remove('gs-card--exit-left','gs-card--exit-right','gs-card--enter-left','gs-card--enter-right');
+  if (app.gassed) app.gassed._sliding = false;
   gassedTurn(); // gassedTurn handles showScreen to avoid flashing stale card content
 }
 
