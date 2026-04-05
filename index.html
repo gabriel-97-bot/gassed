@@ -736,6 +736,14 @@
       display: flex; flex-direction: column;
       align-items: center; gap: 2px;
     }
+    @keyframes gsExitLeft  { to   { opacity:0; transform:translateX(-52px); } }
+    @keyframes gsExitRight { to   { opacity:0; transform:translateX( 52px); } }
+    @keyframes gsEnterLeft { from { opacity:0; transform:translateX(-52px); } }
+    @keyframes gsEnterRight{ from { opacity:0; transform:translateX( 52px); } }
+    .gs-card--exit-left   { animation: gsExitLeft   0.14s ease-in  forwards; pointer-events:none; }
+    .gs-card--exit-right  { animation: gsExitRight  0.14s ease-in  forwards; pointer-events:none; }
+    .gs-card--enter-left  { animation: gsEnterLeft  0.18s ease-out both; }
+    .gs-card--enter-right { animation: gsEnterRight 0.18s ease-out both; }
     .gs-nhie-prefix {
       font-family: 'Boogaloo', sans-serif;
       color: rgba(239,159,39,0.6); font-size: 0.95rem; font-weight: 400;
@@ -7185,6 +7193,7 @@ function startGassed() {
     turnCount: 0,
     lastSubType: -1,
     cardHistory: [],
+    _sliding: false,
   };
   gassedTurn();
 }
@@ -7425,16 +7434,38 @@ function gassedTurn() {
   S.schedulePush(50);
 }
 
+function _gassedSlide(dir, callback) {
+  if (app.gassed?._sliding) return;
+  const card = document.getElementById('gs-card');
+  if (!card) { callback(); return; }
+  if (app.gassed) app.gassed._sliding = true;
+  const exitCls  = dir === 'next' ? 'gs-card--exit-left'  : 'gs-card--exit-right';
+  const enterCls = dir === 'next' ? 'gs-card--enter-right' : 'gs-card--enter-left';
+  card.classList.remove('gs-card--exit-left','gs-card--exit-right','gs-card--enter-left','gs-card--enter-right');
+  card.classList.add(exitCls);
+  setTimeout(function() {
+    callback();
+    card.classList.remove(exitCls);
+    card.classList.add(enterCls);
+    setTimeout(function() {
+      card.classList.remove(enterCls);
+      if (app.gassed) app.gassed._sliding = false;
+    }, 200);
+  }, 140);
+}
+
 function gassedNext() {
-  gassedTurn();
+  _gassedSlide('next', gassedTurn);
 }
 
 function gassedPrev() {
   const history = app.gassed?.cardHistory;
   if (!history?.length) return;
-  _gassedRestoreCard(history.pop());
-  showScreen('screen-gassed');
-  S.schedulePush(50);
+  _gassedSlide('prev', function() {
+    _gassedRestoreCard(history.pop());
+    showScreen('screen-gassed');
+    S.schedulePush(50);
+  });
 }
 
 function gassedTapNav(event) {
