@@ -7303,13 +7303,27 @@ function gassedTurn() {
       // Strip "Kategorien er: " prefix from category card text
       let cardText = interpolate(bc.text, playerName).replace(/\[playerName\]/g, playerName || '');
       if (bc.type === 'category') cardText = cardText.replace(/^Kategorien er:\s*/i, '');
-      // Extract short "Ord: " prefix from gruppelek cards into the nhie-prefix slot
+      // Extract prefix for group cards
       if (GROUP_BTYPES.has(bc.type)) {
-        const pm = cardText.match(/^([^:]{1,30}):\s+/);
-        if (pm) {
+        // 1. "Hvem ville" / "Who would" at start → title + strip from body
+        const hvemMatch = cardText.match(/^(Hvem\s+ville|Who\s+would)\s+/i);
+        if (hvemMatch) {
           const _pfx = $('gs-nhie-prefix');
-          if (_pfx) { _pfx.textContent = pm[1]; _pfx.style.display = ''; }
-          cardText = cardText.slice(pm[0].length);
+          if (_pfx) { _pfx.textContent = hvemMatch[1]; _pfx.style.display = ''; }
+          cardText = cardText.slice(hvemMatch[0].length);
+          cardText = cardText.charAt(0).toUpperCase() + cardText.slice(1);
+        // 2. gruppelek card with [playerName] → player name as title
+        } else if (bc.type === 'gruppelek' && bc.text.includes('[playerName]') && playerName) {
+          const _pfx = $('gs-nhie-prefix');
+          if (_pfx) { _pfx.textContent = playerName; _pfx.style.display = ''; }
+        // 3. "Ord: " prefix extraction (other gruppelek cards)
+        } else {
+          const pm = cardText.match(/^([^:]{1,30}):\s+/);
+          if (pm) {
+            const _pfx = $('gs-nhie-prefix');
+            if (_pfx) { _pfx.textContent = pm[1]; _pfx.style.display = ''; }
+            cardText = cardText.slice(pm[0].length);
+          }
         }
       }
       $('gs-main-text').textContent = cardText;
