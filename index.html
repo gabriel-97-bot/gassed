@@ -1455,8 +1455,7 @@
     #session-badge {
       position: absolute;
       bottom: 14px;
-      left: 50%;
-      transform: translateX(-50%);
+      right: 14px;
       z-index: 500;
       background: rgba(15,15,35,0.78);
       backdrop-filter: blur(12px);
@@ -2727,8 +2726,8 @@
 <!-- Back button -->
 <button class="back-btn" id="back-btn" onclick="confirmGoHome()">‹</button>
 
-<!-- Session romkode-badge (vises alltid øverst for master og joiner) -->
-<div id="session-badge"></div>
+<!-- Session romkode-badge (vises alltid nede til høyre for master og joiner) -->
+<div id="session-badge" style="bottom:14px;right:14px;left:auto;transform:none;"></div>
 
 <!-- Settings panel -->
 <div id="settings-overlay" onclick="closeSettings(event)">
@@ -3236,7 +3235,7 @@
       <div class="gs-mini-card" id="gs-mini-card" style="display:none">
         <img id="gs-mini-card-img" src="" alt="">
       </div>
-      <div class="gs-countdown-wrap" id="gs-countdown-wrap" style="display:none">
+      <div class="gs-countdown-wrap" id="gs-countdown-wrap" style="display:none" onclick="event.stopPropagation()">
         <div class="gs-countdown-ring" id="gs-countdown-ring" onclick="gassedStartCountdown()">
           <div class="gs-countdown-inner">
             <div class="gs-countdown-num" id="gs-countdown-num">10</div>
@@ -7760,6 +7759,10 @@ const S = {
     const badge = document.getElementById('session-badge');
     if (!badge) return;
     badge.style.display = 'flex';
+    badge.style.right = '14px';
+    badge.style.left = 'auto';
+    badge.style.transform = 'none';
+    badge.style.bottom = '14px';
     badge.innerHTML = isJoiner
       ? '👁 <span style="opacity:0.6;font-weight:400;letter-spacing:0.5px">Tilskuer</span> · ' + code
       : '🔗 ' + code;
