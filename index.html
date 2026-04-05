@@ -7294,18 +7294,28 @@ function gassedTurn() {
       if (GROUP_BTYPES.has(bc.type)) {
         $('gs-card').classList.add('gs-card--group');
       } else if (TYPE_HEADER_BTYPES[bc.type]) {
-        $('gs-card').classList.add('gs-card--type-header');
-        $('gs-turn-label').textContent = '';
+        // Show type title right above text (like "Jeg har aldri"), hide player header
+        $('gs-card').classList.add('gs-card--nhie');
         const typeHeaders = {
           dilemma:  isNo ? '👍 Tommel opp  /  👎 Tommel ned' : '👍 Thumbs up  /  👎 Thumbs down',
           category: isNo ? 'Kategori' : 'Category',
           regel:    isNo ? 'Regel' : 'Rule',
         };
-        $('gs-player-name').textContent = typeHeaders[bc.type];
+        const _pfx = $('gs-nhie-prefix');
+        if (_pfx) { _pfx.textContent = typeHeaders[bc.type]; _pfx.style.display = ''; }
       }
       // Strip "Kategorien er: " prefix from category card text
       let cardText = interpolate(bc.text, playerName).replace(/\[playerName\]/g, playerName || '');
       if (bc.type === 'category') cardText = cardText.replace(/^Kategorien er:\s*/i, '');
+      // Extract short "Ord: " prefix from gruppelek cards into the nhie-prefix slot
+      if (GROUP_BTYPES.has(bc.type)) {
+        const pm = cardText.match(/^([^:]{1,30}):\s+/);
+        if (pm) {
+          const _pfx = $('gs-nhie-prefix');
+          if (_pfx) { _pfx.textContent = pm[1]; _pfx.style.display = ''; }
+          cardText = cardText.slice(pm[0].length);
+        }
+      }
       $('gs-main-text').textContent = cardText;
       $('gs-sub-text').textContent = bc.type === 'dilemma'
         ? (isNo ? '🍺 De i undertall drikker 2 slurker!' : '🍺 The minority drinks 2 sips!')
