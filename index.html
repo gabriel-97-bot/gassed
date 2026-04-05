@@ -6104,7 +6104,7 @@ function updateRingStats() {
   document.getElementById('ring-kings-drawn').textContent = app.ring.kingsDrawn;
   const n = app.ring.deck.length;
   for (let i = 1; i <= 4; i++) {
-    document.getElementById('cup-' + i).classList.toggle('filled', i <= app.ring.kingsDrawn);
+    document.getElementById('cup-' + i)?.classList.toggle('filled', i <= app.ring.kingsDrawn);
   }
 }
 
@@ -7447,12 +7447,10 @@ function _gassedSlide(dir, callback) {
   void card.offsetWidth;
   card.classList.add(exitCls);
   setTimeout(function() {
-    callback();
-    // Remove ALL animation classes — callback (_gassedRestoreCard) may have set
-    // gs-card.className directly, which already removed the exit class. Explicitly
-    // stripping all classes here guarantees a clean baseline before the enter animation.
+    try { callback(); } catch(e) { console.error('gassedSlide callback:', e); }
+    // Always clean up animation state — even if callback threw
     card.classList.remove('gs-card--exit-left','gs-card--exit-right','gs-card--enter-left','gs-card--enter-right');
-    void card.offsetWidth; // force reflow so enter animation always triggers
+    void card.offsetWidth;
     card.classList.add(enterCls);
     setTimeout(function() {
       card.classList.remove(enterCls);
@@ -8123,7 +8121,7 @@ S.init();
   function $ (id) { return document.getElementById(id); }
 
   function snapshot() {
-    const g = window.app?.gassed;
+    const g = (typeof app !== 'undefined') ? app.gassed : null;
     const card = $('gs-card');
     const screen = document.querySelector('.screen.active')?.id ?? '—';
     const mainTxt = $('gs-main-text')?.textContent?.trim() ?? '';
