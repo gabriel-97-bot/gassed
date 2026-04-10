@@ -6858,7 +6858,12 @@ function _jeoRenderTeamSetup() {
     });
     html += `</div></div>`;
   });
-  html += `</div><button class="jeo-btn-start-game" onclick="jeoStartGame()">🎮 ${isNo ? 'Start spillet!' : 'Start game!'}</button>`;
+  html += `</div>`;
+  html += `<div style="display:flex;gap:8px;width:100%;margin-top:4px;">`;
+  html += `<button class="jeo-btn-start-game" style="flex:1;background:rgba(255,255,255,0.12);font-size:0.8rem;" onclick="jeoRandomTeams()">🎲 ${isNo ? 'Tilfeldig lag' : 'Random teams'}</button>`;
+  html += `<button class="jeo-btn-start-game" style="flex:1;" onclick="jeoStartGame()">🎮 ${isNo ? 'Start spillet!' : 'Start game!'}</button>`;
+  html += `</div>`;
+  html += `<div id="jeo-team-error" style="color:#ff6644;font-size:0.8rem;font-weight:700;text-align:center;min-height:1.2em;margin-top:4px;"></div>`;
   modal.innerHTML = html;
 }
 
@@ -6870,7 +6875,25 @@ function jeoAssignTeam(pi, ti) {
   S.schedulePush(50);
 }
 
+function jeoRandomTeams() {
+  const players = [...app.players].sort(() => Math.random() - 0.5);
+  const teams = app.jeopardy.teams;
+  teams.forEach(t => t.players = []);
+  players.forEach((p, i) => teams[i % teams.length].players.push(p));
+  _jeoRenderTeamSetup();
+  S.schedulePush(50);
+}
+
 function jeoStartGame() {
+  const isNo = app.lang !== 'en';
+  const emptyTeam = app.jeopardy.teams.find(t => t.players.length === 0);
+  if (emptyTeam) {
+    const errEl = document.getElementById('jeo-team-error');
+    if (errEl) errEl.textContent = isNo
+      ? `${emptyTeam.name} har ingen spillere. Alle lag må ha minst én spiller.`
+      : `${emptyTeam.name} has no players. All teams need at least one player.`;
+    return;
+  }
   app.jeopardy.teamsSet = true;
   document.getElementById('jeo-team-modal').classList.remove('show');
   showScreen('screen-jeopardy');
