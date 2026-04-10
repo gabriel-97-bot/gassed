@@ -165,7 +165,7 @@
 
     /* ── Settings button ── */
     #settings-btn {
-      position: absolute; top: 14px; right: 14px; z-index: 600;
+      position: absolute; top: 18px; right: 20px; z-index: 600;
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.14);
       border-radius: 50%; width: 28px; height: 28px;
@@ -274,7 +274,76 @@
     }
     .settings-feedback-btn:hover { opacity: 0.85; }
 
-    /* ── Screen system ── */
+    /* ── Settings: landscape compact layout ── */
+    @media (orientation: landscape) and (max-height: 600px) {
+      #settings-overlay { align-items: center; }
+
+      .settings-panel {
+        border-radius: 18px;
+        width: min(700px, 96vw);
+        max-height: 96vh;
+        overflow-y: hidden;
+        padding: 10px 16px 12px;
+        /* 2-column grid: left=language+sound, right=players+feedback */
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto auto;
+        column-gap: 16px;
+        row-gap: 0;
+        /* override the portrait slide-up transform */
+        transform: scale(0.92);
+        opacity: 0;
+        transition: transform 0.28s cubic-bezier(0.22,1,0.36,1), opacity 0.28s;
+      }
+      #settings-overlay.open .settings-panel {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      /* Header spans both columns */
+      .settings-panel > .settings-header {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        margin-bottom: 6px;
+      }
+      /* Language → left col, row 2 */
+      .settings-panel > *:nth-child(2) { grid-column: 1; grid-row: 2; }
+      /* Players → right col, rows 2-3 */
+      .settings-panel > *:nth-child(4) { grid-column: 2; grid-row: 2 / 4; }
+      /* Sound → left col, row 3 */
+      .settings-panel > *:nth-child(6) { grid-column: 1; grid-row: 3; }
+      /* Feedback → full width, row 4 */
+      .settings-panel > *:nth-child(8) { grid-column: 1 / -1; grid-row: 4; }
+      /* Hide all dividers */
+      .settings-panel > .settings-divider { display: none; }
+
+      /* Compact sizing across the board */
+      .settings-header { margin-bottom: 4px; }
+      #settings-title { font-size: 1rem; }
+      .settings-label { font-size: 0.65rem; margin-bottom: 5px; }
+      .settings-section { margin-bottom: 6px; }
+      .lang-pill { padding: 6px 0; font-size: 0.82rem; }
+      #mute-btn { padding: 7px; font-size: 0.9rem; }
+      .settings-chips { max-height: 46px; overflow-y: auto; margin-bottom: 6px; gap: 5px; }
+      .settings-chips .player-chip { font-size: 0.75rem; padding: 4px 8px; }
+      #settings-player-input { padding: 7px 10px; font-size: 0.82rem; }
+      .settings-add-btn { width: 32px; height: 32px; font-size: 1.1rem; }
+      /* Feedback row: side by side textarea + button */
+      .settings-panel > *:nth-child(8) {
+        display: flex; gap: 8px; align-items: flex-start;
+      }
+      .settings-panel > *:nth-child(8) .settings-label { display: none; }
+      #settings-feedback { min-height: 34px; max-height: 34px; margin-bottom: 0; font-size: 0.82rem; padding: 7px 10px; flex: 1; }
+      .settings-feedback-btn { width: auto; padding: 7px 14px; font-size: 0.82rem; white-space: nowrap; flex-shrink: 0; }
+    }
+
+/* ── Suppress screen & frame transitions during game-mode switches ── */
+    body.no-screen-transition .screen,
+    body.no-screen-transition .phone-frame {
+      transition: none !important;
+    }
+
+/* ── Screen system ── */
     .screen {
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
@@ -297,8 +366,8 @@
     /* ── Back button ── */
     .back-btn {
       position: absolute;
-      top: 14px;
-      left: 14px; z-index: 600;
+      top: 18px;
+      left: 20px; z-index: 600;
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.14);
       border-radius: 50%; width: 28px; height: 28px;
@@ -1089,20 +1158,45 @@
 
     /* ── Jeopardy ── */
     #screen-jeopardy {
-      padding: 48px 8px 24px;
+      padding: 48px 8px 8px;
+      overflow: hidden;
     }
-    .jeo-header {
-      font-size: 1.2rem; font-weight: 800; color: #ffcf00;
-      text-align: center; margin-bottom: 10px; letter-spacing: 1px;
+    #jeo-board-wrap {
+      display: flex; flex-direction: row;
+      width: 100%; height: 100%;
+      gap: 10px; align-items: stretch;
     }
-    /* Scoreboard */
-.jeo-turn-banner {
-      width: 100%; text-align: center;
+    /* LEFT sidebar */
+    .jeo-sidebar {
+      display: flex; flex-direction: column;
+      gap: 8px; flex-shrink: 0; width: 110px;
+      justify-content: center;
+    }
+    .jeo-score-item {
+      background: rgba(255,207,0,0.1);
+      border: 1.5px solid rgba(255,207,0,0.3);
+      border-radius: 10px; padding: 8px 6px; text-align: center;
+    }
+    .jeo-score-item.jeo-score-active {
+      border-color: #ffcf00; background: rgba(255,207,0,0.2);
+    }
+    .jeo-score-team {
+      color: rgba(255,207,0,0.8); font-size: 0.6rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;
+    }
+    .jeo-score-pts {
+      color: #ffcf00; font-size: 1.4rem; font-weight: 900; line-height: 1.1;
+    }
+    .jeo-turn-banner {
       background: rgba(255,207,0,0.15);
       border: 1.5px solid rgba(255,207,0,0.4);
-      border-radius: 10px; padding: 10px 16px;
-      color: #ffcf00; font-size: 0.9rem; font-weight: 800;
-      margin-bottom: 14px;
+      border-radius: 10px; padding: 8px 6px;
+      color: #ffcf00; font-size: 0.7rem; font-weight: 800;
+      text-align: center; line-height: 1.3;
+    }
+    .jeo-progress {
+      text-align: center; color: rgba(255,255,255,0.35);
+      font-size: 0.62rem; margin-top: 2px;
     }
     .jeo-ov-team-badge {
       background: rgba(255,207,0,0.2);
@@ -1111,50 +1205,35 @@
       color: #ffcf00; font-size: 0.88rem; font-weight: 800;
       margin-bottom: 22px; letter-spacing: 0.3px;
     }
-    .jeo-scoreboard {
-      display: flex; gap: 10px; margin-bottom: 14px; width: 100%;
-    }
-    .jeo-score-item {
-      flex: 1; background: rgba(255,207,0,0.1);
-      border: 1.5px solid rgba(255,207,0,0.3);
-      border-radius: 12px; padding: 10px 8px; text-align: center;
-    }
-    .jeo-score-team {
-      color: rgba(255,207,0,0.8); font-size: 0.65rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;
-    }
-    .jeo-score-pts {
-      color: #ffcf00; font-size: 1.6rem; font-weight: 900; line-height: 1.1;
-    }
-    /* Board (flexbox) */
+    /* RIGHT: board fills remaining space */
     .jeo-board {
       display: flex; flex-direction: column;
-      width: 100%; gap: 5px;
+      flex: 1; gap: 4px;
     }
     .jeo-board-header {
-      display: flex; gap: 5px;
+      display: flex; gap: 4px;
     }
     .jeo-board-row {
-      display: flex; gap: 5px;
+      display: flex; gap: 4px; flex: 1;
     }
     .jeo-cat-header {
       flex: 1; background: #05348b;
       color: #ffcf00;
-      font-weight: 800; font-size: 0.55rem;
-      text-align: center; padding: 9px 4px;
-      text-transform: uppercase; letter-spacing: 0.4px;
-      line-height: 1.2; border-radius: 6px;
+      font-weight: 800; font-size: 0.82rem;
+      text-align: center; padding: 10px 4px;
+      line-height: 1.25; border-radius: 5px;
+      word-break: break-word;
     }
     .jeo-tile {
       flex: 1; background: #0a3db5;
       color: #ffcf00;
-      font-size: 1.05rem; font-weight: 900;
+      font-size: 1rem; font-weight: 900;
       text-align: center; padding: 0 2px;
       cursor: pointer;
       transition: background 0.15s;
       user-select: none;
-      border-radius: 6px;
-      min-height: 46px; display: flex; align-items: center; justify-content: center;
+      border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
     }
     .jeo-tile:active { background: #1a5cd8; }
     .jeo-tile.jeo-used {
@@ -1163,21 +1242,20 @@
       cursor: default;
       pointer-events: none;
     }
-    .jeo-progress {
-      text-align: center; color: rgba(255,255,255,0.45);
-      font-size: 0.75rem; margin-top: 12px;
-    }
     /* Jeopardy team setup modal */
     #jeo-team-modal {
-      display: none; position: fixed; inset: 0;
+      display: none; position: absolute; inset: 0;
       background: #05348b; z-index: 360;
       flex-direction: column; align-items: center;
-      padding: 36px 24px 28px; overflow-y: auto; gap: 0;
+      padding: 0 24px 28px; overflow-y: auto; gap: 0;
     }
     #jeo-team-modal.show { display: flex; }
     .jeo-tm-title {
-      color: #ffcf00; font-size: 1.35rem; font-weight: 900;
-      margin-bottom: 22px; text-align: center;
+      position: sticky; top: 0; z-index: 2;
+      width: calc(100% + 48px); margin-left: -24px; margin-right: -24px;
+      background: #05348b;
+      padding: max(72px, calc(env(safe-area-inset-top) + 20px)) 24px 18px;
+      color: #ffcf00; font-size: 1.35rem; font-weight: 900; text-align: center;
     }
     .jeo-tm-teams {
       display: flex; gap: 12px; width: 100%; margin-bottom: 22px;
@@ -1221,7 +1299,7 @@
     }
     /* Jeopardy overlay (fullscreen question/answer) */
     #jeo-overlay {
-      display: none; position: fixed; inset: 0;
+      display: none; position: absolute; inset: 0;
       background: #05348b; z-index: 350;
       flex-direction: column; align-items: center; justify-content: center;
       padding: 40px 28px; text-align: center;
@@ -1351,22 +1429,50 @@
 
     /* ── Screen 6: Truth or Dare ── */
     #screen-tod { gap: 8px; padding: 64px 4px 10px; overflow: hidden; align-items: center; }
-    .tod-wheel-stage { width: min(380px, calc(100vw - 8px)); aspect-ratio: 1; flex-shrink: 0; }
-    .tod-wheel-stage canvas { width: 100%; height: 100%; display: block; }
-    .tod-spin-btn {
-      flex-shrink: 0; width: 72px; height: 72px; border-radius: 50%;
-      border: 2px solid rgba(201,168,76,0.5);
-      background: linear-gradient(135deg, #001845, #002868);
-      color: var(--text); font-size: 0.7rem; font-weight: 900; letter-spacing: 1px;
-      cursor: pointer; transition: transform 0.15s cubic-bezier(0.22,1,0.36,1);
-      box-shadow: 0 0 0 4px rgba(0,40,104,0.2), 0 0 32px rgba(0,40,104,0.5);
-      animation: todPulse 2.5s ease-in-out infinite;
+
+    /* ── iOS-style drum picker for TOD ── */
+    .tod-picker-stage {
+      width: min(340px, calc(100vw - 16px));
+      flex-shrink: 0;
+      transform: translateX(66px);
     }
-    .tod-spin-btn:not(:disabled):active { transform: scale(0.86); }
-    .tod-spin-btn:disabled { opacity: 0.5; animation: none; cursor: default; }
-    @keyframes todPulse {
-      0%,100% { box-shadow: 0 0 0 4px rgba(0,40,104,0.2), 0 0 20px rgba(0,40,104,0.4); }
-      50%      { box-shadow: 0 0 0 8px rgba(0,40,104,0.12), 0 0 44px rgba(0,40,104,0.75); }
+    .tod-picker-viewport {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      perspective: 420px;
+      perspective-origin: 50% 50%;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
+      mask-image:         linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
+    }
+    .tod-picker-sel-stripe { display: none; }
+    .tod-picker-item {
+      position: absolute;
+      left: 0; right: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      transform-origin: 50% 50%;
+      z-index: 2;
+      letter-spacing: 0.3px;
+    }
+    .tod-winner-label { display: none; }
+    .tod-spin-btn {
+      background: none; border: none; padding: 12px 24px;
+      color: rgba(255,255,255,0.45); font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase; cursor: pointer;
+      animation: todSpinPulse 2s ease-in-out infinite;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tod-spin-btn:active { transform: scale(0.94); }
+    .tod-spin-btn:disabled { opacity: 0.25; animation: none; cursor: default; }
+    @keyframes todSpinPulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
     }
 
     .tod-player-area { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
@@ -1384,58 +1490,81 @@
     .tod-slot-reel { display: flex; flex-direction: column; align-items: center; will-change: transform; transition: transform 0.1s linear; }
     .tod-slot-item { height: 90px; width: 90px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 700; color: white; flex-shrink: 0; }
 
-    .tod-player-name { font-size: 1.2rem; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
 
-    .tod-choice-btns { display: flex; gap: 10px; width: 100%; padding: 0 4px; }
+    .tod-choice-btns { display: flex; gap: 10px; justify-content: center; margin-top: 38px; }
 
     .tod-choice-btn {
-      flex: 1; padding: 22px 10px;
-      font-size: 1.1rem; font-weight: 800; letter-spacing: 1px;
-      border: 1px solid transparent;
-      border-radius: 16px; cursor: pointer; min-height: 68px;
-      transition: all 0.2s cubic-bezier(0.22,1,0.36,1);
-      box-shadow: 0 4px 0 rgba(0,0,0,0.45), 0 8px 24px rgba(0,0,0,0.25);
-      position: relative; overflow: hidden;
+      flex: 1; padding: 20px 12px;
+      font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px; cursor: pointer; min-height: 64px;
+      transition: background 0.2s, transform 0.15s;
+      background: rgba(255,255,255,0.09);
+      color: white;
     }
-    .tod-choice-btn::after {
-      content: ''; position: absolute; inset: 0; border-radius: inherit;
-      background: linear-gradient(180deg,rgba(255,255,255,0.14) 0%,transparent 55%);
-    }
-    .tod-truth-btn { background: linear-gradient(135deg,#001845,#002868); color: white; border-color: rgba(0,40,104,0.5); }
-    .tod-dare-btn  { background: linear-gradient(135deg,#7a0000,#EF2B2D); color: white; border-color: rgba(239,43,45,0.4); }
-    .tod-truth-btn:hover { background: linear-gradient(135deg,#002868,#1d3d8f); transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.45), 0 12px 32px rgba(0,40,104,0.38); }
-    .tod-dare-btn:hover  { background: linear-gradient(135deg,#9b0000,#f73d3f); transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.45), 0 12px 32px rgba(239,43,45,0.38); }
-    .tod-truth-btn:active, .tod-dare-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.45); }
+    .tod-truth-btn:active, .tod-dare-btn:active { transform: scale(0.96); }
+    .tod-truth-btn:hover, .tod-dare-btn:hover { background: rgba(255,255,255,0.16); }
 
-    .tod-question-card {
-      width: 100%; border-radius: 22px; text-align: center;
-      display: none; overflow: hidden;
-      box-shadow: 0 14px 56px rgba(0,0,0,0.55); margin: 0 4px;
+    .tod-interaction-area { width: 100%; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+    /* ── TOD question overlay ── */
+    .tod-q-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      padding: 36px 24px;
+      background: rgba(7,10,28,0.88);
+      cursor: pointer;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      isolation: isolate;
     }
-    .tod-question-card.visible { display: block; }
-    .tod-question-card.truth-mode {
-      background: linear-gradient(160deg, #001845 0%, #000b26 100%);
-      border: 1px solid rgba(201,168,76,0.28);
+    .tod-q-overlay.show {
+      opacity: 1; pointer-events: all;
     }
-    .tod-question-card.dare-mode {
-      background: linear-gradient(160deg, #3d0000 0%, #1e0000 100%);
-      border: 1px solid rgba(239,43,45,0.28);
+    .tod-q-inner {
+      width: 100%;
+      background: rgba(16,18,40,0.97);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 36px 28px 32px;
+      display: flex; flex-direction: column; align-items: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
     }
-    .tod-card-header { padding: 22px 20px 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-    .tod-question-type { font-size: 2rem; font-weight: 900; letter-spacing: 4px; line-height: 1; text-transform: uppercase; }
-    .truth-mode .tod-question-type { color: var(--gold); text-shadow: 0 0 32px rgba(201,168,76,0.65); }
-    .dare-mode  .tod-question-type { color: #ff8080; text-shadow: 0 0 32px rgba(239,43,45,0.65); }
-    .tod-category-badge {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-      padding: 3px 10px; border-radius: 100px;
-      background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6);
+    .tod-q-type {
+      font-size: 0.65rem; font-weight: 800; letter-spacing: 3.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.35);
+      margin-bottom: 16px;
     }
-    .tod-question-player { font-size: 1rem; font-weight: 700; letter-spacing: 0.5px; padding: 0 20px 2px; }
-    .truth-mode .tod-question-player { color: var(--gold); }
-    .dare-mode  .tod-question-player { color: #ff9090; }
-    .tod-card-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 0 20px; }
-    .tod-question-text { font-size: 1.1rem; color: rgba(238,242,255,0.9); line-height: 1.6; padding: 18px 22px 6px; font-weight: 500; }
-    .tod-action-btns { display: flex; gap: 10px; padding: 16px 20px 22px; }
+    .tod-choice-name {
+      font-size: 2rem; font-weight: 900; color: #fff;
+      letter-spacing: 0.5px; text-align: center;
+      margin-bottom: 32px;
+    }
+    .tod-choice-row {
+      display: flex; gap: 14px; width: 100%; justify-content: center;
+    }
+    .tod-q-text {
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+      font-weight: 600; color: #fff;
+      line-height: 1.6; text-align: center;
+      margin-bottom: 36px;
+    }
+    .tod-q-penalty {
+      font-size: 0.75rem; font-weight: 600; color: rgba(255,120,120,0.7);
+      letter-spacing: 0.3px; text-align: center; margin-bottom: 24px;
+    }
+    .tod-q-hint {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(255,255,255,0.25);
+      animation: todTapPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes todTapPulse {
+      0%, 100% { opacity: 0.25; }
+      50%       { opacity: 0.65; }
+    }
 
     /* ── Responsive ── */
     @media (max-width: 390px) {
@@ -1597,8 +1726,8 @@
       /* ── Generelt ── */
       .screen       { padding: 36px 12px 8px; }
       .screen-title { font-size: 0.95rem; margin-bottom: 2px; }
-      .back-btn     { top: 8px; left: 10px; }
-      #settings-btn { top: 8px; right: 10px; }
+      .back-btn     { top: 12px; left: 16px; }
+      #settings-btn { top: 12px; right: 16px; }
 
       /* ── Oppsett ── */
       #screen-setup { padding-top: 36px; }
@@ -1654,20 +1783,13 @@
         overflow: hidden; position: relative; align-items: start;
       }
       #screen-tod .screen-title  { grid-area: title; text-align: center; justify-self: center; }
-      .tod-wheel-stage { grid-area: wheel; width: min(calc(100dvh - 80px), 44vw); align-self: center; }
-      .tod-player-name { grid-area: right; align-self: center; justify-self: center; font-size: 1.2rem; }
+      .tod-picker-stage { grid-area: wheel; width: min(calc(100dvh - 80px), 42vw); align-self: center; }
+      .tod-picker-viewport { height: min(calc(100dvh - 130px), 42vw); }
+      .tod-winner-label { grid-area: right; align-self: flex-end; justify-self: center; font-size: 1.1rem; }
       .tod-spin-btn    { grid-area: right; align-self: center; justify-self: center; }
       .tod-choice-btns { grid-area: right; align-self: center; justify-self: center; flex-direction: column; gap: 8px; }
       /* Spørsmålskort legges over hele skjermen som overlay */
-      .tod-question-card.visible {
-        position: absolute; inset: 36px 0 0;
-        z-index: 10; border-radius: 0; overflow-y: auto;
-        margin: 0; padding: 0;
-      }
-      .tod-card-header { padding: 12px 16px 8px; }
-      .tod-question-type { font-size: 1.6rem; }
-      .tod-question-text { font-size: 1.1rem; padding: 8px 16px 6px; }
-      .tod-action-btns { padding: 8px 16px 12px; }
+      .tod-inline-text { font-size: 1.1rem; }
 
       /* ── Gassed: real mobile landscape — scale up fonts ── */
       #screen-gassed { background: #1a1a1a; padding-top: 36px; }
@@ -1679,7 +1801,7 @@
       .wf-challenge-text { font-size: 1.4rem; line-height: 1.4; min-height: auto; }
 
       /* ── Trivia: 2-kolonne svar ── */
-      #screen-trivia { padding: 36px 12px 8px; gap: 6px; }
+      #screen-trivia { padding: 36px 52px 8px 52px; gap: 6px; }
       .trivia-question-text { font-size: 1.05rem; }
       .trivia-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 
@@ -2089,7 +2211,6 @@
       background: rgba(0,0,0,0.78);
       display: flex; align-items: center; justify-content: center;
       backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      animation: hhmFadeIn 0.18s ease;
     }
     .tcat-card {
       background: rgba(18,18,30,0.97);
@@ -2342,7 +2463,7 @@
     .horse-flip-area:active .horse-flip-card:not(.flipped) { transform: rotateY(20deg); }
 
     /* ── Trivia Quiz ── */
-    #screen-trivia { gap: 16px; padding-top: 64px; overflow: hidden; align-items: stretch; }
+    #screen-trivia { gap: 16px; padding-top: 110px; overflow: hidden; align-items: stretch; }
     #trivia-quiz-area { display: flex; flex-direction: column; gap: 16px; width: 100%; }
     .trivia-player-indicator { font-size: 0.78rem; color: var(--gold); text-align: center; letter-spacing: 0.5px; font-weight: 700; flex-shrink: 0; }
     .trivia-progress { font-size: 0.72rem; color: var(--dim); text-align: center; flex-shrink: 0; }
@@ -2355,10 +2476,7 @@
       box-shadow: var(--shadow-card);
       position: relative; overflow: hidden;
     }
-    .trivia-question-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, #EF2B2D 45%, #FFFFFF 45%, #FFFFFF 55%, #002868 55%);
-    }
+    .trivia-question-card::before { display: none; }
     .trivia-question-text { font-size: 1.15rem; font-weight: 700; color: var(--text); line-height: 1.45; }
     .trivia-answers { display: flex; flex-direction: column; gap: 9px; flex-shrink: 0; }
     .trivia-answer-btn {
@@ -2541,11 +2659,11 @@
       #screen-wheel { padding-top: 110px; gap: 6px; }
       #screen-tod   { padding-top: 110px; }
       .wheel-stage  { width: min(330px, 100%); }
-      .tod-wheel-stage { width: min(300px, 100%); }
+      .tod-picker-stage { width: min(300px, 100%); }
 
       /* Floating buttons below Dynamic Island */
-      #settings-btn { top: 18px; right: 18px; }
-      .back-btn     { top: 18px; left: 18px; }
+      #settings-btn { top: 22px; right: 24px; }
+      .back-btn     { top: 22px; left: 24px; }
 
       /* Scale down to fit tight viewports (frame is 880px tall with bezel) */
       @media (max-height: 980px) {
@@ -2611,13 +2729,18 @@
       /* ── Game screen layouts inside landscape frame (682×314px) ── */
       body.game-active .screen      { padding: 36px 12px 8px; }
       body.game-active .screen-title { font-size: 0.95rem; margin-bottom: 2px; }
-      body.game-active .back-btn    { top: 8px; left: 10px; }
-      body.game-active #settings-btn { top: 8px; right: 10px; }
+      body.game-active .back-btn    { top: 12px; left: 16px; }
+      body.game-active #settings-btn { top: 12px; right: 16px; }
       body.game-active #screen-home { padding-top: 36px; }
       body.game-active #screen-horse { padding-top: 36px; overflow-y: auto; }
       body.game-active #screen-waterfall { padding: 36px 12px 8px; gap: 10px; }
       body.game-active .wf-challenge-text { font-size: 1.3rem; line-height: 1.35; min-height: auto; }
-      body.game-active #screen-trivia { padding: 36px 12px 8px; gap: 6px; }
+      body.game-active #screen-trivia { padding: 36px 52px 8px 52px; gap: 6px; }
+      body.game-active #screen-jeopardy { padding: 36px 12px 8px 52px; overflow: hidden; }
+      body.game-active #screen-jeopardy #jeo-board-wrap { height: 100%; }
+      body.game-active .jeo-sidebar { width: 96px; }
+      body.game-active .jeo-score-pts { font-size: 1.1rem; }
+      body.game-active .jeo-tile { font-size: 0.85rem; }
       body.game-active .trivia-question-text { font-size: 0.98rem; }
       body.game-active .trivia-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 
@@ -2659,18 +2782,12 @@
         overflow: hidden; position: relative; align-items: start;
       }
       body.game-active #screen-tod .screen-title { grid-area: title; text-align: center; justify-self: center; }
-      body.game-active .tod-wheel-stage { grid-area: wheel; width: 196px; align-self: center; }
-      body.game-active .tod-player-name { grid-area: right; align-self: center; justify-self: center; font-size: 1.1rem; }
+      body.game-active .tod-picker-stage { grid-area: wheel; width: 200px; align-self: center; }
+      body.game-active .tod-picker-viewport { height: 200px; }
+      body.game-active .tod-winner-label { grid-area: right; align-self: flex-end; justify-self: center; font-size: 1rem; }
       body.game-active .tod-spin-btn    { grid-area: right; align-self: center; justify-self: center; }
       body.game-active .tod-choice-btns { grid-area: right; align-self: center; justify-self: center; flex-direction: column; gap: 6px; }
-      body.game-active .tod-question-card.visible {
-        position: absolute; inset: 36px 0 0;
-        z-index: 10; border-radius: 0; overflow-y: auto; margin: 0; padding: 0;
-      }
-      body.game-active .tod-card-header { padding: 10px 14px 6px; }
-      body.game-active .tod-question-type { font-size: 1.4rem; }
-      body.game-active .tod-question-text { font-size: 1rem; padding: 6px 14px 4px; }
-      body.game-active .tod-action-btns { padding: 6px 14px 10px; }
+      body.game-active .tod-inline-text { font-size: 1rem; }
 
       /* Gassed: desktop phone frame (682×314) — tighter sizes */
       body.game-active #screen-gassed { background: #1a1a1a; padding-top: 36px; }
@@ -2921,7 +3038,7 @@
 
   <!-- Screen 2: Home -->
   <div class="screen" id="screen-home">
-    <div class="home-tagline">Fyll glasset. Velg et spill.<br><span>Let's get Gassed!</span></div>
+<div class="home-tagline">Fyll glasset. Velg et spill.<br><span>Let's get Gassed!</span></div>
 
     <div class="home-game-grid">
       <button class="home-game-btn hgb-gassed" onclick="gassedShowIntro()">
@@ -3049,30 +3166,15 @@
   <!-- Screen 6: Truth or Dare -->
   <div class="screen" id="screen-tod">
     <div class="screen-title" data-t="games.tod">😏 Nøtt eller Sannhet</div>
-    <div class="tod-wheel-stage">
-      <canvas id="tod-wheel-canvas" width="320" height="320"></canvas>
-    </div>
-    <div class="tod-player-name" id="tod-player-name" data-t="tod.pickPrompt">Hvem er det sin tur?</div>
-    <button class="tod-spin-btn" id="tod-pick-btn" onclick="todPickPlayer()">SPIN!</button>
-
-    <div class="tod-choice-btns" id="tod-choice-btns" style="display:none;">
-      <button class="tod-choice-btn tod-truth-btn" onclick="todChoose('truth')" data-t="tod.truth">😇 TRUTH</button>
-      <button class="tod-choice-btn tod-dare-btn"  onclick="todChoose('dare')"  data-t="tod.dare">😈 DARE</button>
-    </div>
-
-    <div class="tod-question-card" id="tod-question-card">
-      <div class="tod-card-header">
-        <div class="tod-question-type" id="tod-question-type"></div>
-        <div class="tod-category-badge" id="tod-category-badge" style="display:none"></div>
-        <div class="tod-question-player" id="tod-question-player"></div>
-      </div>
-      <div class="tod-card-divider"></div>
-      <div class="tod-question-text" id="tod-question-text"></div>
-      <div class="tod-action-btns">
-        <button class="btn-primary" onclick="todDone()" data-t="tod.done">✓ Done</button>
-        <button class="btn-danger" onclick="todPass()" data-t="tod.pass">🍺 Pass (drink 2)</button>
+    <div class="tod-picker-stage">
+      <div class="tod-picker-viewport" id="tod-picker-viewport">
+        <div class="tod-picker-sel-stripe"></div>
       </div>
     </div>
+    <div class="tod-winner-label" id="tod-winner-label"></div>
+    <button class="tod-spin-btn" id="tod-pick-btn" onclick="todPickPlayer()">Trykk her for å spinne</button>
+
+
   </div>
 
   <!-- Screen 8: Trivia Quiz -->
@@ -3194,9 +3296,7 @@
 
   <!-- Screen: Jeopardy -->
   <div class="screen" id="screen-jeopardy">
-    <div class="jeo-header" data-t="jeopardy.title">🍺 Jeopardy</div>
     <div id="jeo-board-wrap"></div>
-    <div class="jeo-progress" id="jeo-progress"></div>
   </div>
 
   <!-- Rotate prompt: shown in portrait when inside a game on real mobile -->
@@ -3329,15 +3429,7 @@
   _appEl2.insertBefore(canvas, _appEl2.firstChild);
   const ctx = canvas.getContext('2d');
 
-  const EMOJIS = {
-    'screen-ring':      '🔥',
-    'screen-waterfall': '❓',
-    'screen-tod':       '😏',
-    'screen-trivia':    '🧠',
-    'screen-horse':     '🐎',
-    'screen-jeopardy':  '🍺',
-    'screen-gassed':    '🍺',
-  };
+  const EMOJIS = {};
 
   let active = null;
   const particles = [];
@@ -4435,11 +4527,20 @@ function getInitial(name) {
 // ─────────────────────────────────────────────
 function showScreen(id) {
   if (document.querySelector('.screen.active')?.id === id) return;
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
 
   const isGame = ['screen-ring','screen-waterfall','screen-tod','screen-horse','screen-trivia','screen-wheel','screen-jeopardy','screen-gassed'].includes(id);
   const isRing = id === 'screen-ring';
+  const wasGame = document.body.classList.contains('game-active');
+
+  // If the game-active state is changing, the phone frame will rotate.
+  // Suppress all screen transitions for two frames so the rotation and
+  // the screen swap happen atomically — no translateY + rotate combo visible.
+  if (wasGame !== isGame) {
+    document.body.classList.add('no-screen-transition');
+  }
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 
   document.getElementById('back-btn').classList.toggle('visible', isGame || id === 'screen-home');
 
@@ -4462,6 +4563,15 @@ function showScreen(id) {
     // CSS rotate fallback handled automatically via body.device-portrait + CSS
   } else {
     try { screen.orientation?.unlock(); } catch(e) {}
+  }
+
+  // Re-enable transitions after layout has settled
+  if (wasGame !== isGame) {
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        document.body.classList.remove('no-screen-transition');
+      });
+    });
   }
 
 }
@@ -4511,6 +4621,9 @@ function goHome() {
   if (app.gassed?.countdownTimer) { clearInterval(app.gassed.countdownTimer); app.gassed.countdownTimer = null; }
   if (app.gassed) app.gassed.inSubGame = false;
   document.getElementById('gassed-intro')?.classList.remove('show');
+  document.getElementById('trivia-cat-modal').style.display = 'none';
+  document.getElementById('tod-choice-overlay')?.classList.remove('show');
+  document.getElementById('tod-question-card')?.classList.remove('show');
   showScreen('screen-home');
   document.getElementById('back-btn').classList.remove('visible');
 }
@@ -5178,6 +5291,9 @@ function initWheel() {
 function easeOutQuint(t) {
   return 1 - Math.pow(1 - t, 5);
 }
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
 
 function spinWheels() {
   if (app.wheel.spinning) return;
@@ -5371,8 +5487,8 @@ function startGame(gameId) {
 }
 
 function dismissInstructions() {
-  document.getElementById('game-instructions-modal').style.display = 'none';
   if (_gimLaunchId) { const id = _gimLaunchId; _gimLaunchId = null; launchGame(id); }
+  document.getElementById('game-instructions-modal').style.display = 'none';
 }
 
 function launchGame(gameId) {
@@ -5380,9 +5496,9 @@ function launchGame(gameId) {
   else if (gameId === 'waterfall') { initWaterfall(); showScreen('screen-waterfall'); }
   else if (gameId === 'tod')  { showScreen('screen-tod'); initTod(); }
   else if (gameId === 'horse') { initHorse(); }
-  else if (gameId === 'trivia') { initTrivia(); showScreen('screen-trivia'); }
+  else if (gameId === 'trivia') { showScreen('screen-trivia'); initTrivia(); }
   else if (gameId === 'wheel')  { showScreen('screen-wheel'); initWheel(); }
-  else if (gameId === 'jeopardy') { initJeopardy(); showScreen('screen-jeopardy'); }
+  else if (gameId === 'jeopardy') { initJeopardy(); /* showScreen deferred to jeoStartGame */ }
   else if (gameId === 'gassed')   { startGassed(); }
 }
 
@@ -6226,175 +6342,121 @@ function wfNext() {
 // ─────────────────────────────────────────────
 // TRUTH OR DARE
 // ─────────────────────────────────────────────
+var TOD_ITEM_H   = 56;
+var TOD_SLOTS    = 9;   // -4 .. +4 around centre
+var TOD_VP_H     = 280; // viewport height (5 × 56)
+var TOD_CY       = TOD_VP_H / 2; // 140 — vertical centre
+
+function _todPickerBuild() {
+  var vp = document.getElementById('tod-picker-viewport');
+  if (!vp) return;
+  vp.querySelectorAll('.tod-picker-item').forEach(function(el){ el.remove(); });
+  for (var i = 0; i < TOD_SLOTS; i++) {
+    var el = document.createElement('div');
+    el.className = 'tod-picker-item';
+    vp.appendChild(el);
+  }
+}
+
+function _todPickerRender(pos) {
+  var n = app.players.length;
+  if (!n) return;
+  var slots = document.querySelectorAll('#tod-picker-viewport .tod-picker-item');
+  var floorPos = Math.floor(pos);
+  var frac = pos - floorPos;
+  var R = 170; // cylinder radius px
+  var DEG = 18; // degrees between items
+
+  slots.forEach(function(slot, s) {
+    var offset = s - 4;                           // -4 … +4
+    var absIdx = floorPos + offset;
+    var playerIdx = ((absIdx % n) + n) % n;
+    var d = offset - frac;                        // fractional distance from centre
+
+    var rad    = d * DEG * Math.PI / 180;
+    var ty     = TOD_CY + R * Math.sin(rad) - TOD_ITEM_H / 2;
+    var tz     = R * (Math.cos(rad) - 1);         // negative — pulls back
+    var angle  = d * DEG;
+    var absd   = Math.abs(d);
+    var opac   = Math.max(0, 1 - absd * 0.42);
+    var sc     = Math.max(0.55, 1.22 - absd * 0.26);
+
+    slot.textContent = app.players[playerIdx];
+    slot.style.top = '0';
+    slot.style.transform = 'translateY(' + ty + 'px) translateZ(' + tz + 'px) rotateX(' + angle + 'deg) scale(' + sc + ')';
+    slot.style.opacity    = opac;
+  });
+}
+
 function initTod() {
   app.tod.selectedPlayer = null;
   app.tod.usedTruths = new Set();
-  app.tod.usedDares = new Set();
-  app.tod.spinning = false;
-  if (!app.tod.wheelAngle) app.tod.wheelAngle = 0;
+  app.tod.usedDares  = new Set();
+  app.tod.spinning   = false;
+  if (app.tod.pickerPos === undefined) app.tod.pickerPos = 0;
 
-  document.getElementById('tod-player-name').textContent = t('tod.pickPrompt');
   document.getElementById('tod-pick-btn').style.display = '';
-  document.getElementById('tod-choice-btns').style.display = 'none';
-  document.getElementById('tod-question-card').classList.remove('visible');
+  document.getElementById('tod-question-card').classList.remove('show');
+  document.getElementById('tod-choice-overlay').classList.remove('show');
 
-  var canvas = document.getElementById('tod-wheel-canvas');
-  if (canvas && canvas.offsetWidth > 0) {
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var sz = Math.round(canvas.offsetWidth * dpr);
-    canvas.width = sz;
-    canvas.height = sz;
-  }
-  requestAnimationFrame(drawTodWheel);
+  _todPickerBuild();
+  _todPickerRender(app.tod.pickerPos);
 }
 
 function todPickPlayer() {
   if (app.tod.spinning) return;
   app.tod.spinning = true;
   SFX.wheelSpin();
+
   document.getElementById('tod-pick-btn').style.display = 'none';
-  document.getElementById('tod-choice-btns').style.display = 'none';
-  document.getElementById('tod-question-card').classList.remove('visible');
-  document.getElementById('tod-player-name').textContent = '…';
+  
+  document.getElementById('tod-question-card').classList.remove('show');
+  var wb = document.getElementById('tod-winner-label');
+  if (wb) { wb.textContent = ''; wb.classList.remove('show'); }
 
-  var TWO_PI = 2 * Math.PI;
   var n = app.players.length;
-  var playerIdx = Math.floor(Math.random() * n);
-  var pSeg = TWO_PI / n;
+  var targetIdx = Math.floor(Math.random() * n);
+  var startPos  = app.tod.pickerPos;
+  var curMod    = ((Math.round(startPos) % n) + n) % n;
+  var steps     = ((targetIdx - curMod) + n) % n;
+  var targetPos = startPos + 12 * n + steps; // 12 full rotations + land
 
-  var cur = ((app.tod.wheelAngle % TWO_PI) + TWO_PI) % TWO_PI;
-  var target = ((-(playerIdx + 0.5) * pSeg) % TWO_PI + TWO_PI) % TWO_PI;
-  var delta = (target - cur + TWO_PI) % TWO_PI;
-  if (delta < 0.5) delta += TWO_PI;
-
-  var finalAngle = app.tod.wheelAngle + delta + 7 * TWO_PI;
-  var startAngle = app.tod.wheelAngle;
-  var dur = 4000;
-  var t0 = performance.now();
+  var dur = 8600;
+  var t0  = performance.now();
+  var lastFloor = Math.floor(startPos);
 
   function frame(now) {
-    var elapsed = now - t0;
-    var prog = Math.min(elapsed / dur, 1);
-    app.tod.wheelAngle = startAngle + (finalAngle - startAngle) * easeOutQuint(prog);
-    drawTodWheel();
+    var prog  = Math.min((now - t0) / dur, 1);
+    var eased = easeOutCubic(prog);
+    var pos   = startPos + (targetPos - startPos) * eased;
+    app.tod.pickerPos = pos;
+    _todPickerRender(pos);
+
+    var cf = Math.floor(pos);
+    if (cf !== lastFloor) { SFX.wheelTick(); lastFloor = cf; }
+
     if (prog < 1) {
       requestAnimationFrame(frame);
     } else {
+      app.tod.pickerPos = Math.round(targetPos);
+      _todPickerRender(app.tod.pickerPos);
       app.tod.spinning = false;
       SFX.wheelLand();
-      app.tod.selectedPlayer = app.players[playerIdx];
-      document.getElementById('tod-player-name').textContent = app.tod.selectedPlayer;
-      document.getElementById('tod-choice-btns').style.display = 'flex';
+      app.tod.selectedPlayer = app.players[targetIdx];
+      document.getElementById('tod-choice-name').textContent = app.tod.selectedPlayer;
+      document.getElementById('tod-picker-viewport').style.visibility = 'hidden';
+      requestAnimationFrame(function(){ document.getElementById('tod-choice-overlay').classList.add('show'); });
     }
   }
-  var _todSpinPushInterval = setInterval(function() {
+
+  var _todPushInterval = setInterval(function() {
     S.push();
-    if (!app.tod.spinning) clearInterval(_todSpinPushInterval);
+    if (!app.tod.spinning) clearInterval(_todPushInterval);
   }, 80);
 
   requestAnimationFrame(frame);
 }
 
-function drawTodWheel() {
-  var canvas = document.getElementById('tod-wheel-canvas');
-  if (!canvas) return;
-  var segs = app.players.map(function(name, i) {
-    return {
-      label: name.length > 9 ? name.slice(0, 8) + '\u2026' : name,
-      color: WHEEL_PLAYER_COLORS[i % WHEEL_PLAYER_COLORS.length]
-    };
-  });
-  drawSimpleWheel(canvas, segs, app.tod.wheelAngle);
-}
-
-function drawSimpleWheel(canvas, segs, angle) {
-  var ctx = canvas.getContext('2d');
-  var S = canvas.width;
-  var cx = S / 2, cy = S / 2;
-  var r = S / 2 - 10;
-  var TWO_PI = 2 * Math.PI;
-  var n = segs.length;
-  var seg = TWO_PI / n;
-
-  ctx.clearRect(0, 0, S, S);
-
-  var grd = ctx.createRadialGradient(cx, cy, r - 6, cx, cy, r + 14);
-  grd.addColorStop(0, 'rgba(59,130,246,0.25)');
-  grd.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.beginPath();
-  ctx.arc(cx, cy, r + 14, 0, TWO_PI);
-  ctx.fillStyle = grd;
-  ctx.fill();
-
-  for (var i = 0; i < n; i++) {
-    var sa = -Math.PI / 2 + angle + i * seg;
-    var ea = sa + seg;
-    var mid = sa + seg / 2;
-
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, sa, ea);
-    ctx.closePath();
-    ctx.fillStyle = segs[i].color;
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,0.35)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    var dist = r * 0.60;
-    var lx = cx + dist * Math.cos(mid);
-    var ly = cy + dist * Math.sin(mid);
-
-    ctx.save();
-    ctx.translate(lx, ly);
-    ctx.rotate(mid + Math.PI / 2);
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#fff';
-    ctx.shadowColor = 'rgba(0,0,0,0.9)';
-    ctx.shadowBlur = 5;
-    var fs = n <= 3 ? Math.round(S * 0.072) : n <= 5 ? Math.round(S * 0.060) : n <= 7 ? Math.round(S * 0.050) : Math.round(S * 0.042);
-    ctx.font = 'bold ' + fs + 'px -apple-system,sans-serif';
-    ctx.fillText(segs[i].label, 0, 0);
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  }
-
-  ctx.beginPath();
-  ctx.arc(cx, cy, r, 0, TWO_PI);
-  ctx.strokeStyle = 'rgba(255,255,255,0.30)';
-  ctx.lineWidth = 3;
-  ctx.stroke();
-
-  var capR = Math.round(S * 0.075);
-  var cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, capR);
-  cg.addColorStop(0, '#1e3a8a');
-  cg.addColorStop(1, '#01173b');
-  ctx.beginPath();
-  ctx.arc(cx, cy, capR, 0, TWO_PI);
-  ctx.fillStyle = cg;
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  var tipY = cy - r + 3;
-  var pw = Math.round(S * 0.055);
-  var ph = Math.round(S * 0.088);
-  ctx.beginPath();
-  ctx.moveTo(cx, tipY);
-  ctx.lineTo(cx - pw, tipY - ph);
-  ctx.lineTo(cx + pw, tipY - ph);
-  ctx.closePath();
-  ctx.fillStyle = '#ffffff';
-  ctx.shadowColor = 'rgba(0,0,0,0.8)';
-  ctx.shadowBlur = 10;
-  ctx.fill();
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = 'rgba(0,0,0,0.4)';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-}
 
 function todChoose(type) {
   type === 'truth' ? SFX.truth() : SFX.dare();
@@ -6414,26 +6476,24 @@ function todChoose(type) {
   const raw = pool[idx];
   const text = interpolate(raw, app.tod.selectedPlayer);
 
-  const card = document.getElementById('tod-question-card');
-  card.className = 'tod-question-card visible ' + (type === 'truth' ? 'truth-mode' : 'dare-mode');
-
   document.getElementById('tod-question-type').textContent = type === 'truth'
     ? (app.lang === 'en' ? 'TRUTH' : 'SANNHET')
     : (app.lang === 'en' ? 'DARE' : 'NØTT');
-
-  const catBadge = document.getElementById('tod-category-badge');
-  catBadge.style.display = 'none';
-
-  document.getElementById('tod-question-player').textContent = app.tod.selectedPlayer || '';
   document.getElementById('tod-question-text').textContent = text;
-  document.getElementById('tod-choice-btns').style.display = 'none';
+  document.getElementById('tod-q-penalty').textContent = type === 'truth'
+    ? (app.lang === 'en' ? '🍺 Drink 5 if you refuse to answer' : '🍺 Drikk 5 om du nekter å svare')
+    : (app.lang === 'en' ? '🍺 Drink 5 if you refuse to do it' : '🍺 Drikk 5 om du nekter å gjøre det');
+  document.getElementById('tod-choice-overlay').classList.remove('show');
+  requestAnimationFrame(function(){ document.getElementById('tod-question-card').classList.add('show'); });
+  // picker stays hidden while question card is shown
 }
 
 function todDone() {
   SFX.click();
-  document.getElementById('tod-question-card').classList.remove('visible');
+  document.getElementById('tod-question-card').classList.remove('show');
+  document.getElementById('tod-choice-overlay').classList.remove('show');
+  document.getElementById('tod-picker-viewport').style.visibility = '';
   document.getElementById('tod-pick-btn').style.display = '';
-  document.getElementById('tod-player-name').textContent = t('tod.pickPrompt');
   app.tod.selectedPlayer = null;
 }
 
@@ -6765,6 +6825,7 @@ function jeoAssignTeam(pi, ti) {
 function jeoStartGame() {
   app.jeopardy.teamsSet = true;
   document.getElementById('jeo-team-modal').classList.remove('show');
+  showScreen('screen-jeopardy');
   _jeoRenderBoard();
   S.schedulePush(50);
 }
@@ -6777,41 +6838,38 @@ function _jeoRenderBoard() {
   const teams = app.jeopardy.teams || [];
   const ct = app.jeopardy.currentTeam ?? 0;
   const isNo = app.lang !== 'en';
-  let html = '';
-  // Scoreboard
-  if (teams.length) {
-    html += '<div class="jeo-scoreboard">';
-    teams.forEach((t, ti) => {
-      const active = ti === ct ? ' style="border-color:#ffcf00;background:rgba(255,207,0,0.2)"' : '';
-      html += `<div class="jeo-score-item"${active}><div class="jeo-score-team">${t.name}</div><div class="jeo-score-pts">$${t.score}</div></div>`;
-    });
-    html += '</div>';
-  }
-  // Turn banner
+
+  // LEFT sidebar: scoreboard + turn indicator + progress
+  let sidebar = '<div class="jeo-sidebar">';
+  teams.forEach((t, ti) => {
+    const active = ti === ct ? ' jeo-score-active' : '';
+    sidebar += `<div class="jeo-score-item${active}"><div class="jeo-score-team">${t.name}</div><div class="jeo-score-pts">$${t.score}</div></div>`;
+  });
   if (teams[ct]) {
-    html += `<div class="jeo-turn-banner">🎯 ${isNo ? `${teams[ct].name} sin tur` : `${teams[ct].name}'s turn`}</div>`;
+    sidebar += `<div class="jeo-turn-banner">🎯 ${isNo ? `${teams[ct].name} sin tur` : `${teams[ct].name}'s turn`}</div>`;
   }
-  // Board header
-  html += '<div class="jeo-board"><div class="jeo-board-header">';
-  data.forEach(c => { html += `<div class="jeo-cat-header">${c.name}</div>`; });
-  html += '</div>';
-  // Rows
+  sidebar += `<div class="jeo-progress">${app.jeopardy.done} / ${total}</div>`;
+  sidebar += '</div>';
+
+  // RIGHT: board
+  let board = '<div class="jeo-board"><div class="jeo-board-header">';
+  data.forEach(c => { board += `<div class="jeo-cat-header">${c.name}</div>`; });
+  board += '</div>';
   for (let qi = 0; qi < data[0].qs.length; qi++) {
     const pts = (qi + 1) * 100;
-    html += '<div class="jeo-board-row">';
+    board += '<div class="jeo-board-row">';
     data.forEach((cat, ci) => {
       const key = ci + '-' + qi;
       const used = app.jeopardy.used.includes(key);
-      html += used
+      board += used
         ? `<div class="jeo-tile jeo-used"></div>`
         : `<div class="jeo-tile" onclick="jeoOpen(${ci},${qi})">$${pts}</div>`;
     });
-    html += '</div>';
+    board += '</div>';
   }
-  html += '</div>';
-  wrap.innerHTML = html;
-  const prog = document.getElementById('jeo-progress');
-  if (prog) prog.textContent = app.jeopardy.done + ' / ' + total + ' ' + (app.lang === 'en' ? 'questions used' : 'spørsmål brukt');
+  board += '</div>';
+
+  wrap.innerHTML = sidebar + board;
 }
 
 function jeoOpen(ci, qi) {
@@ -6938,7 +6996,7 @@ const MUSIC_CHALLENGES = {
   ],
 };
 
-const BORST_CHALLENGES = {
+const CARD_CHALLENGES = {
   no: [
     // ── VILLE DU HELLER (24) ──
     { type:'dilemma', text:'Ville du heller aldri drikke alkohol igjen, eller aldri spise pizza igjen?', sub:'De i undertall drikker 2 slurker!' },
@@ -7118,7 +7176,7 @@ const BORST_CHALLENGES = {
 };
 
 // Weighted type pool: 40 entries — music appears exactly once, wheel exactly twice
-// 1=wheel(2), 2=nhie(6), 3=music(1), 4=borst(31)
+// 1=wheel(2), 2=nhie(6), 3=music(1), 4=challenges(31)
 const GASSED_TYPE_POOL = [
   1,1,
   2,2,2,2,2,2,
@@ -7126,7 +7184,7 @@ const GASSED_TYPE_POOL = [
   4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 ];
 
-app.gassed = { lastPlayer: -1, nhieUsed: new Set(), borstUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [] };
+app.gassed = { lastPlayer: -1, nhieUsed: new Set(), cardsUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [] };
 
 function gassedShowIntro() {
   document.getElementById('gassed-intro').classList.add('show');
@@ -7136,8 +7194,8 @@ function gassedShowIntro() {
 }
 
 function gassedIntroStart() {
-  document.getElementById('gassed-intro').classList.remove('show');
   startGame('gassed');
+  document.getElementById('gassed-intro').classList.remove('show');
 }
 
 function startGassed() {
@@ -7145,7 +7203,7 @@ function startGassed() {
   app.gassed = {
     lastPlayer: -1,
     nhieUsed: new Set(),
-    borstUsed: new Set(),
+    cardsUsed: new Set(),
     musicOrder: shuffle([0, 1, 2]),
     musicIdx: 0,
     typeOrder: shuffle([...GASSED_TYPE_POOL]),
@@ -7223,7 +7281,7 @@ function gassedTurn(skipCapture) {
   g.lastPlayer = pi;
   const playerName = players[pi] || '';
 
-  // Pick activity from weighted pool: 0=ring, 1=wheel, 2=nhie, 3=music, 4=borst
+  // Pick activity from weighted pool: 1=wheel, 2=nhie, 3=music, 4=challenges
   // Do this BEFORE any screen-gassed DOM access so sub-game types 0/1 skip it entirely
   if (g.typeIdx >= g.typeOrder.length) {
     g.typeOrder = shuffle([...GASSED_TYPE_POOL]);
@@ -7290,14 +7348,14 @@ function gassedTurn(skipCapture) {
         : '🍺 Those who have done it — drink!';
 
     } else if (type === 4) {
-      // ── Børst-utfordring ──
-      if (!(g.borstUsed instanceof Set)) g.borstUsed = new Set();
-      const bpool = BORST_CHALLENGES[app.lang] || BORST_CHALLENGES.no;
-      const bavail = bpool.map((_, i) => i).filter(i => !g.borstUsed.has(i));
+      // ── Utfordring ──
+      if (!(g.cardsUsed instanceof Set)) g.cardsUsed = new Set();
+      const bpool = CARD_CHALLENGES[app.lang] || CARD_CHALLENGES.no;
+      const bavail = bpool.map((_, i) => i).filter(i => !g.cardsUsed.has(i));
       let bidx;
-      if (bavail.length === 0) { g.borstUsed = new Set(); bidx = Math.floor(Math.random() * bpool.length); }
+      if (bavail.length === 0) { g.cardsUsed = new Set(); bidx = Math.floor(Math.random() * bpool.length); }
       else bidx = bavail[Math.floor(Math.random() * bavail.length)];
-      g.borstUsed.add(bidx);
+      g.cardsUsed.add(bidx);
       const bc = bpool[bidx];
       // Types shown with a prominent type label in the player-header slot
       const TYPE_HEADER_BTYPES = { dilemma: true, category: true, regel: true };
@@ -7636,7 +7694,7 @@ const S = {
       canvasAngles: {
         outerAngle: app.wheel?.outerAngle ?? 0,
         innerAngle:  app.wheel?.innerAngle  ?? 0,
-        todAngle:    app.tod?.wheelAngle    ?? 0,
+        todAngle:    app.tod?.pickerPos      ?? 0,
       },
       wheelSpinParams: (app.wheel?.spinning && app.wheel?.spinParams) ? app.wheel.spinParams : null,
       catReveal: app.trivia?.catRevealTs
@@ -7737,14 +7795,9 @@ const S = {
       }
       if (st.screen === 'screen-tod') {
         app.tod = app.tod || {};
-        app.tod.wheelAngle = st.canvasAngles.todAngle ?? 0;
-        const c = document.getElementById('tod-wheel-canvas');
-        if (c && c.offsetWidth > 0) {
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          const sz = Math.round(c.offsetWidth * dpr);
-          if (c.width !== sz) { c.width = sz; c.height = sz; }
-        }
-        if (typeof drawTodWheel === 'function') drawTodWheel();
+        app.tod.pickerPos = st.canvasAngles.todAngle ?? 0;
+        _todPickerBuild();
+        _todPickerRender(app.tod.pickerPos);
       }
     }
 
@@ -8099,5 +8152,26 @@ S.init();
   addLog('Debug panel aktiv');
 })();
 </script>
+
+<!-- TOD overlays: outside #app and body stacking contexts to avoid transform/overflow distortion -->
+<div class="tod-q-overlay" id="tod-choice-overlay">
+  <div class="tod-q-inner">
+    <div class="tod-q-type">Din tur</div>
+    <div class="tod-choice-name" id="tod-choice-name"></div>
+    <div class="tod-choice-row">
+      <button class="tod-choice-btn tod-truth-btn" onclick="todChoose('truth')">😇 Sannhet</button>
+      <button class="tod-choice-btn tod-dare-btn"  onclick="todChoose('dare')">😈 Nøtt</button>
+    </div>
+  </div>
+</div>
+
+<div class="tod-q-overlay" id="tod-question-card" onclick="todDone()">
+  <div class="tod-q-inner">
+    <div class="tod-q-type" id="tod-question-type"></div>
+    <div class="tod-q-text" id="tod-question-text"></div>
+    <div class="tod-q-penalty" id="tod-q-penalty"></div>
+    <div class="tod-q-hint">Trykk for å fortsette</div>
+  </div>
+</div>
 </body>
 </html>
