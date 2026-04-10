@@ -5608,13 +5608,13 @@ function triviaPickMode(mode) {
 function dismissInstructions() {
   const id = _gimLaunchId;
   _gimLaunchId = null;
-  document.getElementById('game-instructions-modal').style.display = 'none';
-  if (!id) return;
+  if (!id) { document.getElementById('game-instructions-modal').style.display = 'none'; return; }
   if (id === 'trivia' && app.trivia?.teamMode) {
     _triviaShowTeamSetup();
   } else {
     launchGame(id);
   }
+  document.getElementById('game-instructions-modal').style.display = 'none';
 }
 
 function _triviaShowTeamSetup() {
