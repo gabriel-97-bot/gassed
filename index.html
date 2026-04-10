@@ -1607,6 +1607,9 @@
     body.game-active #session-badge {
       bottom: 6px; left: 8px; right: auto;
     }
+    body.jeopardy-active #session-badge {
+      display: none !important;
+    }
 
     /* ── Joiner splash-velkomst ── */
     #joiner-splash {
@@ -2890,6 +2893,15 @@
       <textarea id="settings-feedback" rows="3" placeholder="Skriv din tilbakemelding her…"></textarea>
       <button class="settings-feedback-btn" id="feedback-btn" onclick="sendFeedback()">📨 Send tilbakemelding</button>
     </div>
+
+    <div class="settings-divider"></div>
+
+    <!-- Session sharing -->
+    <div class="settings-section" id="settings-session-section">
+      <div class="settings-label">Tilskuermodus</div>
+      <div id="settings-session-code-display" style="display:none;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:10px 14px;text-align:center;letter-spacing:3px;font-size:1.1rem;font-weight:800;color:#fff;user-select:all;-webkit-user-select:all;margin-bottom:8px;"></div>
+      <button id="settings-session-btn" onclick="settingsSessionAction()" style="width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.08);color:#fff;font-size:0.9rem;font-weight:700;cursor:pointer;">🔗 Lag sesjon</button>
+    </div>
   </div>
 </div>
 
@@ -3743,7 +3755,41 @@ function openSettings() {
   renderSettingsChips();
   syncSettingsLang();
   syncSettingsText();
+  _syncSettingsSession();
   document.getElementById('settings-overlay').classList.add('open');
+}
+
+function _syncSettingsSession() {
+  const codeDisplay = document.getElementById('settings-session-code-display');
+  const btn = document.getElementById('settings-session-btn');
+  if (!codeDisplay || !btn) return;
+  const code = S.roomCode;
+  const isJoiner = S.isJoiner;
+  if (code) {
+    codeDisplay.style.display = '';
+    codeDisplay.textContent = isJoiner ? '👁 Tilskuer · ' + code : '🔗 Kode: ' + code;
+    btn.textContent = isJoiner ? '🚪 Koble fra' : '🗑 Avslutt sesjon';
+  } else {
+    codeDisplay.style.display = 'none';
+    btn.textContent = '🔗 Lag sesjon';
+  }
+}
+
+function settingsSessionAction() {
+  if (S.roomCode && !S.isJoiner) {
+    // End session
+    if (S.roomRef) S.roomRef.remove().catch(() => {});
+    S.isMaster = false;
+    S.roomCode = null;
+    S.roomRef = null;
+    const badge = document.getElementById('session-badge');
+    if (badge) badge.style.display = 'none';
+  } else if (!S.roomCode) {
+    // Create new session
+    const code = S.createRoom();
+    if (!code) { _syncSettingsSession(); return; }
+  }
+  _syncSettingsSession();
 }
 
 function closeSettings(e) {
