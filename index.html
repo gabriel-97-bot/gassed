@@ -1189,11 +1189,8 @@
       color: #ffcf00; font-size: 1.4rem; font-weight: 900; line-height: 1.1;
     }
     .jeo-turn-banner {
-      background: rgba(255,207,0,0.15);
-      border: 1.5px solid rgba(255,207,0,0.4);
-      border-radius: 10px; padding: 8px 6px;
       color: #ffcf00; font-size: 0.7rem; font-weight: 800;
-      text-align: center; line-height: 1.3;
+      text-align: center; line-height: 1.3; padding: 4px 0;
     }
     .jeo-progress {
       text-align: center; color: rgba(255,255,255,0.35);
@@ -1316,7 +1313,7 @@
       line-height: 1.4; max-width: 340px; margin-bottom: 28px;
     }
     .jeo-ov-stakes {
-      color: #ffcf00; font-size: 3.2rem; font-weight: 900;
+      color: #ffcf00; font-size: 2rem; font-weight: 900;
       margin-bottom: 4px; line-height: 1;
     }
     .jeo-ov-stakes-label {
@@ -1581,19 +1578,19 @@
     /* ── Session badge (romkode-viser) ── */
     #session-badge {
       position: absolute;
-      bottom: 14px;
-      right: 14px;
+      bottom: 6px;
+      right: 8px;
       z-index: 500;
-      background: rgba(15,15,35,0.78);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(15,15,35,0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 100px;
-      padding: 5px 16px;
-      font-size: 0.8rem;
+      padding: 2px 8px;
+      font-size: 0.58rem;
       font-weight: 700;
-      color: #fff;
-      letter-spacing: 2.5px;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 1.5px;
       white-space: nowrap;
       display: none;
       align-items: center;
@@ -1601,11 +1598,14 @@
       -webkit-user-select: all;
     }
     #session-badge.is-joiner {
-      background: rgba(0,30,100,0.88);
-      border-color: rgba(100,150,255,0.35);
-      color: #aac8ff;
-      letter-spacing: 0.8px;
-      gap: 6px;
+      background: rgba(0,30,100,0.65);
+      border-color: rgba(100,150,255,0.25);
+      color: rgba(170,200,255,0.75);
+      letter-spacing: 0.5px;
+      gap: 4px;
+    }
+    body.jeopardy-active #session-badge {
+      bottom: 6px; left: 8px; right: auto;
     }
 
     /* ── Joiner splash-velkomst ── */
@@ -4558,6 +4558,7 @@ function showScreen(id) {
 
   // Landscape mode: lock orientation on game screens, portrait on home/setup
   document.body.classList.toggle('game-active', isGame);
+  document.body.classList.toggle('jeopardy-active', id === 'screen-jeopardy');
   if (isGame) {
     // Attempt orientation lock (works on Android; silently fails on iOS Safari)
     try { screen.orientation?.lock('landscape').catch(() => {}); } catch(e) {}
@@ -6840,16 +6841,15 @@ function _jeoRenderBoard() {
   const ct = app.jeopardy.currentTeam ?? 0;
   const isNo = app.lang !== 'en';
 
-  // LEFT sidebar: scoreboard + turn indicator + progress
+  // LEFT sidebar: turn indicator + scoreboard
   let sidebar = '<div class="jeo-sidebar">';
+  if (teams[ct]) {
+    sidebar += `<div class="jeo-turn-banner">${isNo ? `${teams[ct].name} sin tur` : `${teams[ct].name}'s turn`}</div>`;
+  }
   teams.forEach((t, ti) => {
     const active = ti === ct ? ' jeo-score-active' : '';
     sidebar += `<div class="jeo-score-item${active}"><div class="jeo-score-team">${t.name}</div><div class="jeo-score-pts">$${t.score}</div></div>`;
   });
-  if (teams[ct]) {
-    sidebar += `<div class="jeo-turn-banner">🎯 ${isNo ? `${teams[ct].name} sin tur` : `${teams[ct].name}'s turn`}</div>`;
-  }
-  sidebar += `<div class="jeo-progress">${app.jeopardy.done} / ${total}</div>`;
   sidebar += '</div>';
 
   // RIGHT: board
@@ -6935,14 +6935,14 @@ function jeoMark(teamIdx, correct) {
   if (correct) {
     resultEl.style.cssText = 'color:#4dff99';
     resultEl.textContent = isNo
-      ? `🎉 Riktig! ${team.name} får +$${pts}! (Totalt: $${team.score})`
-      : `🎉 Correct! ${team.name} gets +$${pts}! (Total: $${team.score})`;
+      ? `🎉 Riktig! ${team.name} får +$${pts}!`
+      : `🎉 Correct! ${team.name} gets +$${pts}!`;
   } else {
     const q = _jeoData()[ci].qs[qi];
     resultEl.style.cssText = 'color:#ff6644';
     resultEl.textContent = isNo
-      ? `😅 Feil! Svar: ${q.a}. ${team.name} mister $${pts}. (Totalt: $${team.score})`
-      : `😅 Wrong! Answer: ${q.a}. ${team.name} loses $${pts}. (Total: $${team.score})`;
+      ? `😅 Feil! Svar: ${q.a}. ${team.name} mister $${pts}.`
+      : `😅 Wrong! Answer: ${q.a}. ${team.name} loses $${pts}.`;
   }
   document.getElementById('jeo-state-q').style.display = 'none';
   document.getElementById('jeo-state-a').style.display = 'none';
