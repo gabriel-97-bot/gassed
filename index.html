@@ -2941,6 +2941,30 @@
   </div>
 </div>
 
+<!-- Trivia Mode Picker (Individual vs Team) -->
+<div id="trivia-mode-modal" style="display:none">
+  <div class="tcat-card" onclick="event.stopPropagation()">
+    <div class="tcat-title">🧠 Trivia Quiz</div>
+    <div class="tcat-opts">
+      <button class="tcat-opt" onclick="triviaPickMode('individual')"><span class="tcat-emoji">👤</span><span class="tcat-name">Individuelt</span></button>
+      <button class="tcat-opt" onclick="triviaPickMode('team')"><span class="tcat-emoji">👥</span><span class="tcat-name">Lagspill</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Trivia Team Selection Modal -->
+<div id="trivia-team-modal" style="display:none">
+  <div class="tcat-card" onclick="event.stopPropagation()" style="max-height:80vh;overflow-y:auto;gap:12px;">
+    <div class="tcat-title" style="position:sticky;top:0;background:#1a1f3a;padding:12px 0 8px;margin:-4px 0 0;">👥 Velg lag</div>
+    <div id="trivia-team-content"></div>
+    <div style="display:flex;gap:8px;width:100%;margin-top:4px;">
+      <button class="jeo-btn-start-game" style="flex:1;background:rgba(255,255,255,0.12);font-size:0.8rem;" onclick="triviaRandomTeams()">🎲 Tilfeldig lag</button>
+      <button class="jeo-btn-start-game" style="flex:1;" onclick="triviaTeamStart()">🎮 Start spillet!</button>
+    </div>
+    <div id="trivia-team-error" style="color:#ff6644;font-size:0.8rem;font-weight:700;text-align:center;min-height:1.2em;"></div>
+  </div>
+</div>
+
 <!-- ToD Category Picker Modal -->
 <div id="tod-category-modal" style="display:none">
   <div class="tcm-card" onclick="event.stopPropagation()">
@@ -3070,9 +3094,13 @@
           <div class="home-game-btn-icon">🧠</div>
           <div class="home-game-btn-title">Trivia Quiz</div>
         </button>
-        <button class="home-game-btn hgb-small hgb-horse" onclick="startGame('horse')">
+        <button class="home-game-btn hgb-small hgb-horse" onclick="return false;" style="position:relative;overflow:hidden;cursor:default;">
           <div class="home-game-btn-icon">🐎</div>
           <div class="home-game-btn-title">Veddeløpet</div>
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.72);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:inherit;pointer-events:none;">
+            <span style="font-size:1.1rem;">🚧</span>
+            <span style="font-size:0.65rem;font-weight:800;color:#fff;letter-spacing:0.5px;">Kommer snart</span>
+          </div>
         </button>
         <button class="home-game-btn hgb-small hgb-jeopardy" onclick="startGame('jeopardy')">
           <div class="home-game-btn-icon">🍺</div>
@@ -4670,6 +4698,8 @@ function goHome() {
   if (app.gassed) app.gassed.inSubGame = false;
   document.getElementById('gassed-intro')?.classList.remove('show');
   document.getElementById('trivia-cat-modal').style.display = 'none';
+  document.getElementById('trivia-mode-modal').style.display = 'none';
+  document.getElementById('trivia-team-modal').style.display = 'none';
   document.getElementById('tod-choice-overlay')?.classList.remove('show');
   document.getElementById('tod-question-card')?.classList.remove('show');
   showScreen('screen-home');
@@ -5478,13 +5508,23 @@ function getGameInstructions() {
       ],
     },
     trivia: {
-      icon: '🧠', title: 'Trivia Quiz',
+      icon: '🧠', title: no ? 'Trivia Quiz — Individuelt' : 'Trivia Quiz — Individual',
       rules: [
         { icon: '🎯', text: no ? 'En spiller er aktiv per spørsmål — det roterer automatisk.' : 'One player is active per question — it rotates automatically.' },
         { icon: '❓', text: no ? 'Les spørsmålet og velg riktig svar blant alternativene.' : 'Read the question and pick the correct answer from the options.' },
         { icon: '✅', text: no ? 'Riktig svar: den aktive spilleren peker på noen som drikker.' : 'Correct answer: the active player points to someone who drinks.' },
         { icon: '❌', text: no ? 'Feil svar: den aktive spilleren drikker 2 slurker.' : 'Wrong answer: the active player drinks 2 sips.' },
         { icon: '➡️', text: no ? 'Trykk "Neste" for å fortsette til neste spørsmål.' : 'Tap "Next" to continue to the next question.' },
+      ],
+    },
+    'trivia-team': {
+      icon: '👥', title: no ? 'Trivia Quiz — Lagspill' : 'Trivia Quiz — Teams',
+      rules: [
+        { icon: '🏅', text: no ? 'Lag konkurrerer mot hverandre om å svare riktig.' : 'Teams compete against each other to answer correctly.' },
+        { icon: '🔄', text: no ? 'Hvert lag svarer på sin tur — kategorien velges av det aktive laget.' : 'Each team answers on their turn — the active team picks the category.' },
+        { icon: '✅', text: no ? 'Riktig svar: motstanderlaget drikker 2 slurker.' : 'Correct answer: the opposing team drinks 2 sips.' },
+        { icon: '❌', text: no ? 'Feil svar: laget som svarte feil drikker 2 slurker.' : 'Wrong answer: the answering team drinks 2 sips.' },
+        { icon: '🏆', text: no ? 'Spill så lenge dere vil — det laget med flest riktige vinner!' : 'Play as long as you like — the team with the most correct answers wins!' },
       ],
     },
     wheel: {
@@ -5522,6 +5562,16 @@ function startGame(gameId) {
     document.getElementById('tod-category-modal').style.display = 'flex';
     return;
   }
+  if (gameId === 'trivia') {
+    const isNo = app.lang !== 'en';
+    const modeModal = document.getElementById('trivia-mode-modal');
+    modeModal.querySelector('.tcat-title').textContent = '🧠 Trivia Quiz';
+    const btns = modeModal.querySelectorAll('.tcat-opt .tcat-name');
+    if (btns[0]) btns[0].textContent = isNo ? 'Individuelt' : 'Individual';
+    if (btns[1]) btns[1].textContent = isNo ? 'Lagspill' : 'Teams';
+    modeModal.style.display = 'flex';
+    return;
+  }
   const info = getGameInstructions()[gameId];
   if (!info) { launchGame(gameId); return; }
   _gimLaunchId = gameId;
@@ -5534,10 +5584,98 @@ function startGame(gameId) {
   S.push(); // direkte push — ikke debounced, slik at tilskuer ser instruksjonene umiddelbart
 }
 
-function dismissInstructions() {
-  if (_gimLaunchId) { const id = _gimLaunchId; _gimLaunchId = null; launchGame(id); }
-  document.getElementById('game-instructions-modal').style.display = 'none';
+function triviaPickMode(mode) {
+  document.getElementById('trivia-mode-modal').style.display = 'none';
+  app.trivia = app.trivia || {};
+  app.trivia.teamMode = (mode === 'team');
+  const instructionKey = mode === 'team' ? 'trivia-team' : 'trivia';
+  const info = getGameInstructions()[instructionKey];
+  _gimLaunchId = 'trivia';
+  document.getElementById('gim-icon').textContent = info.icon;
+  document.getElementById('gim-title').textContent = info.title;
+  document.getElementById('gim-rules').innerHTML = info.rules
+    .map(r => `<li><span class="gim-rule-icon">${r.icon}</span><span>${r.text}</span></li>`)
+    .join('');
+  document.getElementById('game-instructions-modal').style.display = 'flex';
+  S.push();
 }
+
+function dismissInstructions() {
+  const id = _gimLaunchId;
+  _gimLaunchId = null;
+  document.getElementById('game-instructions-modal').style.display = 'none';
+  if (!id) return;
+  if (id === 'trivia' && app.trivia?.teamMode) {
+    _triviaShowTeamSetup();
+  } else {
+    launchGame(id);
+  }
+}
+
+function _triviaShowTeamSetup() {
+  const isNo = app.lang !== 'en';
+  app.trivia.teams = [
+    { name: isNo ? 'Lag 1' : 'Team 1', players: [], score: 0 },
+    { name: isNo ? 'Lag 2' : 'Team 2', players: [], score: 0 },
+  ];
+  _triviaRenderTeamSetup();
+  document.getElementById('trivia-team-modal').style.display = 'flex';
+}
+
+function _triviaRenderTeamSetup() {
+  const isNo = app.lang !== 'en';
+  const players = app.players;
+  const teams = app.trivia.teams;
+  let html = '';
+  html += '<div class="jeo-tm-teams">';
+  teams.forEach(t => {
+    const members = t.players.join(', ') || (isNo ? '(ingen)' : '(none)');
+    html += `<div class="jeo-tm-team"><div class="jeo-tm-team-name">${t.name}</div><div class="jeo-tm-members">${members}</div></div>`;
+  });
+  html += '</div><div class="jeo-tm-players">';
+  players.forEach((p, pi) => {
+    const assignedTeam = teams.findIndex(t => t.players.includes(p));
+    html += `<div class="jeo-tm-player"><span class="jeo-tm-player-name">${p}</span><div class="jeo-tm-btns">`;
+    teams.forEach((t, ti) => {
+      const active = assignedTeam === ti ? ' jeo-tm-btn-active' : '';
+      html += `<button class="jeo-tm-btn${active}" onclick="triviaAssignTeam(${pi},${ti})">${t.name}</button>`;
+    });
+    html += '</div></div>';
+  });
+  html += '</div>';
+  document.getElementById('trivia-team-content').innerHTML = html;
+}
+
+function triviaAssignTeam(pi, ti) {
+  const p = app.players[pi];
+  app.trivia.teams.forEach(t => { t.players = t.players.filter(x => x !== p); });
+  app.trivia.teams[ti].players.push(p);
+  _triviaRenderTeamSetup();
+}
+
+function triviaRandomTeams() {
+  const players = [...app.players].sort(() => Math.random() - 0.5);
+  app.trivia.teams.forEach(t => t.players = []);
+  players.forEach((p, i) => app.trivia.teams[i % app.trivia.teams.length].players.push(p));
+  _triviaRenderTeamSetup();
+}
+
+function triviaTeamStart() {
+  const isNo = app.lang !== 'en';
+  const emptyTeam = app.trivia.teams.find(t => t.players.length === 0);
+  if (emptyTeam) {
+    const errEl = document.getElementById('trivia-team-error');
+    if (errEl) errEl.textContent = isNo
+      ? `${emptyTeam.name} har ingen spillere.`
+      : `${emptyTeam.name} has no players.`;
+    return;
+  }
+  document.getElementById('trivia-team-modal').style.display = 'none';
+  app.trivia.teamIdx = 0;
+  showScreen('screen-trivia');
+  initTrivia();
+}
+
 
 function launchGame(gameId) {
   if (gameId === 'ring')      { initRing(); showScreen('screen-ring'); }
