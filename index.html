@@ -74,6 +74,7 @@
     /* Desktop override (phone frame media query takes over) */
 
     body {
+      box-sizing: border-box;
       height: 100vh;
       height: 100dvh;
       background: linear-gradient(175deg, #0a0d1a 0%, #002868 18%, #1a1f3a 35%, #3d1218 52%, #6b2020 65%, #a0522d 78%, #c87941 90%, #f5c842 100%);
@@ -2805,8 +2806,8 @@
     @media (max-width: 539px) {
       body.game-active.device-portrait .phone-frame {
         position: fixed;
-        width: 100dvw;
-        height: 100dvh;
+        width: 100dvh;
+        height: 100dvw;
         top: calc(50dvh - 50dvw);
         left: calc(50dvw - 50dvh);
         transform: rotate(-90deg);
