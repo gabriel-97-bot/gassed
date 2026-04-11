@@ -2215,6 +2215,12 @@
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
       animation: hhmFadeIn 0.25s ease;
     }
+    #trivia-team-modal {
+      position: absolute; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.82);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    }
 
     /* ── Trivia Category Picker Modal ── */
     #trivia-cat-modal {
@@ -5620,6 +5626,7 @@ function _triviaShowTeamSetup() {
     { name: isNo ? 'Lag 1' : 'Team 1', players: [], score: 0 },
     { name: isNo ? 'Lag 2' : 'Team 2', players: [], score: 0 },
   ];
+  showScreen('screen-trivia');
   _triviaRenderTeamSetup();
   document.getElementById('trivia-team-modal').style.display = 'flex';
 }
@@ -5674,7 +5681,6 @@ function triviaTeamStart() {
   }
   document.getElementById('trivia-team-modal').style.display = 'none';
   app.trivia.teamIdx = 0;
-  showScreen('screen-trivia');
   initTrivia();
 }
 
