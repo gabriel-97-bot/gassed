@@ -2208,8 +2208,13 @@
       transition: transform 0.12s, box-shadow 0.12s;
     }
     .gim-start:active { transform: scale(0.96); box-shadow: 0 2px 8px rgba(239,43,45,0.3); }
-    #gim-mode-btns { width: 100%; flex-direction: column; gap: 10px; }
-    #gim-mode-btns .gim-start { margin-top: 0; }
+    #trivia-mode-modal {
+      position: absolute; inset: 0; z-index: 80;
+      background: rgba(0,0,0,0.78);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      animation: hhmFadeIn 0.25s ease;
+    }
 
     /* ── Trivia Category Picker Modal ── */
     #trivia-cat-modal {
@@ -3024,16 +3029,24 @@
   <button class="gi-start-btn" onclick="gassedIntroStart()">La oss begynne! 🍺</button>
 </div>
 
+<!-- Trivia Mode Picker Modal -->
+<div id="trivia-mode-modal" style="display:none">
+  <div class="gim-card" onclick="event.stopPropagation()">
+    <div class="gim-icon">🧠</div>
+    <div class="gim-title">Trivia Quiz</div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+      <button class="gim-start" style="background:rgba(255,255,255,0.1);box-shadow:none;border:1px solid rgba(255,255,255,0.18);" onclick="triviaPickMode('individual')">👤 Individuelt</button>
+      <button class="gim-start" onclick="triviaPickMode('team')">👥 Lagspill</button>
+    </div>
+  </div>
+</div>
+
 <!-- Game Instructions Modal -->
 <div id="game-instructions-modal" style="display:none">
   <div class="gim-card" onclick="event.stopPropagation()">
     <div class="gim-icon" id="gim-icon"></div>
     <div class="gim-title" id="gim-title"></div>
     <ul class="gim-rules" id="gim-rules"></ul>
-    <div id="gim-mode-btns" style="display:none;width:100%;display:none;flex-direction:column;gap:10px;">
-      <button class="gim-start" style="background:rgba(255,255,255,0.1);box-shadow:none;border:1px solid rgba(255,255,255,0.18);" onclick="triviaPickMode('individual')">👤 Individuelt</button>
-      <button class="gim-start" onclick="triviaPickMode('team')">👥 Lagspill</button>
-    </div>
     <button class="gim-start" id="gim-start-btn" data-t="gim.start" onclick="dismissInstructions()">Start spillet</button>
   </div>
 </div>
@@ -4694,6 +4707,7 @@ function goHome() {
   if (app.gassed) app.gassed.inSubGame = false;
   document.getElementById('gassed-intro')?.classList.remove('show');
   document.getElementById('trivia-cat-modal').style.display = 'none';
+  document.getElementById('trivia-mode-modal').style.display = 'none';
   document.getElementById('trivia-team-modal').style.display = 'none';
   document.getElementById('game-instructions-modal').style.display = 'none';
   document.getElementById('tod-choice-overlay')?.classList.remove('show');
@@ -5559,25 +5573,12 @@ function startGame(gameId) {
     return;
   }
   if (gameId === 'trivia') {
-    const isNo = app.lang !== 'en';
-    document.getElementById('gim-icon').textContent = '🧠';
-    document.getElementById('gim-title').textContent = 'Trivia Quiz';
-    document.getElementById('gim-rules').innerHTML = '';
-    document.getElementById('gim-rules').style.display = 'none';
-    const modeBtns = document.getElementById('gim-mode-btns');
-    modeBtns.style.display = 'flex';
-    modeBtns.children[0].textContent = isNo ? '👤 Individuelt' : '👤 Individual';
-    modeBtns.children[1].textContent = isNo ? '👥 Lagspill' : '👥 Teams';
-    document.getElementById('gim-start-btn').style.display = 'none';
-    document.getElementById('game-instructions-modal').style.display = 'flex';
+    document.getElementById('trivia-mode-modal').style.display = 'flex';
     return;
   }
   const info = getGameInstructions()[gameId];
   if (!info) { launchGame(gameId); return; }
   _gimLaunchId = gameId;
-  document.getElementById('gim-mode-btns').style.display = 'none';
-  document.getElementById('gim-rules').style.display = '';
-  document.getElementById('gim-start-btn').style.display = '';
   document.getElementById('gim-icon').textContent = info.icon;
   document.getElementById('gim-title').textContent = info.title;
   document.getElementById('gim-rules').innerHTML = info.rules
@@ -5588,31 +5589,27 @@ function startGame(gameId) {
 }
 
 function triviaPickMode(mode) {
-  app.trivia = app.trivia || {};
+  document.getElementById('trivia-mode-modal').style.display = 'none';
   app.trivia.teamMode = (mode === 'team');
-  // Restore normal instructions layout
-  document.getElementById('gim-mode-btns').style.display = 'none';
-  document.getElementById('gim-rules').style.display = '';
-  document.getElementById('gim-start-btn').style.display = '';
-  const instructionKey = mode === 'team' ? 'trivia-team' : 'trivia';
-  const info = getGameInstructions()[instructionKey];
+  const info = getGameInstructions()[mode === 'team' ? 'trivia-team' : 'trivia'];
   _gimLaunchId = 'trivia';
   document.getElementById('gim-icon').textContent = info.icon;
   document.getElementById('gim-title').textContent = info.title;
   document.getElementById('gim-rules').innerHTML = info.rules
     .map(r => `<li><span class="gim-rule-icon">${r.icon}</span><span>${r.text}</span></li>`)
     .join('');
-  S.push();
+  document.getElementById('game-instructions-modal').style.display = 'flex';
 }
 
 function dismissInstructions() {
-  const id = _gimLaunchId;
-  _gimLaunchId = null;
-  if (!id) { document.getElementById('game-instructions-modal').style.display = 'none'; return; }
-  if (id === 'trivia' && app.trivia?.teamMode) {
-    _triviaShowTeamSetup();
-  } else {
-    launchGame(id);
+  if (_gimLaunchId) {
+    const id = _gimLaunchId;
+    _gimLaunchId = null;
+    if (id === 'trivia' && app.trivia?.teamMode) {
+      _triviaShowTeamSetup();
+    } else {
+      launchGame(id);
+    }
   }
   document.getElementById('game-instructions-modal').style.display = 'none';
 }
