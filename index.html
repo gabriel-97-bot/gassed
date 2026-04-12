@@ -7568,9 +7568,13 @@ function gassedTurn(skipCapture) {
       if (!(g.cardsUsed instanceof Set)) g.cardsUsed = new Set();
       const bpool = CARD_CHALLENGES[app.lang] || CARD_CHALLENGES.no;
       const bavail = bpool.map((_, i) => i).filter(i => !g.cardsUsed.has(i));
+      // Dilemma (tommel opp/ned) vises kun 1% av tilfellene
+      const _wantDilemma = Math.random() < 0.01;
+      const _bfiltered = bavail.filter(i => _wantDilemma ? bpool[i].type === 'dilemma' : bpool[i].type !== 'dilemma');
+      const _bpool = _bfiltered.length > 0 ? _bfiltered : bavail;
       let bidx;
-      if (bavail.length === 0) { g.cardsUsed = new Set(); bidx = Math.floor(Math.random() * bpool.length); }
-      else bidx = bavail[Math.floor(Math.random() * bavail.length)];
+      if (_bpool.length === 0) { g.cardsUsed = new Set(); bidx = Math.floor(Math.random() * bpool.length); }
+      else bidx = _bpool[Math.floor(Math.random() * _bpool.length)];
       g.cardsUsed.add(bidx);
       const bc = bpool[bidx];
       // Types shown with a prominent type label in the player-header slot
