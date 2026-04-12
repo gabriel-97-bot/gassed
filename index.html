@@ -722,7 +722,7 @@
     .home-game-btn.hgb-tod::before    { background: linear-gradient(90deg,var(--red),var(--navy)); }
     .home-game-btn.hgb-trivia::before { background: var(--gold); }
     .home-game-btn.hgb-horse::before  { background: linear-gradient(90deg,var(--gold),#002868); }
-    .home-game-btn.hgb-jeopardy::before { background: #0a3db5; }
+    .home-game-btn.hgb-jeopardy::before { background: #c2185b; }
     /* Session btn on home: outline share style */
     #session-share-btn-home {
       width: auto; align-self: center; margin-top: 0;
@@ -929,7 +929,7 @@
     .game-card.wheel:hover    { box-shadow: 0 14px 48px rgba(0,40,104,0.2), 0 4px 12px rgba(0,0,0,0.35); }
     .game-card.wheel::after   { background: radial-gradient(ellipse at 50% 0%, rgba(0,40,104,0.14), transparent 65%); }
 
-    .game-card.jeopardy { background: linear-gradient(135deg, #05348b 0%, #0a3db5 100%); }
+    .game-card.jeopardy { background: linear-gradient(135deg, #880e4f 0%, #c2185b 100%); }
 
     .game-card-icon { font-size: 3.2rem; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4)); }
     .game-card-title {
@@ -1215,7 +1215,7 @@
       display: flex; gap: 4px; flex: 1;
     }
     .jeo-cat-header {
-      flex: 1; background: #05348b;
+      flex: 1; background: #880e4f;
       color: #ffcf00;
       font-weight: 800; font-size: 0.82rem;
       text-align: center; padding: 10px 4px;
@@ -1223,7 +1223,7 @@
       word-break: break-word;
     }
     .jeo-tile {
-      flex: 1; background: #0a3db5;
+      flex: 1; background: #c2185b;
       color: #ffcf00;
       font-size: 1rem; font-weight: 900;
       text-align: center; padding: 0 2px;
@@ -1233,9 +1233,9 @@
       border-radius: 5px;
       display: flex; align-items: center; justify-content: center;
     }
-    .jeo-tile:active { background: #1a5cd8; }
+    .jeo-tile:active { background: #e040a0; }
     .jeo-tile.jeo-used {
-      background: #021030;
+      background: #1a0010;
       color: transparent;
       cursor: default;
       pointer-events: none;
@@ -1243,7 +1243,7 @@
     /* Jeopardy team setup modal */
     #jeo-team-modal {
       display: none; position: absolute; inset: 0;
-      background: #05348b; z-index: 360;
+      background: #880e4f; z-index: 360;
       flex-direction: column; align-items: center;
       padding: 0 24px 28px; overflow-y: auto; gap: 0;
     }
@@ -1251,7 +1251,7 @@
     .jeo-tm-title {
       position: sticky; top: 0; z-index: 2;
       width: calc(100% + 48px); margin-left: -24px; margin-right: -24px;
-      background: #05348b;
+      background: #880e4f;
       padding: max(72px, calc(env(safe-area-inset-top) + 20px)) 24px 18px;
       color: #ffcf00; font-size: 1.35rem; font-weight: 900; text-align: center;
     }
@@ -1287,10 +1287,10 @@
       font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.15s;
     }
     .jeo-tm-btn.jeo-tm-btn-active {
-      background: #ffcf00; color: #05348b; border-color: #ffcf00;
+      background: #ffcf00; color: #880e4f; border-color: #ffcf00;
     }
     .jeo-btn-start-game {
-      background: #ffcf00; color: #05348b;
+      background: #ffcf00; color: #880e4f;
       border: none; border-radius: 14px;
       padding: 16px 0; font-size: 1.05rem; font-weight: 900;
       cursor: pointer; width: 100%; max-width: 320px;
@@ -1298,7 +1298,7 @@
     /* Jeopardy overlay (fullscreen question/answer) */
     #jeo-overlay {
       display: none; position: absolute; inset: 0;
-      background: #05348b; z-index: 350;
+      background: #880e4f; z-index: 350;
       flex-direction: column; align-items: center; justify-content: center;
       padding: 40px 28px; text-align: center;
       gap: 0; overflow-y: auto;
@@ -1346,7 +1346,7 @@
     .jeo-btn-sm {
       padding: 10px 14px; font-size: 0.82rem; width: auto; margin-bottom: 0; border-radius: 10px;
     }
-    .jeo-btn-reveal { background: #ffcf00; color: #05348b; }
+    .jeo-btn-reveal { background: #ffcf00; color: #880e4f; }
     .jeo-btn-correct { background: #00c44a; color: #fff; }
     .jeo-btn-wrong   { background: #cc2200; color: #fff; }
     .jeo-btn-close   { background: rgba(255,255,255,0.12); color: #fff; font-size: 0.9rem; }
