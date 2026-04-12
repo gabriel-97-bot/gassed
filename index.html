@@ -1722,7 +1722,15 @@
     body.joiner-mode #session-badge,
     body.joiner-mode #session-badge * { pointer-events: auto !important; }
     body.joiner-mode #session-join-area,
-    body.joiner-mode .session-share-btn { display: none !important; }
+    body.joiner-mode #setup-join-area,
+    body.joiner-mode .session-share-btn,
+    body.joiner-mode .hsp-share-btn,
+    body.joiner-mode .hsp-divider,
+    body.joiner-mode .hsp-join,
+    body.joiner-mode .edit-players-link,
+    body.joiner-mode .home-bottom-bar { display: none !important; }
+    body.joiner-mode #start-btn { display: none !important; }
+    body.joiner-mode .player-add-field { display: none !important; }
 
     /* ── Landscape (phone rotated) ── */
     @media (orientation: landscape) and (max-width: 932px) {
@@ -3822,6 +3830,7 @@ function settingsSessionAction() {
   if (S.roomCode && !S.isJoiner) {
     // End session
     if (S.roomRef) S.roomRef.remove().catch(() => {});
+    if (S._heartbeatTimer) { clearInterval(S._heartbeatTimer); S._heartbeatTimer = null; }
     S.isMaster = false;
     S.roomCode = null;
     S.roomRef = null;
@@ -7843,6 +7852,9 @@ const S = {
     // Ikke bruk onDisconnect().remove() — kortvarige nettverksmistet ville slettet rommet
     this._showBadge(code, false);
     this.push();
+    // Heartbeat: push hvert 3. sekund så tilskuer alltid ser oppdatert tilstand
+    if (this._heartbeatTimer) clearInterval(this._heartbeatTimer);
+    this._heartbeatTimer = setInterval(() => { if (this.isMaster && this.roomRef) this.push(); }, 3000);
     return code;
   },
 
@@ -8219,6 +8231,7 @@ function _wrap(name, delay) {
  'dismissInstructions','selectTodCategory',
  'jeoReveal','jeoMark','jeoAssignTeam','jeoStartGame','jeoClose','jeoCloseOverlay',
  'gassedNext','gassedPrev','gassedReturnFromSub',
+ 'addPlayer','removePlayer',
 ].forEach(n => _wrap(n));
 
 // drawCard — push under animasjon så joiner ser kortvendings-animasjonen
