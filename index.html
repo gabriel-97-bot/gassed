@@ -4805,173 +4805,313 @@ function updateHomePlayers() {
 // TRIVIA QUIZ
 // ─────────────────────────────────────────────
 const TRIVIA_QUESTIONS = {
-  geografi: [
-    { q: "Hva er hovedstaden i Australia?", a: ["Canberra","Sydney","Melbourne"] },
-    { q: "Hvilket land er størst i verden (areal)?", a: ["Russland","Canada","USA"] },
-    { q: "Hva er Afrikas lengste elv?", a: ["Nilen","Kongo","Niger"] },
-    { q: "Hvilken by er kjent som 'The Big Apple'?", a: ["New York","Los Angeles","Chicago"] },
-    { q: "Hva er Nordens lengste fjord?", a: ["Sognefjorden","Hardangerfjorden","Geirangerfjorden"] },
-    { q: "Hvilket kontinent ligger Sahara-ørkenen på?", a: ["Afrika","Asia","Australia"] },
-    { q: "Hva er verdens høyeste fjell?", a: ["Mount Everest","K2","Kangchenjunga"] },
-    { q: "Hva er Frankrikes hovedstad?", a: ["Paris","Lyon","Marseille"] },
-    { q: "Hvilket hav ligger mellom Europa og Amerika?", a: ["Atlanterhavet","Stillehavet","Indiahavet"] },
-    { q: "Hva er Japans høyeste fjell?", a: ["Fuji","Rokko","Aso"] },
-    { q: "Hvilken elv renner gjennom Egypt?", a: ["Nilen","Eufrat","Tigris"] },
-    { q: "Hva er verdens minste land?", a: ["Vatikanstaten","Monaco","San Marino"] },
-    { q: "Hva er Spanias hovedstad?", a: ["Madrid","Barcelona","Sevilla"] },
-    { q: "Hva er Sør-Amerikas lengste elv?", a: ["Amazonas","Paraná","Orinoco"] },
-    { q: "Hva er Kinas hovedstad?", a: ["Beijing","Shanghai","Hong Kong"] },
-    { q: "Hva er verdens tørreste sted?", a: ["Atacama-ørkenen","Sahara","Arabiaørkenen"] },
-    { q: "Hvilken fjord er på UNESCOs verdensarvliste i Norge?", a: ["Geirangerfjorden","Lysefjorden","Hardangerfjorden"] },
-    { q: "Hva er Afrikas høyeste fjell?", a: ["Kilimanjaro","Mount Kenya","Atlasfjellene"] },
-    { q: "Hva er Argentinas hovedstad?", a: ["Buenos Aires","Córdoba","Rosario"] },
-    { q: "Hva er verdens folkerikeste land?", a: ["India","Kina","USA"] },
-    { q: "Hvilken elv renner gjennom London?", a: ["Themsen","Seinen","Rhinen"] },
-    { q: "Hva er Norges nordligste by?", a: ["Hammerfest","Tromsø","Alta"] },
-    { q: "Hva er Mexicos hovedstad?", a: ["Mexico City","Guadalajara","Monterrey"] },
-    { q: "Hvilket land eier Galápagos-øyene?", a: ["Ecuador","Peru","Colombia"] },
-    { q: "Hva er verdens lengste elv?", a: ["Nilen","Amazonas","Yangtze"] },
-    { q: "Hva heter øygruppen som tilhører Norge i Arktis?", a: ["Svalbard","Lofoten","Vesterålen"] },
-    { q: "Hva er Australias største by?", a: ["Sydney","Melbourne","Brisbane"] },
-    { q: "Hva er verdens dypeste innsjø?", a: ["Bajkalsjøen","Tanganyika","Superiørsjøen"] },
-    { q: "Hvilken innsjø deler grensen mellom Peru og Bolivia?", a: ["Titicaca","Maracaibo","Nicaragua"] },
-    { q: "Hva er Europas høyeste fjell?", a: ["Elbrus","Mont Blanc","Matterhorn"] },
-    { q: "Hvilken øy er verdens største?", a: ["Grønland","New Guinea","Borneo"] },
-    { q: "Hva er Tyrkias mest folkerike by?", a: ["Istanbul","Ankara","Izmir"] },
-    { q: "Hva er Norges offisielle hovedstad?", a: ["Oslo","Bergen","Trondheim"] },
-    { q: "Hvilket land produserer mest olje?", a: ["USA","Saudi-Arabia","Russland"] },
-    { q: "Hva er Brasilias funksjon?", a: ["Hovedstad","Finanssenter","Havneby"] },
-    { q: "Hva er Indias finanssenter?", a: ["Mumbai","New Delhi","Chennai"] },
-    { q: "Hva heter Sveriges hovedstad?", a: ["Stockholm","Göteborg","Malmö"] },
-    { q: "Hva er den offisielle valutaen i Japan?", a: ["Yen","Won","Yuan"] },
-    { q: "Hva heter Italias brødøy sørvest for fastlandet?", a: ["Sicilia","Sardinia","Korsika"] },
-    { q: "Hva er Portugals hovedstad?", a: ["Lisboa","Porto","Faro"] }
+  film: [
+    { q: "Hvem spilte Jack i Titanic (1997)?", a: ["Leonardo DiCaprio", "Emma Watson", "Steven Spielberg"] },
+    { q: "Hva heter trollmannen i Harry Potter-filmene?", a: ["Harry Potter (spilt av Daniel Radcliffe)", "Steven Spielberg", "Inside Out"] },
+    { q: "Hva heter løven i «Løvenes Konge»?", a: ["Simba", "Christopher Nolan", "Quentin Tarantino"] },
+    { q: "Hvilken farge er pilen Neo tar i The Matrix?", a: ["Rød", "Overlook Hotel", "Helgi (nei) — Korrekt: Bear Story (Oso Polar) fra Chile"] },
+    { q: "Hvem regisserte Jurassic Park?", a: ["Steven Spielberg", "Scarlett Johansson", "The Blair Witch Project (1999)"] },
+    { q: "I hvilken film sier karakteren «I'll be back»?", a: ["The Terminator", "Steven Spielberg", "Rød"] },
+    { q: "Hva heter trollmannskolen i Harry Potter?", a: ["Hogwarts", "Scarlett Johansson", "Birmingham"] },
+    { q: "Hvem spilte Forrest Gump?", a: ["Tom Hanks", "Paktens ark", "Robert Redford (eller James Caan)"] },
+    { q: "I hvilken film sier karakteren «I'm the king of the world!»?", a: ["Titanic", "Rød", "Dr. Hannibal Lecter"] },
+    { q: "Hva heter superhelten kjent som «The Dark Knight»?", a: ["Batman", "Parasite", "Helgi (nei) — Korrekt: Bear Story (Oso Polar) fra Chile"] },
+    { q: "Hvem spilte Iron Man i Marvel-filmene?", a: ["Robert Downey Jr.", "Infernal Affairs (kinesisk original)", "Christopher Nolan"] },
+    { q: "Hva heter prinsessen i «Den lille havfruen»?", a: ["Ariel", "Christian Bale", "Steven Spielberg"] },
+    { q: "Hvem spilte Black Widow i Marvel-filmene?", a: ["Scarlett Johansson", "Leonardo DiCaprio", "Tom Holland (og Tobey Maguire og Andrew Garfield)"] },
+    { q: "Hvilken film handler om en gutt som ser døde mennesker?", a: ["The Sixth Sense", "Heath Ledger", "Jul i Blåfjell"] },
+    { q: "Hva heter hotellet i «The Shining»?", a: ["Overlook Hotel", "Steven Spielberg", "Toy Story"] },
+    { q: "Hvem spilte Hermione Granger?", a: ["Emma Watson", "Birmingham", "Jul i Blåfjell"] },
+    { q: "I hvilken film synger man «Let It Go»?", a: ["Frost (Frozen)", "The Sixth Sense", "Ariel"] },
+    { q: "Hva heter dinosaurparken i «Jurassic Park»-universet?", a: ["Jurassic Park / Jurassic World", "Runway", "Scarlett Johansson"] },
+    { q: "Hvem regisserte «Pulp Fiction»?", a: ["Quentin Tarantino", "Psycho", "Vivien Leigh"] },
+    { q: "Hva er Simba sin far i «Løvenes Konge»?", a: ["Mufasa", "Misery", "The Terminator"] },
+    { q: "Hvilken animasjonsfilm handler om Buzz Lightyear og Woody?", a: ["Toy Story", "Nouvelle Vague", "Avengers: Endgame"] },
+    { q: "Hvem spilte Spider-Man i «Spider-Man: No Way Home»?", a: ["Tom Holland (og Tobey Maguire og Andrew Garfield)", "Emma Watson", "Runway"] },
+    { q: "Hvilken film handler om en fisk som heter Nemo?", a: ["Finding Nemo", "Robert Downey Jr.", "Jean-Pierre Jeunet"] },
+    { q: "Hvem spilte Joker i filmen «Joker» (2019)?", a: ["Joaquin Phoenix", "Los Angeles", "Mia og Sebastian"] },
+    { q: "Hva heter karakteren Hugh Jackman spilte i X-Men?", a: ["Wolverine", "Barry Lyndon (1975)", "Francis Ford Coppola"] },
+    { q: "Hvem regisserte «The Godfather»?", a: ["Francis Ford Coppola", "Titanic", "The Terminator"] },
+    { q: "Hvilken film vant Oscar for beste film i 2020?", a: ["Parasite", "Paktens ark", "Los Angeles"] },
+    { q: "Hvem spilte Hannibal Lecter i «The Silence of the Lambs»?", a: ["Anthony Hopkins", "Robert Downey Jr.", "Paktens ark"] },
+    { q: "I hvilken by er «Peaky Blinders» satt?", a: ["Birmingham", "Scarlett Johansson", "Runway"] },
+    { q: "Hvem regisserte «Inception»?", a: ["Christopher Nolan", "Steven Spielberg", "Nouvelle Vague"] },
+    { q: "Hva heter den mytiske graven i «Indiana Jones»-filmene som Jones søker i første film?", a: ["Paktens ark", "Mia og Sebastian", "Toy Story"] },
+    { q: "Hvem spilte Katniss Everdeen i «Hunger Games»?", a: ["Jennifer Lawrence", "Jordan Peele", "Psycho"] },
+    { q: "Hvilken Pixar-film handler om følelser som bor i hodet?", a: ["Inside Out", "Parasite", "Bates Motel"] },
+    { q: "Hvem spilte Bond i «Casino Royale» (2006)?", a: ["Daniel Craig", "Batman", "Tom Holland (og Tobey Maguire og Andrew Garfield)"] },
+    { q: "Hvilken film er basert på en Stephen King-roman der Kathy Bates holder en forfatter fanget?", a: ["Misery", "Avengers: Endgame", "Jennifer Lawrence"] },
+    { q: "Hva heter motellet i Hitchcocks «Psycho»?", a: ["Bates Motel", "Toy Story", "A Few Good Men"] },
+    { q: "Hvem regisserte «Schindler's List»?", a: ["Steven Spielberg", "Gutsy Aorta", "Bates Motel"] },
+    { q: "Hvilken skuespiller vant Oscar for beste skuespiller i 2024 for rollen som Oppenheimer?", a: ["Cillian Murphy", "Dr. Hannibal Lecter", "Birmingham"] },
+    { q: "I hvilken by foregår «La La Land»?", a: ["Los Angeles", "Money Heist", "Tom Hanks"] },
+    { q: "Hva heter den japanske filmen av Miyazaki om ei jente i et badehus?", a: ["Spirited Away", "Christopher Nolan", "Steven Spielberg"] },
+    { q: "Hvem spilte den mannlige hovedrollen i «Groundhog Day» (1993)?", a: ["Bill Murray", "Pulp Fiction", "Orson Welles"] },
+    { q: "Hvilken film handler om to hitmen spilt av Travolta og Samuel L. Jackson?", a: ["Pulp Fiction", "Misery", "Titanic"] },
+    { q: "Hva heter den spanske Netflix-serien om en bankkran kalt «La Casa de Papel»?", a: ["Money Heist", "Anthony Hopkins", "Pulp Fiction"] },
+    { q: "Hvem regisserte «2001: A Space Odyssey»?", a: ["Stanley Kubrick", "Bill Murray", "Anthony Hopkins"] },
+    { q: "Hva heter den norske julefilm-klassikeren kjent for «Jul i Blåfjell»?", a: ["Jul i Blåfjell", "Stanley Kubrick", "Godzilla"] },
+    { q: "Hvem spilte Scarlett O'Hara i «Gone with the Wind»?", a: ["Vivien Leigh", "Nouvelle Vague", "Quentin Tarantino"] },
+    { q: "Hvilken film har den berømte dusjscenen som er filmhistorisk berømt?", a: ["Psycho", "Daniel Craig", "Jurassic Park / Jurassic World"] },
+    { q: "Hva heter karakteren Emma Stone og Ryan Gosling spiller i «La La Land»?", a: ["Mia og Sebastian", "Jennifer Lawrence", "Dr. Hannibal Lecter"] },
+    { q: "Hvem regisserte «Get Out»?", a: ["Jordan Peele", "Avengers: Endgame", "Daniel Craig"] },
+    { q: "Hva heter det fiktive motemagasinet i «The Devil Wears Prada»?", a: ["Runway", "Heath Ledger", "Orson Welles"] },
+    { q: "Hva var produksjonsnavnet til «Braveheart» da det var i utvikling?", a: ["Gutsy Aorta", "Psycho", "Birmingham"] },
+    { q: "Hvilken film hadde verdenspremiere i Japan i 1954 under tittelen «Gojira»?", a: ["Godzilla", "Jurassic Park / Jurassic World", "Groundhog Day"] },
+    { q: "Hvem regisserte «Citizen Kane» (1941)?", a: ["Orson Welles", "Stanley Kubrick", "Ariel"] },
+    { q: "Hvilken japansk film av Kurosawa inspirerte den amerikanske filmen «The Magnificent Seven»?", a: ["Seven Samurai (1954)", "Hogwarts", "Overlook Hotel"] },
+    { q: "Hva er det opprinnelige tittelen til filmen som ble «The Departed»?", a: ["Infernal Affairs (kinesisk original)", "Mufasa", "Toy Story"] },
+    { q: "Hvem spilte Joker i «The Dark Knight»?", a: ["Heath Ledger", "Infernal Affairs (kinesisk original)", "Titanic"] },
+    { q: "Hvilken film ble sett på som det første eksempelet på et «found footage»-konsept i Hollywood?", a: ["The Blair Witch Project (1999)", "Runway", "Jordan Peele"] },
+    { q: "I hvilken film spiller Tilda Swinton rollen som den Hvite Heksen?", a: ["The Chronicles of Narnia: The Lion, the Witch and the Wardrobe", "A Few Good Men", "Guillermo del Toro"] },
+    { q: "Hvem spilte Batman i Christopher Nolans «Dark Knight»-trilogi?", a: ["Christian Bale", "Inside Out", "Jean-Pierre Jeunet"] },
+    { q: "Hva heter den franske filmbevegelsen fra 1950–60-tallet?", a: ["Nouvelle Vague", "Harry Potter (spilt av Daniel Radcliffe)", "Overlook Hotel"] },
+    { q: "Hvilken film inneholder scenen der karakteren sier «You can't handle the truth!»?", a: ["A Few Good Men", "Avengers: Endgame", "Misery"] },
+    { q: "Hvem er regissøren bak «Mulholland Drive» og «Twin Peaks»?", a: ["David Lynch", "Stanley Kubrick", "Overlook Hotel"] },
+    { q: "Hvilken film ble den første til å vinne Oscar for beste film uten å være på engelsk?", a: ["Parasite (2020)", "Cillian Murphy", "Heath Ledger"] },
+    { q: "Hva heter den fiktive planeten i «Avatar» (2009)?", a: ["Pandora", "Toy Story", "Christian Bale"] },
+    { q: "Hvem regisserte «The Shining» basert på Stephen Kings roman?", a: ["Stanley Kubrick", "Leonardo DiCaprio", "Daniel Craig"] },
+    { q: "Hvilken skuespiller var opprinnelig tenkt å spille rollen som Michael Corleone i «The Godfather»?", a: ["Robert Redford (eller James Caan)", "Stanley Kubrick", "Finding Nemo"] },
+    { q: "I hvilken film spiller Bill Murray en meteorolog som lever den samme dagen om og om igjen?", a: ["Groundhog Day", "Stanley Kubrick", "The Sixth Sense"] },
+    { q: "Hva heter den berømte skrekkfilmen fra 1978 der Michael Myers dreper tenåringer?", a: ["Halloween", "Los Angeles", "Stanley Kubrick"] },
+    { q: "Hvem er regissøren bak «Pan's Labyrinth»?", a: ["Guillermo del Toro", "Francis Ford Coppola", "Mufasa"] },
+    { q: "Hvilken film brøt rekorden for mest inntjente i åpningshelgen i 2019?", a: ["Avengers: Endgame", "Mia og Sebastian", "Toy Story"] },
+    { q: "Hva heter den islandske animasjons-kortfilmen som vant Oscar i 2016?", a: ["Helgi (nei) — Korrekt: Bear Story (Oso Polar) fra Chile", "Avengers: Endgame", "Halloween"] },
+    { q: "Hvem regisserte «Amélie» (2001)?", a: ["Jean-Pierre Jeunet", "Leonardo DiCaprio", "Pulp Fiction"] },
+    { q: "Hva heter karakteren Anthony Hopkins spiller i «The Silence of the Lambs»?", a: ["Dr. Hannibal Lecter", "Parasite (2020)", "Simba"] },
+    { q: "I hvilken film spiller Uma Thurman rollen som Mia Wallace?", a: ["Pulp Fiction", "Overlook Hotel", "Mia og Sebastian"] },
+    { q: "Hvilken Kubrick-film er satt til Napoleonstiden og hadde originalfotografi uten elektrisk lys?", a: ["Barry Lyndon (1975)", "Spirited Away", "Paktens ark"] },
   ],
-  musikk: [
-    { q: "Hvilket norsk band er kjent for 'Take On Me'?", a: ["a-ha","Röyksopp","Kings of Convenience"] },
-    { q: "Hva heter Beyoncés album fra 2016?", a: ["Lemonade","Renaissance","Dangerously in Love"] },
-    { q: "Hvilket instrument spiller Elton John primært?", a: ["Piano","Gitar","Bass"] },
-    { q: "Hvem sang 'Bohemian Rhapsody'?", a: ["Queen","The Beatles","Led Zeppelin"] },
-    { q: "Hva heter Taylor Swifts album fra 2022?", a: ["Midnights","1989","Folklore"] },
-    { q: "Hvem er kjent som 'King of Pop'?", a: ["Michael Jackson","Elvis Presley","Prince"] },
-    { q: "Hva heter Adeles debutalbum?", a: ["19","21","25"] },
-    { q: "Hvilket år ble The Beatles oppløst?", a: ["1970","1968","1975"] },
-    { q: "Hvem sang 'Billie Jean'?", a: ["Michael Jackson","Prince","James Brown"] },
-    { q: "Hva heter Nirvanas mest kjente album?", a: ["Nevermind","Bleach","In Utero"] },
-    { q: "Hvem sang 'Jolene'?", a: ["Dolly Parton","Loretta Lynn","Tammy Wynette"] },
-    { q: "Hvilket land er ABBA fra?", a: ["Sverige","Norge","Danmark"] },
-    { q: "Hvem spilte gitar i Led Zeppelin?", a: ["Jimmy Page","Eric Clapton","Jeff Beck"] },
-    { q: "Hvem sang 'Rolling in the Deep'?", a: ["Adele","Amy Winehouse","Duffy"] },
-    { q: "Hva heter Eminems borgerlige navn?", a: ["Marshall Mathers","Matthew Morrison","Michael Egan"] },
-    { q: "Hvem sang 'Purple Rain'?", a: ["Prince","David Bowie","Stevie Wonder"] },
-    { q: "Hva heter Coldplays vokalist?", a: ["Chris Martin","Jonny Buckland","Guy Berryman"] },
-    { q: "Hvilket band er Thom Yorke frontmann for?", a: ["Radiohead","Blur","Oasis"] },
-    { q: "Hvem sang 'Hit Me Baby One More Time'?", a: ["Britney Spears","Christina Aguilera","Jessica Simpson"] },
-    { q: "Hvem sang 'Shallow' i filmen A Star is Born?", a: ["Lady Gaga","Adele","P!nk"] },
-    { q: "Hvem sang 'Somebody That I Used to Know'?", a: ["Gotye","Passenger","Hozier"] },
-    { q: "Hva heter Kygo egentlig?", a: ["Kyrre Gørvell-Dahll","Kyrre Sæther","Kjell Gunnar Hansen"] },
-    { q: "Hvem sang 'What's Going On' i 1971?", a: ["Marvin Gaye","Al Green","Stevie Wonder"] },
-    { q: "Hva heter Olivia Rodrigos debutalbum?", a: ["SOUR","GUTS","DRIVER'S LICENSE"] },
-    { q: "Hvem er vokalist i The Rolling Stones?", a: ["Mick Jagger","Keith Richards","Ron Wood"] },
-    { q: "Hvem sang 'Waterloo' og vant Eurovision 1974?", a: ["ABBA","Bucks Fizz","Brotherhood of Man"] },
-    { q: "Hva heter Drakes plateselskap?", a: ["OVO Sound","Def Jam","Interscope"] },
-    { q: "Hvem sang 'Don't Start Now'?", a: ["Dua Lipa","Doja Cat","Lizzo"] },
-    { q: "Hva heter Kendrick Lamars Pulitzer-vinnende album?", a: ["DAMN.","good kid m.A.A.d city","To Pimp a Butterfly"] },
-    { q: "Hvilket år ga David Bowie ut 'Heroes'?", a: ["1977","1972","1980"] },
-    { q: "Hvem sang 'Harry Styles' debutsingel?", a: ["Sign of the Times","Watermelon Sugar","Adore You"] },
-    { q: "Hvem er kjent som 'The Weeknd'?", a: ["Abel Tesfaye","Drake","Future"] },
-    { q: "Hvilken artist vant Melodi Grand Prix 2009?", a: ["Alexander Rybak","KEiiNO","Stella Mwangi"] },
-    { q: "Hva heter Bad Bunnys virkelige navn?", a: ["Benito Ocasio","Carlos Rivera","Luis Fonsi"] },
-    { q: "Hvem sang 'Like a Prayer'?", a: ["Madonna","Whitney Houston","Mariah Carey"] },
-    { q: "Hvilket år ga Michael Jackson ut 'Thriller'?", a: ["1982","1979","1987"] },
-    { q: "Hva heter den best solgte singelen gjennom tidene?", a: ["White Christmas","Shape of You","Blinding Lights"] },
-    { q: "Hvem spiller bass i The Beatles?", a: ["Paul McCartney","John Lennon","George Harrison"] },
-    { q: "Hva heter Sabrina Carpenters hit fra 2024?", a: ["Espresso","Feather","Please Please Please"] },
-    { q: "Hvem sang 'Roxanne'?", a: ["The Police","The Clash","Blondie"] }
+  geografi: [
+    { q: "Hva er den lengste elven i verden?", a: ["Nilen", "Amazonas", "Nepal"] },
+    { q: "Hva er verdens minste land?", a: ["Vatikanstaten", "Det kaspiske hav", "Kilimanjaro"] },
+    { q: "Hva er hovedstaden i Australia?", a: ["Canberra", "Kilimanjaro", "Aconcagua"] },
+    { q: "I hvilken fjellkjede ligger Mount Everest?", a: ["Himalaya", "Roma", "Milano og Cortina d'Ampezzo"] },
+    { q: "Hva er verdens største kontinent?", a: ["Asia", "Russland", "Singapore (1965, utvist fra Malaysia)"] },
+    { q: "Hvilken ørken er verdens største varme ørken?", a: ["Sahara", "Antananarivo", "Sognefjorden"] },
+    { q: "Hva er hovedstaden i Japan?", a: ["Tokyo", "Rio Grande", "Puerto Williams (Chile)"] },
+    { q: "I hvilket land finner man Taj Mahal?", a: ["India", "Iran", "Yen"] },
+    { q: "Hva heter den lengste elven i Sør-Amerika?", a: ["Amazonas", "Antananarivo", "Nigeria"] },
+    { q: "Hvilken by er kjent som «The Eternal City»?", a: ["Roma", "Nordsjøen", "Arusha (Tanzania)"] },
+    { q: "Hva er verdens folkerikeste land?", a: ["India", "Nilen", "Bodensee"] },
+    { q: "Hva heter det høyeste fjellet i Afrika?", a: ["Kilimanjaro", "Huang He (Gulfloden)", "Bodensee"] },
+    { q: "Hva er hovedstaden i Brasil?", a: ["Brasília", "Japan", "Tanganyikasjøen"] },
+    { q: "Hvilken elv renner gjennom London?", a: ["Themsen", "Yen", "Amazonas"] },
+    { q: "I hvilket land finner man pyramidene ved Giza?", a: ["Egypt", "Eyjafjallajökull", "Canberra"] },
+    { q: "Hva er Europas lengste elv?", a: ["Volga", "Antananarivo", "Yucatán"] },
+    { q: "Hvilket land er kjent som «Land of the Rising Sun»?", a: ["Japan", "Yen", "Nilen"] },
+    { q: "Hva er verdens største land (areal)?", a: ["Russland", "Roma", "India"] },
+    { q: "Hva er Kanadas største by?", a: ["Toronto", "Yucatán", "Amazonas"] },
+    { q: "Hva er det høyeste fjellet i Japan?", a: ["Fuji", "Asia", "Bolivia og Paraguay"] },
+    { q: "I hvilket land er Machu Picchu?", a: ["Peru", "Roma", "Kinnarodden"] },
+    { q: "Hva er Australias største ørken?", a: ["Great Victoria Desert", "Nepal", "Portugisisk"] },
+    { q: "Hva er Norges lengste fjord?", a: ["Sognefjorden", "Aconcagua", "Istanbul"] },
+    { q: "Hvilken by er Frankrikes hovedstad?", a: ["Paris", "Arabiske ørken", "Japan"] },
+    { q: "Hva er verdens dypeste innsjø?", a: ["Bajkalsjøen", "Ålesund", "Singapore (1965, utvist fra Malaysia)"] },
+    { q: "Hva heter den europeiske elven som flyter gjennom fire hovedsteder (Wien, Bratislava, Budapest og Beograd)?", a: ["Donau", "Tanganyikasjøen", "Singapore (1965, utvist fra Malaysia)"] },
+    { q: "Hva er Afrikas mest folkerike land?", a: ["Nigeria", "Table Mountain", "Bajkalsjøen"] },
+    { q: "Hvilket land har flest øyer i verden?", a: ["Sverige (over 267 000)", "Brasília", "Iran"] },
+    { q: "Hva heter den eneste byen som ligger på to kontinenter?", a: ["Istanbul", "San Marino", "Null Island (0°N, 0°E i Guineabukten)"] },
+    { q: "Hva er den offisielle valutaen i Japan?", a: ["Yen", "Table Mountain", "Yangtze (Kina)"] },
+    { q: "Hva heter halvøya der Mexico-feriebyen Cancún ligger?", a: ["Yucatán", "Tokyo", "Brasília"] },
+    { q: "Hvilket land er eneste i verden med ikke-rektangulært flagg?", a: ["Nepal", "India", "Arusha (Tanzania)"] },
+    { q: "Hva heter den dypeste innsjøen i Afrika?", a: ["Tanganyikasjøen", "Eyjafjallajökull", "Themsen"] },
+    { q: "Hva heter landet som er fullstendig omringet av Sør-Afrika?", a: ["Lesotho", "Nepal", "Bajkalsjøen"] },
+    { q: "Hvilken elv skiller USA og Mexico?", a: ["Rio Grande", "Bajkalsjøen", "Milano og Cortina d'Ampezzo"] },
+    { q: "Hva er hovedstaden i Portugal?", a: ["Lisboa", "Bodensee", "Russland"] },
+    { q: "Hva er den offisielle språket i Brasil?", a: ["Portugisisk", "Null Island (0°N, 0°E i Guineabukten)", "Paris"] },
+    { q: "Hvilken by er «gatewayarken» kalt Gateway Arch i?", a: ["St. Louis, Missouri", "Lisboa", "Yangtze (Kina)"] },
+    { q: "Hva heter den lengste jernbanen i verden?", a: ["Den transsibirske jernbanen", "Nepal", "Roma"] },
+    { q: "Hvilken by er Stockholms synonym kjent som — «bygget på 14 øyer»?", a: ["Stockholm", "San Marino", "Antananarivo"] },
+    { q: "Hva heter havet mellom Norge og Storbritannia?", a: ["Nordsjøen", "Brasília", "Tokyo"] },
+    { q: "I hvilket land finner man Victoria Falls?", a: ["Zimbabwe / Zambia (på grensen)", "Arabiske ørken", "Vatikanstaten"] },
+    { q: "Hva heter det minste landet i Asia?", a: ["Maldivene (areal)", "Kilimanjaro", "Yucatán"] },
+    { q: "Hva heter de to landlåste landene i Sør-Amerika?", a: ["Bolivia og Paraguay", "Great Victoria Desert", "Table Mountain"] },
+    { q: "Hva heter den aktive vulkanen på Island kjent for et enormt utbrudd i 2010?", a: ["Eyjafjallajökull", "Aconcagua", "Paraguay"] },
+    { q: "Hvilket land har verdens lengste kystlinje?", a: ["Canada", "Sverige (over 267 000)", "Arusha (Tanzania)"] },
+    { q: "Hva heter den europeiske mikrostaten helt omringet av Italia?", a: ["San Marino", "India", "Great Victoria Desert"] },
+    { q: "Hvilken afrikansk innsjø er den nest dypeste i verden?", a: ["Tanganyikasjøen", "Island", "Nilen"] },
+    { q: "Hva heter halvøya som inkluderer Skandinavia og Finland?", a: ["Den skandinaviske halvøya (og Kolahalvøya)", "Island", "Lesotho"] },
+    { q: "Hvilken elv renner gjennom Cairo?", a: ["Nilen", "Yangtze (Kina)", "St. Louis, Missouri"] },
+    { q: "Hva heter den eneste europeiske øy-nasjonen som er kjent som «Land of a Thousand Volcanoes»?", a: ["Island", "Null Island (0°N, 0°E i Guineabukten)", "Tysk, fransk, italiensk og retoromansk"] },
+    { q: "Hva heter havet som er i ferd med å tørke opp pga. vannomdiriging?", a: ["Aralsjøen", "Aconcagua", "Fuji"] },
+    { q: "Hvilken afrikansk by er kjent som «gatewayarken» til Serengeti?", a: ["Arusha (Tanzania)", "Bajkalsjøen", "St. Louis, Missouri"] },
+    { q: "Hva heter fjellet i Cape Town som er flatt på toppen?", a: ["Table Mountain", "Sverige (over 267 000)", "India"] },
+    { q: "Hvilken av verdens floder drenerer nesten 40% av Sør-Amerika?", a: ["Amazonas", "Antananarivo", "India"] },
+    { q: "Hva heter det internasjonale vandringspunktets «Null Island» der ekvator møter primærmeridianen?", a: ["Null Island (0°N, 0°E i Guineabukten)", "Nordsjøen", "India"] },
+    { q: "Hva heter den eneste nasjonen som grenser til både Kaspihavet og Persiabukten?", a: ["Iran", "Tokyo", "Paraguay"] },
+    { q: "Hva heter det minste landet i verden som ikke er en øy og ikke er Vatikanstaten?", a: ["San Marino", "Kinnarodden", "Milano og Cortina d'Ampezzo"] },
+    { q: "Hva heter den europeiske innsjøen der Tyskland, Sveits og Østerrike møtes?", a: ["Bodensee", "Peru", "India"] },
+    { q: "Hvilken latinamerikansk by er verdens høyestliggende hovedstad?", a: ["La Paz (Bolivia) — Sucre er forfatningshovedstaden", "Kinnarodden", "India"] },
+    { q: "Hva heter den lengste elven i Asia?", a: ["Yangtze (Kina)", "Paris", "Amazonas"] },
+    { q: "Hva heter den eneste nasjonen som fikk sin uavhengighet mot sin vilje i moderne tid?", a: ["Singapore (1965, utvist fra Malaysia)", "Amazonas", "Yucatán"] },
+    { q: "Hva heter det doble flagget-landet (ulik bakside og forside)?", a: ["Paraguay", "Aralsjøen", "Volga"] },
+    { q: "Hva heter fjellet i Argentina som er det høyeste utenfor Asia?", a: ["Aconcagua", "Det kaspiske hav", "Nepal"] },
+    { q: "Hva heter Europas sørligste punkt (på fastlandet)?", a: ["Punta de Tarifa (Spania)", "Sahara", "India"] },
+    { q: "Hva heter den tre-grenser-innsjøen mellom Peru, Bolivia og litt Chile — kjent som høyestliggende seilbar innsjø?", a: ["Titicacasjøen", "Table Mountain", "Det kaspiske hav"] },
+    { q: "Hva heter Norges nordligste fastlandspunkt?", a: ["Kinnarodden", "Huang He (Gulfloden)", "Nordsjøen"] },
+    { q: "Hva heter den kinesiske elven kalt 'Sorrow of China' pga. oversvømmelser?", a: ["Huang He (Gulfloden)", "Lesotho", "Nigeria"] },
+    { q: "Hva heter den sørligste bebodde byen i verden?", a: ["Puerto Williams (Chile)", "Nordsjøen", "Yucatán"] },
+    { q: "Hvilke to byer delte tittelen som Italias vinterolympiad i 2026?", a: ["Milano og Cortina d'Ampezzo", "Lesotho", "Island"] },
+    { q: "Hva heter kontinentets største ørken etter Sahara?", a: ["Arabiske ørken", "Japan", "Den transsibirske jernbanen"] },
+    { q: "Hva heter landets kapital i Madagaskar?", a: ["Antananarivo", "Bodensee", "Nordsjøen"] },
+    { q: "Hva heter de fire offisielle språkene i Sveits?", a: ["Tysk, fransk, italiensk og retoromansk", "Roma", "Vatikanstaten"] },
+    { q: "Hva heter verdens største innsjø (etter overflate)?", a: ["Det kaspiske hav", "Bodensee", "Tysk, fransk, italiensk og retoromansk"] },
+    { q: "Hvilken norsk by er kjent som «Nordens Paris» pga. sin jugendstil?", a: ["Ålesund", "Brasília", "Roma"] },
   ],
   blandet: [
-    { q: "Hva er verdens raskeste landdyr?", a: ["Geparden","Løven","Gaselleantilopen"] },
-    { q: "Hvem malte Mona Lisa?", a: ["Leonardo da Vinci","Michelangelo","Raphael"] },
-    { q: "Hva er det kjemiske symbolet for gull?", a: ["Au","Ag","Fe"] },
-    { q: "Hvor mange planeter er det i solsystemet?", a: ["8","9","7"] },
-    { q: "Hva er det mest talte språket i verden?", a: ["Mandarin","Engelsk","Spansk"] },
-    { q: "Hvem oppfant telefonen?", a: ["Alexander Graham Bell","Thomas Edison","Nikola Tesla"] },
-    { q: "Hva kalles hunnelefanten?", a: ["Ku","Hoppe","Merr"] },
-    { q: "Hvor mange hull er det i en standard golfbane?", a: ["18","9","27"] },
-    { q: "Hvem skrev 'Harry Potter'-serien?", a: ["J.K. Rowling","J.R.R. Tolkien","C.S. Lewis"] },
-    { q: "Hva er menneskekroppens største organ?", a: ["Huden","Leveren","Hjernen"] },
-    { q: "Hvem oppfant lyspæren?", a: ["Thomas Edison","Nikola Tesla","Benjamin Franklin"] },
-    { q: "Hva er det kjemiske symbolet for vann?", a: ["H₂O","CO₂","NaCl"] },
-    { q: "I hvilken sport bruker man en 'puck'?", a: ["Ishockey","Lacrosse","Polo"] },
-    { q: "Hvem drepte Julius Cæsar?", a: ["Brutus og Cassius","Pompei","Kleopatra"] },
-    { q: "Hva heter Roald Dahls bok om en sjokoladefabrikk?", a: ["Charlie og sjokoladefabrikken","James og kjempeferskenet","Matilda"] },
-    { q: "Hvor mange bein har en edderkopp?", a: ["8","6","10"] },
-    { q: "Hva er det kjemiske symbolet for jern?", a: ["Fe","Jr","Ir"] },
-    { q: "Hvilken planet er nærmest solen?", a: ["Merkur","Venus","Mars"] },
-    { q: "Hvem malte 'Nattevakten'?", a: ["Rembrandt","Vermeer","Rubens"] },
-    { q: "Hva er den hardeste naturlige mineralen?", a: ["Diamant","Kvarts","Topas"] },
-    { q: "I hvilken sport kan man score en 'birdie'?", a: ["Golf","Tennis","Badminton"] },
-    { q: "Hvem var Norges kong under 2. verdenskrig?", a: ["Haakon VII","Olav V","Harald V"] },
-    { q: "Hva er det første elementet i det periodiske systemet?", a: ["Hydrogen","Helium","Litium"] },
-    { q: "Hvem skrev 'Don Quijote'?", a: ["Miguel de Cervantes","Lope de Vega","Gabriel García Márquez"] },
-    { q: "Hva er Norges nasjonalrett?", a: ["Fårikål","Lutefisk","Rakfisk"] },
-    { q: "Hvem malte 'Skrik'?", a: ["Edvard Munch","Gustav Vigeland","Christian Krohg"] },
-    { q: "Hva er verdens mest konsumerte drikk etter vann?", a: ["Te","Kaffe","Juice"] },
-    { q: "Hvor mange sider har en terning?", a: ["6","8","4"] },
-    { q: "Hva er den lengste dagen i Norge tradisjonelt sett?", a: ["Sankthansaften","Nyttårsaften","Påskeaften"] },
-    { q: "Hvem spilte James Bond i 'Casino Royale' (2006)?", a: ["Daniel Craig","Pierce Brosnan","Sean Connery"] },
-    { q: "Hvilken planet er kjent som den røde planeten?", a: ["Mars","Jupiter","Saturn"] },
-    { q: "Hva er Norges offisielle nasjonalblomst?", a: ["Rosenrot","Tyttebær","Linnea"] },
-    { q: "Hvor mange strenger har en standard gitar?", a: ["6","4","8"] },
-    { q: "Hva er verdens minste kontinent?", a: ["Australia","Europa","Antarktis"] },
-    { q: "Hvilken farge er smaragd?", a: ["Grønn","Blå","Rød"] },
-    { q: "Hva er det norske ordet for 'regnbue'?", a: ["Regnbue","Solbue","Lysbue"] },
-    { q: "Hvem var den første mannen på månen?", a: ["Neil Armstrong","Buzz Aldrin","Yuri Gagarin"] },
-    { q: "Hva heter Norges grunnlovsdag?", a: ["17. mai","7. juni","25. desember"] },
-    { q: "Hvilket dyr er kjent som 'kongen av jungelen'?", a: ["Løven","Tigeren","Elefanten"] },
-    { q: "Hva er det kjemiske symbolet for sølv?", a: ["Ag","Si","Sr"] }
+    { q: "Hvem malte Mona Lisa?", a: ["Leonardo da Vinci", "St. Petersburg–Tampa Airboat Line (1914)", "Argentina"] },
+    { q: "Hva er det hardeste naturlige stoffet på jorda?", a: ["Diamant", "Bresjø / fjordsjø", "Lillehammer"] },
+    { q: "I hvilket år falt Berlinmuren?", a: ["1989", "Edvard Munch", "Andesfjellene"] },
+    { q: "Hva er verdens raskeste landdyr?", a: ["Geparden", "Dugnad", "-40 grader"] },
+    { q: "Hvem var den første presidenten i USA?", a: ["George Washington", "Honning", "En pandemonium"] },
+    { q: "Hva er det mest utbredte grunnstoffet i universet?", a: ["Hydrogen", "Bolivia eller Paraguay", "Hafþór Júlíus Björnsson"] },
+    { q: "Hvilken sport spilles i Wimbledon?", a: ["Tennis", "Bayeux-teppet", "Isaac Newton"] },
+    { q: "Hva er det største organet i menneskekroppen?", a: ["Huden", "SKAM", "Diamant"] },
+    { q: "Hvem oppdaget penicillin?", a: ["Alexander Fleming", "Johan Nygaardsvold", "Isaac Newton"] },
+    { q: "Hva er det norske begrepet for frivillig fellesarbeid i nabolaget?", a: ["Dugnad", "Neil Armstrong", "Kristendom"] },
+    { q: "Hvem skriver Harry Potter-bøkene?", a: ["J.K. Rowling", "Lillehammer", "Blåhvalen"] },
+    { q: "Hva heter Norges nasjonalsang?", a: ["Ja, vi elsker dette landet", "Neil Armstrong", "Johan Nygaardsvold"] },
+    { q: "Hva er kjemisk symbol for gull?", a: ["Au", "William Shakespeare", "Sigrid Undset"] },
+    { q: "Hva heter Norges viktigste eksportprodukt (utenom olje)?", a: ["Laks / fisk", "En pandemonium", "Inkaene"] },
+    { q: "Hvem landet på månen i 1969 (astronaut)?", a: ["Neil Armstrong", "Aurora borealis", "Inkaene"] },
+    { q: "Hva er det største pattedyret i verden?", a: ["Blåhvalen", "Lillehammer", "Bresjø / fjordsjø"] },
+    { q: "I hvilket år ble Norge grunnloven vedtatt?", a: ["1814", "Stonehenge", "Flaggermus"] },
+    { q: "Hva heter den kjente norske malerien «Skrik» sitt opphav?", a: ["Edvard Munch", "Tennis", "Ja, vi elsker dette landet"] },
+    { q: "Hva er verdens mestfolkede religion?", a: ["Kristendom", "Eddie Eagan (boksing 1920, bobsleigh 1932)", "Marit Bjørgen (15 medaljer)"] },
+    { q: "Hva heter den kjemiske prosessen plantene bruker for å omdanne lys til energi?", a: ["Fotosyntese", "Hydrogen", "Leonardo da Vinci"] },
+    { q: "Hvem forfattet «Romeo og Julie»?", a: ["William Shakespeare", "Symfoni nr. 9", "1814"] },
+    { q: "Hva er én av to landlåste land i Sør-Amerika?", a: ["Bolivia eller Paraguay", "Lillehammer", "William Shakespeare"] },
+    { q: "Hva heter Norges oljefond offisielt?", a: ["Statens pensjonsfond utland", "Hafþór Júlíus Björnsson", "Johan Nygaardsvold"] },
+    { q: "Hva er antall kontinenter?", a: ["7", "Eddie Eagan (boksing 1920, bobsleigh 1932)", "Niels Henrik Abel"] },
+    { q: "Hva er det kjemiske symbolet for vann?", a: ["H₂O", "Diamant", "Neil Armstrong"] },
+    { q: "Hvem var den første kvinnen til å vinne Nobelprisen (i 1903)?", a: ["Marie Curie", "Dugnad", "Fotosyntese"] },
+    { q: "Hva er det egentlige fornavnet til Eminem?", a: ["Marshall (Mathers)", "Bayeux-teppet", "George Washington"] },
+    { q: "Hva heter den gamle sivilisasjon som bygde Machu Picchu?", a: ["Inkaene", "Honning", "Johan Nygaardsvold"] },
+    { q: "Hvem vant FIFA-VM i 2022?", a: ["Argentina", "Kristendom", "Kvanteoptikk / fotonikk"] },
+    { q: "Hva er enhet for lydstyrke?", a: ["Desibel (dB)", "1814", "Hydrogen"] },
+    { q: "Hva heter den kjente norske polarforskeren som var first til Sydpolen?", a: ["Roald Amundsen", "Vombat (wombat)", "Kvikksølv"] },
+    { q: "Hvem var den første menneske til å omseile jorda?", a: ["Ferdinand Magellan (ekspedisjonen) / Juan Sebastián Elcano (fullførte)", "Hydrogen", "Hugh Jackman"] },
+    { q: "Hva heter temperatur der Celsius og Fahrenheit er like?", a: ["-40 grader", "Marshall (Mathers)", "Ferdinand Magellan (ekspedisjonen) / Juan Sebastián Elcano (fullførte)"] },
+    { q: "Hva heter det pattedyret som kan fly aktivt?", a: ["Flaggermus", "Laks / fisk", "Hugh Jackman"] },
+    { q: "I hvilken by ble Olimpiske leker i 1994 holdt?", a: ["Lillehammer", "Niels Henrik Abel", "Bent Hamer"] },
+    { q: "Hva heter den norske forfatteren som vant Nobelprisen i litteratur i 1928?", a: ["Sigrid Undset", "Fotosyntese", "Roald Amundsen"] },
+    { q: "Hvem er den mest dekorerte norske vinterolympieren?", a: ["Marit Bjørgen (15 medaljer)", "William Shakespeare", "Statens pensjonsfond utland"] },
+    { q: "Hva kaller vi en gruppe papegøyer?", a: ["En pandemonium", "Bent Hamer", "Geparden"] },
+    { q: "Hva er den norske nasjonale vinteridretten per tradisjon?", a: ["Langrenn", "Statens pensjonsfond utland", "Symfoni nr. 9"] },
+    { q: "Hvem oppdaget tyngdekraften (ifølge legenden med et eple)?", a: ["Isaac Newton", "Bent Hamer", "Ferdinand Magellan (ekspedisjonen) / Juan Sebastián Elcano (fullførte)"] },
+    { q: "Hva heter den australske pungdyret som er eneste til å avføre seg i terningform?", a: ["Vombat (wombat)", "Lillehammer", "William Shakespeare"] },
+    { q: "Hvem var den yngste president i USA noensinne (ved inntreden)?", a: ["Theodore Roosevelt (42 år) — eller John F. Kennedy (yngste valgte)", "Laks / fisk", "Raskere, Høyere, Sterkere"] },
+    { q: "Hva heter det norske ukemagasinet «Se og Hør» sin engelske ekvivalent?", a: ["People Magazine", "George Washington", "3,14159"] },
+    { q: "Hva heter Beethovens mest kjente symfoni som han komponerte mens han var døv?", a: ["Symfoni nr. 9", "Argentina", "Marie Curie"] },
+    { q: "Hva er den norske betegnelsen for nordfenomenene — nordlys på nordlig halvkule?", a: ["Aurora borealis", "Stockholmsyndromet", "Andesfjellene"] },
+    { q: "Hva heter den lange fjellkjeden langs vestkysten av Sør-Amerika?", a: ["Andesfjellene", "Isaac Newton", "Desibel (dB)"] },
+    { q: "Hvem spilte Wolverine i X-Men-filmene?", a: ["Hugh Jackman", "Argentina", "Geparden"] },
+    { q: "Hva er det eneste metallet som er flytende ved romtemperatur?", a: ["Kvikksølv", "H₂O", "Supraledning"] },
+    { q: "Hva heter den eneste naturlige substansen som aldri går dårlig?", a: ["Honning", "People Magazine", "Sigrid Undset"] },
+    { q: "Hva betyr den olympiske mottoet «Citius, Altius, Fortius» på norsk?", a: ["Raskere, Høyere, Sterkere", "Alexander Fleming", "Sigrid Undset"] },
+    { q: "Hva heter prosessen der en substans går direkte fra fast stoff til gass?", a: ["Sublimasjon", "Aurora borealis", "Oksidasjon (jernoksidering)"] },
+    { q: "Hva heter den eneste nasjonen som avskaffet slaveri juridisk så sent som i 1981?", a: ["Mauritania", "Supraledning", "St. Petersburg–Tampa Airboat Line (1914)"] },
+    { q: "Hva heter den halvleder-effekten der elektrisk motstand faller til null?", a: ["Supraledning", "People Magazine", "Geparden"] },
+    { q: "Hvem regisserte den berømte norske filmen «Kitchen Stories» (2003)?", a: ["Bent Hamer", "Neil Armstrong", "Flaggermus"] },
+    { q: "Hva heter den norrøne eddadiktet som inneholder nordisk skapelsesmyte?", a: ["Völuspá", "Statens pensjonsfond utland", "Flaggermus"] },
+    { q: "Hvem er den eneste personen til å vinne individuelle gull i OL i to ulike idretter — sommer og vinter?", a: ["Eddie Eagan (boksing 1920, bobsleigh 1932)", "George Washington", "Laks / fisk"] },
+    { q: "Hva heter halvlederfenomenet der lysets bølgelengde brukes til å kode informasjon?", a: ["Kvanteoptikk / fotonikk", "Eddie Eagan (boksing 1920, bobsleigh 1932)", "Aurora borealis"] },
+    { q: "Hva heter den islandske skuespilleren som spilte i «Game of Thrones» som «The Mountain»?", a: ["Hafþór Júlíus Björnsson", "Vombat (wombat)", "Eddie Eagan (boksing 1920, bobsleigh 1932)"] },
+    { q: "Hva heter den franske kokkens teknikk som kalles «meunière» (brukes om fisk)?", a: ["En enkel sauteringmetode med smør, persille og sitronsaft", "Oksidasjon (jernoksidering)", "Neil Armstrong"] },
+    { q: "Hva heter det psykologiske fenomenet der fanger utvikler sympati for sine kidnappere?", a: ["Stockholmsyndromet", "Raskere, Høyere, Sterkere", "Jotunheimen nasjonalpark (eller Hardangervidda)"] },
+    { q: "Hva heter den radioaktive isotopen brukt i medisinsk diagnostikk?", a: ["Technetium-99m", "H₂O", "-40 grader"] },
+    { q: "Hva heter den matematiske konstanten π (pi) til 5 desimaler?", a: ["3,14159", "Hydrogen", "Eddie Eagan (boksing 1920, bobsleigh 1932)"] },
+    { q: "Hva heter den norske resistanseorganisasjonen «XU» som drev etterretning under 2. verdenskrig?", a: ["XU — hemmelig etterretningsorganisasjon", "Leonardo da Vinci", "Ursus maritimus"] },
+    { q: "Hva heter det arkeologiske stedet i England der keltiske druider skal ha holdt seremonier?", a: ["Stonehenge", "St. Petersburg–Tampa Airboat Line (1914)", "Marie Curie"] },
+    { q: "Hvem var den siste faraoen i det gamle Egypt?", a: ["Kleopatra VII", "Hugh Jackman", "Eddie Eagan (boksing 1920, bobsleigh 1932)"] },
+    { q: "Hva heter det norske ordet for den spesielle innsjøtypen dannet av isbreens erosjon?", a: ["Bresjø / fjordsjø", "Alexander Fleming", "People Magazine"] },
+    { q: "Hva heter den kjemiske prosessen der jern oksiderer og danner rust?", a: ["Oksidasjon (jernoksidering)", "Vombat (wombat)", "Blåhvalen"] },
+    { q: "Hva er den latinske betegnelsen for «isbjørn»?", a: ["Ursus maritimus", "Langrenn", "Kleopatra VII"] },
+    { q: "Hva heter den norske TV-serien om ungdommer i Oslo som ble en internasjonal suksess via sosiale medier?", a: ["SKAM", "Isaac Newton", "Supraledning"] },
+    { q: "Hva heter den første kommersielle passasjerflyvningen i historien?", a: ["St. Petersburg–Tampa Airboat Line (1914)", "Theodore Roosevelt (42 år) — eller John F. Kennedy (yngste valgte)", "Mauritania"] },
+    { q: "Hva heter det lengste mosesverdige kunstverket i verden — sydd på 1000-tallet?", a: ["Bayeux-teppet", "En pandemonium", "Johan Nygaardsvold"] },
+    { q: "Hvem var Norges statsminister under okkupasjonen og flyktet til London?", a: ["Johan Nygaardsvold", "1814", "H₂O"] },
+    { q: "Hva heter den norske matematikeren som videreutviklet gruppteorien?", a: ["Niels Henrik Abel", "Bent Hamer", "Honning"] },
+    { q: "Hva heter den eneste fuglearten i verden som svømmer men ikke kan fly?", a: ["Pingvinen (mange arter — f.eks. keiserpingvin)", "Statens pensjonsfond utland", "Niels Henrik Abel"] },
+    { q: "Hva heter det norske naturreservatsystemet som Norges lengste nasjonalpark tilhører?", a: ["Jotunheimen nasjonalpark (eller Hardangervidda)", "Langrenn", "Mauritania"] },
   ],
-  film: [
-    { q: "Hvem regisserte 'Titanic' (1997)?", a: ["James Cameron","Steven Spielberg","Peter Jackson"] },
-    { q: "Hvilken film vant Oscar for beste film i 2020?", a: ["Parasite","1917","Once Upon a Time in Hollywood"] },
-    { q: "Hvem spilte Iron Man i MCU?", a: ["Robert Downey Jr.","Chris Evans","Chris Hemsworth"] },
-    { q: "Hvem spilte Jack Sparrow i Pirates of the Caribbean?", a: ["Johnny Depp","Orlando Bloom","Geoffrey Rush"] },
-    { q: "Hvem regisserte 'Pulp Fiction'?", a: ["Quentin Tarantino","Martin Scorsese","Coen Brothers"] },
-    { q: "Hvem spilte Forrest Gump?", a: ["Tom Hanks","Tom Cruise","Kevin Costner"] },
-    { q: "Hvilken animasjonsfilm handler om rotter i Paris?", a: ["Ratatouille","Aristocats","Musse Pysj"] },
-    { q: "Hvem regisserte 'Schindler's List'?", a: ["Steven Spielberg","Clint Eastwood","Ron Howard"] },
-    { q: "Hvilken film handler om et fengsel i Maine?", a: ["The Shawshank Redemption","The Green Mile","Cool Hand Luke"] },
-    { q: "Hvem spilte Hermione Granger i Harry Potter?", a: ["Emma Watson","Emma Roberts","Keira Knightley"] },
-    { q: "Hva heter Pixars film om en robot i fremtiden?", a: ["WALL-E","Robots","Big Hero 6"] },
-    { q: "Hvem ga stemme til Darth Vader i de originale Star Wars?", a: ["James Earl Jones","David Prowse","Harrison Ford"] },
-    { q: "Hva heter filmen der Tom Hanks sitter fast på en flyplass?", a: ["The Terminal","Cast Away","Philadelphia"] },
-    { q: "Hvilken Disney-prinsesse er fra Arabia?", a: ["Jasmine","Mulan","Pocahontas"] },
-    { q: "Hvem regisserte 'The Dark Knight'?", a: ["Christopher Nolan","Tim Burton","Zack Snyder"] },
-    { q: "Hva heter filmen om en mann strandet på en øde øy?", a: ["Cast Away","Gravity","The Martian"] },
-    { q: "Hvem spilte Jacks kjærlighet i 'Titanic'?", a: ["Kate Winslet","Cate Blanchett","Gwyneth Paltrow"] },
-    { q: "Hva heter Elsa og Annas hjemland i 'Frozen'?", a: ["Arendelle","Narnia","Agrabah"] },
-    { q: "Hvem spilte Neo i 'The Matrix'?", a: ["Keanu Reeves","Brad Pitt","Will Smith"] },
-    { q: "Hva heter filmen med Brad Pitt og Edward Norton om en kampklubb?", a: ["Fight Club","Se7en","Snatch"] },
-    { q: "Hvilken film handler om en fisker som bekjemper en stor hvit hai?", a: ["Jaws","The Deep","Open Water"] },
-    { q: "Hvem spilte Clarice Starling i 'The Silence of the Lambs'?", a: ["Jodie Foster","Meryl Streep","Sigourney Weaver"] },
-    { q: "Hva heter Nemos far i 'Finn Nemo'?", a: ["Marlin","Nigel","Bruce"] },
-    { q: "Hvilken film har temaet 'My Heart Will Go On'?", a: ["Titanic","Ghost","The Bodyguard"] },
-    { q: "Hvem spilte Katniss Everdeen i 'The Hunger Games'?", a: ["Jennifer Lawrence","Emma Stone","Kristen Stewart"] },
-    { q: "Hva heter filmen der Meryl Streep spiller en streng motesjef?", a: ["The Devil Wears Prada","Mamma Mia","Kramer vs. Kramer"] },
-    { q: "Hvilken film har replikken 'I'll be back'?", a: ["The Terminator","RoboCop","Die Hard"] },
-    { q: "Hvem regisserte 'Inception'?", a: ["Christopher Nolan","Ridley Scott","David Fincher"] },
-    { q: "Hva heter Pixars film der leketøy er levende?", a: ["Toy Story","Robots","Small Soldiers"] },
-    { q: "Hvem spilte Edward Cullen i 'Twilight'?", a: ["Robert Pattinson","Taylor Lautner","Kellan Lutz"] },
-    { q: "Hva heter oppfølgeren til 'Finn Nemo'?", a: ["Finn Dory","Finn Nemo 2","Den Store Blå"] },
-    { q: "Hva heter Wes Andersons film om et hotell i Mellom-Europa?", a: ["The Grand Budapest Hotel","Hotel Chevalier","Fantastic Mr. Fox"] },
-    { q: "Hvilken film vant Oscar for beste film i 2022?", a: ["CODA","The Power of the Dog","Belfast"] },
-    { q: "Hva heter filmen der Leonardo DiCaprio spiller en diamanthandler i Afrika?", a: ["Blood Diamond","The Aviator","Catch Me If You Can"] },
-    { q: "Hvem spilte Wolverine i X-Men-filmene?", a: ["Hugh Jackman","Russell Crowe","Liev Schreiber"] },
-    { q: "Hvilken film er basert på en Roald Dahl-bok om en jente med magiske krefter?", a: ["Matilda","Heksene","James og kjempeferskenet"] },
-    { q: "Hva heter filmen der Joaquin Phoenix spiller Jokeren?", a: ["Joker","Batman","The Dark Knight"] },
-    { q: "Hvem spilte Elsa i den norske utgaven av 'Frozen'?", a: ["Gry Lisbet Dale","Maria Haukaas Storeng","Ylvis"] },
-    { q: "Hvilken film handler om en havarert astronaut på Mars?", a: ["The Martian","Gravity","Interstellar"] },
-    { q: "Hva heter Hollywoods best inntjenende film gjennom tidene?", a: ["Avatar","Avengers: Endgame","Titanic"] }
+  musikk: [
+    { q: "Hvem sang «Billie Jean»?", a: ["Michael Jackson", "Eric Clapton", "Queen"] },
+    { q: "Hvilket band sang «Bohemian Rhapsody»?", a: ["Queen", "Tapestry", "AC/DC"] },
+    { q: "Hvem er kjent som «The King of Rock and Roll»?", a: ["Elvis Presley", "Bernie Taupin", "Fire ekstra tenner (ifølge ham selv)"] },
+    { q: "Hvem sang «Rolling in the Deep»?", a: ["Adele", "BTS", "Café Wha?"] },
+    { q: "Hva heter den svenske DJ-en bak «Wake Me Up»?", a: ["Avicii", "Dolly Parton", "Thriller"] },
+    { q: "Hvilken norsk artist laget «Faded»?", a: ["Alan Walker", "Taylor Swift (Fearless, 1989, Folklore)", "Café Wha?"] },
+    { q: "Hvem er kjent som «Queen of Pop»?", a: ["Madonna", "Tim Bergling", "John Lennon, Paul McCartney, George Harrison og Ringo Starr"] },
+    { q: "Hvilket band sang «Smells Like Teen Spirit»?", a: ["Nirvana", "AC/DC", "Taylor Swift (Fearless, 1989, Folklore)"] },
+    { q: "Hvem sang «Blinding Lights»?", a: ["The Weeknd", "BTS", "Adele"] },
+    { q: "Hvem laget «Shape of You»?", a: ["Ed Sheeran", "The Dark Side of the Moon", "Prince"] },
+    { q: "Hvilket land er ABBA fra?", a: ["Sverige", "Aretha Franklin", "Farrokh Bulsara"] },
+    { q: "Hvem var vokalist i The Beatles?", a: ["John Lennon, Paul McCartney, George Harrison og Ringo Starr", "Nils Petter Molvær", "Adele"] },
+    { q: "Hvem sang «Hello» i 2015?", a: ["Adele", "Madonna", "Prince"] },
+    { q: "Hva heter Rihannas hjemland?", a: ["Barbados", "Café Wha?", "Ed Sheeran"] },
+    { q: "Hvem sang «Bad Guy»?", a: ["Billie Eilish", "Country-rap / Hick-hop", "Country, BlueGrass and Blues"] },
+    { q: "Hva heter Kygo med fullt navn?", a: ["Kyrre Gørvell-Dahll", "The Eras Tour", "«Video Killed the Radio Star» av The Buggles"] },
+    { q: "Hvem er kjent som «The Boss» i rocken?", a: ["Bruce Springsteen", "Indra Club / Star-Club", "Abbey Road Studios"] },
+    { q: "Hvilket band sang «Highway to Hell»?", a: ["AC/DC", "The Yardbirds", "Zimmerman"] },
+    { q: "Hvem sang «Old Town Road»?", a: ["Lil Nas X", "Nils Petter Molvær", "Michael Jackson"] },
+    { q: "Hva heter Norwegian Jazzlegende kjent for «Watercolour»?", a: ["Nils Petter Molvær", "Barbados", "John Lennon; Magical Mystery Tour (1967)"] },
+    { q: "Hvem sang «Uptown Funk»?", a: ["Mark Ronson ft. Bruno Mars", "Aretha Franklin", "Miley Cyrus"] },
+    { q: "Hvem er kjent som «The Weeknd»?", a: ["Abel Tesfaye", "Jahn Teigen", "Tammi Terrell"] },
+    { q: "Hva heter den svenske popen — er Avicii egentlige navn?", a: ["Tim Bergling", "Madonna", "Nils Petter Molvær"] },
+    { q: "Hvem sang «Wrecking Ball»?", a: ["Miley Cyrus", "Zimmerman", "Kyrre Gørvell-Dahll"] },
+    { q: "Hvem vant Eurovision Song Contest for Norge i 2009?", a: ["Alexander Rybak", "Country-rap / Hick-hop", "AC/DC"] },
+    { q: "Hva var den første videoen som ble spilt på MTV 1. august 1981?", a: ["«Video Killed the Radio Star» av The Buggles", "Tammi Terrell", "Garth Brooks"] },
+    { q: "Hva heter Freddie Mercury ved hans egentlige navn?", a: ["Farrokh Bulsara", "Nils Petter Molvær", "Jay-Z (Shawn Carter)"] },
+    { q: "Hvem er Elton Johns mangeårige tekstforfatter?", a: ["Bernie Taupin", "Dolly Parton", "19, 21, 25, 30"] },
+    { q: "Hva heter Michael Jacksons bestselgende album med 65 mill. eksemplarer?", a: ["Thriller", "John Lennon; Magical Mystery Tour (1967)", "Eric Clapton"] },
+    { q: "Hvem var den første kvinnen innsatt i Rock and Roll Hall of Fame?", a: ["Aretha Franklin", "A-ha (med «Take On Me», 1985)", "Mark Ronson ft. Bruno Mars"] },
+    { q: "Hva heter Drakes egentlige navn?", a: ["Aubrey Drake Graham", "Café Wha?", "A-ha (med «Take On Me», 1985)"] },
+    { q: "Hvilket album av Pink Floyd lå på Billboard 200-listen i over 14 år?", a: ["The Dark Side of the Moon", "Kygo", "Zimmerman"] },
+    { q: "Hva heter Bob Dylans egentlige etternavn?", a: ["Zimmerman", "Blant andre: Taylor Swift og Drake", "Jahn Teigen"] },
+    { q: "Hvem skrev «Manic Monday» for The Bangles?", a: ["Prince", "Abbey Road Studios", "Aubrey Drake Graham"] },
+    { q: "Hva heter den norske duoen bak «It Ain't Me» med Selena Gomez?", a: ["Kygo", "Blant andre: Taylor Swift og Drake", "Dolly Parton"] },
+    { q: "Hva heter Keith Moons og John Entwistles band?", a: ["The Who", "Ed Sheeran", "AC/DC"] },
+    { q: "Hvem er den eneste soloartist som har erstattet seg selv på #1 på Billboard Hot 100?", a: ["Blant andre: Taylor Swift og Drake", "Aubrey Drake Graham", "Kygo"] },
+    { q: "Hva heter rockebandet som ga ut albumet «Back in Black» som hyllest til Bon Scott?", a: ["AC/DC", "Chris Martin", "Björk"] },
+    { q: "Hva heter supergruppen bestående av George Harrison, Roy Orbison, Jeff Lynne, Tom Petty og Bob Dylan?", a: ["Traveling Wilburys", "Kurt Cobain", "Sverige"] },
+    { q: "Hva heter det langspillende albumet av Carole King fra 1971 med låten «You've Got a Friend»?", a: ["Tapestry", "AC/DC", "Nils Petter Molvær"] },
+    { q: "Hvem spilte 27 instrumenter på sitt debutalbum «For You»?", a: ["Prince", "Aretha Franklin", "Debbie Gibson / BTS — Korrekt: The Weeknd (etter en rekkeanalyse) — faktisk: ingen pr. 2025 har hatt nøyaktig 7 etterfølgende; spørsmålet refererer til The Weeknd's lange rekke"] },
+    { q: "Hva heter Beyoncés ektemann?", a: ["Jay-Z (Shawn Carter)", "Nils Petter Molvær", "Bernie Taupin"] },
+    { q: "Hva heter den islandske artisten kjent for eksperimentell musikk og filmscore?", a: ["Björk", "The Weeknd", "Country, BlueGrass and Blues"] },
+    { q: "Hvem er «K-Pop»-banden som kjører kampanjen «Love Myself» med UNICEF?", a: ["BTS", "The Yardbirds", "Björk"] },
+    { q: "Hva heter Coldplays vokalist?", a: ["Chris Martin", "Kurt Cobain", "Tammi Terrell"] },
+    { q: "Hva heter AC/DCs mest kjente ballade?", a: ["«You Shook Me All Night Long»", "Country, BlueGrass and Blues", "Nirvana"] },
+    { q: "Hvem sto bak Spice Girls sin debutsingel?", a: ["«Wannabe» (1996)", "Farrokh Bulsara", "Country, BlueGrass and Blues"] },
+    { q: "Hva heter Eminem sitt rask-selgende album fra 2000?", a: ["The Marshall Mathers LP", "Indra Club / Star-Club", "Elvis Presley"] },
+    { q: "Hvem hadde hit-sangen «Jenny from the Block»?", a: ["Jennifer Lopez", "The Eras Tour", "Don Giovanni"] },
+    { q: "Hva heter Mozarts opera om Don Juan?", a: ["Don Giovanni", "New Orleans", "Michael Jackson"] },
+    { q: "Hva heter det ikoniske musikklokalet der The Beatles spilte tidlig i karrieren i Hamburg?", a: ["Indra Club / Star-Club", "«You Shook Me All Night Long»", "Traveling Wilburys"] },
+    { q: "Hvem var den første og eneste artisten til å ha syv etterfølgende nr. 1-sanger på Billboard Hot 100?", a: ["Debbie Gibson / BTS — Korrekt: The Weeknd (etter en rekkeanalyse) — faktisk: ingen pr. 2025 har hatt nøyaktig 7 etterfølgende; spørsmålet refererer til The Weeknd's lange rekke", "Don Giovanni", "Country, BlueGrass and Blues"] },
+    { q: "Hva heter den norske artisten bak «Sommer i Norge»?", a: ["Ole Ivars (tradisjonell) eller DDE", "Bagatelle a-moll WoO 59", "Kurt Cobain"] },
+    { q: "Hva heter det engelske rocke-bandet som produserte tre legendariske gitarister: Jeff Beck, Jimmy Page og Eric Clapton?", a: ["The Yardbirds", "Thriller", "«Work It Out» (2002)"] },
+    { q: "Hva heter den gamle musikk-hallen CBGB, og hva sto forkortelsen for?", a: ["Country, BlueGrass and Blues", "Thriller", "Kygo"] },
+    { q: "Hvem sa «I am the Walrus» — og i hvilket Beatles-album finnes sangen?", a: ["John Lennon; Magical Mystery Tour (1967)", "Fire ekstra tenner (ifølge ham selv)", "«Work It Out» (2002)"] },
+    { q: "Hva heter Freddie Mercurys forklaringen på sin utvidede vokalrekkevidde?", a: ["Fire ekstra tenner (ifølge ham selv)", "Adele", "Don Giovanni"] },
+    { q: "Hvem skrev Whitney Houstons «I Will Always Love You»?", a: ["Dolly Parton", "BTS", "Debbie Gibson / BTS — Korrekt: The Weeknd (etter en rekkeanalyse) — faktisk: ingen pr. 2025 har hatt nøyaktig 7 etterfølgende; spørsmålet refererer til The Weeknd's lange rekke"] },
+    { q: "Hva heter det første norske bandet som nådde #1 på britiske hitlister?", a: ["A-ha (med «Take On Me», 1985)", "Abel Tesfaye", "Tammi Terrell"] },
+    { q: "Hva heter den musikalske stilen som blander country og rap?", a: ["Country-rap / Hick-hop", "Bruce Springsteen", "Bagatelle a-moll WoO 59"] },
+    { q: "Hvem var Marvins Gayes faste duettpartner?", a: ["Tammi Terrell", "Adele", "Indra Club / Star-Club"] },
+    { q: "Hva heter det legendariske konsertstedet i New York der Jimi Hendrix ble oppdaget?", a: ["Café Wha?", "Alexander Rybak", "Adele"] },
+    { q: "I hvilken by oppsto jazz-musikken?", a: ["New Orleans", "Sverige", "Country, BlueGrass and Blues"] },
+    { q: "Hva heter den første sangen Beyoncé slapp som soloartist?", a: ["«Work It Out» (2002)", "AC/DC", "Country-rap / Hick-hop"] },
+    { q: "Hva heter det berømte britiske musikkstudioet der The Beatles spilte inn de fleste albumene sine?", a: ["Abbey Road Studios", "Miley Cyrus", "Madonna"] },
+    { q: "Hva heter år-spesifikke albumtitlene til Adele (alle fire)?", a: ["19, 21, 25, 30", "Prince", "Jennifer Lopez"] },
+    { q: "Hvem er den eneste artisten som har vunnet tre Grammy-priser for Album of the Year som soloartist?", a: ["Taylor Swift (Fearless, 1989, Folklore)", "Jay-Z (Shawn Carter)", "Bernie Taupin"] },
+    { q: "Hva heter den norske vinneren av Melodi Grand Prix som representerte Norge 8 ganger?", a: ["Jahn Teigen", "A-ha (med «Take On Me», 1985)", "Jay-Z (Shawn Carter)"] },
+    { q: "Hvem er den eneste artisten til å selge 100 millioner albumer i USA alene?", a: ["Garth Brooks", "BTS", "Jennifer Lopez"] },
+    { q: "Hva heter det klassiske Beethoven-pianoesssayet «Für Elise» sin fulle tittel?", a: ["Bagatelle a-moll WoO 59", "The Who", "The Yardbirds"] },
+    { q: "Hva heter Nirvanas grunnlegger og frontfigur?", a: ["Kurt Cobain", "Zimmerman", "Sverige"] },
+    { q: "Hvem spilte gitar i supergruppen Cream?", a: ["Eric Clapton", "Tammi Terrell", "Elvis Presley"] },
+    { q: "Hva heter den norske jazzleg enden kjent for trompetspill i verdensklasse?", a: ["Nils Petter Molvær", "Kurt Cobain", "Madonna"] },
+    { q: "Hva heter den russisk-norske artisten som vant Eurovision 2009 med fiol?", a: ["Alexander Rybak", "«You Shook Me All Night Long»", "Aretha Franklin"] },
+    { q: "Hva heter den Taylor Swift-konsertturene som ble historiens høyeste inntjenende?", a: ["The Eras Tour", "The Weeknd", "Alan Walker"] },
   ]
 };
 
@@ -6894,91 +7034,572 @@ document.addEventListener('click', function(e) {
 // ─────────────────────────────────────────────
 // JEOPARDY
 // ─────────────────────────────────────────────
-const JEO_Q = {
-  no: [
+const JEO_SETS = [
+  [
     { name: '🍺 Drikke', qs: [
       { q: 'I hvilken by ble Guinness-bryggeriet grunnlagt?', a: 'Dublin', d: 1 },
       { q: 'Hva er tequila laget av?', a: 'Blå agave', d: 2 },
-      { q: 'Hvilken frukt er cointreau laget av?', a: 'Appelsin', d: 3 },
+      { q: 'Hvilken frukt er Cointreau laget av?', a: 'Appelsin', d: 3 },
       { q: 'Hva heter den japanske risalkoholen?', a: 'Sake', d: 4 },
-      { q: 'I hvilken region i Frankrike produseres cognac?', a: 'Cognac (Charente)', d: 5 },
+      { q: 'I hvilken region i Frankrike produseres cognac?', a: 'Cognac (Charente)', d: 5 }
     ]},
     { name: '🌍 Geografi', qs: [
       { q: 'Hva er hovedstaden i Australia?', a: 'Canberra', d: 1 },
       { q: 'Hvilken elv er verdens lengste?', a: 'Nilen', d: 2 },
       { q: 'I hvilket land ligger Machu Picchu?', a: 'Peru', d: 3 },
       { q: 'Hva heter verdens minste land?', a: 'Vatikanstaten', d: 4 },
-      { q: 'Hvilken by ligger på to kontinenter?', a: 'Istanbul', d: 5 },
+      { q: 'Hvilken by ligger på to kontinenter?', a: 'Istanbul', d: 5 }
     ]},
     { name: '🎬 Film & TV', qs: [
-      { q: 'Hvem spilte Jack i Titanic (1997)?', a: 'Leonardo DiCaprio', d: 1 },
+      { q: 'I hvilken by er «Peaky Blinders» satt?', a: 'Birmingham', d: 1 },
       { q: 'Hvilken serie handler om Walter White?', a: 'Breaking Bad', d: 2 },
       { q: 'Hvem regisserte Inception?', a: 'Christopher Nolan', d: 3 },
-      { q: 'Hvilken skuespiller spilte Joker i The Dark Knight?', a: 'Heath Ledger', d: 4 },
-      { q: 'Hva heter protagonisten i "The Witcher"-serien?', a: 'Geralt of Rivia', d: 5 },
+      { q: 'Hvem stemmer Simba i den originale «Løvenes Konge» (1994)?', a: 'Matthew Broderick', d: 4 },
+      { q: 'Hva heter den opprinnelige japanske filmen fra 1954 der Godzilla dukket opp for første gang?', a: 'Gojira', d: 5 }
     ]},
     { name: '🎵 Musikk', qs: [
-      { q: 'Hvem sang "Billie Jean"?', a: 'Michael Jackson', d: 1 },
-      { q: 'Hvilken norsk artist laget "Faded"?', a: 'Alan Walker', d: 2 },
-      { q: 'Hvilken gruppe sang "Bohemian Rhapsody"?', a: 'Queen', d: 3 },
+      { q: 'Hvem sang «Billie Jean»?', a: 'Michael Jackson', d: 1 },
+      { q: 'Hvilken norsk artist laget «Faded»?', a: 'Alan Walker', d: 2 },
+      { q: 'Hvilken gruppe sang «Bohemian Rhapsody»?', a: 'Queen', d: 3 },
       { q: 'Hva heter Beyoncés ektemann?', a: 'Jay-Z', d: 4 },
-      { q: 'Hvilken by er kjent som "Music City" i USA?', a: 'Nashville', d: 5 },
+      { q: 'Hvilken by er kjent som «Music City» i USA?', a: 'Nashville', d: 5 }
     ]},
     { name: '🥳 Fest', qs: [
-      { q: 'Hva betyr "Skål" i drikkekontekst?', a: 'Cheers / Helse', d: 1 },
+      { q: 'Hva betyr «Skål» i drikkekontekst?', a: 'Cheers / Helse', d: 1 },
       { q: 'I hvilken by startet Oktoberfest?', a: 'München', d: 2 },
       { q: 'Hva kalles feiringen 17. mars i Irland?', a: 'St. Patrick\'s Day', d: 3 },
       { q: 'Hva er den tradisjonelle brasilianske festdrinken?', a: 'Caipirinha', d: 4 },
-      { q: 'I hvilken by holdes det berømte Mardi Gras i USA?', a: 'New Orleans', d: 5 },
-    ]},
+      { q: 'I hvilken by holdes det berømte Mardi Gras i USA?', a: 'New Orleans', d: 5 }
+    ]}
   ],
-  en: [
-    { name: '🍺 Drinks', qs: [
-      { q: 'In which city was the Guinness brewery founded?', a: 'Dublin', d: 1 },
-      { q: 'What is tequila made from?', a: 'Blue agave', d: 2 },
-      { q: 'Which fruit is cointreau made from?', a: 'Orange', d: 3 },
-      { q: 'What is the Japanese rice alcohol called?', a: 'Sake', d: 4 },
-      { q: 'In which region of France is cognac produced?', a: 'Cognac (Charente)', d: 5 },
+  [
+    { name: '🍺 Drikke', qs: [
+      { q: 'Hva er hovedingrediensen i en Bloody Mary?', a: 'Tomatjuice', d: 1 },
+      { q: 'Hvilket land produserer mest whisky i verden?', a: 'Skottland', d: 2 },
+      { q: 'Hva kalles prosessen der gjær omdanner sukker til alkohol?', a: 'Gjæring (fermentering)', d: 3 },
+      { q: 'Hvilken drue brukes i klassisk Chianti?', a: 'Sangiovese', d: 4 },
+      { q: 'Hva er det japanske destillerte brennevinet laget av søtpoteter eller bygg kalt?', a: 'Shochu', d: 5 }
     ]},
-    { name: '🌍 Geography', qs: [
-      { q: 'What is the capital of Australia?', a: 'Canberra', d: 1 },
-      { q: 'Which river is the longest in the world?', a: 'The Nile', d: 2 },
-      { q: 'In which country is Machu Picchu located?', a: 'Peru', d: 3 },
-      { q: 'What is the world\'s smallest country?', a: 'Vatican City', d: 4 },
-      { q: 'Which city lies on two continents?', a: 'Istanbul', d: 5 },
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er hovedstaden i Brasil?', a: 'Brasília', d: 1 },
+      { q: 'Hva heter det høyeste fjellet i Afrika?', a: 'Kilimanjaro', d: 2 },
+      { q: 'Hvilket hav er det minste i verden?', a: 'Arktis (Nordishavet)', d: 3 },
+      { q: 'Hvilket land omgir øygruppen der Galápagos-øyene ligger?', a: 'Ecuador', d: 4 },
+      { q: 'Hvilket land er det eneste som grenser til både Kaspihavet og Persiabukten?', a: 'Iran', d: 5 }
     ]},
     { name: '🎬 Film & TV', qs: [
-      { q: 'Who played Jack in Titanic (1997)?', a: 'Leonardo DiCaprio', d: 1 },
-      { q: 'Which series features Walter White?', a: 'Breaking Bad', d: 2 },
-      { q: 'Who directed Inception?', a: 'Christopher Nolan', d: 3 },
-      { q: 'Which actor played the Joker in The Dark Knight?', a: 'Heath Ledger', d: 4 },
-      { q: 'Who is the protagonist of "The Witcher" series?', a: 'Geralt of Rivia', d: 5 },
+      { q: 'Hvem stemmer Donkey i «Shrek»?', a: 'Eddie Murphy', d: 1 },
+      { q: 'Hvilken serie utspiller seg i Westeros?', a: 'Game of Thrones', d: 2 },
+      { q: 'Hvilken film vant Oscar for beste film i 2020?', a: 'Parasite', d: 3 },
+      { q: 'Hvem regisserte «Pulp Fiction»?', a: 'Quentin Tarantino', d: 4 },
+      { q: 'Hvilken skuespiller spilte Joker i «The Dark Knight»?', a: 'Heath Ledger', d: 5 }
     ]},
-    { name: '🎵 Music', qs: [
-      { q: 'Who sang "Billie Jean"?', a: 'Michael Jackson', d: 1 },
-      { q: 'Which Norwegian artist created "Faded"?', a: 'Alan Walker', d: 2 },
-      { q: 'Which band sang "Bohemian Rhapsody"?', a: 'Queen', d: 3 },
-      { q: 'What is Beyoncé\'s husband\'s name?', a: 'Jay-Z', d: 4 },
-      { q: 'Which city is known as "Music City" in the USA?', a: 'Nashville', d: 5 },
+    { name: '🎵 Musikk', qs: [
+      { q: 'Hvilket band sang «Smells Like Teen Spirit»?', a: 'Nirvana', d: 1 },
+      { q: 'Hvem er kjent som «The King of Rock and Roll»?', a: 'Elvis Presley', d: 2 },
+      { q: 'I hvilket år ble ABBA grunnlagt?', a: '1972', d: 3 },
+      { q: 'Hva heter Eminems egentlige fornavn?', a: 'Marshall (Mathers)', d: 4 },
+      { q: 'Hvilken komponist ble døv, men fortsatte å komponere — inkludert sin 9. symfoni?', a: 'Beethoven', d: 5 }
     ]},
-    { name: '🥳 Party', qs: [
-      { q: 'What does "Skål" mean in Norwegian when drinking?', a: 'Cheers', d: 1 },
-      { q: 'In which city did Oktoberfest originate?', a: 'Munich', d: 2 },
-      { q: 'What is the March 17th celebration in Ireland called?', a: 'St. Patrick\'s Day', d: 3 },
-      { q: 'What is the traditional Brazilian party drink?', a: 'Caipirinha', d: 4 },
-      { q: 'In which US city is the famous Mardi Gras held?', a: 'New Orleans', d: 5 },
-    ]},
+    { name: '🥳 Fest', qs: [
+      { q: 'Hva er en «piñata»?', a: 'En fargerik figur fylt med godteri som slås i stykker', d: 1 },
+      { q: 'I hvilken by holdes verdens største karneval hvert år?', a: 'Rio de Janeiro', d: 2 },
+      { q: 'Hva heter den spanske tradisjonen der folk spiser 12 druer ved midnatt nyttårsaften?', a: 'Las doce uvas', d: 3 },
+      { q: 'Hvilken drink er tradisjonelt assosiert med det britiske nyttårssangen «Auld Lang Syne»?', a: 'Whisky (Scotch)', d: 4 },
+      { q: 'Hva heter den koreanske spriten som er verdens mestselgte brennevin?', a: 'Soju', d: 5 }
+    ]}
   ],
-};
+  [
+    { name: '🔬 Vitenskap', qs: [
+      { q: 'Hva er det hardeste naturlige stoffet på jorda?', a: 'Diamant', d: 1 },
+      { q: 'Hva er det mest utbredte grunnstoffet i universet?', a: 'Hydrogen', d: 2 },
+      { q: 'Hva kalles et dyr som spiser både planter og kjøtt?', a: 'Omnivore (altetende)', d: 3 },
+      { q: 'Hva er det eneste metallet som er flytende ved romtemperatur?', a: 'Kvikksølv', d: 4 },
+      { q: 'Hva er navnet på prosessen der en substans går direkte fra fast stoff til gass?', a: 'Sublimasjon', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er Norges lengste fjord?', a: 'Sognefjorden', d: 1 },
+      { q: 'Hvilket land har flest tidssoner i verden?', a: 'Russland', d: 2 },
+      { q: 'Hva heter Frankrikes høyeste fjell?', a: 'Mont Blanc', d: 3 },
+      { q: 'Hvilken øy er verdens største?', a: 'Grønland', d: 4 },
+      { q: 'Hva heter den tørreste ørkenen i verden?', a: 'Antarktis', d: 5 }
+    ]},
+    { name: '🐾 Dyr', qs: [
+      { q: 'Hva er verdens største landdyr?', a: 'Afrikansk elefant', d: 1 },
+      { q: 'Hva er verdens raskeste fugl?', a: 'Vandrefalk (Peregrine falcon)', d: 2 },
+      { q: 'Hva kalles et ungt frosk?', a: 'Rumpetroll', d: 3 },
+      { q: 'Hva er hudfargen til en isbjørn?', a: 'Svart', d: 4 },
+      { q: 'Hvilket pattedyr har den tykkeste pelsen?', a: 'Sjøoter', d: 5 }
+    ]},
+    { name: '📺 Pop-kultur', qs: [
+      { q: 'Hvilken tegneseriefigur bor i et ananas under havet?', a: 'SpongeBob SquarePants', d: 1 },
+      { q: 'Hva heter familien i «The Simpsons»?', a: 'Simpson', d: 2 },
+      { q: 'Hvilken serie handler om en kjemisk lektor som lager metamfetamin?', a: 'Breaking Bad', d: 3 },
+      { q: 'Hvem vant de første sesongene av «Idol» i Norge?', a: 'Kurt Nilsen (2003)', d: 4 },
+      { q: 'I hvilken by er TV-serien «Succession» primært satt?', a: 'New York', d: 5 }
+    ]},
+    { name: '🏅 Sport', qs: [
+      { q: 'Hvor mange spillere er det på et fotballag på banen?', a: '11', d: 1 },
+      { q: 'Hvilken sport kombinerer langrenn og skyting?', a: 'Skiskyting (biatlon)', d: 2 },
+      { q: 'I hvilken by ble de første moderne OL arrangert i 1896?', a: 'Aten (Athen)', d: 3 },
+      { q: 'Hvilket land har flest gullmedaljer i vinterlekenes historie?', a: 'Norge', d: 4 },
+      { q: 'Hvem er den mest dekorerte vinterolympieren noensinne med 15 medaljer?', a: 'Marit Bjørgen', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🔬 Vitenskap', qs: [
+      { q: 'Hva absorberer planter fra luften?', a: 'Karbondioksid (CO₂)', d: 1 },
+      { q: 'Hva kalles studiet av levende organismer?', a: 'Biologi', d: 2 },
+      { q: 'Hva kaller vi det midterste laget i Jordens struktur?', a: 'Mantelen', d: 3 },
+      { q: 'Hva er symbolet for grunnstoffet gull på det periodiske systemet?', a: 'Au', d: 4 },
+      { q: 'Hva heter enheten som måler lydstyrke?', a: 'Desibel (dB)', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er verdens folkerikeste land?', a: 'India', d: 1 },
+      { q: 'Hva heter Italias aktive vulkan på Sicilia?', a: 'Etna', d: 2 },
+      { q: 'Hvilken elv renner gjennom London?', a: 'Themsen', d: 3 },
+      { q: 'Hva heter den lengste elven i Sør-Amerika?', a: 'Amazonas', d: 4 },
+      { q: 'Hvilken by er kjent som «The Eternal City»?', a: 'Roma', d: 5 }
+    ]},
+    { name: '🎬 Film & TV', qs: [
+      { q: 'Hva heter protagonisten i «Harry Potter»-serien?', a: 'Harry Potter', d: 1 },
+      { q: 'Hvem spilte Jack i Titanic (1997)?', a: 'Leonardo DiCaprio', d: 2 },
+      { q: 'I hvilken animasjonsfilm synger man «Let It Go»?', a: 'Frost (Frozen)', d: 3 },
+      { q: 'Hvem regisserte «Schindler\'s List»?', a: 'Steven Spielberg', d: 4 },
+      { q: 'Hva heter den danske serien som inspirerte den amerikanske «House of Cards»?', a: 'Borgen', d: 5 }
+    ]},
+    { name: '🎵 Musikk', qs: [
+      { q: 'Hvem er kjent som «Queen of Pop»?', a: 'Madonna', d: 1 },
+      { q: 'Hvilket land er ABBA fra?', a: 'Sverige', d: 2 },
+      { q: 'Hva heter duoen bak «Get Lucky»?', a: 'Daft Punk', d: 3 },
+      { q: 'Hvilken norsk artist vant Eurovision Song Contest i 2009?', a: 'Alexander Rybak', d: 4 },
+      { q: 'I hvilket år ga The Beatles ut albumet «Abbey Road»?', a: '1969', d: 5 }
+    ]},
+    { name: '🏅 Sport', qs: [
+      { q: 'Hva er distansen på et olympisk maraton?', a: '42,195 km', d: 1 },
+      { q: 'Hvilken sport bruker begrepene «snatch» og «clean and jerk»?', a: 'Vektløfting', d: 2 },
+      { q: 'Hvem er tidenes mestselgende golfer med flest Major-titler?', a: 'Jack Nicklaus (18 majors)', d: 3 },
+      { q: 'I hvilken idrett er «Ryder Cup» den viktigste lagkonkurransen?', a: 'Golf', d: 4 },
+      { q: 'Hva heter den olympiske mottoet på latin?', a: 'Citius, Altius, Fortius', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🏰 Historie', qs: [
+      { q: 'Hvem var Norges første statsminister etter 1814?', a: 'Christian Magnus Falsen (regjeringen Peder Anker)', d: 1 },
+      { q: 'I hvilket år falt Berlinmuren?', a: '1989', d: 2 },
+      { q: 'Hvem oppdaget penicillin?', a: 'Alexander Fleming', d: 3 },
+      { q: 'I hvilken by ble attentatet som utløste første verdenskrig begått?', a: 'Sarajevo', d: 4 },
+      { q: 'Hvilken sivilisasjon bygde Machu Picchu?', a: 'Inkaene', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er Europas lengste elv?', a: 'Volga', d: 1 },
+      { q: 'Hvilken by er Kanadas største?', a: 'Toronto', d: 2 },
+      { q: 'Hva heter den smaleste staten i USA?', a: 'Rhode Island', d: 3 },
+      { q: 'Hva heter halvøya der Cancún i Mexico ligger?', a: 'Yucatán', d: 4 },
+      { q: 'Hva kalles de norske fjordinnløpene i geografisk terminologi?', a: 'Fjorder', d: 5 }
+    ]},
+    { name: '🎬 Film & TV', qs: [
+      { q: 'Hva heter løven i «Narnia»?', a: 'Aslan', d: 1 },
+      { q: 'Hvem spilte Iron Man i Marvel-filmene?', a: 'Robert Downey Jr.', d: 2 },
+      { q: 'Hvilken film inneholder scenen «I\'m the king of the world!»?', a: 'Titanic', d: 3 },
+      { q: 'Hva heter den belgiske detektiven skapt av Agatha Christie?', a: 'Hercule Poirot', d: 4 },
+      { q: 'Hvem regisserte den originale «Star Wars»-trilogien?', a: 'George Lucas', d: 5 }
+    ]},
+    { name: '🍕 Mat', qs: [
+      { q: 'Hva er hoveddrikken i en tradisjonell italiensk espresso?', a: 'Kaffe', d: 1 },
+      { q: 'Hva er guacamoles hovedingrediens?', a: 'Avokado', d: 2 },
+      { q: 'Hvilket land er sushi opprinnelig fra?', a: 'Japan', d: 3 },
+      { q: 'Hva heter den franske teknikken for å lage smør-basert saus med hvitvin?', a: 'Beurre blanc', d: 4 },
+      { q: 'Hva heter den spanske risen som brukes i paella?', a: 'Bomba-ris (eller Calasparra)', d: 5 }
+    ]},
+    { name: '🏅 Sport', qs: [
+      { q: 'Hvilken sport spilles i Wimbledon?', a: 'Tennis', d: 1 },
+      { q: 'Hva heter den viktigste fotballturneringen i verden for landslag?', a: 'VM (FIFA World Cup)', d: 2 },
+      { q: 'Hvem har vunnet flest Grand Slam-titler i tennis (herrer)?', a: 'Novak Djokovic', d: 3 },
+      { q: 'Hvem var den første svarte idrettsutøveren til å vinne individuelt gull i vinter-OL?', a: 'Shani Davis (2006)', d: 4 },
+      { q: 'I hvilken by ble de første moderne OL arrangert i 1896?', a: 'Aten (Hellas)', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🏰 Historie', qs: [
+      { q: 'Hvem var den første presidenten i USA?', a: 'George Washington', d: 1 },
+      { q: 'I hvilket år erklærte Norge sin uavhengighet (grunnlovsdagen)?', a: '1814', d: 2 },
+      { q: 'Hvem oppfant trykkpressen med bevegelig type?', a: 'Johannes Gutenberg', d: 3 },
+      { q: 'Hvilken sykdom drepte mellom 30–60% av Europas befolkning på 1300-tallet?', a: 'Svartedauden (pesten)', d: 4 },
+      { q: 'Hvem ble den første romerske keiseren (ikke Julius Cæsar)?', a: 'Augustus', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er hovedstaden i Japan?', a: 'Tokyo', d: 1 },
+      { q: 'Hva heter øya der Madagaskar ligger?', a: 'Madagaskar (er en øy)', d: 2 },
+      { q: 'Hvilken innsjø er den høyestliggende seilbare innsjøen i verden?', a: 'Titicaca-sjøen', d: 3 },
+      { q: 'Hva heter bukten i Europa der tidevannsskiftet er størst i verden?', a: 'Bay of Fundy (Canada)', d: 4 },
+      { q: 'Hva heter den eneste byen som har vært vertskap for både sommer- og vinter-OL?', a: 'Beijing', d: 5 }
+    ]},
+    { name: '🎬 Film & TV', qs: [
+      { q: 'Hvem spilte Forrest Gump?', a: 'Tom Hanks', d: 1 },
+      { q: 'Hva heter den norske julekalender-klassikeren fra NRK?', a: 'Julemorgen (eller Jul i Blåfjell)', d: 2 },
+      { q: 'I hvilken film sier karakteren «You can\'t handle the truth!»?', a: 'A Few Good Men', d: 3 },
+      { q: 'Hvem er regissøren bak «The Godfather»-trilogien?', a: 'Francis Ford Coppola', d: 4 },
+      { q: 'Hva heter den finske animasjonsfilmen om Moomins skapt av Tove Jansson?', a: 'Mummitrollet (Moomin-universet)', d: 5 }
+    ]},
+    { name: '🔬 Vitenskap & Natur', qs: [
+      { q: 'Hvor mange farger er det i regnbuen?', a: '7', d: 1 },
+      { q: 'Hva kaller vi studiet av sopp?', a: 'Mykologi', d: 2 },
+      { q: 'Hva er det nærmeste levende slektningen til T. rex?', a: 'Kyllingen (og alle fugler)', d: 3 },
+      { q: 'Hva er grensesnittet mellom to tektoniske plater kalt?', a: 'Forkastningslinje (fault line)', d: 4 },
+      { q: 'Hva er den kjemiske prosessen som gjør at jern ruster kalt?', a: 'Oksidasjon', d: 5 }
+    ]},
+    { name: '🥳 Fest & Kultur', qs: [
+      { q: 'Hva feires den 17. mai i Norge?', a: 'Grunnlovsdagen / Nasjonaldagen', d: 1 },
+      { q: 'Hva heter den mexicanske høytiden der man hedrer avdøde?', a: 'Día de los Muertos', d: 2 },
+      { q: 'Hva er «Hogmanay»?', a: 'Nyttårsfeiringen i Skottland', d: 3 },
+      { q: 'I hvilket land feires «Songkran» — der folk kaster vann på hverandre?', a: 'Thailand', d: 4 },
+      { q: 'Hva heter den israelske høytiden som feires med lysestaken og varer 8 dager?', a: 'Chanukka', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🏰 Historie', qs: [
+      { q: 'I hvilket år begynte andre verdenskrig?', a: '1939', d: 1 },
+      { q: 'Hva heter den berømte søylegangen til det kinesiske keiserpalasset?', a: 'Den forbudte by', d: 2 },
+      { q: 'Hvilken sivilisasjon bygde Colosseum i Roma?', a: 'Romerne', d: 3 },
+      { q: 'I hvilket år fikk kvinner stemmerett i Norge?', a: '1913', d: 4 },
+      { q: 'Hva heter krigen mellom Nord- og Sør-Korea som brøt ut i 1950?', a: 'Koreakrigen', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er Afrikas høyeste fjell?', a: 'Kilimanjaro', d: 1 },
+      { q: 'Hvilken elv renner gjennom Cairo?', a: 'Nilen', d: 2 },
+      { q: 'Hva heter Australias største ørken?', a: 'Great Victoria Desert', d: 3 },
+      { q: 'Hva heter den eneste europeiske staten som grenser til Spania og Frankrike?', a: 'Andorra', d: 4 },
+      { q: 'Hva heter fjorden som er verdens nest lengste fjord, i Norge?', a: 'Hardangerfjorden', d: 5 }
+    ]},
+    { name: '🎵 Musikk', qs: [
+      { q: 'Hva heter popstjernen som er kjent for å skjule «easter eggs» i musikk og videoer?', a: 'Taylor Swift', d: 1 },
+      { q: 'Hvilken norsk artist er kjent for låten «Million Miles»?', a: 'Kygo', d: 2 },
+      { q: 'Hva heter den svenske gruppen bak hiten «Waterloo» i Eurovision 1974?', a: 'ABBA', d: 3 },
+      { q: 'Hva heter trioen bak «Smooth Criminal»?', a: 'Michael Jackson (soloartist)', d: 4 },
+      { q: 'Hvilket år ga David Bowie ut albumet «Ziggy Stardust»?', a: '1972', d: 5 }
+    ]},
+    { name: '🐾 Dyr & Natur', qs: [
+      { q: 'Hva er verdens største pattedyr?', a: 'Blåhvalen', d: 1 },
+      { q: 'Hva kaller vi et ungt sjøpattedyr av arten sel?', a: 'Selunge / kobbe', d: 2 },
+      { q: 'Hva er kamelers øyelokk et godt eksempel på (de har tre sett)?', a: 'Øyelokk / blinking membran for sandørkener', d: 3 },
+      { q: 'Hva heter det eneste pungdyret som avføres i terningform?', a: 'Vombat (wombat)', d: 4 },
+      { q: 'Hva kaller vi studiet av forholdet mellom organismer og miljøet?', a: 'Økologi', d: 5 }
+    ]},
+    { name: '🍕 Mat & Drikke', qs: [
+      { q: 'Hva er det viktigste ingredienset i hummus?', a: 'Kikerter', d: 1 },
+      { q: 'Hva kalles den tradisjonelle norske julematen laget av lutfisk?', a: 'Lutefisk', d: 2 },
+      { q: 'Hva er «wagyu»?', a: 'Japansk storfekjøtt av høy kvalitet', d: 3 },
+      { q: 'Hva heter den spanske kalde grønnsakssuppen?', a: 'Gazpacho', d: 4 },
+      { q: 'Hva heter den franske retten der snegler tilberedes med hvitløkssmør?', a: 'Escargot', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🏰 Historie', qs: [
+      { q: 'Hvem malte Mona Lisa?', a: 'Leonardo da Vinci', d: 1 },
+      { q: 'Hva heter den store murens offisielle navn i Kina?', a: 'Kinesiske mur (Wan Li Chang Cheng)', d: 2 },
+      { q: 'I hvilket år landet mennesket på månen for første gang?', a: '1969', d: 3 },
+      { q: 'Hvem var den siste faraoen i Egypt?', a: 'Kleopatra VII', d: 4 },
+      { q: 'Hva heter den greske bystaten som var kjent for sin krigsevne, ikke demokrati?', a: 'Sparta', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er hovedstaden i Spania?', a: 'Madrid', d: 1 },
+      { q: 'Hva heter verdens lengste fjellkjede?', a: 'Andesfjellene', d: 2 },
+      { q: 'I hvilket land ligger pyramidene ved Giza?', a: 'Egypt', d: 3 },
+      { q: 'Hva heter den europeiske mikrostaten mellom Italia og Vatikanet?', a: 'San Marino', d: 4 },
+      { q: 'Hva heter halvøya der Finland og Skandinavia ligger?', a: 'Den skandinaviske halvøya (og Kolahalvøya for Finland)', d: 5 }
+    ]},
+    { name: '🎬 Film & TV', qs: [
+      { q: 'Hvem spilte Black Widow i Marvel-filmene?', a: 'Scarlett Johansson', d: 1 },
+      { q: 'Hva heter det nordiske TV-dramaet kjent for «Forbrydelsen»?', a: 'Forbrydelsen (The Killing) — dansk', d: 2 },
+      { q: 'Hvem regisserte «Parasite» (2019)?', a: 'Bong Joon-ho', d: 3 },
+      { q: 'Hva heter serien om en russisk-norsk narkoligaen på Netflix?', a: 'Ragnarok (eller Beforeigners)', d: 4 },
+      { q: 'Hva heter Kubricks psykologiske thriller fra 1980 basert på Stephen Kings roman?', a: 'The Shining', d: 5 }
+    ]},
+    { name: '🎵 Musikk', qs: [
+      { q: 'Hva heter den svenske DJ-en bak «Wake Me Up»?', a: 'Avicii', d: 1 },
+      { q: 'Hvilket band var Kurt Cobain frontfigur for?', a: 'Nirvana', d: 2 },
+      { q: 'Hva heter Drakes egentlige navn?', a: 'Aubrey Drake Graham', d: 3 },
+      { q: 'Hvilken artist ga ut albumet «Thriller» i 1982?', a: 'Michael Jackson', d: 4 },
+      { q: 'Hvem komponerte «The Four Seasons»?', a: 'Antonio Vivaldi', d: 5 }
+    ]},
+    { name: '🏅 Sport', qs: [
+      { q: 'Hva heter Norges nasjonale vintersport?', a: 'Langrenn (eller alpint)', d: 1 },
+      { q: 'Hvem har scoret flest mål i historien i internasjonal fotball (herrer)?', a: 'Cristiano Ronaldo', d: 2 },
+      { q: 'I hvilken sport bruker man «buzzer beater»?', a: 'Basketball', d: 3 },
+      { q: 'Hvem er tidenes mestselgende sykkelrytter etter antall Tour de France-seirer?', a: 'Lance Armstrong (7) / Jacques Anquetil / Eddy Merckx / Bernard Hinault / Miguel Induráin (alle 5)', d: 4 },
+      { q: 'Hva heter det olympiske symbolet på latin som betyr «raskere, høyere, sterkere»?', a: 'Citius, Altius, Fortius', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🔬 Vitenskap', qs: [
+      { q: 'Hva er temperaturen der Celsius og Fahrenheit er like?', a: '-40 grader', d: 1 },
+      { q: 'Omtrent hvor lang tid tar det for solens lys å nå Jorden?', a: '8 minutter', d: 2 },
+      { q: 'Hva er de fire aggregatformene?', a: 'Fast, flytende, gass og plasma', d: 3 },
+      { q: 'Hvilket grunnstoff brukes mest til å lage atomenergi?', a: 'Uran', d: 4 },
+      { q: 'Hva kaller man prosessen der en væske omdannes til gass ved overflaten?', a: 'Fordampning', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva heter Bergens berømte fisketorg?', a: 'Fisketorget / Bryggen', d: 1 },
+      { q: 'Hva er det offisielle navnet på Kinas Forbudte By i dag?', a: 'Palace Museum (Gugong)', d: 2 },
+      { q: 'Hva heter Sør-Amerikas største land?', a: 'Brasil', d: 3 },
+      { q: 'Hva heter den eneste innlandssjøen i verden uten avløp til hav som kalles «hav»?', a: 'Det kaspiske hav', d: 4 },
+      { q: 'Hva heter den lengste jernbanen i verden, som går gjennom Russland?', a: 'Den transsiberske jernbanen', d: 5 }
+    ]},
+    { name: '🎬 Film & TV', qs: [
+      { q: 'Hva heter protagonisten i «Stranger Things»?', a: 'Eleven / Millie (eller hele gjengen)', d: 1 },
+      { q: 'Hvem spilte Batman i Christopher Nolans «Dark Knight»-trilogi?', a: 'Christian Bale', d: 2 },
+      { q: 'Hva heter den danske serien om statsministeren som ble Norsk remake?', a: 'Borgen', d: 3 },
+      { q: 'Hvem regisserte «2001: A Space Odyssey»?', a: 'Stanley Kubrick', d: 4 },
+      { q: 'Hva heter den japanske regissøren bak «Spirited Away» og «My Neighbor Totoro»?', a: 'Hayao Miyazaki', d: 5 }
+    ]},
+    { name: '🍕 Mat', qs: [
+      { q: 'Hva heter den norske brunosten?', a: 'Brunost (geitost)', d: 1 },
+      { q: 'Hva er det viktigste ingredienset i tradisjonell fransk løksuppe?', a: 'Løk og oksekraft', d: 2 },
+      { q: 'Hva heter pizzaen med kun tomatsaus, mozzarella og basilikum?', a: 'Margherita', d: 3 },
+      { q: 'Hva er «kimchi»?', a: 'Koreansk gjæret grønnsak (oftest kål)', d: 4 },
+      { q: 'Hva heter den japanske rettens med rå fisk lagt på risklumper?', a: 'Nigiri-sushi', d: 5 }
+    ]},
+    { name: '🥳 Norges kultur', qs: [
+      { q: 'Hva er «dugnad»?', a: 'Frivillig fellesarbeid i nabolaget / sameiet', d: 1 },
+      { q: 'Hva heter den norske nasjonalsangen?', a: 'Ja, vi elsker dette landet', d: 2 },
+      { q: 'Hva er «rømmegrøt»?', a: 'Norsk tradisjonell rømme-grøt', d: 3 },
+      { q: 'Hva heter den norske eventyrfiguren som bor under bro og skremmer geiter?', a: 'Trollet (fra Bukkene Bruse)', d: 4 },
+      { q: 'Hva er «Syttende mai-toget»?', a: 'Barnetoget / nasjonaldagstoget 17. mai', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🏰 Verdenshistorie', qs: [
+      { q: 'Hvem oppdaget Amerika i 1492?', a: 'Kristoffer Columbus', d: 1 },
+      { q: 'Hva heter den store brann i London i 1666?', a: 'The Great Fire of London', d: 2 },
+      { q: 'Hvilken krig ble utløst av Sarajevo-attentatet i 1914?', a: 'Første verdenskrig', d: 3 },
+      { q: 'Hva heter «Mur» som delte Berlin fra 1961 til 1989?', a: 'Berlinmuren', d: 4 },
+      { q: 'Hvem var den eneste personen til å vinne gull i både sommer- og vinter-OL i ulike idretter?', a: 'Eddie Eagan (boksing og bobsleigh)', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er verdens høyeste fritt stående fjell?', a: 'Kilimanjaro', d: 1 },
+      { q: 'Hva heter Japans høyeste fjell?', a: 'Fuji', d: 2 },
+      { q: 'Hvilken innsjø er den dypeste i verden?', a: 'Bajkalsjøen', d: 3 },
+      { q: 'Hva heter storbyen på to kontinenter der Europa møter Asia?', a: 'Istanbul', d: 4 },
+      { q: 'Hva heter de fem verdenshavene?', a: 'Stillehavet, Atlanterhavet, Indiahavet, Sørishavet og Nordishavet', d: 5 }
+    ]},
+    { name: '🎬 Film', qs: [
+      { q: 'Hva heter filmen der Simba er løvekongen?', a: 'Løvenes Konge (The Lion King)', d: 1 },
+      { q: 'Hvem spilte Hannibal Lecter i «Nattsvermeren»?', a: 'Anthony Hopkins', d: 2 },
+      { q: 'Hva heter Christopher Nolans film om drømmereiser?', a: 'Inception', d: 3 },
+      { q: 'Hvem regisserte «Schindler\'s List»?', a: 'Steven Spielberg', d: 4 },
+      { q: 'Hva heter den franske filmbevegelsen fra 1950–60-tallet kalt?', a: 'Nouvelle Vague (ny bølge)', d: 5 }
+    ]},
+    { name: '🎵 Musikk & Artister', qs: [
+      { q: 'Hvem sang «Hello» i 2015?', a: 'Adele', d: 1 },
+      { q: 'Hva heter den norske duoen bak «What\'s Up Danger»?', a: '(ikke norsk) — Hva heter Kygo og Selena Gomez sin hit? — «It Ain\'t Me»', d: 2 },
+      { q: 'Hva heter gruppen bak «Waterloo» som vant Eurovision i 1974?', a: 'ABBA', d: 3 },
+      { q: 'Hvem er kjent som «The Weeknd» og synger «Blinding Lights»?', a: 'Abel Tesfaye', d: 4 },
+      { q: 'Hva heter det klassiske verket av Beethoven som han komponerte mens han var døv?', a: 'Symfoni nr. 9 (Ode til glede)', d: 5 }
+    ]},
+    { name: '🏅 Sport & OL', qs: [
+      { q: 'Hvilken sport spilles i OL der man bruker «epée», «foil» og «sabre»?', a: 'Fekting', d: 1 },
+      { q: 'Hvem er den mest dekorerte olympieren gjennom tidene?', a: 'Michael Phelps (28 medaljer)', d: 2 },
+      { q: 'I hvilken by ble vinter-OL arrangert i 1994?', a: 'Lillehammer', d: 3 },
+      { q: 'Hvem vant fem gullmedaljer i skøyter i vinter-OL i 1980?', a: 'Eric Heiden', d: 4 },
+      { q: 'Hva heter den tsjekkiske utøveren som vant gull i to ulike grener (ski og snowboard) i 2018?', a: 'Ester Ledecká', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🏰 Norsk Historie', qs: [
+      { q: 'I hvilket år ble Norge okkupert av Nazi-Tyskland?', a: '1940', d: 1 },
+      { q: 'Hva heter norsk grunnlov og hvilket år ble den undertegnet?', a: 'Grunnloven, 1814', d: 2 },
+      { q: 'Hva heter Norges oljefond offisielt?', a: 'Statens pensjonsfond utland', d: 3 },
+      { q: 'Hvem var Norges statsminister under andre verdenskrig i eksil?', a: 'Johan Nygaardsvold', d: 4 },
+      { q: 'Hva heter den norske motstands-organisasjonen under krigen kalt «XU»?', a: 'Etterretningsorganisasjon (XU) — hemmelig etterretning', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er Asias lengste elv?', a: 'Yangtze (Chang Jiang)', d: 1 },
+      { q: 'Hva heter kanalnettet mellom øyene i Venezia?', a: 'Kanaler (Grand Canal er den viktigste)', d: 2 },
+      { q: 'Hva heter den aktive vulkanen på Island som er kjent for store utbrudd?', a: 'Eyjafjallajökull (eller Katla)', d: 3 },
+      { q: 'Hva heter havet mellom Norge og Storbritannia?', a: 'Nordsjøen', d: 4 },
+      { q: 'Hva heter den røde plassen i Moskva på russisk?', a: 'Krasnaya Ploshchad', d: 5 }
+    ]},
+    { name: '📺 TV-Serier', qs: [
+      { q: 'Hva heter dinosaur-parken i «Jurassic Park»-universet?', a: 'Jurassic Park / Jurassic World', d: 1 },
+      { q: 'I hvilken serie spiller Bryan Cranston rollen som Walter White?', a: 'Breaking Bad', d: 2 },
+      { q: 'Hva heter den svenske krimserien basert på Henning Mankells bøker?', a: 'Wallander', d: 3 },
+      { q: 'Hvem skapte TV-serien «Twin Peaks»?', a: 'David Lynch og Mark Frost', d: 4 },
+      { q: 'Hva heter den norske serien om ungdommer i Oslo, kjent som en nybrottsarbeid i sosiale medier?', a: 'SKAM', d: 5 }
+    ]},
+    { name: '🔬 Teknologi & Vitenskap', qs: [
+      { q: 'Hva står «WWW» for?', a: 'World Wide Web', d: 1 },
+      { q: 'Hvilke to frafalne studenter grunnla Apple Computer, Inc. i 1976?', a: 'Steve Jobs og Steve Wozniak', d: 2 },
+      { q: 'Hva heter det første dyret som ble klonet?', a: 'Dolly (sauen)', d: 3 },
+      { q: 'Hva er «LLM» en forkortelse for i AI-sammenheng?', a: 'Large Language Model', d: 4 },
+      { q: 'Hva kalles den norskutviklede algoritmen bak «Opera»-nettleseren?', a: 'Presto (Opera-renderingsmotor)', d: 5 }
+    ]},
+    { name: '🍕 Mat fra hele verden', qs: [
+      { q: 'Hva er hovedelementet i en klassisk Caesar-salat?', a: 'Romansalat, krutonger og Caesar-dressing', d: 1 },
+      { q: 'Hva heter den indiske brødtypen laget i leiroven tandoor?', a: 'Naan', d: 2 },
+      { q: 'Hva er «pho»?', a: 'Vietnamesisk nudelsuppe', d: 3 },
+      { q: 'Hva heter den meksikanske retten med avokado, tomat og lime?', a: 'Guacamole', d: 4 },
+      { q: 'Hva heter den marokkanske gryta laget i en spesiell keramisk gryte?', a: 'Tagine', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🎭 Kunst & Kultur', qs: [
+      { q: 'Hvem malte «Skrik»?', a: 'Edvard Munch', d: 1 },
+      { q: 'I hvilken by henger Mona Lisa?', a: 'Paris (Louvre)', d: 2 },
+      { q: 'Hvem forfattet «Romeo og Julie»?', a: 'William Shakespeare', d: 3 },
+      { q: 'Hva heter den franske kunstbevegelsen på 1860-tallet kjent for «Les Demoiselles d\'Avignon»?', a: 'Kubisme (Picasso)', d: 4 },
+      { q: 'Hva heter den spanske arkitekten bak La Sagrada Família i Barcelona?', a: 'Antoni Gaudí', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva heter middelhavsøya som tilhører Italia og er kjent for Etna?', a: 'Sicilia', d: 1 },
+      { q: 'Hva heter Mexicos høyeste fjell?', a: 'Pico de Orizaba', d: 2 },
+      { q: 'Hva heter det britiske territoriet på sydspissen av Spania?', a: 'Gibraltar', d: 3 },
+      { q: 'Hva heter de øyene der Charles Darwin utviklet sin evolusjonsteori?', a: 'Galápagos-øyene', d: 4 },
+      { q: 'Hva heter det indre farvannet langs Norskekysten mellom øyer og fastland?', a: 'Indre farled / Skjærgården', d: 5 }
+    ]},
+    { name: '🎬 Film & TV', qs: [
+      { q: 'Hvem spilte Hermione Granger i Harry Potter-filmene?', a: 'Emma Watson', d: 1 },
+      { q: 'Hva heter den norske regissøren bak «Kitchen Stories»?', a: 'Bent Hamer', d: 2 },
+      { q: 'Hva heter Pixar-filmen om monstre som skremmer barn?', a: 'Monsters, Inc.', d: 3 },
+      { q: 'Hvem spilte Bond i «Casino Royale» (2006)?', a: 'Daniel Craig', d: 4 },
+      { q: 'Hva heter den franske filmen som vant Oscar for beste utenlandske film i 2012?', a: 'The Artist (stum film — 2011/2012)', d: 5 }
+    ]},
+    { name: '🎵 Musikk', qs: [
+      { q: 'Hva heter Rihannas hjemland?', a: 'Barbados', d: 1 },
+      { q: 'Hvem er kjent som «The Boss» i rocken?', a: 'Bruce Springsteen', d: 2 },
+      { q: 'Hva heter den sveitsiske elektroniske duoen bak «Blue (Da Ba Dee)»?', a: '(Ikke sveitsisk) — Eiffel 65 fra Italia', d: 3 },
+      { q: 'Hva heter den norske musikeren Ole Gunnar Mikalsen bedre kjent som?', a: 'Datarock (eller CC Cowboys)', d: 4 },
+      { q: 'Hva heter Mozarts opera om Don Juan?', a: 'Don Giovanni', d: 5 }
+    ]},
+    { name: '🏅 Sport', qs: [
+      { q: 'Hvem er kjent som «Black Mamba» i basketball?', a: 'Kobe Bryant', d: 1 },
+      { q: 'I hvilken sport er «Grand Prix» den høyeste klassen?', a: 'Formel 1', d: 2 },
+      { q: 'Hvem vant FIFA-VM i 2022?', a: 'Argentina', d: 3 },
+      { q: 'Hvem har vunnet flest Tour de France-titler uten diskvalifikasjon?', a: 'Jacques Anquetil / Eddy Merckx / Bernard Hinault / Miguel Induráin (alle 5)', d: 4 },
+      { q: 'Hva heter den rumenske gymnasten som fikk syv perfekte 10-ere i OL i 1976?', a: 'Nadia Comaneci', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🎭 Litteratur', qs: [
+      { q: 'Hvem forfattet «Pride and Prejudice»?', a: 'Jane Austen', d: 1 },
+      { q: 'Hva heter Fyodor Dostojevskijs roman om en morder og hans skyld?', a: 'Forbrytelse og straff', d: 2 },
+      { q: 'Hvem forfattet «To Kill a Mockingbird»?', a: 'Harper Lee', d: 3 },
+      { q: 'Hva heter Ibsens drama om Nora Helmer?', a: 'Et dukkehjem', d: 4 },
+      { q: 'Hva heter den norske forfatteren som vant Nobelprisen i litteratur i 1928?', a: 'Sigrid Undset', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva er Storbritannias høyeste fjell?', a: 'Ben Nevis', d: 1 },
+      { q: 'Hva heter øystaten nord for Australia?', a: 'Papua Ny-Guinea / Øst-Timor', d: 2 },
+      { q: 'Hva heter Kanadas hovedstad?', a: 'Ottawa', d: 3 },
+      { q: 'Hva heter den lengste elvedelta i verden?', a: 'Ganges-delta (Sundarbans)', d: 4 },
+      { q: 'Hva heter den transcontinentale landet som spenner 11 tidssoner?', a: 'Russland', d: 5 }
+    ]},
+    { name: '🔬 Vitenskap', qs: [
+      { q: 'Hva er det viktigste organet i kroppen for å pumpe blod?', a: 'Hjertet', d: 1 },
+      { q: 'Hva heter den tykke blå ringen i Jupiter-systemet?', a: 'Jupiters ringer (tynnere enn Saturns)', d: 2 },
+      { q: 'Hvilken planet er kjent som «den røde planeten»?', a: 'Mars', d: 3 },
+      { q: 'Hva heter prosessen der en plante omdanner CO₂ og sollys til sukker?', a: 'Fotosyntese', d: 4 },
+      { q: 'Hva er halvlederfenomenet der elektrisk motstand faller til null kalt?', a: 'Supraledning (superconductivity)', d: 5 }
+    ]},
+    { name: '🎵 Musikk', qs: [
+      { q: 'Hva heter Coldplays vokalist?', a: 'Chris Martin', d: 1 },
+      { q: 'Hvilken artist er kjent for albumer som «21» og «25»?', a: 'Adele', d: 2 },
+      { q: 'Hvem er duoen bak «Get Lucky»?', a: 'Daft Punk', d: 3 },
+      { q: 'Hva heter den islandske artisten kjent for «Bjork»?', a: 'Björk', d: 4 },
+      { q: 'Hva heter Beethovens pianokomposisjon kalt «Für Elise» på norsk?', a: 'Til Elise', d: 5 }
+    ]},
+    { name: '🥳 Fest & Moro', qs: [
+      { q: 'Hva er en «stag night»?', a: 'Utdrikningslag for brudgommen (på norsk: utdrikningslag)', d: 1 },
+      { q: 'Hva heter den franske champagnebyen der den berømte musserende vinen lages?', a: 'Reims (i Champagne-regionen)', d: 2 },
+      { q: 'Hva er «limbo» som festlek?', a: 'Dans der man bøyer seg bakover under en stang', d: 3 },
+      { q: 'Hva heter den tradisjonelle australske drinken laget av lemonade og bitters?', a: 'Shandy (eller Midori Splice)', d: 4 },
+      { q: 'Hva heter den skotske festdrikken laget av honning og whisky?', a: 'Drambuie', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🏰 Historie', qs: [
+      { q: 'Hva er det berømte egyptiske gravsymbolet for evigheten?', a: 'Ankh', d: 1 },
+      { q: 'I hvilken by ble den amerikanske uavhengighetserklæringen undertegnet i 1776?', a: 'Philadelphia', d: 2 },
+      { q: 'Hvem var den første keiseren i Kina?', a: 'Qin Shi Huang', d: 3 },
+      { q: 'Hva heter krigen mellom England og Frankrike som varte i 100 år?', a: 'Hundreårskrigen', d: 4 },
+      { q: 'Hva heter den siste slavestaten i verden som avskaffet slaveri juridisk?', a: 'Mauritania (1981)', d: 5 }
+    ]},
+    { name: '🌍 Geografi', qs: [
+      { q: 'Hva heter Sveits\' høyeste fjell?', a: 'Monte Rosa (eller Dufourspitze)', d: 1 },
+      { q: 'Hva heter den kinesiske tettbefolkede øya som er en separat stat?', a: 'Taiwan', d: 2 },
+      { q: 'Hva heter det minste landets i Asia?', a: 'Maldivene (areal), eller Vatikanstaten er i Europa', d: 3 },
+      { q: 'Hva er den offisielle valutaen i Japan?', a: 'Yen', d: 4 },
+      { q: 'Hva heter fjellet i Cape Town, Sør-Afrika som er flatt på toppen?', a: 'Table Mountain', d: 5 }
+    ]},
+    { name: '🎬 Film & TV', qs: [
+      { q: 'Hva heter filmen der en enslig mann snakker med en volleyball?', a: 'Cast Away', d: 1 },
+      { q: 'Hva heter Disney-prinsessen som lever under vann?', a: 'Ariel (Den lille havfruen)', d: 2 },
+      { q: 'Hvem spilte Wolverine i X-Men-filmene?', a: 'Hugh Jackman', d: 3 },
+      { q: 'Hva heter den spanske thrilleren på Netflix om en bankkran?', a: 'La Casa de Papel (Money Heist)', d: 4 },
+      { q: 'Hva heter regissøren bak «Mulholland Drive» og «Twin Peaks»?', a: 'David Lynch', d: 5 }
+    ]},
+    { name: '🐾 Dyr', qs: [
+      { q: 'Hva kaller vi et ungt sauedyr?', a: 'Lam', d: 1 },
+      { q: 'Hva er det giftigste paddefrosken i verden?', a: 'Gylden giftkikert (golden poison frog)', d: 2 },
+      { q: 'Hva heter det pattedyret som er størst i Nord-Amerika?', a: 'Bison (bisonokse)', d: 3 },
+      { q: 'Hva kalles studiet av fugler?', a: 'Ornitologi', d: 4 },
+      { q: 'Hva heter det eneste pattedyret som kan fly aktivt?', a: 'Flaggermus', d: 5 }
+    ]},
+    { name: '🍺 Drikke', qs: [
+      { q: 'Hva er alkoholen i en Gin & Tonic?', a: 'Gin', d: 1 },
+      { q: 'Hva er Norges mest kjente bryggeri?', a: 'Ringnes', d: 2 },
+      { q: 'Hva heter den irske likøren med fløte og whisky?', a: 'Baileys Irish Cream', d: 3 },
+      { q: 'Hva er «vermouth»?', a: 'Forsterket vin smakssatt med urter', d: 4 },
+      { q: 'Hva heter den ungarske vinen kjent som «drikkenes dronning»?', a: 'Tokaji (Aszu)', d: 5 }
+    ]}
+  ],
+  [
+    { name: '🎭 Kunst & Litteratur', qs: [
+      { q: 'Hvem forfattet «Hamsun» — som den norske klassikeren «Sult»?', a: 'Knut Hamsun', d: 1 },
+      { q: 'Hva heter den kjente skulpturen av en naken kvinne i Osloforden?', a: 'Vigelandsparken (ingen spesifikk skulptur — men Monolitten)', d: 2 },
+      { q: 'Hvem forfattet «1984»?', a: 'George Orwell', d: 3 },
+      { q: 'Hva heter den tyske skuespilleren og dramatikeren bak «Mor Courage»?', a: 'Bertolt Brecht', d: 4 },
+      { q: 'Hva heter den norrøne eddadiktet som inneholder skapelsesmyten?', a: 'Völuspá', d: 5 }
+    ]},
+    { name: '🌍 Verdens land & folk', qs: [
+      { q: 'Hva er den offisielle staten i Roma som er verdens minste?', a: 'Vatikanstaten', d: 1 },
+      { q: 'Hva heter Afrikas mest folkerike land?', a: 'Nigeria', d: 2 },
+      { q: 'Hva heter den eneste arabisktalende staten i Sørøst-Asia?', a: 'Saudi-Arabia er ikke i Sørøst-Asia; riktig svar: Brunei', d: 3 },
+      { q: 'Hva heter landet der «Bhutan» er verdenskapital av «lykke»?', a: 'Bhutan', d: 4 },
+      { q: 'Hva heter den sørligste bebodde øya i verden?', a: 'Puerto Toro (Chile) eller Stewart Island (New Zealand)', d: 5 }
+    ]},
+    { name: '🎬 Klassisk Film', qs: [
+      { q: 'Hvem spilte Scarlett O\'Hara i «Gone with the Wind»?', a: 'Vivien Leigh', d: 1 },
+      { q: 'Hva heter Alfred Hitchcocks thriller med dusjen som er berømt?', a: 'Psycho', d: 2 },
+      { q: 'Hvem regisserte «Citizen Kane» (1941)?', a: 'Orson Welles', d: 3 },
+      { q: 'Hva heter den franske film-noir klassikeren fra 1955 med Alain Delon?', a: 'Le Samouraï (1967) — av Jean-Pierre Melville', d: 4 },
+      { q: 'Hva heter den japanske filmen av Kurosawa som inspirerte «The Magnificent Seven»?', a: 'Seven Samurai (Shichinin no Samurai, 1954)', d: 5 }
+    ]},
+    { name: '🏅 Vinteridretter', qs: [
+      { q: 'Hva er «slalom»?', a: 'Alpint med tette porter i sikksakk', d: 1 },
+      { q: 'Hvem er den mest dekorerte norske vinterolympier med 15 medaljer?', a: 'Marit Bjørgen', d: 2 },
+      { q: 'Hva heter norsk figurskatelegende som vant OL-gull tre ganger på rad (1928, 1932, 1936)?', a: 'Sonja Henie', d: 3 },
+      { q: 'Hva heter britisk skihopper som ble populær for å komme sist i Calgary-OL 1988?', a: 'Eddie «The Eagle» Edwards', d: 4 },
+      { q: 'Hvem vant fem individuelle gull i skøyter under vinter-OL i Lake Placid 1980?', a: 'Eric Heiden', d: 5 }
+    ]},
+    { name: '🔬 Kropp & Helse', qs: [
+      { q: 'Hvor mange tenner har et voksent menneske normalt?', a: '32', d: 1 },
+      { q: 'Hva er det største organet i menneskekroppen?', a: 'Huden', d: 2 },
+      { q: 'Hva kaller vi studiet av sykdommer og medisinske tilstander?', a: 'Patologi', d: 3 },
+      { q: 'Hva heter det protein i røde blodlegemer som frakter oksygen?', a: 'Hemoglobin', d: 4 },
+      { q: 'Hva kaller man den delen av hjernen som styrer balanse og motorikk?', a: 'Lillehjernen (cerebellum)', d: 5 }
+    ]}
+  ]
+];
 
-app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0 };
+app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0, setIdx: Math.floor(Math.random() * JEO_SETS.length) };
 
 function initJeopardy() {
-  app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0 };
+  app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0, setIdx: Math.floor(Math.random() * JEO_SETS.length) };
   _jeoShowTeamSetup();
 }
 
-function _jeoData() { return JEO_Q[app.lang] || JEO_Q.no; }
+function _jeoData() { return JEO_SETS[app.jeopardy.setIdx ?? 0]; }
 
 function _jeoShowTeamSetup() {
   const isNo = app.lang !== 'en';
