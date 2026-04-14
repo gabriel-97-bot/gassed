@@ -685,29 +685,115 @@
     .home-game-btn.hgb-gassed:active  { box-shadow: 0 2px 10px rgba(239,43,45,0.15); }
     .home-game-btn.hgb-gassed .home-game-btn-icon { font-size: 2rem; }
     .home-game-btn.hgb-gassed .home-game-btn-title { font-size: 3rem; letter-spacing: 1px; }
-    /* Gassed intro overlay */
+    /* Gassed Config Overlay */
     #gassed-intro {
       display: none; position: absolute; inset: 0; z-index: 300;
-      background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-      flex-direction: column; align-items: center; justify-content: center;
-      padding: 28px 24px; gap: 0;
+      background: rgba(7,10,28,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      flex-direction: column; align-items: center; justify-content: flex-start;
+      overflow-y: auto; overflow-x: hidden;
     }
     #gassed-intro.show { display: flex; }
-    .gi-logo { font-size: 3rem; font-weight: 900; color: #fff; margin-bottom: 4px; }
-    .gi-tagline { color: rgba(255,255,255,0.6); font-size: 0.95rem; font-weight: 400; margin-bottom: 28px; text-align: center; line-height: 1.5; }
-    .gi-modes {
-      width: 100%; display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px;
+    .gc-inner {
+      width: 100%; max-width: 420px; min-height: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 36px 20px 32px; gap: 18px;
     }
-    .gi-mode {
-      display: flex; align-items: center; gap: 10px;
+    .gc-logo {
+      font-family: 'Boogaloo', cursive;
+      font-size: 2.6rem; color: #EF9F27; letter-spacing: 4px;
+      text-shadow: 0 0 24px rgba(239,159,39,0.45);
     }
-    .gi-mode-icon { font-size: 1.2rem; flex-shrink: 0; }
-    .gi-mode-title { color: rgba(255,255,255,0.85); font-size: 0.95rem; font-weight: 600; }
-    .gi-start-btn {
-      width: 100%; padding: 16px; border-radius: 18px; border: none;
-      background: var(--red); color: #fff; font-size: 1.1rem; font-weight: 900;
-      cursor: pointer; box-shadow: 0 4px 24px rgba(239,43,45,0.4);
+    .gc-tagline { color: rgba(255,255,255,0.45); font-size: 0.85rem; text-align: center; margin-top: -10px; }
+    .gc-section-label {
+      width: 100%; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.8px;
+      color: rgba(255,255,255,0.32); text-transform: uppercase;
     }
+    .gc-modes { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .gc-mode-card {
+      width: 100%; display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.09);
+      border-radius: 14px; padding: 13px 14px; cursor: pointer;
+      transition: background 0.18s, border-color 0.18s, transform 0.12s; text-align: left;
+    }
+    .gc-mode-card:active { transform: scale(0.975); }
+    .gc-mode-card.selected {
+      background: rgba(239,159,39,0.11); border-color: #EF9F27;
+      box-shadow: 0 0 0 1px rgba(239,159,39,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .gc-mode-emoji { font-size: 1.55rem; flex-shrink: 0; }
+    .gc-mode-info { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+    .gc-mode-name {
+      font-family: 'Boogaloo', cursive; font-size: 1.1rem;
+      color: rgba(255,255,255,0.9); letter-spacing: 0.4px;
+    }
+    .gc-mode-desc { font-size: 0.74rem; color: rgba(255,255,255,0.4); }
+    .gc-mode-card.selected .gc-mode-name { color: #EF9F27; }
+    .gc-check {
+      margin-left: auto; flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.62rem; color: transparent; transition: all 0.18s;
+    }
+    .gc-mode-card.selected .gc-check {
+      background: #EF9F27; border-color: #EF9F27; color: #fff;
+      box-shadow: 0 0 10px rgba(239,159,39,0.55);
+    }
+    .gc-sliders { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    .gc-slider-group {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 14px 16px;
+    }
+    .gc-slider-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px;
+    }
+    .gc-slider-title {
+      font-family: 'Boogaloo', cursive; font-size: 1rem; color: rgba(255,255,255,0.8);
+    }
+    .gc-bottle-icons { display: flex; gap: 3px; }
+    .gc-bottle {
+      font-size: 1.15rem; opacity: 0.2;
+      transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .gc-bottle.lit { opacity: 1; transform: scale(1.18) translateY(-2px); }
+    .gc-challenge-badge {
+      font-family: 'Boogaloo', cursive; font-size: 0.9rem;
+      padding: 3px 11px; border-radius: 20px; transition: all 0.2s;
+    }
+    .gc-challenge-badge.mild  { background: rgba(52,211,153,0.16); color: #34d399; }
+    .gc-challenge-badge.spicy { background: rgba(239,159,39,0.16); color: #EF9F27; }
+    .gc-challenge-badge.wild  { background: rgba(239,68,68,0.18);  color: #f87171; }
+    .gc-range {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 5px; border-radius: 99px;
+      background: rgba(255,255,255,0.12); outline: none; margin-bottom: 7px; cursor: pointer;
+    }
+    .gc-range::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 24px; height: 24px; border-radius: 50%; background: #EF9F27; cursor: pointer;
+      box-shadow: 0 0 10px rgba(239,159,39,0.65), 0 2px 6px rgba(0,0,0,0.45);
+      transition: transform 0.15s;
+    }
+    .gc-range:active::-webkit-slider-thumb { transform: scale(1.2); }
+    .gc-range::-moz-range-thumb {
+      width: 24px; height: 24px; border-radius: 50%; background: #EF9F27; border: none; cursor: pointer;
+      box-shadow: 0 0 10px rgba(239,159,39,0.65);
+    }
+    .gc-range-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.68rem; color: rgba(255,255,255,0.3);
+    }
+    .gc-start-btn {
+      width: 100%; padding: 16px 24px; border: none; border-radius: 18px;
+      font-family: 'Boogaloo', cursive; font-size: 1.2rem; letter-spacing: 1px;
+      cursor: pointer; transition: all 0.2s;
+      background: linear-gradient(135deg, #EF9F27, #d4800e);
+      color: #fff; box-shadow: 0 4px 20px rgba(239,159,39,0.38), 0 2px 0 rgba(0,0,0,0.3);
+    }
+    .gc-start-btn:disabled {
+      background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.28);
+      box-shadow: none; cursor: not-allowed;
+    }
+    .gc-start-btn:not(:disabled):active { transform: scale(0.97); }
     /* Other games row */
     .home-small-row {
       flex: 0 0 auto;
@@ -3014,33 +3100,67 @@
   </div>
 </div>
 
-<!-- Gassed Intro Overlay -->
+<!-- Gassed Config Overlay -->
 <div id="gassed-intro">
-  <div class="gi-logo">🍺 Gassed</div>
-  <div class="gi-tagline">Det ultimate drikkespillet for grupper</div>
-  <div class="gi-modes">
-    <div class="gi-mode">
-      <div class="gi-mode-icon">🎯</div>
-      <div class="gi-mode-title">Én spiller om gangen får en utfordring</div>
+  <div class="gc-inner">
+    <div class="gc-logo">Gassed</div>
+    <div class="gc-tagline">Sett opp spillet ditt</div>
+
+    <div class="gc-section-label">Spillmodus</div>
+    <div class="gc-modes">
+      <button class="gc-mode-card" data-mode="girls-night" onclick="gcSelectMode(this)">
+        <div class="gc-mode-emoji">🥂</div>
+        <div class="gc-mode-info">
+          <div class="gc-mode-name">Girl's Night</div>
+          <div class="gc-mode-desc">Vibbes, drama og ekte tea 💅</div>
+        </div>
+        <div class="gc-check">✓</div>
+      </button>
+      <button class="gc-mode-card" data-mode="everyone" onclick="gcSelectMode(this)">
+        <div class="gc-mode-emoji">🍺</div>
+        <div class="gc-mode-info">
+          <div class="gc-mode-name">Gassed for Everyone</div>
+          <div class="gc-mode-desc">Klassisk blanding for alle</div>
+        </div>
+        <div class="gc-check">✓</div>
+      </button>
+      <button class="gc-mode-card" data-mode="gets-gassed" onclick="gcSelectMode(this)">
+        <div class="gc-mode-emoji">💀</div>
+        <div class="gc-mode-info">
+          <div class="gc-mode-name">Everyone Gets Gassed</div>
+          <div class="gc-mode-desc">Ingen slipper unna — alle drikker</div>
+        </div>
+        <div class="gc-check">✓</div>
+      </button>
     </div>
-    <div class="gi-mode">
-      <div class="gi-mode-icon">🎲</div>
-      <div class="gi-mode-title">Spillet velger tilfeldig aktivitet hver runde</div>
+
+    <div class="gc-sliders">
+      <div class="gc-slider-group">
+        <div class="gc-slider-header">
+          <div class="gc-slider-title">🍾 Drikkemengde</div>
+          <div class="gc-bottle-icons" id="gc-bottle-icons">
+            <span class="gc-bottle" data-level="1">🍾</span>
+            <span class="gc-bottle" data-level="2">🍾</span>
+            <span class="gc-bottle" data-level="3">🍾</span>
+          </div>
+        </div>
+        <input type="range" class="gc-range" id="gc-drink-level" min="1" max="3" value="2" oninput="gcUpdateDrink(this.value)">
+        <div class="gc-range-labels"><span>Lett</span><span>Moderat</span><span>Tungt</span></div>
+      </div>
+      <div class="gc-slider-group">
+        <div class="gc-slider-header">
+          <div class="gc-slider-title">🔥 Utfordringsnivå</div>
+          <span class="gc-challenge-badge spicy" id="gc-challenge-badge">Spicy</span>
+        </div>
+        <input type="range" class="gc-range" id="gc-challenge-level" min="1" max="3" value="2" oninput="gcUpdateChallenge(this.value)">
+        <div class="gc-range-labels"><span>Mild</span><span>Spicy</span><span>Wild 🔥</span></div>
+      </div>
     </div>
-    <div class="gi-mode">
-      <div class="gi-mode-icon">🔥</div>
-      <div class="gi-mode-title">Ring of Fire, Lykkehjulet, Jeg har aldri, Utfordringer, Kategori, Drikk hvis og mer</div>
-    </div>
-    <div class="gi-mode">
-      <div class="gi-mode-icon">🍺</div>
-      <div class="gi-mode-title">Trykk "Neste" for å gå videre til neste spiller</div>
-    </div>
-    <div class="gi-mode">
-      <div class="gi-mode-icon">🥂</div>
-      <div class="gi-mode-title">Hvert 20. kort er et skål-kort — alle fyller glasset og skåler!</div>
-    </div>
+
+    <button class="gc-start-btn" id="gc-start-btn" onclick="gassedIntroStart()" disabled>
+      Velg spillmodus for å starte
+    </button>
   </div>
-  <button class="gi-start-btn" onclick="gassedIntroStart()">La oss begynne! 🍺</button>
 </div>
 
 <!-- Trivia Mode Picker Modal -->
@@ -5242,17 +5362,17 @@ function triviaRestart() {
 // LYKKEHJULET — CONCENTRIC WHEELS
 // ─────────────────────────────────────────────
 const WHEEL_CHALLENGES = [
-  { label: 'Drikk 2',          lines: ['Drikk 2'],             emoji: '🍺', color: '#9f1239',
+  { label: 'Drikk 2',          lines: ['Drikk 2'],             emoji: '🍺', color: '#9f1239', intensity: 1,
     desc: 'Ta 2 slurker av drikken din.' },
-  { label: 'Drikk 3',          lines: ['Drikk 3'],             emoji: '🍻', color: '#7f1d1d',
+  { label: 'Drikk 3',          lines: ['Drikk 3'],             emoji: '🍻', color: '#7f1d1d', intensity: 2,
     desc: 'Ta 3 slurker av drikken din.' },
-  { label: 'Del ut 3',         lines: ['Del ut 3'],            emoji: '🎯', color: '#1e3a8a',
+  { label: 'Del ut 3',         lines: ['Del ut 3'],            emoji: '🎯', color: '#1e3a8a', intensity: 1,
     desc: 'Del ut 3 slurker til hvem du vil — eller fordel dem på flere.' },
-  { label: 'Alle drikker',     lines: ['Alle drikker'],        emoji: '💀', color: '#3b0764',
+  { label: 'Alle drikker',     lines: ['Alle drikker'],        emoji: '💀', color: '#3b0764', intensity: 2,
     desc: 'Alle spillerne tar 2 slurker!' },
-  { label: 'Gratis',           lines: ['Gratis'],              emoji: '😇', color: '#14532d',
+  { label: 'Gratis',           lines: ['Gratis'],              emoji: '😇', color: '#14532d', intensity: 1,
     desc: 'Flaks! Du slipper unna — ingen straff denne runden.' },
-  { label: 'Chugg',            lines: ['Chugg'],               emoji: '🥤', color: '#1e3a5f',
+  { label: 'Chugg',            lines: ['Chugg'],               emoji: '🥤', color: '#1e3a5f', intensity: 3,
     desc: 'Shiiet, Chugg drikken din!' },
 ];
 
@@ -5548,7 +5668,10 @@ function spinWheels() {
   var TWO_PI = 2 * Math.PI;
   var n = app.players.length;
   var playerIdx = Math.floor(Math.random() * n);
-  var challengeIdx = Math.floor(Math.random() * WHEEL_CHALLENGES.length);
+  const _challLvl = (app.gassedConfig && app.gassedConfig.challengeLevel) || 3;
+  const _eligibleWheel = WHEEL_CHALLENGES.map(function(_,i){return i;}).filter(function(i){return (WHEEL_CHALLENGES[i].intensity||1)<=_challLvl;});
+  const _wheelPool = _eligibleWheel.length > 0 ? _eligibleWheel : WHEEL_CHALLENGES.map(function(_,i){return i;});
+  var challengeIdx = _wheelPool[Math.floor(Math.random() * _wheelPool.length)];
 
   // OUTER wheel (clockwise, fast) — challenge
   var oSeg = TWO_PI / WHEEL_CHALLENGES.length;
@@ -5626,8 +5749,9 @@ function spinWheels() {
 function showWheelResult(playerIdx, challengeIdx) {
   SFX.wheelReveal();
   var ch = WHEEL_CHALLENGES[challengeIdx];
+  var drinkLvl = (app.gassedConfig && app.gassedConfig.drinkLevel) || 2;
   document.getElementById('wheel-result-player').textContent = app.players[playerIdx] || '';
-  document.getElementById('wheel-result-desc').textContent = ch.desc || '';
+  document.getElementById('wheel-result-desc').textContent = gcScaleSipsText(ch.desc || '', drinkLvl);
   document.getElementById('wheel-result-card').style.display = '';
   S.push();
 }
@@ -8021,6 +8145,71 @@ const CARD_CHALLENGES = {
   ],
 };
 
+// ── Intensity ratings for content filtering (1=mild, 2=medium, 3=wild) ──
+// Order matches CONTENT.nhie arrays exactly
+const NHIE_INTENSITY = {
+  en: [3,3,1,2,2,2,1,2,2,2,3,2,1,1,3,2,1,1,2,1,1,1,1,1,1],
+  no: [3,3,1,2,2,1,2,2,2,3,2,1,3,2,1,1,1,1,1]
+};
+
+// Order matches CARD_CHALLENGES arrays exactly
+// no: dilemma(24) + mostlikely(24) + category(20) + challenge-block(18) + drikkif-block(15) + regel(14) + gruppelek(11) + challenge-extras(2) + drikkif-extras(2) = 130
+const CARD_CHALLENGES_INTENSITY = {
+  no: [
+    // dilemma (24)
+    1,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    // mostlikely (24)
+    1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,2,1,1,1,2,2,2,3,1,
+    // category (20)
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    // challenge block (18)
+    1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,
+    // drikkif block (15)
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    // regel (14)
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    // gruppelek (11)
+    1,2,2,1,1,2,1,2,1,1,1,
+    // challenge extras (2)
+    2,2,
+    // drikkif extras (2) — sexual content
+    3,3
+  ],
+  // en: dilemma(7) + mostlikely(7) + category(5) + challenge(6) + drikkif(5) + regel(3) + gruppelek(2) = 35
+  en: [
+    1,1,1,1,1,1,1,
+    1,1,1,2,2,1,1,
+    1,1,1,1,1,
+    1,1,1,1,2,1,
+    1,1,1,1,1,
+    1,1,1,
+    1,1
+  ]
+};
+
+// ── Config utilities (called by gassedTurn) ──
+function gcScaleSips(n, drinkLevel) {
+  if (drinkLevel === 1) return Math.max(1, Math.round(n * 0.5));
+  if (drinkLevel === 3) return Math.round(n * 1.75);
+  return n;
+}
+
+function gcScaleSipsText(text, drinkLevel) {
+  if (!text || drinkLevel === 2) return text;
+  return text.replace(/\b(\d+)\s*(slurker?|sips?)\b/gi, function(_, n, unit) {
+    return gcScaleSips(parseInt(n), drinkLevel) + ' ' + unit;
+  });
+}
+
+function gcBuildFilteredPool(basePool, intensityArr, excludeUsed, maxIntensity) {
+  const allIdx = basePool.map(function(_, i) { return i; });
+  const within = allIdx.filter(function(i) { return (intensityArr[i] || 1) <= maxIntensity; });
+  const available = within.filter(function(i) { return !excludeUsed.has(i); });
+  if (available.length > 0) return available;
+  if (within.length > 0) return within; // reset used, stay within intensity
+  return allIdx; // fallback: use everything
+}
+
 // Weighted type pool: 40 entries — music appears exactly once, wheel exactly twice
 // 1=wheel(2), 2=nhie(6), 3=music(1), 4=challenges(31)
 const GASSED_TYPE_POOL = [
@@ -8031,17 +8220,54 @@ const GASSED_TYPE_POOL = [
 ];
 
 app.gassed = { lastPlayer: -1, nhieUsed: new Set(), cardsUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [] };
+app.gassedConfig = { mode: null, drinkLevel: 2, challengeLevel: 2 };
 
 function gassedShowIntro() {
   document.getElementById('gassed-intro').classList.add('show');
   const bb = document.getElementById('back-btn');
   if (bb) bb.classList.remove('visible');
+  // Reset config state
+  app.gassedConfig = { mode: null, drinkLevel: 2, challengeLevel: 2 };
+  document.querySelectorAll('.gc-mode-card').forEach(function(c) { c.classList.remove('selected'); });
+  const startBtn = document.getElementById('gc-start-btn');
+  if (startBtn) { startBtn.disabled = true; startBtn.textContent = 'Velg spillmodus for å starte'; }
+  const drinkSlider = document.getElementById('gc-drink-level');
+  if (drinkSlider) { drinkSlider.value = 2; gcUpdateDrink(2); }
+  const challengeSlider = document.getElementById('gc-challenge-level');
+  if (challengeSlider) { challengeSlider.value = 2; gcUpdateChallenge(2); }
   S.push();
 }
 
+function gcSelectMode(el) {
+  document.querySelectorAll('.gc-mode-card').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+  app.gassedConfig.mode = el.dataset.mode;
+  const btn = document.getElementById('gc-start-btn');
+  if (btn) { btn.disabled = false; btn.textContent = 'Start spillet! 🍺'; }
+}
+
+function gcUpdateDrink(val) {
+  val = parseInt(val);
+  app.gassedConfig.drinkLevel = val;
+  document.querySelectorAll('.gc-bottle').forEach(function(b, i) {
+    b.classList.toggle('lit', i < val);
+  });
+}
+
+function gcUpdateChallenge(val) {
+  val = parseInt(val);
+  app.gassedConfig.challengeLevel = val;
+  const badge = document.getElementById('gc-challenge-badge');
+  if (!badge) return;
+  const classes = ['mild','spicy','wild'];
+  const labels  = ['Mild','Spicy','Wild 🔥'];
+  badge.className = 'gc-challenge-badge ' + classes[val - 1];
+  badge.textContent = labels[val - 1];
+}
+
 function gassedIntroStart() {
-  startGame('gassed');
   document.getElementById('gassed-intro').classList.remove('show');
+  startGame('gassed');
 }
 
 function startGassed() {
@@ -8175,6 +8401,10 @@ function gassedTurn(skipCapture) {
     return;
   }
 
+  const cfg = app.gassedConfig || { drinkLevel: 2, challengeLevel: 2 };
+  const drinkLvl = cfg.drinkLevel || 2;
+  const challLvl = cfg.challengeLevel || 2;
+
   try {
     if (type === 2) {
       // ── Jeg har aldri ──
@@ -8183,10 +8413,11 @@ function gassedTurn(skipCapture) {
       $('gs-nhie-prefix').textContent = isNo ? 'Jeg har aldri' : 'Never Have I Ever';
       $('gs-nhie-prefix').style.display = '';
       const pool = CONTENT.nhie[app.lang];
-      const available = pool.map((_, i) => i).filter(i => !g.nhieUsed.has(i));
+      const intensArr = NHIE_INTENSITY[app.lang] || [];
+      const available = gcBuildFilteredPool(pool, intensArr, g.nhieUsed, challLvl);
       let idx;
       if (available.length === 0) { g.nhieUsed = new Set(); idx = Math.floor(Math.random() * pool.length); }
-      else idx = available[Math.floor(Math.random() * available.length)];
+      else { idx = available[Math.floor(Math.random() * available.length)]; }
       g.nhieUsed.add(idx);
       $('gs-main-text').textContent = interpolate(pool[idx], playerName);
       $('gs-sub-text').textContent = isNo
@@ -8197,11 +8428,13 @@ function gassedTurn(skipCapture) {
       // ── Utfordring ──
       if (!(g.cardsUsed instanceof Set)) g.cardsUsed = new Set();
       const bpool = CARD_CHALLENGES[app.lang] || CARD_CHALLENGES.no;
-      const bavail = bpool.map((_, i) => i).filter(i => !g.cardsUsed.has(i));
+      const bIntens = CARD_CHALLENGES_INTENSITY[app.lang] || CARD_CHALLENGES_INTENSITY.no;
       // Dilemma (tommel opp/ned) vises kun 1% av tilfellene
       const _wantDilemma = Math.random() < 0.01;
-      const _bfiltered = bavail.filter(i => _wantDilemma ? bpool[i].type === 'dilemma' : bpool[i].type !== 'dilemma');
-      const _bpool = _bfiltered.length > 0 ? _bfiltered : bavail;
+      // Build intensity-filtered pool, then apply dilemma filter on top
+      const allWithinIntens = gcBuildFilteredPool(bpool, bIntens, g.cardsUsed, challLvl);
+      const _bfiltered = allWithinIntens.filter(i => _wantDilemma ? bpool[i].type === 'dilemma' : bpool[i].type !== 'dilemma');
+      const _bpool = _bfiltered.length > 0 ? _bfiltered : allWithinIntens;
       let bidx;
       if (_bpool.length === 0) { g.cardsUsed = new Set(); bidx = Math.floor(Math.random() * bpool.length); }
       else bidx = _bpool[Math.floor(Math.random() * _bpool.length)];
@@ -8250,10 +8483,13 @@ function gassedTurn(skipCapture) {
           }
         }
       }
+      // Scale drink amounts in card text
+      cardText = gcScaleSipsText(cardText, drinkLvl);
       $('gs-main-text').textContent = cardText;
-      $('gs-sub-text').textContent = bc.type === 'dilemma'
+      let subTxt = bc.type === 'dilemma'
         ? (isNo ? '🍺 De i undertall drikker 2 slurker!' : '🍺 The minority drinks 2 sips!')
         : (bc.sub || '');
+      $('gs-sub-text').textContent = gcScaleSipsText(subTxt, drinkLvl);
 
     } else {
       // ── Musikk-utfordring ──
@@ -8268,9 +8504,10 @@ function gassedTurn(skipCapture) {
       $('gs-type-badge').className = 'gs-type-badge gs-type-music';
       $('gs-main-icon').textContent = '🎵';
       $('gs-main-text').textContent = mc.prompt;
+      const musicSips = gcScaleSips(3, drinkLvl);
       $('gs-sub-text').textContent = isNo
-        ? 'Klarer du det ikke innen 10 sekunder = drikk 3 slurker!'
-        : 'Can\'t do it in 10 seconds = drink 3 sips!';
+        ? `Klarer du det ikke innen 10 sekunder = drikk ${musicSips} slurker!`
+        : `Can't do it in 10 seconds = drink ${musicSips} sips!`;
       // Show countdown ring — tap ring to start
       $('gs-countdown-num').textContent = '10';
       const ring = $('gs-countdown-ring');
