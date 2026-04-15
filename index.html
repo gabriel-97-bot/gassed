@@ -8210,6 +8210,245 @@ function gcBuildFilteredPool(basePool, intensityArr, excludeUsed, maxIntensity) 
   return allIdx; // fallback: use everything
 }
 
+// ── TESTO MODE — content for guys ──
+const TESTO_NHIE = {
+  no: [
+    "gråt av en film men nektet for det etterpå",
+    "latt som jeg hadde bedre kondis enn jeg har",
+    "stalket en jente så langt tilbake at du traff bilder fra 2013",
+    "løyet om hvor langt du kom med noen",
+    "slid inn i DMs og ble lest på",
+    "brukt en annens treningsbilde som motivasjonsreferanse",
+    "hekket på noen og angret med en gang",
+    "latt som jeg sov for å unngå en samtale",
+    "jukset på noe og skrytt av seieren etterpå",
+    "likt et gammelt bilde ved et uhell og liket det av i panikk",
+    "blitt roastet så hardt at du tenkte på det hjemme etterpå",
+    "sendt en melding og angret i det sekundet du trykket send",
+    "overdrevet en skade for å få sympati",
+    "latt som jeg ikke likte en film bare for å se tøff ut",
+    "fortalt en fyr at hen var i form bare for å unngå en krangel",
+    "googlet symptomene dine og overtalt deg selv om at du var dødssyk",
+  ],
+  en: [
+    "cried at a movie but denied it afterward",
+    "pretended to have better stamina than I do",
+    "stalked a girl so deep you hit photos from 2013",
+    "lied about how far you went with someone",
+    "slid into DMs and got left on read",
+    "used someone else's gym photo as motivation",
+    "hooked up with someone and immediately regretted it",
+    "pretended to be asleep to avoid a conversation",
+    "cheated at something and still bragged about winning",
+    "accidentally liked an old photo and immediately unliked it in a panic",
+    "gotten roasted so hard you actually thought about it later that night",
+    "sent a message and regretted it the second you hit send",
+    "exaggerated an injury to get sympathy",
+    "pretended not to like a movie just to seem cool",
+    "told someone they looked fine just to avoid an argument",
+    "googled symptoms and convinced yourself you were dying",
+  ]
+};
+const TESTO_NHIE_INTENSITY = {
+  no: [1,1,2,2,2,1,3,1,1,2,2,2,1,1,1,1],
+  en: [1,1,2,2,2,1,3,1,1,2,2,2,1,1,1,1]
+};
+
+const TESTO_CHALLENGES = {
+  no: [
+    // ── UTFORDRINGER ──
+    { type:'challenge', text:'Gjør 20 push-ups eller drikk 3 slurker. Gruppen teller høyt og kommenterer formen din.', sub:'Kan du ikke → drikk 3 slurker!', intensity:1 },
+    { type:'challenge', text:'Armbrytning mot personen til høyre. Taperen drikker 3 slurker og velger neste utfordring.', sub:'På plassen, klar, FIGHT!', intensity:1 },
+    { type:'challenge', text:'Send eksen din "Savner deg 🥺" — eller drikk 4 slurker.', sub:'Tørr du ikke → drikk 4 slurker!', intensity:3 },
+    { type:'challenge', text:'Ring moren din og si at du har blitt arrestert. Hold ut 30 sekunder eller drikk 5 slurker.', sub:'Legger du på tidlig → drikk 5!', intensity:2 },
+    { type:'challenge', text:'La gruppen poste én ting fra Instagramen din — eller drikk 3 slurker.', sub:'Nekter du → drikk 3!', intensity:2 },
+    { type:'challenge', text:'La noen bla gjennom kamerarullen din i 60 sekunder. Alt de finner vises til alle.', sub:'Nekter du → drikk 4 slurker!', intensity:2 },
+    { type:'challenge', text:'Åpne Spotify — ditt mest spilte spor blir roastet av gruppen.', sub:'Forsvarer du valget ditt → drikk 2 ekstra!', intensity:1 },
+    { type:'challenge', text:'Gjør din beste posing. Gruppen stemmer. Flertall tommel ned = drikk 3 slurker.', sub:'Gruppen er dommerne! 💪', intensity:1 },
+    { type:'challenge', text:'Spis en skje av det sterkeste du finner på kjøkkenet — eller drikk 5 slurker.', sub:'Finner du ingenting → drikk 5 uansett!', intensity:2 },
+    { type:'challenge', text:'Chug-race mot personen til venstre. Taperen drikker en full runde til.', sub:'På plassen, ferdig, CHUG!', intensity:2 },
+    { type:'challenge', text:'La gruppen velge en kontakt fra telefonen din. Du sender "hei" uten forklaring.', sub:'Nekter → drikk 4 slurker!', intensity:2 },
+    { type:'challenge', text:'Hold planken. Første mann ned drikker 4 slurker og gjør det igjen.', sub:'Alle er med til noen gir opp!', intensity:1 },
+    { type:'challenge', text:'Gjør en worm på gulvet. Dårlig innsats = 2 ekstra slurker.', sub:'Gruppen bedømmer!', intensity:1 },
+    { type:'challenge', text:'Shotgun en øl på under 10 sekunder — eller gjør 15 burpees og drikk 2 slurker.', sub:'Klarer du det ikke → burpees!', intensity:2 },
+    { type:'challenge', text:'Roast personen til venstre på 20 sekunder. Gruppen gir karakter 1-10. Under 5 → drikk 3 slurker.', sub:'Vær brutal og ærlig!', intensity:2 },
+    { type:'challenge', text:'Vis gruppen de siste 3 personene du googlet. Ingen unntak.', sub:'Nekter → drikk 3 slurker!', intensity:2 },
+    { type:'challenge', text:'Fremfør ditt beste "flørte-åpningsforsøk" live foran gruppen. Gruppen gir karakter.', sub:'Under 5/10 → drikk 3!', intensity:2 },
+    { type:'challenge', text:'Ta 10 knebøy mens du ramser opp 10 land. Roter du til → drikk 2 slurker.', sub:'Gruppen teller!', intensity:1 },
+    // ── HVEM VILLE MEST SANNSYNLIG ──
+    { type:'mostlikely', text:'Hvem i gruppen er mest sannsynlig til å gråte på en fest men benekte det etterpå?', sub:'Alle peker — flest pekefingre → drikk 3 og bekreft!', intensity:2 },
+    { type:'mostlikely', text:'Hvem har en "body count" de aldri har fortalt noen om?', sub:'Flest pekefingre → avslør et tall eller drikk 4!', intensity:3 },
+    { type:'mostlikely', text:'Hvem i gruppen har det mest rotete rommet akkurat nå?', sub:'Flest pekefingre → vis rommet på FaceTime eller drikk 3!', intensity:1 },
+    { type:'mostlikely', text:'Hvem er mest sannsynlig til å bli noens crazy ex?', sub:'Alle peker — flest pekefingre → drikk 3 og bekreft!', intensity:2 },
+    { type:'mostlikely', text:'Hvem brukte mest penger på mat denne uken?', sub:'Flest pekefingre → vis bankappen eller drikk 4!', intensity:1 },
+    { type:'mostlikely', text:'Hvem er mest sannsynlig til å avlyse planer i siste sekund?', sub:'Flest pekefingre → nevn sist gang du faktisk gjorde det!', intensity:1 },
+    { type:'mostlikely', text:'Hvem har sendt den mest cringe DM-en til ei jente?', sub:'Flest pekefingre → les meldingen høyt eller drikk 4!', intensity:3 },
+    { type:'mostlikely', text:'Hvem i gruppen vil aldri innrømme at de tok feil?', sub:'Alle peker — flest pekefingre → drikk 3!', intensity:1 },
+    { type:'mostlikely', text:'Hvem er den svakeste lenken på en fest?', sub:'Flest pekefingre → drikk 3 og godta dommen!', intensity:2 },
+    // ── GRUPPE-LEK ──
+    { type:'gruppelek', text:'Power Ranking: Alle skriver hvem de tror er alfaen i gruppen. Resultater leses høyt. Sisteplass gjør en valgfri utfordring.', sub:'Ingen juksing!', intensity:2 },
+    { type:'gruppelek', text:'"Hvor mange?" — Gruppen gjetter én persons body count. Personen avslører om svaret er ±2. Riktig: gjetter drikker. Feil: personen drikker 3.', sub:'Alle peker på én person!', intensity:3 },
+    { type:'gruppelek', text:'Mr. Beast Mode: Første person til å gjøre 30 push-ups kvelden får dele ut 3 drikker til hvem de vil. Klokken starter nå.', sub:'Alle kan starte når som helst!', intensity:1 },
+    { type:'gruppelek', text:'Roast-sirkel: Klokken rundt, 20 sekunder per person til å roaste den til venstre. Gruppen gir karakter. Dårligste roast drikker 3 slurker.', sub:'Vær brutal, vær ærlig!', intensity:2 },
+    { type:'gruppelek', text:'Alfa bestemmer: Alle peker på den de mener er alfa i kveld. Den med flest pekefingre deler ut 5 slurker til hvem de vil.', sub:'Alfa har full makt!', intensity:2 },
+    // ── DRIKK HVIS ──
+    { type:'drikkif', text:'Drikk 3 slurker hvis du noen gang har sendt en melding til ei jente og angret med en gang du trykket send', sub:'Du vet hvem du er → drikk!', intensity:2 },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har latt som du hadde bedre form enn du har på trening', sub:'Du vet hvem du er → drikk!', intensity:1 },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du har fortalt en løgn for å imponere ei jente', sub:'Du vet hvem du er → drikk!', intensity:2 },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har stalket ei jente på Instagram med intensjon', sub:'Du vet hvem du er → drikk!', intensity:2 },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du har unngått å betale din del av regningen', sub:'Du vet hvem du er → drikk!', intensity:1 },
+  ],
+  en: [
+    { type:'challenge', text:'Do 20 push-ups or drink 3 sips. The group counts out loud and judges your form.', sub:'Can\'t do it → drink 3!', intensity:1 },
+    { type:'challenge', text:'Arm wrestling against the person to your right. Loser drinks 3 sips and picks the next dare.', sub:'Ready, set, FIGHT!', intensity:1 },
+    { type:'challenge', text:'Text your ex "I miss you 🥺" — or drink 4 sips.', sub:'Too scared → drink 4!', intensity:3 },
+    { type:'challenge', text:'Call your mom and tell her you\'ve been arrested. Hold it for 30 seconds or drink 5 sips.', sub:'Hang up early → drink 5!', intensity:2 },
+    { type:'challenge', text:'Let the group post one thing from your Instagram — or drink 3 sips.', sub:'Refuse → drink 3!', intensity:2 },
+    { type:'challenge', text:'Let someone scroll your camera roll for 60 seconds. Whatever they find, everyone sees.', sub:'Refuse → drink 4 sips!', intensity:2 },
+    { type:'challenge', text:'Open Spotify — your most played track gets roasted by the group.', sub:'Defend your taste → drink 2 extra!', intensity:1 },
+    { type:'challenge', text:'Do your best flex pose. Group votes. Majority thumbs down = drink 3 sips.', sub:'The group are the judges! 💪', intensity:1 },
+    { type:'challenge', text:'Eat a spoonful of the spiciest thing in the kitchen — or drink 5 sips.', sub:'Nothing spicy? Drink 5 anyway!', intensity:2 },
+    { type:'challenge', text:'Chug race against the person to your left. Loser drinks a full round again.', sub:'Ready, set, CHUG!', intensity:2 },
+    { type:'challenge', text:'Let the group pick a contact from your phone. You send "hey" with no explanation.', sub:'Refuse → drink 4 sips!', intensity:2 },
+    { type:'challenge', text:'Plank battle. First man down drinks 4 sips and does it again.', sub:'Everyone joins until someone quits!', intensity:1 },
+    { type:'challenge', text:'Do a worm on the floor. Bad effort = 2 extra sips.', sub:'The group decides!', intensity:1 },
+    { type:'challenge', text:'Perform your best opening DM line live in front of the group. Group rates it.', sub:'Under 5/10 → drink 3!', intensity:2 },
+    { type:'mostlikely', text:'Who is most likely to cry at a party and deny it?', sub:'Most fingers → drink 3 and confirm!', intensity:2 },
+    { type:'mostlikely', text:'Who has a body count they\'ve never told anyone?', sub:'Most fingers → reveal a number or drink 4!', intensity:3 },
+    { type:'mostlikely', text:'Who has the messiest room right now?', sub:'Most fingers → show on FaceTime or drink 3!', intensity:1 },
+    { type:'mostlikely', text:'Who is most likely to be someone\'s crazy ex?', sub:'Most fingers → drink 3 and confirm!', intensity:2 },
+    { type:'mostlikely', text:'Who spent the most money on food this week?', sub:'Most fingers → show your bank app or drink 4!', intensity:1 },
+    { type:'mostlikely', text:'Who sent the most cringe DM to a girl?', sub:'Most fingers → read it aloud or drink 4!', intensity:3 },
+    { type:'gruppelek', text:'Power Ranking: Everyone writes who they think is the alpha of the group. Results read aloud. Last place does a dare.', sub:'No cheating!', intensity:2 },
+    { type:'gruppelek', text:'"How many?" — The group guesses one person\'s body count. Person reveals if guess is within ±2. Right: guesser drinks. Wrong: person drinks 3.', sub:'Pick a victim!', intensity:3 },
+    { type:'gruppelek', text:'Roast Circle: Each person has 20 seconds to roast the person to their left. Group scores 1-10. Worst roast drinks 3 sips.', sub:'Be brutal, be honest!', intensity:2 },
+    { type:'drikkif', text:'Drink 3 sips if you\'ve ever sent a message to a girl and regretted it the second you hit send', sub:'You know who you are → drink!', intensity:2 },
+    { type:'drikkif', text:'Drink 3 sips if you\'ve ever lied to impress someone', sub:'You know who you are → drink!', intensity:2 },
+    { type:'drikkif', text:'Drink 2 sips if you\'ve avoided paying your share of the bill', sub:'You know who you are → drink!', intensity:1 },
+  ]
+};
+
+// ── GIRLS NIGHT MODE — content for girls ──
+const GIRLS_NIGHT_NHIE = {
+  no: [
+    "latt som jeg var opptatt for å unngå en fyr jeg faktisk likte",
+    "stalket jenta eksen min fulgte bare for å sammenligne meg",
+    "grått på et bad på en fest",
+    "postet noe bare for at én bestemt person skulle se det",
+    "sendt 'haha' til en fyr når jeg var fullstendig rasende",
+    "gått gjennom partnerens telefon og latt som ingenting",
+    "ghostet noen og sett på alle storiene deres etterpå",
+    "funnet på en unnskyldning for ikke å dra hjem bare for å bli lenger",
+    "likt noens bilde bare for å minne dem på at jeg eksisterer",
+    "satt på makeup før en 'spontan' videosamtale",
+    "hatt en 'talking stage' som varte over 3 måneder uten resultat",
+    "talt opp timer siden han sist svarte og analysert det",
+    "vist venninnen min skjermbilder av meldinger for å få dem analysert",
+    "blitt lenge med noen jeg visste ikke var bra for meg",
+    "sendt en melding og angret umiddelbart men det var for sent",
+    "laget en falsk grunn til å texte noen",
+  ],
+  en: [
+    "pretended to be busy to avoid a guy I actually liked",
+    "stalked the girl my ex followed just to compare myself",
+    "cried in a bathroom at a party",
+    "posted something purely so a specific person would see it",
+    "texted 'haha' to a guy when I was absolutely furious",
+    "gone through a partner's phone and pretended I hadn't",
+    "ghosted someone and still watched all their stories",
+    "made up a reason not to go home just to stay longer",
+    "liked someone's photo just to remind them I exist",
+    "put on makeup before a 'spontaneous' video call",
+    "had a talking stage that lasted over 3 months with no result",
+    "counted the hours since he last replied and analysed it",
+    "shown a friend screenshots of messages just for analysis",
+    "stayed with someone I knew wasn't good for me",
+    "sent a message and immediately regretted it but it was too late",
+    "made up a fake reason to text someone",
+  ]
+};
+const GIRLS_NIGHT_NHIE_INTENSITY = {
+  no: [2,2,2,2,2,3,2,2,1,1,2,2,2,3,2,1],
+  en: [2,2,2,2,2,3,2,2,1,1,2,2,2,3,2,1]
+};
+
+const GIRLS_NIGHT_CHALLENGES = {
+  no: [
+    // ── UTFORDRINGER ──
+    { type:'challenge', text:'Screenshot den mest pinlige DM-samtalen din og vis gruppen. Ingen cropping.', sub:'Nekter du → drikk 4 slurker!', intensity:2 },
+    { type:'challenge', text:'Send situationshipen din "vi må snakke" og les svaret høyt mens alle ser på.', sub:'Tørr du ikke → drikk 4 slurker!', intensity:3 },
+    { type:'challenge', text:'Post en ufiltrert, stygg selfie til storyen din i 5 minutter — eller drikk 4 slurker.', sub:'Ingen filtre tillatt!', intensity:2 },
+    { type:'challenge', text:'Ring den siste personen du var på date med og komplimenter noe spesifikt om dem — eller drikk 4 slurker.', sub:'Tørr du ikke → drikk 4!', intensity:2 },
+    { type:'challenge', text:'Les de siste 5 tekstene til din nyeste ex høyt i din beste dramatiske stemme.', sub:'Full teaterprestasjon kreves!', intensity:3 },
+    { type:'challenge', text:'Gå live på Instagram i 30 sekunder og si ingenting. Bare stirr i kamera. Eller drikk 5 slurker.', sub:'Ingen forklaring tillatt!', intensity:2 },
+    { type:'challenge', text:'Gi deg selv karakter 1-10 på utseende, personlighet og kaos-energi. Gruppen legger til egne vurderinger.', sub:'Vær ærlig!', intensity:2 },
+    { type:'challenge', text:'Spill ut din mest pinlige date-historie nå. Spill begge rollene. Full innsats eller drikk 3 slurker.', sub:'Oscar-verdig fremføring!', intensity:2 },
+    { type:'challenge', text:'Send en talesmelding til din nyeste match på dating-app og si "du virker gøy" — eller drikk 3 slurker.', sub:'Tørr du ikke → drikk 3!', intensity:2 },
+    { type:'challenge', text:'La gruppen komponere en melding du sender til en ex. Du sender den uten endringer — eller drikk 5 slurker.', sub:'Gruppen bestemmer innholdet!', intensity:3 },
+    { type:'challenge', text:'Vis gruppen den siste personen du googlet. Ingen unntak.', sub:'Nekter du → drikk 3 slurker!', intensity:2 },
+    { type:'challenge', text:'Åpne telefonen og la personen til høyre lese de siste 3 meldingene du sendte til en fyr.', sub:'Nekter du → drikk 4 slurker!', intensity:3 },
+    { type:'challenge', text:'Fortell noe om deg selv i relasjoner som gruppen ikke vet. Jo mer dramatisk, jo bedre.', sub:'For vagt → drikk 2 slurker!', intensity:2 },
+    { type:'challenge', text:'Les opp din siste dating-app bio høyt i TV-reporter-stemme.', sub:'Ler du → drikk 1 slurk!', intensity:1 },
+    { type:'challenge', text:'Fortell om din største red flag i et forhold. Gruppen stemmer. Flertall "red flag" → drikk 3 slurker.', sub:'Vær ærlig!', intensity:2 },
+    { type:'challenge', text:'Imiter personen du likner mest i gruppen romantisk. De gjetter om de kjenner seg igjen.', sub:'Begge drikker 1 slurk hvis riktig!', intensity:2 },
+    { type:'challenge', text:'Vis de siste 3 bildene i kamerarullen din. Ingen unntak.', sub:'Nekter → drikk 3 slurker!', intensity:2 },
+    { type:'challenge', text:'Skriv en intro til deg selv som om du søker på et reality dating show. Les den høyt.', sub:'Gruppen stemmer om du hadde kommet inn!', intensity:1 },
+    // ── HVEM VILLE MEST SANNSYNLIG ──
+    { type:'mostlikely', text:'Hvem i gruppen har flest aktive situationships akkurat nå?', sub:'Flest pekefingre → ranger dem live 1-10!', intensity:3 },
+    { type:'mostlikely', text:'Hvem er mest sannsynlig til å forelske seg i noen som tydelig ikke er klar for et forhold?', sub:'Flest pekefingre → drikk 3 og navngi en spesifikk type!', intensity:2 },
+    { type:'mostlikely', text:'Hvem i gruppen har sendt den mest unhinged meldingen til noen de likte?', sub:'Flest pekefingre → les meldingen høyt eller drikk 4!', intensity:3 },
+    { type:'mostlikely', text:'Hvem er det største red flagget i gruppen — men også mest elskelig?', sub:'Flest pekefingre → innrøm én ekte red flag om seg selv!', intensity:2 },
+    { type:'mostlikely', text:'Hvem stalket eksens nye kjæreste hardest?', sub:'Flest pekefingre → fortell historien eller drikk 5!', intensity:3 },
+    { type:'mostlikely', text:'Hvem ville folde raskest hvis ex-en textet akkurat nå?', sub:'Flest pekefingre → svar ærlig: ville du svart? Drikk 3 hvis ja!', intensity:2 },
+    { type:'mostlikely', text:'Hvem i gruppen har det mest kaotiske innboksen akkurat nå?', sub:'Flest pekefingre → åpne meldinger og les første gruppen peker på!', intensity:2 },
+    { type:'mostlikely', text:'Hvem gir de dårligste datingrådene i gruppen?', sub:'Flest pekefingre → bli roastet av gruppen i 30 sekunder!', intensity:2 },
+    { type:'mostlikely', text:'Hvem har postet noe på sosiale medier kun for at én spesifikk person skulle se det?', sub:'Flest pekefingre → avslør hvem det var eller drikk 3!', intensity:2 },
+    { type:'mostlikely', text:'Hvem bruker lengst tid på å svare på meldinger med vilje?', sub:'Flest pekefingre → drikk 2 og innrøm det!', intensity:1 },
+    // ── GRUPPE-LEK ──
+    { type:'gruppelek', text:'Rate My Rizz: Alle leser den siste flørteteksten de sendte. Gruppen gir karakter 1-10. Lavest score drikker 3 slurker.', sub:'Ingen juksing — vis meldingen!', intensity:2 },
+    { type:'gruppelek', text:'DM Roulette: Alle screenshooter en DM de ikke er sikre på at de burde ha sendt. Gruppen stemmer hvem som sendte den mest unhinged — den personen velger neste utfordring.', sub:'Alle deltar!', intensity:3 },
+    { type:'gruppelek', text:'Situationship Tribunal: Én person beskriver en situasjon med en fyr. Gruppen stemmer: situationship, talking stage, nesten-forhold eller fullstendig delusion. Uenig = drikk 3 slurker.', sub:'Juryen har ordet!', intensity:2 },
+    { type:'gruppelek', text:'Hot Takes: Klokken rundt gir alle en hot take om noen i gruppens kjærlighetsliv. Kun folk i rommet. Den med mest drama forteller mer og drikker 2 slurker.', sub:'Ingen brems tillatt!', intensity:2 },
+    { type:'gruppelek', text:'Body Count Bingo: Alle skriver et tall på telefonen. Avsløres én etter én. Høyest fordeler 3 drikker. Lavest fordeler 2. Midtfeltet drikker 1.', sub:'Ingen løgner!', intensity:3 },
+    { type:'gruppelek', text:'Confess & Judge: Alle skriver ned sin største relationship red flag på telefonen. Leses opp anonymt. Gruppen gjetter hvem — riktig gjett → begge drikker 2.', sub:'Ingen er uten skyld!', intensity:2 },
+    // ── DRIKK HVIS ──
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har latt som du var opptatt for å unngå en fyr du faktisk likte', sub:'Du vet hvem du er → drikk!', intensity:2 },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har åpnet en melding og bevisst ventet timer med å svare', sub:'Du vet hvem du er → drikk!', intensity:1 },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du har grått på et bad på en fest', sub:'Du vet hvem du er → drikk!', intensity:2 },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har postet noe på sosiale medier bare for at én person skulle se det', sub:'Du vet hvem du er → drikk!', intensity:2 },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du har ghostet noen og fortsatt sett på alle storiene deres', sub:'Du vet hvem du er → drikk!', intensity:2 },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har satt på makeup før en "spontan" videosamtale', sub:'Du vet hvem du er → drikk!', intensity:1 },
+    { type:'drikkif', text:'Drikk 3 slurker hvis du har snoket i partnerens telefon og latt som ingenting', sub:'Du vet hvem du er → drikk!', intensity:3 },
+    { type:'drikkif', text:'Drikk 2 slurker hvis du har talt timer siden han sist svarte og begynt å analysere det', sub:'Du vet hvem du er → drikk!', intensity:2 },
+  ],
+  en: [
+    { type:'challenge', text:'Screenshot your most embarrassing DM conversation and show the group. No cropping.', sub:'Refuse → drink 4 sips!', intensity:2 },
+    { type:'challenge', text:'Text your situationship "we need to talk" and read the reply aloud. Everyone watches.', sub:'Too scared → drink 4 sips!', intensity:3 },
+    { type:'challenge', text:'Post an unfiltered, ugly selfie to your story for 5 minutes — or drink 4 sips.', sub:'No filters allowed!', intensity:2 },
+    { type:'challenge', text:'Call the last person you went on a date with and compliment something specific about them — or drink 4 sips.', sub:'Too scared → drink 4!', intensity:2 },
+    { type:'challenge', text:'Read the last 5 texts to your most recent ex aloud in your most dramatic voice.', sub:'Full theatrical performance required!', intensity:3 },
+    { type:'challenge', text:'Go live on Instagram for 30 seconds saying nothing. Just stare. Or drink 5 sips.', sub:'No explanation allowed!', intensity:2 },
+    { type:'challenge', text:'Rate yourself 1-10 on looks, personality and chaos energy. Group adds their own ratings.', sub:'Be honest!', intensity:2 },
+    { type:'challenge', text:'Act out your most embarrassing date story right now. Play both roles. Full effort or drink 3.', sub:'Oscar-worthy performance!', intensity:2 },
+    { type:'challenge', text:'Let the group compose a message you send to an ex. You send it unchanged — or drink 5 sips.', sub:'Group decides the content!', intensity:3 },
+    { type:'challenge', text:'Show the group the last person you googled. No exceptions.', sub:'Refuse → drink 3 sips!', intensity:2 },
+    { type:'challenge', text:'Read your most recent dating app bio aloud in a TV reporter voice.', sub:'Laugh and you drink 1!', intensity:1 },
+    { type:'mostlikely', text:'Who in the group has the most active situationships right now?', sub:'Most fingers → rank them live 1-10!', intensity:3 },
+    { type:'mostlikely', text:'Who is most likely to fall for someone who clearly isn\'t ready for a relationship?', sub:'Most fingers → drink 3 and name a specific type!', intensity:2 },
+    { type:'mostlikely', text:'Who sent the most unhinged message to someone they liked?', sub:'Most fingers → read it aloud or drink 4!', intensity:3 },
+    { type:'mostlikely', text:'Who stalked their ex\'s new partner the hardest?', sub:'Most fingers → tell the story or drink 5!', intensity:3 },
+    { type:'mostlikely', text:'Who would fold fastest if their ex texted right now?', sub:'Most fingers → would you actually reply? Drink 3 if yes!', intensity:2 },
+    { type:'gruppelek', text:'Rate My Rizz: Everyone reads the last flirty text they sent. Group scores 1-10. Lowest score drinks 3 sips.', sub:'No cheating — show the message!', intensity:2 },
+    { type:'gruppelek', text:'Situationship Tribunal: One person describes a situation with a guy. Group votes: situationship, talking stage, almost-relationship, or full delusion. Disagree = drink 3.', sub:'The jury has spoken!', intensity:2 },
+    { type:'gruppelek', text:'Body Count Bingo: Everyone types a number. Revealed one by one. Highest assigns 3 drinks. Lowest assigns 2. Middle drinks 1.', sub:'No lying!', intensity:3 },
+    { type:'drikkif', text:'Drink 2 sips if you\'ve pretended to be busy to avoid someone you actually liked', sub:'You know who you are → drink!', intensity:2 },
+    { type:'drikkif', text:'Drink 3 sips if you\'ve cried in a bathroom at a party', sub:'You know who you are → drink!', intensity:2 },
+    { type:'drikkif', text:'Drink 2 sips if you\'ve posted something just so a specific person would see it', sub:'You know who you are → drink!', intensity:2 },
+    { type:'drikkif', text:'Drink 3 sips if you\'ve ghosted someone and still watched all their stories', sub:'You know who you are → drink!', intensity:2 },
+    { type:'drikkif', text:'Drink 2 sips if you\'ve counted the hours since he last replied and started analysing it', sub:'You know who you are → drink!', intensity:2 },
+  ]
+};
+
 // Weighted type pool: 40 entries — music appears exactly once, wheel exactly twice
 // 1=wheel(2), 2=nhie(6), 3=music(1), 4=challenges(31)
 const GASSED_TYPE_POOL = [
@@ -8404,6 +8643,21 @@ function gassedTurn(skipCapture) {
   const cfg = app.gassedConfig || { drinkLevel: 2, challengeLevel: 2 };
   const drinkLvl = cfg.drinkLevel || 2;
   const challLvl = cfg.challengeLevel || 2;
+  const gameMode = cfg.mode || 'gets-gassed';
+
+  // Resolve mode-specific pools
+  const _modeNhiePool     = gameMode === 'testo'       ? TESTO_NHIE[app.lang]
+                          : gameMode === 'girls-night' ? GIRLS_NIGHT_NHIE[app.lang]
+                          : CONTENT.nhie[app.lang];
+  const _modeNhieIntens   = gameMode === 'testo'       ? TESTO_NHIE_INTENSITY[app.lang]
+                          : gameMode === 'girls-night' ? GIRLS_NIGHT_NHIE_INTENSITY[app.lang]
+                          : NHIE_INTENSITY[app.lang] || [];
+  const _modeChalPool     = gameMode === 'testo'       ? (TESTO_CHALLENGES[app.lang] || TESTO_CHALLENGES.no)
+                          : gameMode === 'girls-night' ? (GIRLS_NIGHT_CHALLENGES[app.lang] || GIRLS_NIGHT_CHALLENGES.no)
+                          : (CARD_CHALLENGES[app.lang] || CARD_CHALLENGES.no);
+  const _modeChalIntens   = gameMode === 'testo'       ? (_modeChalPool.map(c => c.intensity || 1))
+                          : gameMode === 'girls-night' ? (_modeChalPool.map(c => c.intensity || 1))
+                          : (CARD_CHALLENGES_INTENSITY[app.lang] || CARD_CHALLENGES_INTENSITY.no);
 
   try {
     if (type === 2) {
@@ -8412,8 +8666,8 @@ function gassedTurn(skipCapture) {
       if (!(g.nhieUsed instanceof Set)) g.nhieUsed = new Set();
       $('gs-nhie-prefix').textContent = isNo ? 'Jeg har aldri' : 'Never Have I Ever';
       $('gs-nhie-prefix').style.display = '';
-      const pool = CONTENT.nhie[app.lang];
-      const intensArr = NHIE_INTENSITY[app.lang] || [];
+      const pool = _modeNhiePool;
+      const intensArr = _modeNhieIntens;
       const available = gcBuildFilteredPool(pool, intensArr, g.nhieUsed, challLvl);
       let idx;
       if (available.length === 0) { g.nhieUsed = new Set(); idx = Math.floor(Math.random() * pool.length); }
@@ -8427,10 +8681,10 @@ function gassedTurn(skipCapture) {
     } else if (type === 4) {
       // ── Utfordring ──
       if (!(g.cardsUsed instanceof Set)) g.cardsUsed = new Set();
-      const bpool = CARD_CHALLENGES[app.lang] || CARD_CHALLENGES.no;
-      const bIntens = CARD_CHALLENGES_INTENSITY[app.lang] || CARD_CHALLENGES_INTENSITY.no;
-      // Dilemma (tommel opp/ned) vises kun 1% av tilfellene
-      const _wantDilemma = Math.random() < 0.01;
+      const bpool = _modeChalPool;
+      const bIntens = _modeChalIntens;
+      // Dilemma (tommel opp/ned) vises kun 1% av tilfellene (bare i standard modus)
+      const _wantDilemma = gameMode === 'gets-gassed' && Math.random() < 0.01;
       // Build intensity-filtered pool, then apply dilemma filter on top
       const allWithinIntens = gcBuildFilteredPool(bpool, bIntens, g.cardsUsed, challLvl);
       const _bfiltered = allWithinIntens.filter(i => _wantDilemma ? bpool[i].type === 'dilemma' : bpool[i].type !== 'dilemma');
