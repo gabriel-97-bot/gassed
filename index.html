@@ -804,22 +804,7 @@
       padding: 10px 12px 10px; border-radius: 14px; gap: 4px;
     }
     .home-game-btn.hgb-small .home-game-btn-icon { font-size: 1.3rem; }
-      body.game-active #rotate-prompt { display: flex; }
-    }
-    .rotate-icon {
-      font-size: 4rem; animation: rotateSpin 2s ease-in-out infinite;
-    }
-    @keyframes rotateSpin {
-      0%   { transform: rotate(0deg); }
-      40%  { transform: rotate(90deg); }
-      60%  { transform: rotate(90deg); }
-      100% { transform: rotate(90deg); }
-    }
-    .rotate-text {
-      font-family: 'Boogaloo', sans-serif;
-      font-size: 1.8rem; letter-spacing: 3px; text-transform: uppercase;
-      color: #EF9F27;
-    }
+    #rotate-prompt { display: none !important; }
 
     /* ── Gassed sub-game return button (floats over ring/wheel screen) ── */
 
