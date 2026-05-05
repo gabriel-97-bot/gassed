@@ -804,30 +804,6 @@
       padding: 10px 12px 10px; border-radius: 14px; gap: 4px;
     }
     .home-game-btn.hgb-small .home-game-btn-icon { font-size: 1.3rem; }
-    .home-game-btn.hgb-small .home-game-btn-title { font-size: 1.2rem; white-space: nowrap; }
-    .home-game-btn.hgb-tod::before    { background: linear-gradient(90deg,var(--red),var(--navy)); }
-    .home-game-btn.hgb-trivia::before { background: var(--gold); }
-    .home-game-btn.hgb-horse::before  { background: linear-gradient(90deg,var(--gold),#002868); }
-    .home-game-btn.hgb-jeopardy::before { background: #c2185b; }
-    /* Session btn on home: outline share style */
-    #session-share-btn-home {
-      width: auto; align-self: center; margin-top: 0;
-      font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.85);
-      background: transparent; border: 1.5px solid rgba(255,255,255,0.35);
-      border-radius: 20px; padding: 8px 20px;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    #session-share-btn-home:active { border-color: rgba(255,255,255,0.7); color: #fff; }
-
-    /* ── Rotate prompt (portrait warning inside a game on mobile) ── */
-    #rotate-prompt {
-      display: none;
-      position: fixed; inset: 0; z-index: 9000;
-      background: var(--bg);
-      flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-    }
-    /* Show only in portrait orientation when game is active (real mobile) */
-    @media (orientation: portrait) {
       body.game-active #rotate-prompt { display: flex; }
     }
     .rotate-icon {
@@ -991,9 +967,6 @@
     .game-card:hover::after { opacity: 1; }
     .game-card:active { transform: scale(0.96); box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
 
-    .game-card.ring::before  { background: var(--red); }
-    .game-card.ring:hover    { box-shadow: 0 14px 48px rgba(239,43,45,0.22), 0 4px 12px rgba(0,0,0,0.35); }
-    .game-card.ring::after   { background: radial-gradient(ellipse at 50% 0%, rgba(239,43,45,0.14), transparent 65%); }
 
     .game-card.water::before { background: linear-gradient(90deg,#002868,#2563eb); }
     .game-card.water:hover   { box-shadow: 0 14px 48px rgba(37,99,235,0.2), 0 4px 12px rgba(0,0,0,0.35); }
@@ -1007,13 +980,7 @@
     .game-card.trivia:hover  { box-shadow: 0 14px 48px rgba(201,168,76,0.22), 0 4px 12px rgba(0,0,0,0.35); }
     .game-card.trivia::after { background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.14), transparent 65%); }
 
-    .game-card.horse::before  { background: linear-gradient(90deg,var(--gold),#002868); }
-    .game-card.horse:hover    { box-shadow: 0 14px 48px rgba(201,168,76,0.18), 0 4px 12px rgba(0,0,0,0.35); }
-    .game-card.horse::after   { background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12), transparent 65%); }
 
-    .game-card.wheel::before  { background: linear-gradient(90deg,#002868,var(--red)); }
-    .game-card.wheel:hover    { box-shadow: 0 14px 48px rgba(0,40,104,0.2), 0 4px 12px rgba(0,0,0,0.35); }
-    .game-card.wheel::after   { background: radial-gradient(ellipse at 50% 0%, rgba(0,40,104,0.14), transparent 65%); }
 
     .game-card.jeopardy { background: linear-gradient(135deg, #880e4f 0%, #c2185b 100%); }
 
@@ -1034,18 +1001,6 @@
     .edit-players-link:hover { background: rgba(255,255,255,0.2); color: #fff; }
 
     /* ── Screen 3: Ring of Fire ── */
-    #screen-ring {
-      font-family: 'Georgia', serif;
-      color: #f5e6c8;
-      background: transparent;   /* ild-canvas lyser gjennom */
-      padding-top: 60px; padding-bottom: 96px;
-    }
-    .ring-top {
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      background: transparent;
-      border-radius: 18px; padding: 8px 28px 10px;
-      margin-bottom: 10px; width: 100%;
-    }
     .ring-title-row {
       display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center;
     }
@@ -1062,7 +1017,6 @@
       backdrop-filter: blur(6px); transition: opacity 0.2s;
     }
     #mute-btn:active { opacity: 0.6; }
-    .ring-stats { display: none; }
     /* Gassed sub-game player banner (ring + wheel) */
     .kings-row { display: flex; gap: 12px; }
     .king-cup {
@@ -1152,31 +1106,6 @@
     .rule-panel.empty .rule-desc { color: rgba(255,255,255,0.28); font-style: italic; }
     .deck-info { font-size: 0.82rem; color: #7a6040; letter-spacing: 1px; margin: 4px 0; }
     /* Ring of Fire — draw button as a fire ring */
-    .ring-draw-btn {
-      width: 160px; height: 160px;
-      border-radius: 50%; border: none; cursor: pointer;
-      position: relative; padding: 8px; flex-shrink: 0;
-      background: conic-gradient(
-        from 0deg,
-        #ff0000 0deg,   #ff5500 45deg,  #ffcc00 90deg,
-        #ff8800 135deg, #ff2200 180deg, #ffaa00 225deg,
-        #ff3300 270deg, #ffcc00 315deg, #ff0000 360deg
-      );
-      box-shadow:
-        0 0 0 3px rgba(255,100,0,0.6),
-        0 0 18px 6px rgba(255,80,0,0.8),
-        0 0 36px 12px rgba(255,40,0,0.55),
-        0 0 64px 22px rgba(255,10,0,0.3),
-        inset 0 0 16px rgba(255,60,0,0.2);
-      animation: ringFirePulse 1.1s ease-in-out infinite alternate,
-                 ringFireSpin  5s linear infinite;
-    }
-    .ring-draw-btn::before {
-      content: '';
-      position: absolute; inset: 8px; border-radius: 50%;
-      background: radial-gradient(circle at 50% 60%, #200400, #0a0000);
-      box-shadow: inset 0 0 20px rgba(255,40,0,0.15);
-    }
     .ring-draw-inner {
       position: relative; z-index: 1;
       width: 100%; height: 100%;
@@ -1193,13 +1122,6 @@
         0 0 18px rgba(255,80,0,0.9),
         0 0 32px rgba(255,40,0,0.6);
     }
-    .ring-draw-btn:not(:disabled):active { transform: scale(0.93); }
-    .ring-draw-btn:disabled { opacity: 0.28; cursor: not-allowed; animation: none; }
-    @keyframes ringFireSpin {
-      from { filter: hue-rotate(0deg)  brightness(1.05); }
-      to   { filter: hue-rotate(28deg) brightness(1.35); }
-    }
-    @keyframes ringFirePulse {
       from {
         box-shadow:
           0 0 0 3px rgba(255,100,0,0.6),
@@ -1219,18 +1141,6 @@
     }
 
     /* Ring overlay */
-    .ring-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.92);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      z-index: 300;
-      flex-direction: column; align-items: center; justify-content: center;
-      gap: 20px; text-align: center; animation: fadeIn 0.5s ease;
-    }
-    .ring-overlay.show { display: flex; }
-    .ring-overlay .overlay-icon { font-size: 4rem; }
-    .ring-overlay h2 { font-size: 2.4rem; color: #ff4400; text-shadow: 0 0 40px rgba(255,60,0,0.9); letter-spacing: 4px; font-family: 'Georgia', serif; }
-    .ring-overlay p { font-size: 1rem; color: #c9a96e; max-width: 300px; line-height: 1.6; }
     .restart-btn {
       padding: 14px 44px; font-size: 1rem; font-family: 'Georgia', serif;
       letter-spacing: 2px; text-transform: uppercase;
@@ -1657,8 +1567,6 @@
     }
     @media (max-height: 700px) {
       .screen { padding-top: 58px; }
-      #screen-ring { padding-top: 58px; }
-      .ring-top { padding: 6px 20px 8px; }
     }
 
     /* ── Session badge (romkode-viser) ── */
@@ -1839,15 +1747,6 @@
       .game-card-icon { font-size: 1.8rem; }
 
       /* ── Ring of Fire: kort til venstre, regel-panel til høyre ── */
-      #screen-ring {
-        display: grid;
-        grid-template-areas: "top   top" "card  rules";
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto 1fr;
-        padding: 36px 12px 8px; gap: 8px; align-items: start;
-      }
-      .ring-top  { grid-area: top; padding: 0; margin-bottom: 0; gap: 6px; }
-      .ring-stats { font-size: 0.82rem; gap: 18px; }
       .kings-row { gap: 8px; }
       .king-cup  { width: 24px; height: 28px; }
       .king-cup::before { width: 16px; height: 5px; top: -5px; }
@@ -1859,17 +1758,6 @@
       .rule-panel { grid-area: rules; align-self: center; font-size: 0.95rem; }
 
       /* ── Lykkehjulet: hjul sentrert, snurr-knapp ved siden ── */
-      #screen-wheel {
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: flex-start;
-        padding: 36px 12px 8px; gap: 6px; overflow: hidden;
-      }
-      .wheel-main {
-        flex: 1; flex-direction: row; align-items: center;
-        justify-content: center; gap: 20px;
-      }
-      .wheel-stage { width: min(calc(100dvh - 76px), 44vw); }
-      .wheel-spin-btn { width: 68px; height: 68px; font-size: 0.68rem; }
 
       /* ── Nøtt eller Sannhet: hjul til venstre, kontroller til høyre ── */
       #screen-tod {
@@ -1904,35 +1792,14 @@
       .trivia-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 
       /* ── Veddeløpet ── */
-      #screen-horse { padding-top: 36px; }
 
     }
 
     /* ── Veddeløpet ── */
     /* ── Horse race – layout ── */
-    #screen-horse { gap: 10px; padding-top: 64px; overflow-y: auto; }
-    #horse-phase-racing { display: flex; flex-direction: column; align-items: stretch; width: 100%; flex: 1; min-height: 0; gap: 8px; }
-    .horse-race-header { width: 100%; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-    .horse-deck-badge {
-      background: rgba(201,168,76,0.14); border: 1px solid rgba(201,168,76,0.4);
-      border-radius: 100px; padding: 5px 14px;
-      font-size: 0.82rem; color: var(--gold); font-weight: 700;
-    }
 
     /* ── Derby track (vertical — horses run bottom→top) ── */
-    .horse-track-container {
-      width: 100%; flex: 1; min-height: 0;
-      display: flex; flex-direction: row;
-    }
     /* Hurdle cards on LEFT side */
-    .horse-hurdles-above {
-      display: flex; flex-direction: column;
-      width: 46px; flex-shrink: 0;
-      align-items: flex-end;
-    }
-    .horse-hca-finish { height: 24px; flex-shrink: 0; } /* 22px finish-row + 2px top border */
-    .horse-hca-start  { height: 82px; flex-shrink: 0; } /* 40px start-row + 2px border + 40px lane badge */
-    .horse-hca-area   { flex: 1; position: relative; width: 46px; }
     .hurdle-above-item {
       position: absolute; right: 0; transform: translateY(-50%);
       display: flex; flex-direction: row-reverse; align-items: center;
@@ -1953,133 +1820,23 @@
     .hurdle-above-item.triggered .hurdle-above-line { border-color: rgba(255,255,255,0.18); }
 
     /* Track wrap — now a column (finish on top, start on bottom) */
-    .horse-track-wrap {
-      flex: 1;
-      background: #1b5e1b;
-      border-radius: 14px; overflow: hidden;
-      display: flex; flex-direction: column;
-      border: 2px solid rgba(255,255,255,0.1);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
-      position: relative;
-    }
 
     /* FINISH row (top) */
-    .horse-finish-col {
-      height: 22px; flex-shrink: 0; width: 100%;
-      background: repeating-linear-gradient(
-        90deg, #111 0px, #111 11px, #fff 11px, #fff 22px
-      );
-      border-bottom: 2px solid rgba(255,255,255,0.2);
-      position: relative;
-      display: flex; align-items: center; justify-content: flex-end;
-      padding-right: 6px;
-    }
-    .horse-finish-col::before {
-      content: '🏁';
-      font-size: 0.9rem; line-height: 1;
-    }
 
     /* START row (bottom) */
-    .horse-start-col {
-      height: 40px; flex-shrink: 0; width: 100%;
-      background: rgba(0,0,0,0.35);
-      border-top: 2px solid rgba(255,255,255,0.15);
-      display: flex; flex-direction: row; align-items: center; justify-content: center;
-      gap: 6px;
-    }
-    .horse-start-label {
-      font-size: 0.6rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-    }
-    .horse-gate-bars { display: flex; flex-direction: column; gap: 3px; }
-    .horse-gate-bar {
-      width: 22px; height: 3px; border-radius: 2px;
-      background: rgba(255,255,255,0.35);
-    }
 
     /* Lanes row — each lane is a vertical column */
-    .horse-lanes-col { flex: 1; display: flex; flex-direction: row; min-height: 0; }
 
     /* Single lane (vertical column) */
-    .horse-lane {
-      flex: 1; display: flex; flex-direction: column; align-items: stretch;
-      border-right: 1px solid rgba(0,0,0,0.3);
-      position: relative;
-    }
-    .horse-lane:last-child { border-right: none; }
-    .horse-lane:nth-child(odd)  { background: rgba(0,0,0,0.32); }
-    .horse-lane:nth-child(even) { background: rgba(255,255,255,0.10); }
 
     /* Lane track surface (top part, flex:1) */
-    .horse-lane-track {
-      flex: 1; position: relative;
-      background: linear-gradient(180deg,
-        rgba(0,0,0,0.20)         0%,    rgba(0,0,0,0.20)         11.11%,
-        rgba(255,255,255,0.07)   11.11%,rgba(255,255,255,0.07)   22.22%,
-        rgba(0,0,0,0.20)         22.22%,rgba(0,0,0,0.20)         33.33%,
-        rgba(255,255,255,0.07)   33.33%,rgba(255,255,255,0.07)   44.44%,
-        rgba(0,0,0,0.20)         44.44%,rgba(0,0,0,0.20)         55.56%,
-        rgba(255,255,255,0.07)   55.56%,rgba(255,255,255,0.07)   66.67%,
-        rgba(0,0,0,0.20)         66.67%,rgba(0,0,0,0.20)         77.78%,
-        rgba(255,255,255,0.07)   77.78%,rgba(255,255,255,0.07)   88.89%,
-        rgba(0,0,0,0.20)         88.89%,rgba(0,0,0,0.20)         100%
-      );
-    }
     /* centre vertical dashed line */
-    .horse-lane-track::after {
-      content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
-      background: repeating-linear-gradient(180deg, rgba(255,255,255,0.12) 0, rgba(255,255,255,0.12) 8px, transparent 8px, transparent 16px);
-      transform: translateX(-50%);
-    }
 
     /* Lane badge at bottom */
-    .horse-lane-badge {
-      height: 40px; flex-shrink: 0;
-      display: flex; flex-direction: row;
-      align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.25); border-top: 1px solid rgba(255,255,255,0.08);
-      gap: 4px;
-    }
-    .horse-lane-num { font-size: 0.55rem; font-weight: 900; color: rgba(255,255,255,0.35); letter-spacing: 0.5px; }
-    .horse-lane-sym { font-size: 1.4rem; line-height: 1; }
-    .horse-lane-sym.red-suit   { color: #ff6060; filter: drop-shadow(0 0 4px rgba(255,80,80,0.6)); }
-    .horse-lane-sym.black-suit { color: #e8e8ff; filter: drop-shadow(0 0 4px rgba(200,200,255,0.4)); }
 
     /* Horse jockey piece — centered horizontally, moves vertically */
-    .horse-piece {
-      position: absolute; left: 50%; transform: translateX(-50%) rotate(90deg);
-      width: 48px; height: 48px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.6rem; line-height: 1;
-      transition: top 0.55s cubic-bezier(0.34,1.4,0.64,1);
-      z-index: 3; cursor: default;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
-    }
-    @keyframes horseFlashRed {
-      0%   { filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8)); }
-      25%  { filter: drop-shadow(0 0 22px rgba(255,30,30,1)) drop-shadow(0 0 40px rgba(255,30,30,0.6)); }
-      55%  { filter: drop-shadow(0 0 10px rgba(255,80,80,0.5)) drop-shadow(0 2px 8px rgba(0,0,0,0.8)); }
-      80%  { filter: drop-shadow(0 0 18px rgba(255,30,30,0.9)) drop-shadow(0 2px 8px rgba(0,0,0,0.8)); }
-      100% { filter: drop-shadow(0 0 12px rgba(255,50,50,0.7)) drop-shadow(0 2px 8px rgba(0,0,0,0.8)); }
-    }
-    .horse-piece.flash-red {
       animation: horseFlashRed 0.45s ease-in-out forwards;
     }
-    .horse-piece.stepping-back {
-      transition: top 1.05s cubic-bezier(0.25, 0, 0.5, 1) !important;
-      filter: drop-shadow(0 0 12px rgba(255,50,50,0.75)) drop-shadow(0 2px 8px rgba(0,0,0,0.8));
-    }
-    .horse-track-wrap.race-finishing { overflow: visible; }
-    .horse-piece.race-winner {
-      transition: top 0.65s ease-in !important;
-      z-index: 20;
-      filter: drop-shadow(0 0 20px rgba(255,220,0,1)) drop-shadow(0 2px 8px rgba(0,0,0,0.8));
-    }
-    @keyframes horseFireworkFloat {
-      0%   { transform: translateY(0) scale(0.4) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-80px) scale(1.5) rotate(25deg); opacity: 0; }
-    }
-    .horse-firework-emoji {
       position: absolute;
       font-size: 1.8rem;
       pointer-events: none;
@@ -2096,9 +1853,6 @@
     .hurdle-mark.type-all    { background: rgba(239,43,45,0.85); }
     .hurdle-mark.type-leader { background: rgba(201,168,76,0.9); }
     .hurdle-mark.triggered   { opacity: 0.15; }
-    .horse-hurdle-section { width: 100%; }
-    .horse-hurdle-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(201,168,76,0.6); margin-bottom: 5px; }
-    .horse-hurdle-row { display: flex; gap: 5px; flex-wrap: nowrap; justify-content: space-between; }
     .hurdle-card {
       flex: 1; height: 42px; border-radius: 7px;
       background: rgba(0,40,104,0.5);
@@ -2117,19 +1871,6 @@
     .hurdle-card.flipped.black { color: #111; }
     .hurdle-card.flipped.type-all    { border-color: #EF2B2D; background: #fff5f5; }
     .hurdle-card.flipped.type-leader { border-color: #C9A84C; background: #fffdf0; }
-    .horse-last-flip { font-size: 0.88rem; color: var(--muted); text-align: center; }
-    #horse-last-card-label { font-weight: 700; color: var(--text); margin-left: 4px; }
-    .horse-event-msg {
-      width: 100%; flex-shrink: 0; min-height: 50px;
-      text-align: center; padding: 12px 16px; border-radius: 12px;
-      background: rgba(239,43,45,0.12); border: 1px solid rgba(239,43,45,0.3);
-      font-size: 0.9rem; color: var(--text); font-weight: 600;
-      display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    }
-    .horse-event-msg.visible { animation: horseEvent 0.4s cubic-bezier(0.22,1,0.36,1); }
-    @keyframes horseEvent { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
     /* Small left-side hurdle card wrapper + emoji */
     .hca-card-wrap { position: relative; display: inline-block; line-height: 0; }
     .hca-emoji {
@@ -2154,13 +1895,6 @@
     }
 
     /* Hurdle pop-up modal */
-    .horse-hurdle-modal {
-      position: absolute; inset: 0; z-index: 60;
-      background: rgba(0,0,0,0.72);
-      display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-      animation: hhmFadeIn 0.22s ease;
-    }
     @keyframes hhmFadeIn { from { opacity: 0; } to { opacity: 1; } }
     .hhm-card {
       background: rgba(18,22,42,0.97);
@@ -2463,17 +2197,6 @@
     }
     .cem-btn-quit:active { transform: scale(0.96); }
 
-    .horse-winner-banner {
-      width: 100%; text-align: center; padding: 24px; border-radius: 20px;
-      border: 1px solid rgba(201,168,76,0.4);
-      background: rgba(201,168,76,0.1);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      margin-bottom: 14px;
-      box-shadow: 0 8px 36px rgba(201,168,76,0.18), inset 0 1px 0 rgba(201,168,76,0.18);
-    }
-    .horse-winner-banner .win-emoji { font-size: 3rem; display: block; margin-bottom: 8px; }
-    .horse-winner-banner .win-title { font-size: 1.5rem; font-weight: 800; color: var(--gold); letter-spacing: 2px; display: block; }
-    .horse-winner-banner .win-sub   { font-size: 0.88rem; color: var(--muted); margin-top: 6px; display: block; }
     .bet-row {
       display: flex; flex-direction: column; gap: 6px;
       padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
@@ -2511,13 +2234,6 @@
     .bet-amount-suffix { font-size: 0.72rem; color: var(--dim); }
 
     /* Pre-race drink modal */
-    #horse-prerace-modal {
-      position: absolute; inset: 0; z-index: 65;
-      background: rgba(0,0,0,0.82);
-      display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      animation: hhmFadeIn 0.25s ease;
-    }
     .hpm-card {
       background: rgba(14,18,38,0.98);
       border: 1px solid rgba(255,255,255,0.1);
@@ -2550,28 +2266,10 @@
     .hpm-start:active { transform: scale(0.97); }
 
     /* Winner payout list */
-    .horse-payout-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-    .horse-payout-row:last-child { border-bottom: none; }
     .hpr-name { font-size: 0.95rem; color: var(--text); font-weight: 600; }
     .hpr-result { font-size: 0.88rem; font-weight: 700; }
     .hpr-result.win  { color: var(--gold); }
     .hpr-result.lose { color: var(--muted); }
-    .horse-flip-area {
-      perspective: 1000px;
-      width: clamp(120px,18vh,150px); height: clamp(168px,25.2vh,210px);
-      cursor: pointer; margin: 0 auto; flex-shrink: 0;
-    }
-    .horse-flip-card {
-      width: 100%; height: 100%; border-radius: 12px;
-      position: relative; transform-style: preserve-3d;
-      transition: transform 0.4s cubic-bezier(0.45,0,0.55,1);
-      will-change: transform; user-select: none;
-    }
-    .horse-flip-card.flipped { transform: rotateY(180deg); }
-    .horse-flip-area:active .horse-flip-card:not(.flipped) { transform: rotateY(20deg); }
 
     /* ── Trivia Quiz ── */
     #screen-trivia { gap: 16px; padding-top: 110px; overflow: hidden; align-items: stretch; }
@@ -2627,54 +2325,13 @@
     .trivia-done-sub { font-size: 0.9rem; color: var(--muted); }
 
     /* ── Lykkehjulet ── */
-    #screen-wheel {
-      gap: 8px; padding: 64px 4px 10px; overflow: hidden;
-      align-items: center;
-    }
-    .wheel-main {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 10px; flex: 1; justify-content: center;
-    }
-    .wheel-stage { width: min(420px, calc(100vw - 8px)); aspect-ratio: 1; flex-shrink: 0; }
-    .wheel-stage canvas { width: 100%; height: 100%; display: block; }
-    .wheel-spin-btn {
-      flex-shrink: 0; width: 72px; height: 72px; border-radius: 50%;
-      border: 2px solid rgba(201,168,76,0.5);
-      background: linear-gradient(135deg, #EF2B2D, #c0231e);
-      color: #fff; font-size: 0.7rem; font-weight: 900; letter-spacing: 1px;
-      cursor: pointer; transition: transform 0.15s cubic-bezier(0.22,1,0.36,1);
-      box-shadow: 0 0 0 4px rgba(239,43,45,0.2), 0 0 32px rgba(239,43,45,0.45);
-      animation: wPulse 2.3s ease-in-out infinite;
-    }
-    .wheel-spin-btn:not(:disabled):active { transform: scale(0.86); }
-    .wheel-spin-btn:disabled { opacity: 0.5; animation: none; cursor: default; }
     @keyframes wPulse {
       0%,100% { box-shadow: 0 0 0 4px rgba(239,43,45,0.15), 0 0 20px rgba(239,43,45,0.35); }
       50%      { box-shadow: 0 0 0 8px rgba(239,43,45,0.1), 0 0 44px rgba(239,43,45,0.75), 0 0 60px rgba(239,43,45,0.15); }
     }
     /* Result overlay — glass rectangle over the wheel */
-    .wheel-result-card {
-      position: absolute; inset: 0; z-index: 50;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-      cursor: pointer;
-      animation: wResultFade 0.25s ease;
-    }
     @keyframes wResultFade { from { opacity: 0; } to { opacity: 1; } }
-    .wheel-result-glass {
-      background: rgba(255,255,255,0.09);
-      backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 28px; padding: 32px 40px;
-      text-align: center; max-width: min(340px, 85%);
-      box-shadow: 0 8px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-      animation: wResultPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    }
     @keyframes wResultPop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .wheel-result-player { font-family: 'Boogaloo', sans-serif; font-size: 1.8rem; color: #EF9F27; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
-    .wheel-result-desc { font-size: 1.1rem; font-weight: 600; color: #fff; line-height: 1.5; text-align: center; }
-    .wheel-result-hint { margin-top: 16px; font-size: 0.72rem; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; }
 
     /* ══════════════════════════════════════════════════
        DESKTOP: iPhone 15 Pro preview frame
@@ -2765,11 +2422,7 @@
       #screen-home { padding-top: 162px; }
 
       /* Screens with their own top structure */
-      #screen-ring  { padding-top: 110px; }
-      #screen-horse { padding-top: 124px; }
-      #screen-wheel { padding-top: 110px; gap: 6px; }
       #screen-tod   { padding-top: 110px; }
-      .wheel-stage  { width: min(330px, 100%); }
       .tod-picker-stage { width: min(300px, 100%); }
 
       /* Floating buttons below Dynamic Island */
@@ -2843,7 +2496,6 @@
       body.game-active .back-btn    { top: 12px; left: 16px; }
       body.game-active #settings-btn { top: 12px; right: 16px; }
       body.game-active #screen-home { padding-top: 36px; }
-      body.game-active #screen-horse { padding-top: 36px; overflow-y: auto; }
       body.game-active #screen-waterfall { padding: 36px 12px 8px; gap: 10px; }
       body.game-active .wf-challenge-text { font-size: 1.3rem; line-height: 1.35; min-height: auto; }
       body.game-active #screen-trivia { padding: 36px 52px 8px 52px; gap: 6px; }
@@ -2856,15 +2508,6 @@
       body.game-active .trivia-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 
       /* Ring of Fire: kort venstre, regel høyre */
-      body.game-active #screen-ring {
-        display: grid;
-        grid-template-areas: "top top" "card rules";
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto 1fr;
-        padding: 36px 12px 8px; gap: 8px; align-items: start;
-      }
-      body.game-active .ring-top   { grid-area: top; padding: 0; margin-bottom: 0; }
-      body.game-active .ring-stats { font-size: 0.78rem; gap: 14px; }
       body.game-active .kings-row  { gap: 6px; }
       body.game-active .king-cup   { width: 20px; height: 24px; }
       body.game-active .king-cup::before { width: 14px; height: 4px; top: -4px; }
@@ -2873,15 +2516,6 @@
       body.game-active .rule-panel { grid-area: rules; align-self: center; font-size: 0.88rem; }
 
       /* Lykkehjulet: hjul sentrert, snurr-knapp ved siden */
-      body.game-active #screen-wheel {
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: flex-start;
-        padding: 36px 12px 8px; gap: 6px; overflow: hidden;
-      }
-      body.game-active #screen-wheel .screen-title { text-align: center; }
-      body.game-active .wheel-main { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 16px; }
-      body.game-active .wheel-stage    { width: 220px; align-self: center; }
-      body.game-active .wheel-spin-btn { width: 58px; height: 58px; font-size: 0.58rem; }
 
       /* Nøtt eller Sannhet: hjul venstre, kontroller høyre */
       body.game-active #screen-tod {
@@ -3237,14 +2871,6 @@
           <div class="home-game-btn-icon">🧠</div>
           <div class="home-game-btn-title">Trivia Quiz</div>
         </button>
-        <button class="home-game-btn hgb-small hgb-horse" onclick="return false;" style="position:relative;overflow:hidden;cursor:default;">
-          <div class="home-game-btn-icon">🐎</div>
-          <div class="home-game-btn-title">Veddeløpet</div>
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.72);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:inherit;pointer-events:none;">
-            <span style="font-size:1.1rem;">🚧</span>
-            <span style="font-size:0.65rem;font-weight:800;color:#fff;letter-spacing:0.5px;">Kommer snart</span>
-          </div>
-        </button>
         <button class="home-game-btn hgb-small hgb-jeopardy" onclick="startGame('jeopardy')">
           <div class="home-game-btn-icon">🍺</div>
           <div class="home-game-btn-title">Jeopardy</div>
@@ -3265,71 +2891,6 @@
       </div>
       <div id="session-join-status"></div>
       <div class="edit-players-link" onclick="openSettings()" data-t="home.editPlayers">Endre spillere</div>
-    </div>
-  </div>
-
-  <!-- Screen 3: Ring of Fire -->
-  <div class="screen" id="screen-ring">
-    <div class="ring-top">
-      <div class="ring-title-row">
-        <div class="ring-title" data-t="ring.title">🔥 Ring of Fire</div>
-      </div>
-      <div class="ring-stats">
-        <div><span data-t="ring.statsCards">Kort:</span> <strong id="ring-cards-left">52</strong></div>
-        <div><span data-t="ring.statsKings">Konger:</span> <strong id="ring-kings-drawn">0</strong>/4</div>
-      </div>
-    </div>
-
-    <div class="card-area" id="card-area" onclick="drawCard()">
-      <div class="card" id="card">
-        <div class="card-face card-back">
-          <img src="red_card_back.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;">
-        </div>
-        <div class="card-face card-front" id="card-front">
-          <img id="card-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;">
-          <div class="card-rule-badge" id="rule-badge"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="rule-panel empty" id="rule-panel">
-      <div class="rule-name" id="rule-name"></div>
-      <div class="rule-desc" id="rule-desc">Trykk på kortet for å trekke</div>
-    </div>
-
-
-
-  </div>
-
-  <!-- Ring of Fire Game Over Overlay -->
-  <div class="ring-overlay" id="ring-overlay">
-    <div class="overlay-icon">🇳🇴👑</div>
-    <h2 data-t="ring.gameOver">GAME OVER</h2>
-    <p id="ring-overlay-msg" data-t="ring.gameOverMsg">All 4 Kings! Drink the King's Cup!</p>
-    <button class="restart-btn" onclick="restartRing()" data-t="ring.playAgain">Play Again</button>
-  </div>
-
-  <!-- Jeopardy Team Setup Modal -->
-  <div id="jeo-team-modal"></div>
-
-  <!-- Jeopardy Question Overlay -->
-  <div id="jeo-overlay">
-    <div class="jeo-ov-cat" id="jeo-ov-cat"></div>
-    <div id="jeo-state-q">
-      <div class="jeo-ov-team-badge" id="jeo-ov-team"></div>
-      <div class="jeo-ov-question" id="jeo-ov-question"></div>
-      <div class="jeo-ov-stakes" id="jeo-ov-stakes"></div>
-      <div class="jeo-ov-stakes-label" id="jeo-ov-stakes-label"></div>
-      <button class="jeo-btn jeo-btn-reveal" onclick="jeoReveal()">Vis svar 👁</button>
-    </div>
-    <div id="jeo-state-a" style="display:none">
-      <div class="jeo-ov-question" id="jeo-ov-question-a"></div>
-      <div class="jeo-ov-answer" id="jeo-ov-answer"></div>
-      <div id="jeo-verdict-teams"></div>
-    </div>
-    <div id="jeo-state-result" style="display:none">
-      <div class="jeo-ov-result" id="jeo-ov-result"></div>
-      <button class="jeo-btn jeo-btn-close" onclick="jeoClose()">Lukk ✕</button>
     </div>
   </div>
 
@@ -3386,97 +2947,7 @@
     </div>
   </div>
 
-  <!-- Screen: Lykkehjulet -->
-  <div class="screen" id="screen-wheel">
-    <div class="wheel-main">
-      <div class="wheel-stage">
-        <canvas id="wheel-canvas" width="320" height="320"></canvas>
-      </div>
-      <button class="wheel-spin-btn" id="wheel-spin-btn" data-t="wheel.spinBtn" onclick="spinWheels()">SNURR!</button>
-    </div>
-    <!-- Result overlay: tap to dismiss -->
-    <div id="wheel-result-card" class="wheel-result-card" style="display:none" onclick="app.gassed?.inSubGame ? gassedReturnFromSub() : (this.style.display='none')">
-      <div class="wheel-result-glass">
-        <div class="wheel-result-player" id="wheel-result-player"></div>
-        <div class="wheel-result-desc" id="wheel-result-desc"></div>
-        <div class="wheel-result-hint">Trykk for å fortsette</div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Screen 7: Veddeløpet -->
-  <div class="screen" id="screen-horse">
-
-    <!-- PHASE: betting -->
-    <div id="horse-phase-betting">
-      <div class="screen-title" data-t="games.horse">🇳🇴 Veddeløpet</div>
-      <div class="screen-subtitle" data-t="horse.betSubtitle">Pick your horse!</div>
-      <div class="panel" style="width:100%;margin-bottom:14px;">
-        <div id="horse-bet-list"></div>
-      </div>
-      <button class="btn-primary" id="horse-start-btn" onclick="horseStartRace()" disabled data-t="horse.startRace">🏁 Start Race!</button>
-    </div>
-
-    <!-- PHASE: racing -->
-    <div id="horse-phase-racing" style="display:none">
-      <div class="horse-race-header">
-        <div class="screen-title" style="margin-bottom:0;font-size:1.3rem">🐎 <span data-t="games.horse">Veddeløpet</span></div>
-        <div class="horse-deck-badge" id="horse-deck-badge" style="display:none">🃏 44</div>
-      </div>
-
-      <div class="horse-track-container">
-        <div class="horse-hurdles-above" id="horse-hurdles-above"></div>
-        <div class="horse-track-wrap" id="horse-track-wrap"></div>
-      </div>
-
-      <div class="horse-event-msg" id="horse-event-msg" style="visibility:hidden"></div>
-
-      <!-- Hurdle pop-up modal -->
-      <div id="horse-hurdle-modal" class="horse-hurdle-modal" style="display:none" onclick="dismissHorseModal()">
-        <div class="hhm-card" onclick="event.stopPropagation()">
-          <div class="hhm-icon" id="hhm-icon"></div>
-          <div class="hhm-title" id="hhm-title"></div>
-          <div class="hhm-desc" id="hhm-desc"></div>
-          <button class="hhm-ok" onclick="dismissHorseModal()">OK</button>
-        </div>
-      </div>
-
-      <div class="horse-flip-area" id="horse-flip-area" onclick="horseFlip()">
-        <div class="horse-flip-card" id="horse-flip-card">
-          <div class="card-face card-back" style="overflow:hidden;">
-            <img src="red_card_back.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;">
-          </div>
-          <div class="card-face card-front" id="horse-card-front" style="overflow:hidden;">
-            <img id="horse-card-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;">
-            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
-              <span id="horse-big-suit" style="font-size:3.5rem;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE: finished -->
-    <div id="horse-phase-finished" style="display:none">
-      <div class="screen-title" data-t="games.horse">🇳🇴 Veddeløpet</div>
-      <div class="horse-winner-banner" id="horse-winner-banner"></div>
-      <div class="panel" style="width:100%;margin-bottom:14px;" id="horse-result-panel"></div>
-      <button class="btn-primary" style="margin-bottom:10px" onclick="initHorse()" data-t="horse.raceAgain">🔄 Race Again</button>
-      <button class="btn-secondary" onclick="goHome()" data-t="nav.back">← Back</button>
-    </div>
-
-    <!-- Pre-race drink modal (inside screen-horse so it overlays) -->
-    <div id="horse-prerace-modal" style="display:none">
-      <div class="hpm-card">
-        <div class="hpm-icon">🍺</div>
-        <div class="hpm-title" data-t="horse.preraceTitle">Drikk innsatsen din nå!</div>
-        <div class="hpm-sub" data-t="horse.preraceSub">Vinner kan dele ut dobbelt tilbake</div>
-        <ul class="hpm-list" id="hpm-list"></ul>
-        <button class="hpm-start" data-t="horse.preraceStart" onclick="horseConfirmAndStart()">🏁 Start løpet!</button>
-      </div>
-    </div>
-
-  </div>
 
   <!-- Screen: Jeopardy -->
   <div class="screen" id="screen-jeopardy">
@@ -4698,11 +4169,11 @@ const app = {
   lang: 'no',
   players: [],
   currentGame: null,
-  ring: { deck: [], kingsDrawn: 0, pendingCard: null, animating: false, flipped: false },
   nhie: { used: new Set(), current: 0, shuffled: [] },
   tod: { selectedPlayer: null, usedTruths: new Set(), usedDares: new Set(), spinning: false, category: null },
   wf: { used: new Set(), currentPlayer: null, spinning: false },
-  trivia: { questions: [], current: 0, playerIdx: 0, answered: false, usedPerCat: {}, category: null }
+  trivia: { questions: [], current: 0, playerIdx: 0, answered: false, usedPerCat: {}, category: null },
+  _triviaUsed: { geografi: new Set(), musikk: new Set(), blandet: new Set(), film: new Set() }
 };
 
 // ─────────────────────────────────────────────
@@ -4747,8 +4218,8 @@ function getInitial(name) {
 function showScreen(id) {
   if (document.querySelector('.screen.active')?.id === id) return;
 
-  const isGame = ['screen-ring','screen-waterfall','screen-tod','screen-horse','screen-trivia','screen-wheel','screen-jeopardy','screen-gassed'].includes(id);
-  const isRing = id === 'screen-ring';
+  const isGame = ['screen-waterfall','screen-tod','screen-trivia','screen-jeopardy','screen-gassed'].includes(id);
+  const isRing = false;
   const wasGame = document.body.classList.contains('game-active');
 
   // If the game-active state is changing, the phone frame will rotate.
@@ -4796,7 +4267,7 @@ function showScreen(id) {
 
 }
 
-const GAME_SCREENS = ['screen-ring','screen-waterfall','screen-tod','screen-horse','screen-trivia','screen-wheel','screen-jeopardy','screen-gassed'];
+const GAME_SCREENS = ['screen-waterfall','screen-tod','screen-trivia','screen-jeopardy','screen-gassed'];
 
 function selectTodCategory(cat) {
   app.tod.category = cat;
@@ -5236,7 +4707,7 @@ const TRIVIA_QUESTIONS = {
 };
 
 function initTrivia() {
-  app.trivia.usedPerCat = { geografi: new Set(), musikk: new Set(), blandet: new Set(), film: new Set() };
+  app.trivia.usedPerCat = app._triviaUsed;
   app.trivia.playerIdx = 0;
   app.trivia.answered = false;
   document.getElementById('trivia-done-screen').style.display = 'none';
@@ -5358,1435 +4829,6 @@ function triviaRestart() {
   initTrivia();
 }
 
-// ─────────────────────────────────────────────
-// LYKKEHJULET — CONCENTRIC WHEELS
-// ─────────────────────────────────────────────
-const WHEEL_CHALLENGES = [
-  { label: 'Drikk 2',          lines: ['Drikk 2'],             emoji: '🍺', color: '#9f1239', intensity: 1,
-    desc: 'Ta 2 slurker av drikken din.' },
-  { label: 'Drikk 3',          lines: ['Drikk 3'],             emoji: '🍻', color: '#7f1d1d', intensity: 2,
-    desc: 'Ta 3 slurker av drikken din.' },
-  { label: 'Del ut 3',         lines: ['Del ut 3'],            emoji: '🎯', color: '#1e3a8a', intensity: 1,
-    desc: 'Del ut 3 slurker til hvem du vil — eller fordel dem på flere.' },
-  { label: 'Alle drikker',     lines: ['Alle drikker'],        emoji: '💀', color: '#3b0764', intensity: 2,
-    desc: 'Alle spillerne tar 2 slurker!' },
-  { label: 'Gratis',           lines: ['Gratis'],              emoji: '😇', color: '#14532d', intensity: 1,
-    desc: 'Flaks! Du slipper unna — ingen straff denne runden.' },
-  { label: 'Chugg',            lines: ['Chugg'],               emoji: '🥤', color: '#1e3a5f', intensity: 3,
-    desc: 'Shiiet, Chugg drikken din!' },
-];
-
-const WHEEL_PLAYER_COLORS = ['#7f1d1d','#1e3a8a','#3b0764','#14532d','#78350f','#164e63','#4a044e','#065f46'];
-
-function getPlayerWheelSegs() {
-  return app.players.map(function(name, i) {
-    return {
-      label: name.length > 9 ? name.slice(0, 8) + '\u2026' : name,
-      color: WHEEL_PLAYER_COLORS[i % WHEEL_PLAYER_COLORS.length]
-    };
-  });
-}
-
-// Vibrant carnival wheel colors (cycling palette)
-var WHEEL_COLORS = ['#ee1c24','#3cb878','#f26522','#00aef0','#fff200','#e70697','#a186be','#f6989d','#ee1c24','#3cb878','#f26522','#00aef0'];
-// Inner disk player colors (rich, distinct)
-var INNER_COLORS = ['#0047ab','#8b0000','#006400','#8b008b','#b8860b','#2f4f4f','#8b4513','#4b0082','#cc0000','#005f5f'];
-
-function drawConcentricWheels(canvas, outerSegs, innerSegs, outerAngle, innerAngle) {
-  var ctx = canvas.getContext('2d');
-  var S = canvas.width;
-  var cx = S / 2, cy = S / 2;
-  var rimW = Math.round(S * 0.028);   // gold rim width
-  var outerR = S / 2 - rimW - 4;
-  var innerR = Math.round(outerR * 0.51);
-  var TWO_PI = 2 * Math.PI;
-  var no = outerSegs.length;
-  var ni = innerSegs.length;
-  var oSeg = TWO_PI / no;
-  var iSeg = TWO_PI / ni;
-
-  ctx.clearRect(0, 0, S, S);
-
-  // Gold glow ring behind wheel
-  var grd = ctx.createRadialGradient(cx, cy, outerR - 4, cx, cy, outerR + rimW + 16);
-  grd.addColorStop(0, 'rgba(201,168,76,0.55)');
-  grd.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.beginPath();
-  ctx.arc(cx, cy, outerR + rimW + 16, 0, TWO_PI);
-  ctx.fillStyle = grd;
-  ctx.fill();
-
-  // ── OUTER RING (challenges) — clockwise ──
-  for (var i = 0; i < no; i++) {
-    var sa = -Math.PI / 2 + outerAngle + i * oSeg;
-    var ea = sa + oSeg;
-    var mid = sa + oSeg / 2;
-
-    // Donut slice — use vibrant palette colours, ignore per-challenge color
-    ctx.beginPath();
-    ctx.arc(cx, cy, outerR, sa, ea);
-    ctx.arc(cx, cy, innerR + 3, ea, sa, true);
-    ctx.closePath();
-    ctx.fillStyle = WHEEL_COLORS[i % WHEEL_COLORS.length];
-    ctx.fill();
-    // Divider lines
-    ctx.strokeStyle = 'rgba(0,0,0,0.45)';
-    ctx.lineWidth = 1.8;
-    ctx.stroke();
-
-    // Label: emoji + short text, centered at mid-radius of ring
-    var midR = (outerR + innerR + 3) / 2;
-    var lx = cx + midR * Math.cos(mid);
-    var ly = cy + midR * Math.sin(mid);
-
-    var lineH = Math.round(S * 0.034);
-    var lines = outerSegs[i].lines;
-    var emojiH = Math.round(S * 0.042);
-    var blockGap = Math.round(S * 0.008);
-    var totalH = emojiH + blockGap + lines.length * lineH;
-    var startY = -Math.round(totalH / 2);
-    var emojiCY = startY + Math.round(emojiH / 2);
-
-    // Draw emoji upright at its global canvas position (avoids iOS skewing on rotated ctx)
-    // Point (0, emojiCY) in rotated local space maps to:
-    //   gx = lx - emojiCY * sin(mid + PI/2) = lx - emojiCY * cos(mid)
-    //   gy = ly + emojiCY * cos(mid + PI/2) = ly - emojiCY * sin(mid)
-    var emojiGX = lx - emojiCY * Math.cos(mid);
-    var emojiGY = ly - emojiCY * Math.sin(mid);
-    ctx.save();
-    ctx.translate(emojiGX, emojiGY);
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#fff';
-    ctx.shadowColor = 'rgba(0,0,0,0.9)';
-    ctx.shadowBlur = 4;
-    ctx.font = Math.round(S * 0.050) + 'px "Apple Color Emoji","Noto Color Emoji","Segoe UI Emoji",serif';
-    ctx.fillText(outerSegs[i].emoji, 0, 0);
-    ctx.restore();
-
-    // Draw text lines in rotated context (tangential, reads along ring)
-    ctx.save();
-    ctx.translate(lx, ly);
-    ctx.rotate(mid + Math.PI / 2);
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#fff';
-    ctx.shadowColor = 'rgba(0,0,0,0.95)';
-    ctx.shadowBlur = 3;
-    ctx.font = 'bold ' + Math.round(S * 0.033) + 'px -apple-system,sans-serif';
-    for (var li = 0; li < lines.length; li++) {
-      ctx.fillText(lines[li], 0, startY + emojiH + blockGap + Math.round(lineH / 2) + li * lineH);
-    }
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  }
-
-  // ── GOLD RIM ──
-  // Outer gold band
-  ctx.beginPath();
-  ctx.arc(cx, cy, outerR + rimW, 0, TWO_PI);
-  ctx.arc(cx, cy, outerR, TWO_PI, 0, true);
-  ctx.closePath();
-  var rimGrad = ctx.createLinearGradient(cx - outerR, cy, cx + outerR, cy);
-  rimGrad.addColorStop(0,   '#7a5c00');
-  rimGrad.addColorStop(0.2, '#c9a84c');
-  rimGrad.addColorStop(0.5, '#fff9c4');
-  rimGrad.addColorStop(0.8, '#c9a84c');
-  rimGrad.addColorStop(1,   '#7a5c00');
-  ctx.fillStyle = rimGrad;
-  ctx.fill();
-
-  // Tick marks on rim
-  var tickCount = no * 2;
-  for (var t = 0; t < tickCount; t++) {
-    var ta = (TWO_PI / tickCount) * t;
-    var tx1 = cx + (outerR + 2) * Math.cos(ta);
-    var ty1 = cy + (outerR + 2) * Math.sin(ta);
-    var tx2 = cx + (outerR + rimW - 2) * Math.cos(ta);
-    var ty2 = cy + (outerR + rimW - 2) * Math.sin(ta);
-    ctx.beginPath();
-    ctx.moveTo(tx1, ty1);
-    ctx.lineTo(tx2, ty2);
-    ctx.strokeStyle = 'rgba(0,0,0,0.35)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  }
-
-  // Rim outer edge highlight
-  ctx.beginPath();
-  ctx.arc(cx, cy, outerR + rimW, 0, TWO_PI);
-  ctx.strokeStyle = '#b8860b';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-
-  // ── INNER DISK (players) — counter-clockwise (negate angle) ──
-  for (var j = 0; j < ni; j++) {
-    var sa2 = -Math.PI / 2 - innerAngle + j * iSeg;
-    var ea2 = sa2 + iSeg;
-    var mid2 = sa2 + iSeg / 2;
-
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, innerR - 2, sa2, ea2);
-    ctx.closePath();
-    ctx.fillStyle = INNER_COLORS[j % INNER_COLORS.length];
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,0.38)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    // Player name
-    var dist = (innerR - 2) * 0.56;
-    var lx2 = cx + dist * Math.cos(mid2);
-    var ly2 = cy + dist * Math.sin(mid2);
-
-    ctx.save();
-    ctx.translate(lx2, ly2);
-    ctx.rotate(mid2 + Math.PI / 2);
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#fff';
-    ctx.shadowColor = 'rgba(0,0,0,0.9)';
-    ctx.shadowBlur = 4;
-    var fs = ni <= 3 ? Math.round(S * 0.056) : ni <= 5 ? Math.round(S * 0.046) : ni <= 7 ? Math.round(S * 0.038) : Math.round(S * 0.032);
-    ctx.font = 'bold ' + fs + 'px -apple-system,sans-serif';
-    ctx.fillText(innerSegs[j].label, 0, 0);
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  }
-
-  // Separator ring between inner and outer wheels
-  ctx.beginPath();
-  ctx.arc(cx, cy, innerR, 0, TWO_PI);
-  ctx.strokeStyle = 'rgba(255,255,255,0.7)';
-  ctx.lineWidth = 3;
-  ctx.stroke();
-
-  // ── GOLD CENTER HUB ──
-  var capR = Math.round(S * 0.075);
-  var cg = ctx.createRadialGradient(cx - capR * 0.3, cy - capR * 0.3, 0, cx, cy, capR);
-  cg.addColorStop(0,   '#fff9c4');
-  cg.addColorStop(0.35,'#ffd700');
-  cg.addColorStop(0.7, '#b8860b');
-  cg.addColorStop(1,   '#7a5c00');
-  ctx.beginPath();
-  ctx.arc(cx, cy, capR, 0, TWO_PI);
-  ctx.fillStyle = cg;
-  ctx.fill();
-  ctx.strokeStyle = '#7a5c00';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  // Small center dot
-  ctx.beginPath();
-  ctx.arc(cx, cy, Math.round(S * 0.018), 0, TWO_PI);
-  ctx.fillStyle = '#fff9c4';
-  ctx.fill();
-
-  // ── INNER DISK pointer (gold) — points down from separator ring ──
-  var iTipY = cy - innerR + 3;
-  var ipw = Math.round(S * 0.046);
-  var iph = Math.round(S * 0.072);
-  ctx.beginPath();
-  ctx.moveTo(cx, iTipY);
-  ctx.lineTo(cx - ipw, iTipY - iph);
-  ctx.lineTo(cx + ipw, iTipY - iph);
-  ctx.closePath();
-  var ipg = ctx.createLinearGradient(cx, iTipY, cx, iTipY - iph);
-  ipg.addColorStop(0, '#ffd700');
-  ipg.addColorStop(1, '#b8860b');
-  ctx.fillStyle = ipg;
-  ctx.shadowColor = 'rgba(0,0,0,0.8)';
-  ctx.shadowBlur = 8;
-  ctx.fill();
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = '#7a5c00';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-
-  // ── OUTER RING pointer (gold) — points down from above the rim ──
-  var oTipY = cy - outerR + 3;
-  var opw = Math.round(S * 0.058);
-  var oph = Math.round(S * 0.090);
-  ctx.beginPath();
-  ctx.moveTo(cx, oTipY);
-  ctx.lineTo(cx - opw, oTipY - oph);
-  ctx.lineTo(cx + opw, oTipY - oph);
-  ctx.closePath();
-  var opg = ctx.createLinearGradient(cx, oTipY, cx, oTipY - oph);
-  opg.addColorStop(0, '#fff9c4');
-  opg.addColorStop(0.4, '#ffd700');
-  opg.addColorStop(1, '#b8860b');
-  ctx.fillStyle = opg;
-  ctx.shadowColor = 'rgba(0,0,0,0.8)';
-  ctx.shadowBlur = 10;
-  ctx.fill();
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = '#7a5c00';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-}
-
-function drawWheels() {
-  var canvas = document.getElementById('wheel-canvas');
-  if (!canvas) return;
-  drawConcentricWheels(canvas, WHEEL_CHALLENGES, getPlayerWheelSegs(), app.wheel.outerAngle, app.wheel.innerAngle);
-}
-
-function initWheel() {
-  var canvas = document.getElementById('wheel-canvas');
-  if (canvas && canvas.offsetWidth > 0) {
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var sz = Math.round(canvas.offsetWidth * dpr);
-    canvas.width = sz;
-    canvas.height = sz;
-  }
-  if (!app.wheel) {
-    app.wheel = { outerAngle: 0, innerAngle: 0, spinning: false };
-  } else {
-    app.wheel.spinning = false;
-  }
-  document.getElementById('wheel-result-card').style.display = 'none';
-  document.getElementById('wheel-spin-btn').disabled = false;
-  requestAnimationFrame(drawWheels);
-}
-
-// Smooth deceleration — fast start, clean stop, no bounce
-function easeOutQuint(t) {
-  return 1 - Math.pow(1 - t, 5);
-}
-function easeOutCubic(t) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-function spinWheels() {
-  if (app.wheel.spinning) return;
-  app.wheel.spinning = true;
-  SFX.wheelSpin();
-  document.getElementById('wheel-result-card').style.display = 'none';
-  document.getElementById('wheel-spin-btn').disabled = true;
-
-  var TWO_PI = 2 * Math.PI;
-  var n = app.players.length;
-  var playerIdx = Math.floor(Math.random() * n);
-  const _challLvl = (app.gassedConfig && app.gassedConfig.challengeLevel) || 3;
-  const _eligibleWheel = WHEEL_CHALLENGES.map(function(_,i){return i;}).filter(function(i){return (WHEEL_CHALLENGES[i].intensity||1)<=_challLvl;});
-  const _wheelPool = _eligibleWheel.length > 0 ? _eligibleWheel : WHEEL_CHALLENGES.map(function(_,i){return i;});
-  var challengeIdx = _wheelPool[Math.floor(Math.random() * _wheelPool.length)];
-
-  // OUTER wheel (clockwise, fast) — challenge
-  var oSeg = TWO_PI / WHEEL_CHALLENGES.length;
-  var oCur = ((app.wheel.outerAngle % TWO_PI) + TWO_PI) % TWO_PI;
-  var oTarget = ((-(challengeIdx + 0.5) * oSeg) % TWO_PI + TWO_PI) % TWO_PI;
-  var oDelta = (oTarget - oCur + TWO_PI) % TWO_PI;
-  if (oDelta < 0.5) oDelta += TWO_PI;
-  var oFinal = app.wheel.outerAngle + oDelta + 16 * TWO_PI;
-
-  // INNER wheel (counter-clockwise, slow) — player
-  // Drawing uses -innerAngle, so to land on segment i: innerAngle = (i+0.5)*iSeg (mod 2PI)
-  var iSeg = TWO_PI / n;
-  var iCur = ((app.wheel.innerAngle % TWO_PI) + TWO_PI) % TWO_PI;
-  var iTarget = ((playerIdx + 0.5) * iSeg % TWO_PI + TWO_PI) % TWO_PI;
-  var iDelta = (iTarget - iCur + TWO_PI) % TWO_PI;
-  if (iDelta < 0.5) iDelta += TWO_PI;
-  var iFinal = app.wheel.innerAngle + iDelta + 6 * TWO_PI;
-
-  var oStart = app.wheel.outerAngle;
-  var iStart = app.wheel.innerAngle;
-  var iDur = 8000;   // inner (player) stops first
-  var oDur = 12000;  // outer (challenge) stops last — maximum suspense
-  var t0 = performance.now();
-
-  // Store spin params so joiner can replay the animation locally
-  app.wheel.spinParams = { oStart, oFinal, iStart, iFinal, oDur, iDur, startedAt: Date.now() };
-  S.push();
-
-  // Track segment crossings for real-time click sounds
-  var oTickSize = TWO_PI / 12;  // 12 virtual pegs on outer wheel
-  var iTickSize = TWO_PI / Math.max(n, 4) * 0.5;  // ticks based on inner segments
-  var oLastTick = Math.floor(oStart / oTickSize);
-  var iLastTick = Math.floor(iStart / iTickSize);
-  var iStopped = false;
-
-  function frame(now) {
-    var elapsed = now - t0;
-    var ot = Math.min(elapsed / oDur, 1);
-    var it = Math.min(elapsed / iDur, 1);
-
-    app.wheel.outerAngle = oStart + (oFinal - oStart) * easeOutQuint(ot);
-    app.wheel.innerAngle = iStart + (iFinal - iStart) * easeOutQuint(it);
-
-    // Outer wheel clicks — always active until outer stops
-    var oCurTick = Math.floor(app.wheel.outerAngle / oTickSize);
-    var oTicked = oCurTick !== oLastTick;
-    oLastTick = oCurTick;
-
-    // Inner wheel clicks — only while it's still spinning
-    var iTicked = false;
-    if (!iStopped) {
-      var iCurTick = Math.floor(app.wheel.innerAngle / iTickSize);
-      iTicked = iCurTick !== iLastTick;
-      iLastTick = iCurTick;
-      if (it >= 1) iStopped = true;
-    }
-
-    // Fire at most one tick sound per frame to prevent audio overload
-    if (oTicked || iTicked) SFX.wheelTick();
-
-    drawWheels();
-
-    if (ot < 1 || it < 1) {
-      requestAnimationFrame(frame);
-    } else {
-      app.wheel.spinning = false;
-      if (!app.gassed?.inSubGame) document.getElementById('wheel-spin-btn').disabled = false;
-      showWheelResult(playerIdx, challengeIdx);
-    }
-  }
-
-  requestAnimationFrame(frame);
-}
-
-function showWheelResult(playerIdx, challengeIdx) {
-  SFX.wheelReveal();
-  var ch = WHEEL_CHALLENGES[challengeIdx];
-  var drinkLvl = (app.gassedConfig && app.gassedConfig.drinkLevel) || 2;
-  document.getElementById('wheel-result-player').textContent = app.players[playerIdx] || '';
-  document.getElementById('wheel-result-desc').textContent = gcScaleSipsText(ch.desc || '', drinkLvl);
-  document.getElementById('wheel-result-card').style.display = '';
-  S.push();
-}
-
-function getGameInstructions() {
-  const no = app.lang === 'no';
-  return {
-    ring: {
-      icon: '🔥', title: 'Ring of Fire',
-      rules: [
-        { icon: '🃏', text: no ? 'Trekk ett kort om gangen fra bunken.' : 'Draw one card at a time from the deck.' },
-        { icon: '📜', text: no ? 'Hvert kort har en regel: A=Foss, 2=Du drikker, 3=Jeg drikker, 4=Gulv, 5=Gutter, 6=Jenter, 7=Himmel, 8=Kompis, 9=Rim, 10=Kategorier, J=Aldri har jeg, Q=Spørsmålsmester.' : 'Each card has a rule: A=Waterfall, 2=You drink, 3=I drink, 4=Floor, 5=Guys, 6=Girls, 7=Heaven, 8=Buddy, 9=Rhyme, 10=Categories, J=Never Have I Ever, Q=Question Master.' },
-        { icon: '👑', text: no ? 'K = Alle må drikke og skåle for kongen!' : 'K = Everyone drinks and toasts the king!' },
-        { icon: '🔄', text: no ? 'Spillet er over når alle fire konger er trukket.' : 'The game ends when all four kings are drawn.' },
-      ],
-    },
-    waterfall: {
-      icon: '🙈', title: no ? 'Jeg har aldri' : 'Never Have I Ever',
-      rules: [
-        { icon: '📖', text: no ? 'Et tilfeldig "Jeg har aldri…"-utsagn vises.' : 'A random "Never have I ever…" statement is shown.' },
-        { icon: '🍺', text: no ? 'Alle som HAR gjort det drikker!' : 'Everyone who HAS done it drinks!' },
-        { icon: '➡️', text: no ? 'Trykk "Neste" for å få et nytt utsagn.' : 'Tap "Next" to get a new statement.' },
-      ],
-    },
-    tod: {
-      icon: '😏', title: no ? 'Sannhet eller Nøtt' : 'Truth or Dare',
-      rules: [
-        { icon: '🎯', text: no ? 'Velg hvilken spiller som skal svare.' : 'Choose which player has to answer.' },
-        { icon: '🤔', text: no ? 'Velg mellom Sannhet eller Nøtt.' : 'Choose between Truth or Dare.' },
-        { icon: '✅', text: no ? 'Fullfør utfordringen — eller drikk 2 slurker for å slippe unna!' : 'Complete the challenge — or drink 2 sips to skip it!' },
-        { icon: '🔄', text: no ? 'Ta det på omgang rundt bordet.' : 'Take turns around the table.' },
-      ],
-    },
-    horse: {
-      icon: '🐎', title: no ? 'Veddeløpet' : 'Darby Race',
-      rules: [
-        { icon: '💰', text: no ? 'Velg en hestefarge og sett en innsats på 1–5 slurker.' : 'Pick a horse colour and place a bet of 1–5 sips.' },
-        { icon: '🍺', text: no ? 'Du drikker innsatsen din FØR løpet starter — det er prisen for å satse!' : 'You drink your bet BEFORE the race starts — that\'s the price of playing!' },
-        { icon: '🃏', text: no ? 'Flip et kort — hesten med den kortfargen rykker ett steg fremover.' : 'Flip a card — the horse matching that suit moves one step forward.' },
-        { icon: '🚧', text: no ? 'Hindre underveis sender en hest tilbake og den som satset på den drikker.' : 'Hurdles send a horse back — whoever bet on it drinks.' },
-        { icon: '⚡', text: no ? 'Lyn: sisteplass-spillerne drikker 2 slurker.' : 'Lightning: last-place players drink 2 sips.' },
-        { icon: '🏆', text: no ? 'Vinner kan dele ut dobbelt innsats — satser du 3 slurker, deler du ut 6!' : 'Winner hands out double their bet — bet 3 sips, hand out 6!' },
-      ],
-    },
-    trivia: {
-      icon: '🧠', title: no ? 'Trivia Quiz — Individuelt' : 'Trivia Quiz — Individual',
-      rules: [
-        { icon: '🎯', text: no ? 'En spiller er aktiv per spørsmål — det roterer automatisk.' : 'One player is active per question — it rotates automatically.' },
-        { icon: '❓', text: no ? 'Les spørsmålet og velg riktig svar blant alternativene.' : 'Read the question and pick the correct answer from the options.' },
-        { icon: '✅', text: no ? 'Riktig svar: den aktive spilleren peker på noen som drikker.' : 'Correct answer: the active player points to someone who drinks.' },
-        { icon: '❌', text: no ? 'Feil svar: den aktive spilleren drikker 2 slurker.' : 'Wrong answer: the active player drinks 2 sips.' },
-        { icon: '➡️', text: no ? 'Trykk "Neste" for å fortsette til neste spørsmål.' : 'Tap "Next" to continue to the next question.' },
-      ],
-    },
-    'trivia-team': {
-      icon: '👥', title: no ? 'Trivia Quiz — Lagspill' : 'Trivia Quiz — Teams',
-      rules: [
-        { icon: '🏅', text: no ? 'Lag konkurrerer mot hverandre om å svare riktig.' : 'Teams compete against each other to answer correctly.' },
-        { icon: '🔄', text: no ? 'Hvert lag svarer på sin tur — kategorien velges av det aktive laget.' : 'Each team answers on their turn — the active team picks the category.' },
-        { icon: '✅', text: no ? 'Riktig svar: motstanderlaget drikker 2 slurker.' : 'Correct answer: the opposing team drinks 2 sips.' },
-        { icon: '❌', text: no ? 'Feil svar: laget som svarte feil drikker 2 slurker.' : 'Wrong answer: the answering team drinks 2 sips.' },
-        { icon: '🏆', text: no ? 'Spill så lenge dere vil — det laget med flest riktige vinner!' : 'Play as long as you like — the team with the most correct answers wins!' },
-      ],
-    },
-    wheel: {
-      icon: '🎡', title: no ? 'Lykkehjulet' : 'Wheel of Fortune',
-      rules: [
-        { icon: '🔄', text: no ? 'Trykk på "Snurr" for å spinne hjulet.' : 'Tap "Spin" to spin the wheel.' },
-        { icon: '🎯', text: no ? 'Der hjulet stopper gjelder regelen for den valgte spilleren.' : 'Where the wheel stops, the rule applies to the chosen player.' },
-        { icon: '🍺', text: no ? 'Alle følger regelen — ingen unntak!' : 'Everyone follows the rule — no exceptions!' },
-        { icon: '♾️', text: no ? 'Snurr så mange ganger dere vil.' : 'Spin as many times as you like.' },
-      ],
-    },
-    jeopardy: {
-      icon: '🍺',
-      title: app.lang === 'en' ? 'Jeopardy' : 'Jeopardy',
-      rules: app.lang === 'en' ? [
-        { icon: '🎯', text: 'Pick a category and point value' },
-        { icon: '✅', text: 'Answer correctly → give out that many drinks' },
-        { icon: '❌', text: 'Answer wrong → drink that many yourself' },
-        { icon: '🏆', text: 'Play through all 25 questions' },
-      ] : [
-        { icon: '🎯', text: 'Velg en kategori og poengverdi' },
-        { icon: '✅', text: 'Riktig svar → del ut så mange drikker' },
-        { icon: '❌', text: 'Feil svar → drikk selv' },
-        { icon: '🏆', text: 'Spill gjennom alle 25 spørsmål' },
-      ],
-    },
-  };
-}
-
-let _gimLaunchId = null;
-
-function startGame(gameId) {
-  app.currentGame = gameId;
-  if (gameId === 'tod') {
-    document.getElementById('tod-category-modal').style.display = 'flex';
-    return;
-  }
-  if (gameId === 'trivia') {
-    document.getElementById('trivia-mode-modal').style.display = 'flex';
-    return;
-  }
-  const info = getGameInstructions()[gameId];
-  if (!info) { launchGame(gameId); return; }
-  _gimLaunchId = gameId;
-  document.getElementById('gim-icon').textContent = info.icon;
-  document.getElementById('gim-title').textContent = info.title;
-  document.getElementById('gim-rules').innerHTML = info.rules
-    .map(r => `<li><span class="gim-rule-icon">${r.icon}</span><span>${r.text}</span></li>`)
-    .join('');
-  document.getElementById('game-instructions-modal').style.display = 'flex';
-  S.push(); // direkte push — ikke debounced, slik at tilskuer ser instruksjonene umiddelbart
-}
-
-function triviaPickMode(mode) {
-  document.getElementById('trivia-mode-modal').style.display = 'none';
-  app.trivia.teamMode = (mode === 'team');
-  const info = getGameInstructions()[mode === 'team' ? 'trivia-team' : 'trivia'];
-  _gimLaunchId = 'trivia';
-  document.getElementById('gim-icon').textContent = info.icon;
-  document.getElementById('gim-title').textContent = info.title;
-  document.getElementById('gim-rules').innerHTML = info.rules
-    .map(r => `<li><span class="gim-rule-icon">${r.icon}</span><span>${r.text}</span></li>`)
-    .join('');
-  document.getElementById('game-instructions-modal').style.display = 'flex';
-}
-
-function dismissInstructions() {
-  if (_gimLaunchId) {
-    const id = _gimLaunchId;
-    _gimLaunchId = null;
-    if (id === 'trivia' && app.trivia?.teamMode) {
-      _triviaShowTeamSetup();
-    } else {
-      launchGame(id);
-    }
-  }
-  document.getElementById('game-instructions-modal').style.display = 'none';
-}
-
-function _triviaShowTeamSetup() {
-  const isNo = app.lang !== 'en';
-  app.trivia.teams = [
-    { name: isNo ? 'Lag 1' : 'Team 1', players: [], score: 0 },
-    { name: isNo ? 'Lag 2' : 'Team 2', players: [], score: 0 },
-  ];
-  _triviaRenderTeamSetup();
-  document.getElementById('trivia-team-modal').style.display = 'flex';
-}
-
-function _triviaRenderTeamSetup() {
-  const isNo = app.lang !== 'en';
-  const players = app.players;
-  const teams = app.trivia.teams;
-  let html = '';
-  html += '<div class="jeo-tm-teams">';
-  teams.forEach(t => {
-    const members = t.players.join(', ') || (isNo ? '(ingen)' : '(none)');
-    html += `<div class="jeo-tm-team"><div class="jeo-tm-team-name">${t.name}</div><div class="jeo-tm-members">${members}</div></div>`;
-  });
-  html += '</div><div class="jeo-tm-players">';
-  players.forEach((p, pi) => {
-    const assignedTeam = teams.findIndex(t => t.players.includes(p));
-    html += `<div class="jeo-tm-player"><span class="jeo-tm-player-name">${p}</span><div class="jeo-tm-btns">`;
-    teams.forEach((t, ti) => {
-      const active = assignedTeam === ti ? ' jeo-tm-btn-active' : '';
-      html += `<button class="jeo-tm-btn${active}" onclick="triviaAssignTeam(${pi},${ti})">${t.name}</button>`;
-    });
-    html += '</div></div>';
-  });
-  html += '</div>';
-  document.getElementById('trivia-team-content').innerHTML = html;
-}
-
-function triviaAssignTeam(pi, ti) {
-  const p = app.players[pi];
-  app.trivia.teams.forEach(t => { t.players = t.players.filter(x => x !== p); });
-  app.trivia.teams[ti].players.push(p);
-  _triviaRenderTeamSetup();
-}
-
-function triviaRandomTeams() {
-  const players = [...app.players].sort(() => Math.random() - 0.5);
-  app.trivia.teams.forEach(t => t.players = []);
-  players.forEach((p, i) => app.trivia.teams[i % app.trivia.teams.length].players.push(p));
-  _triviaRenderTeamSetup();
-}
-
-function triviaTeamStart() {
-  const isNo = app.lang !== 'en';
-  const emptyTeam = app.trivia.teams.find(t => t.players.length === 0);
-  if (emptyTeam) {
-    const errEl = document.getElementById('trivia-team-error');
-    if (errEl) errEl.textContent = isNo
-      ? `${emptyTeam.name} har ingen spillere.`
-      : `${emptyTeam.name} has no players.`;
-    return;
-  }
-  document.getElementById('trivia-team-modal').style.display = 'none';
-  app.trivia.teamIdx = 0;
-  showScreen('screen-trivia');
-  initTrivia();
-}
-
-
-function launchGame(gameId) {
-  if (gameId === 'ring')      { initRing(); showScreen('screen-ring'); }
-  else if (gameId === 'waterfall') { initWaterfall(); showScreen('screen-waterfall'); }
-  else if (gameId === 'tod')  { showScreen('screen-tod'); initTod(); }
-  else if (gameId === 'horse') { initHorse(); }
-  else if (gameId === 'trivia') { showScreen('screen-trivia'); initTrivia(); }
-  else if (gameId === 'wheel')  { showScreen('screen-wheel'); initWheel(); }
-  else if (gameId === 'jeopardy') { initJeopardy(); /* showScreen deferred to jeoStartGame */ }
-  else if (gameId === 'gassed')   { startGassed(); }
-}
-
-// ─────────────────────────────────────────────
-// VEDDELØPET — THE HORSE RACE
-// ─────────────────────────────────────────────
-const HORSE_SUITS = [
-  { key: 'hearts',   sym: '♥', color: 'red',   name: 'Hearts',   nameNo: 'Hjerter' },
-  { key: 'diamonds', sym: '♦', color: 'red',   name: 'Diamonds', nameNo: 'Ruter'  },
-  { key: 'clubs',    sym: '♣', color: 'black', name: 'Clubs',    nameNo: 'Kløver' },
-  { key: 'spades',   sym: '♠', color: 'black', name: 'Spades',   nameNo: 'Spar'   },
-];
-const HORSE_FINISH = 9;
-
-const HURDLE_DEFS = [
-  { position: 2, type: 'all' },
-  { position: 4, type: 'all' },
-  { position: 6, type: 'all' },
-  { position: 8, type: 'all' },
-];
-
-app.horse = {
-  phase: 'betting',
-  activeSuits: HORSE_SUITS,
-  bets: {},
-  positions: { hearts: 0, diamonds: 0, clubs: 0, spades: 0 },
-  hurdles: [],
-  flipDeck: [],
-  lastCard: null,
-  winner: null,
-};
-
-function initHorse() {
-  // Always use all 4 suits regardless of player count
-  const nLanes = 4;
-  const activeSuits = HORSE_SUITS.slice(0, nLanes);
-
-  // Build and shuffle deck from active suits only
-  let deck = [];
-  for (const s of activeSuits) for (const r of ['A','2','3','4','5','6','7','8','9','10','J','Q','K']) {
-    deck.push({ rank: r, suitKey: s.key, suitSym: s.sym, suitColor: s.color });
-  }
-  deck = shuffle(deck);
-
-  // Extract aces
-  const aces = {};
-  deck = deck.filter(c => {
-    if (c.rank === 'A') { aces[c.suitKey] = c; return false; }
-    return true;
-  });
-
-  // Up to 6 hurdle cards
-  const nHurdles = Math.min(6, deck.length);
-  const hurdleCards = deck.splice(0, nHurdles);
-  const hurdles = HURDLE_DEFS.slice(0, nHurdles).map((def, i) => ({
-    ...def,
-    card: hurdleCards[i],
-    triggered: false,
-  }));
-
-  // Reset state
-  const positions = {};
-  for (const s of activeSuits) positions[s.key] = 0;
-
-  app.horse = {
-    phase: 'betting',
-    activeSuits,
-    bets: {},
-    positions,
-    hurdles,
-    flipDeck: deck,
-    lastCard: null,
-    winner: null,
-  };
-
-  renderHorseBetting();
-  showScreen('screen-horse');
-}
-
-function renderHorseBetting() {
-  document.getElementById('horse-phase-betting').style.display = '';
-  document.getElementById('horse-phase-racing').style.display  = 'none';
-  document.getElementById('horse-phase-finished').style.display = 'none';
-  document.getElementById('horse-prerace-modal').style.display  = 'none';
-
-  const list = document.getElementById('horse-bet-list');
-  list.innerHTML = '';
-  for (const player of app.players) {
-    const esc = CSS.escape(player);
-    const row = document.createElement('div');
-    row.className = 'bet-row';
-    row.innerHTML =
-      `<div class="bet-row-top">
-        <span class="bet-player-name">${player}</span>
-        <div class="bet-suit-btns" id="bet-btns-${esc}">` +
-          app.horse.activeSuits.map(s =>
-            `<button class="bet-suit-btn ${s.color === 'red' ? 'red-suit' : 'black-suit'}"
-              onclick="horsePlaceBetSuit('${player}','${s.key}',this)">${s.sym}</button>`
-          ).join('') +
-        `</div>
-      </div>
-      <div class="bet-row-amount">
-        <span class="bet-amount-label">Innsats:</span>
-        <div class="bet-amount-btns" id="bet-amt-${esc}">` +
-          [1,2,3,4,5].map(n =>
-            `<button class="bet-amount-btn" onclick="horsePlaceBetAmount('${player}',${n},this)">${n}</button>`
-          ).join('') +
-        `</div>
-        <span class="bet-amount-suffix">slurker</span>
-      </div>`;
-    list.appendChild(row);
-  }
-  document.getElementById('horse-start-btn').disabled = true;
-  updateAllText();
-}
-
-function horseBetCheckReady() {
-  const allBet = app.players.every(p => app.horse.bets[p]?.suitKey && app.horse.bets[p]?.amount);
-  document.getElementById('horse-start-btn').disabled = !allBet;
-}
-
-function horsePlaceBetSuit(player, suitKey, btn) {
-  SFX.bet();
-  if (!app.horse.bets[player]) app.horse.bets[player] = {};
-  app.horse.bets[player].suitKey = suitKey;
-  btn.parentElement.querySelectorAll('.bet-suit-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  horseBetCheckReady();
-}
-
-function horsePlaceBetAmount(player, amount, btn) {
-  SFX.bet();
-  if (!app.horse.bets[player]) app.horse.bets[player] = {};
-  app.horse.bets[player].amount = amount;
-  btn.parentElement.querySelectorAll('.bet-amount-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  horseBetCheckReady();
-}
-
-function horseStartRace() {
-  // Show pre-race drink confirmation modal
-  const list = document.getElementById('hpm-list');
-  list.innerHTML = app.players.map(p => {
-    const bet = app.horse.bets[p];
-    const suit = app.horse.activeSuits.find(s => s.key === bet.suitKey);
-    const slurk = bet.amount === 1 ? 'slurk' : 'slurker';
-    const suitCol = suit.color === 'red' ? '#ff7070' : '#ccc';
-    return `<li>
-      <span class="hpm-player">${p}</span>
-      <span class="hpm-drink-info">
-        🍺 ${bet.amount} ${slurk}
-        <span style="color:${suitCol};margin-left:4px">${suit.sym}</span>
-      </span>
-    </li>`;
-  }).join('');
-  document.getElementById('horse-prerace-modal').style.display = 'flex';
-}
-
-function horseConfirmAndStart() {
-  document.getElementById('horse-prerace-modal').style.display = 'none';
-  SFX.raceStart();
-  app.horse.phase = 'racing';
-
-  document.getElementById('horse-phase-betting').style.display  = 'none';
-  document.getElementById('horse-phase-racing').style.display   = '';
-  document.getElementById('horse-phase-finished').style.display = 'none';
-
-  app.horse.cardFlipped = false;
-  app.horse.animating   = false;
-  renderHorseTrack();
-  updateHorseDeckBadge();
-  hideHorseEvent();
-  document.getElementById('horse-hurdle-modal').style.display = 'none';
-  document.getElementById('horse-flip-card').classList.remove('flipped');
-}
-
-function renderHorseTrack() {
-  const activeSuits = app.horse.activeSuits;
-
-  // Hurdle cards on the LEFT side of the track
-  // Positions are inverted: pos=0 is bottom (100%), pos=HORSE_FINISH is top (0%)
-  const hurdlesAbove = document.getElementById('horse-hurdles-above');
-  hurdlesAbove.innerHTML =
-    `<div class="horse-hca-finish"></div>` +
-    `<div class="horse-hca-area">` +
-      app.horse.hurdles.map((h, i) => {
-        const pct = (1 - h.position / HORSE_FINISH) * 100;
-        const inner = h.type === 'all'
-          ? `<div class="hca-card-wrap"><img src="red_card_back.png" alt=""><span class="hca-emoji">🚧</span></div>`
-          : `<span style="font-size:1.4rem;line-height:1;filter:drop-shadow(0 0 6px rgba(255,220,0,0.8))">⚡</span>`;
-        return `<div class="hurdle-above-item${h.triggered ? ' triggered' : ''}" data-hurdle-above="${i}" style="top:${pct}%">` +
-          inner +
-          `<div class="hurdle-above-line"></div>` +
-          `</div>`;
-      }).join('') +
-    `</div>` +
-    `<div class="horse-hca-start"></div>`;
-
-  const wrap = document.getElementById('horse-track-wrap');
-  wrap.innerHTML = '';
-
-  // Hurdle marks (horizontal lines inside each lane)
-  // Inverted: pos=0 at bottom, HORSE_FINISH at top
-  const marksHtml = app.horse.hurdles.map((h, i) => {
-    const pct = (1 - h.position / HORSE_FINISH) * 100;
-    const icon = h.type === 'all' ? '🚧' : '⚡';
-    return `<div class="hurdle-mark type-${h.type}${h.triggered ? ' triggered' : ''}" data-hurdle-idx="${i}" data-icon="${icon}" style="top:${pct}%"></div>`;
-  }).join('');
-
-  // FINISH row (top)
-  const finishRow = document.createElement('div');
-  finishRow.className = 'horse-finish-col';
-  wrap.appendChild(finishRow);
-
-  // Lanes row — one column per active suit
-  const lanesCol = document.createElement('div');
-  lanesCol.className = 'horse-lanes-col';
-
-  activeSuits.forEach((s, idx) => {
-    const lane = document.createElement('div');
-    lane.className = 'horse-lane';
-    lane.innerHTML = `
-      <div class="horse-lane-track" id="horse-lane-${s.key}">
-        ${marksHtml}
-        <div class="horse-piece" id="horse-piece-${s.key}">🏇</div>
-      </div>
-      <div class="horse-lane-badge">
-        <span class="horse-lane-num">0${idx + 1}</span>
-        <span class="horse-lane-sym ${s.color === 'red' ? 'red-suit' : 'black-suit'}">${s.sym}</span>
-      </div>`;
-    lanesCol.appendChild(lane);
-  });
-  wrap.appendChild(lanesCol);
-
-  // START row (bottom)
-  const startRow = document.createElement('div');
-  startRow.className = 'horse-start-col';
-  startRow.innerHTML = `
-    <div class="horse-gate-bars">
-      <div class="horse-gate-bar"></div>
-      <div class="horse-gate-bar"></div>
-      <div class="horse-gate-bar"></div>
-    </div>
-    <div class="horse-start-label">START</div>`;
-  wrap.appendChild(startRow);
-
-  requestAnimationFrame(() => updateAllHorsePositions());
-}
-
-function updateAllHorsePositions() {
-  for (const s of app.horse.activeSuits) {
-    const lane  = document.getElementById(`horse-lane-${s.key}`);
-    const piece = document.getElementById(`horse-piece-${s.key}`);
-    if (!lane || !piece) continue;
-    const trackH = lane.offsetHeight;
-    const pieceH = 48;
-    const pos    = app.horse.positions[s.key];
-    // pos=0 → near bottom, pos=HORSE_FINISH → near top
-    const colH   = trackH / HORSE_FINISH;
-    const top    = trackH - (pos + 0.5) * colH - pieceH / 2;
-    piece.style.top = Math.max(0, top) + 'px';
-  }
-}
-
-function renderHorseHurdles() {
-  const row = document.getElementById('horse-hurdle-row');
-  row.innerHTML = '';
-  app.horse.hurdles.forEach((h, i) => {
-    const el = document.createElement('div');
-    el.className = `hurdle-card type-${h.type}`;
-    el.id = `hurdle-card-${i}`;
-    el.innerHTML = `<span style="font-size:0.75rem;opacity:0.55">${h.type === 'all' ? '🚧' : '⚡'}</span>`;
-    row.appendChild(el);
-  });
-}
-
-function updateHorseDeckBadge() {
-  document.getElementById('horse-deck-badge').textContent = '🃏 ' + app.horse.flipDeck.length;
-}
-
-const HORSE_FLIP_MS = 380;
-
-function setHorseCardFront(card) {
-  const rankFile = CARD_RANK_NAME[card.rank];
-  const suitFile = CARD_SUIT_NAME[card.suitSym];
-  if (rankFile && suitFile) {
-    document.getElementById('horse-card-img').src = `cards/${rankFile}_${suitFile}.png`;
-    document.getElementById('horse-big-suit').textContent = '';
-  } else {
-    document.getElementById('horse-card-img').src = '';
-    document.getElementById('horse-big-suit').textContent = card.suitSym;
-    document.getElementById('horse-big-suit').style.color = card.suitColor === 'red' ? '#d0021b' : '#111';
-  }
-}
-
-function checkHurdleTrigger(h) {
-  if (h.triggered) return false;
-  const vals = Object.values(app.horse.positions);
-  // Both types trigger when the LEADING horse reaches the hurdle.
-  // 'all' vs 'leader' only differs in the penalty applied, not when it fires.
-  return Math.max(...vals) >= h.position;
-}
-
-function checkAndTriggerHurdles(cb) {
-  const next = app.horse.hurdles
-    .filter(h => !h.triggered)
-    .sort((a, b) => a.position - b.position)
-    .find(h => checkHurdleTrigger(h));
-  if (next) {
-    next.triggered = true;
-    horseRevealHurdle(next, () => setTimeout(() => checkAndTriggerHurdles(cb), 600));
-  } else {
-    cb();
-  }
-}
-
-function processHorseCard(card) {
-  hideHorseEvent();
-  SFX.hoofStep();
-  app.horse.positions[card.suitKey] = Math.min(HORSE_FINISH, app.horse.positions[card.suitKey] + 1);
-  updateAllHorsePositions();
-  checkAndTriggerHurdles(() => {
-    setTimeout(() => { checkHorseWin(); app.horse.animating = false; }, 300);
-  });
-}
-
-function horseFlip() {
-  if (app.horse.animating) return;
-  // Reshuffle if deck exhausted — game only ends on finish line
-  if (!app.horse.flipDeck.length) {
-    const activeSuits = app.horse.activeSuits;
-    let deck = [];
-    for (const s of activeSuits)
-      for (const r of ['A','2','3','4','5','6','7','8','9','10','J','Q','K'])
-        deck.push({ rank: r, suitKey: s.key, suitSym: s.sym, suitColor: s.color });
-    app.horse.flipDeck = shuffle(deck.filter(c => c.rank !== 'A'));
-  }
-  app.horse.animating = true;
-  SFX.flip();
-
-  const flipCard = document.getElementById('horse-flip-card');
-
-  if (app.horse.cardFlipped) {
-    // Flip back to face-down; swap content at midpoint; flip to face-up with new card
-    flipCard.classList.remove('flipped');
-    setTimeout(() => {
-      const card = app.horse.flipDeck.pop();
-      app.horse.lastCard = card;
-      updateHorseDeckBadge();
-      setHorseCardFront(card);
-    }, HORSE_FLIP_MS / 2);
-    setTimeout(() => {
-      flipCard.classList.add('flipped');
-      setTimeout(() => processHorseCard(app.horse.lastCard), HORSE_FLIP_MS);
-    }, HORSE_FLIP_MS);
-  } else {
-    const card = app.horse.flipDeck.pop();
-    app.horse.lastCard = card;
-    updateHorseDeckBadge();
-    setHorseCardFront(card);
-    requestAnimationFrame(() => {
-      flipCard.classList.add('flipped');
-      app.horse.cardFlipped = true;
-      setTimeout(() => processHorseCard(card), HORSE_FLIP_MS);
-    });
-  }
-}
-
-function horseRevealHurdle(hurdle, cb) {
-  SFX.hurdle();
-  const idx = app.horse.hurdles.indexOf(hurdle);
-  const { card, type } = hurdle;
-
-  // Mark the hurdle line on the track
-  document.querySelectorAll(`[data-hurdle-idx="${idx}"]`).forEach(el => el.classList.add('triggered'));
-
-  // Mark the side indicator as triggered
-  setTimeout(() => {
-    const aboveItem = document.querySelector(`[data-hurdle-above="${idx}"]`);
-    if (aboveItem) aboveItem.classList.add('triggered');
-  }, 1800);
-
-  let modalIcon, modalTitle, modalDesc, modalType;
-
-  if (type === 'all') {
-    // Gather info — do NOT move horse yet; that happens after player reads the modal
-    const suitDef  = app.horse.activeSuits.find(s => s.key === card.suitKey) || HORSE_SUITS.find(s => s.key === card.suitKey);
-    const suitName = app.lang === 'no' ? suitDef.nameNo : suitDef.name;
-    const drinkers = app.players.filter(p => app.horse.bets[p]?.suitKey === card.suitKey);
-    modalIcon  = '🚧';
-    modalTitle = '';
-    modalType  = 'all';
-    modalDesc  = `${card.suitSym} ${suitName} går 1 steg tilbake` +
-      (drinkers.length ? `\n\n🍺 ${drinkers.join(', ')} drikker!` : '');
-
-    // Callback that runs AFTER player taps OK: animate horse stepping back, then continue
-    const afterOk = () => {
-      const piece = document.getElementById(`horse-piece-${card.suitKey}`);
-      if (!piece) {
-        app.horse.positions[card.suitKey] = Math.max(0, app.horse.positions[card.suitKey] - 1);
-        updateAllHorsePositions();
-        cb();
-        return;
-      }
-      // Phase 1: red flash (0.45s)
-      piece.classList.add('flash-red');
-      setTimeout(() => {
-        piece.classList.remove('flash-red');
-        // Phase 2: smooth slow slide backward
-        piece.classList.add('stepping-back');
-        app.horse.positions[card.suitKey] = Math.max(0, app.horse.positions[card.suitKey] - 1);
-        updateAllHorsePositions();
-        // Phase 3: after slide finishes, restore and continue
-        setTimeout(() => {
-          piece.classList.remove('stepping-back');
-          cb();
-        }, 1150);
-      }, 450);
-    };
-
-    // Wait for the horse to finish its forward move animation, then reveal the card
-    setTimeout(() => {
-      const rankFile = CARD_RANK_NAME[card.rank];
-      const suitFile = CARD_SUIT_NAME[card.suitSym];
-      const overlay    = document.getElementById('hurdle-card-reveal');
-      const hcrCard    = document.getElementById('hcr-card');
-      const frontImg   = document.getElementById('hcr-front-img');
-      const suitLbl    = document.getElementById('hcr-suit-label');
-      const tapHint    = document.getElementById('hcr-tap-hint');
-      const resultText = document.getElementById('hcr-result-text');
-      const okBtn      = document.getElementById('hcr-ok-btn');
-
-      // Reset state
-      hcrCard.classList.remove('flipped');
-      frontImg.src = rankFile && suitFile ? `cards/${rankFile}_${suitFile}.png` : '';
-      suitLbl.textContent = '';
-      suitLbl.style.display = 'none';
-      resultText.style.display = 'none';
-      okBtn.style.display = 'none';
-      tapHint.style.display = '';
-
-      // Store flip data for hcrTap()
-      window._hcrFlipData = {
-        suitLbl, tapHint, resultText, okBtn,
-        suitText: `${card.suitSym} ${suitName}`,
-        suitColor: card.suitColor === 'red' ? '#ff4444' : '#fff',
-        desc: modalDesc,
-      };
-
-      overlay.style.display = 'flex';
-      window._hcrAfterOk = () => {
-        overlay.style.display = 'none';
-        afterOk();
-      };
-    }, 650);
-
-  } else {
-    const minPos    = Math.min(...Object.values(app.horse.positions));
-    const lastSuits = app.horse.activeSuits.filter(s => app.horse.positions[s.key] === minPos);
-    const drinkers  = app.players.filter(p => lastSuits.some(s => s.key === app.horse.bets[p]?.suitKey));
-    const icons     = lastSuits.map(s => s.sym).join(' ');
-    modalIcon  = '⚡';
-    modalTitle = '';
-    modalType  = 'leader';
-    const sips = 2;
-    const slurk = sips === 1 ? 'slurk' : 'slurker';
-    const nameStr = drinkers.length === 1
-      ? drinkers[0]
-      : drinkers.length > 1
-        ? drinkers.slice(0, -1).join(', ') + ' og ' + drinkers[drinkers.length - 1]
-        : null;
-    modalDesc  = nameStr
-      ? `Sisteplass må drikke,\n\n${nameStr} drikker ${sips} ${slurk}!`
-      : `Sisteplass må drikke!\n\nIngen spillere satset på sisteplass (${icons})`;
-    // No card to reveal for ⚡ — go straight to modal
-    showHorseModal(modalIcon, modalTitle, modalDesc, modalType, cb);
-  }
-}
-
-let _horseModalCb = null;
-
-function showHorseModal(icon, title, desc, type, cb) {
-  _horseModalCb = cb;
-  const modal = document.getElementById('horse-hurdle-modal');
-  document.getElementById('hhm-icon').textContent  = icon;
-  document.getElementById('hhm-title').textContent = title;
-  document.getElementById('hhm-desc').textContent  = desc;
-  document.getElementById('hhm-desc').style.whiteSpace = 'pre-line';
-  modal.querySelector('.hhm-card').className = `hhm-card type-${type}`;
-  modal.style.display = 'flex';
-}
-
-function dismissHorseModal() {
-  document.getElementById('horse-hurdle-modal').style.display = 'none';
-  if (_horseModalCb) { const f = _horseModalCb; _horseModalCb = null; f(); }
-}
-
-function hcrTap() {
-  const d = window._hcrFlipData;
-  if (!d || document.getElementById('hcr-card').classList.contains('flipped')) return;
-  SFX.flip();
-  document.getElementById('hcr-card').classList.add('flipped');
-  setTimeout(() => {
-    d.tapHint.style.display = 'none';
-    d.suitLbl.textContent = d.suitText;
-    d.suitLbl.style.color = d.suitColor;
-    d.suitLbl.style.display = '';
-    d.resultText.textContent = d.desc;
-    d.resultText.style.display = '';
-    d.okBtn.style.display = '';
-    window._hcrFlipData = null;
-  }, 680);
-}
-
-function hcrConfirm() {
-  if (window._hcrAfterOk) { const f = window._hcrAfterOk; window._hcrAfterOk = null; f(); }
-}
-
-function showHorseEvent(msg) {
-  const el = document.getElementById('horse-event-msg');
-  el.textContent = msg;
-  el.style.visibility = 'visible';
-  el.classList.remove('visible');
-  el.offsetHeight;
-  el.classList.add('visible');
-}
-
-function hideHorseEvent() {
-  const el = document.getElementById('horse-event-msg');
-  el.style.visibility = 'hidden';
-  el.classList.remove('visible');
-}
-
-function checkHorseWin() {
-  const activeSuits = app.horse.activeSuits;
-  const winner = activeSuits.find(s => app.horse.positions[s.key] >= HORSE_FINISH);
-  if (winner) {
-    app.horse.winner = winner.key;
-    animateHorseFinish(winner);
-  }
-}
-
-function animateHorseFinish(winner) {
-  SFX.raceWin();
-  const wrap  = document.getElementById('horse-track-wrap');
-  const piece = document.getElementById(`horse-piece-${winner.key}`);
-
-  // Allow horse to go above the finish line
-  if (wrap) wrap.classList.add('race-finishing');
-
-  // Animate horse crossing the finish line upward
-  if (piece) {
-    piece.classList.add('race-winner');
-    void piece.offsetHeight; // force reflow so transition fires
-    piece.style.top = '-60px';
-  }
-
-  // Spawn fireworks emojis across the track
-  spawnHorseFireworks(wrap);
-
-  // Show winner popup after animation
-  setTimeout(() => showHorseResults(winner), 1600);
-}
-
-function spawnHorseFireworks(container) {
-  if (!container) return;
-  const emojis = ['🎆','🎇','✨','🎊','🎉','⭐','🌟'];
-  for (let i = 0; i < 18; i++) {
-    setTimeout(() => {
-      const el = document.createElement('div');
-      el.className = 'horse-firework-emoji';
-      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      el.style.left = (4 + Math.random() * 90) + '%';
-      el.style.top  = (5 + Math.random() * 70) + '%';
-      el.style.setProperty('--fw-dur', (0.7 + Math.random() * 0.6) + 's');
-      container.appendChild(el);
-      setTimeout(() => el.remove(), 1500);
-    }, i * 50);
-  }
-}
-
-function showHorseResults(winner) {
-  document.getElementById('horse-phase-betting').style.display  = 'none';
-  document.getElementById('horse-phase-racing').style.display   = 'none';
-  document.getElementById('horse-phase-finished').style.display = '';
-
-  const suitName = app.lang === 'no' ? winner.nameNo : winner.name;
-
-  document.getElementById('horse-winner-banner').innerHTML = `
-    <span class="win-emoji">${winner.sym}🏆${winner.sym}</span>
-    <span class="win-title">${suitName} vinner!</span>
-    <span class="win-sub">Se hvem som kan dele ut slurker</span>`;
-
-  const panel = document.getElementById('horse-result-panel');
-  panel.innerHTML = '';
-
-  for (const player of app.players) {
-    const bet    = app.horse.bets[player] || {};
-    const betKey = bet.suitKey;
-    const amount = bet.amount || 0;
-    const betSuit = HORSE_SUITS.find(s => s.key === betKey) || winner;
-    const isWin  = betKey === winner.key;
-    const payout = isWin ? amount * 2 : 0;
-    const slurk  = payout === 1 ? 'slurk' : 'slurker';
-    const suitCol = betSuit.color === 'red' ? '#ff7070' : '#ccc';
-
-    const row = document.createElement('div');
-    row.className = 'horse-payout-row';
-    row.innerHTML = `
-      <span class="hpr-name">${player} <span style="color:${suitCol}">${betSuit.sym}</span></span>
-      <span class="hpr-result ${isWin ? 'win' : 'lose'}">
-        ${isWin
-          ? `🥂 Del ut ${payout} ${slurk}!`
-          : `Tapte ${amount} slurker`}
-      </span>`;
-    panel.appendChild(row);
-  }
-}
-
-// ─────────────────────────────────────────────
-// RING OF FIRE
-// ─────────────────────────────────────────────
-const SUITS = [
-  { name: 'Hearts',   symbol: '♥', color: 'red'   },
-  { name: 'Diamonds', symbol: '♦', color: 'red'   },
-  { name: 'Clubs',    symbol: '♣', color: 'black' },
-  { name: 'Spades',   symbol: '♠', color: 'black' },
-];
-const RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
-
-const RULES_EN = {
-  'A':  { name: 'Waterfall',         desc: 'Everyone starts drinking. You can\'t stop until the person to your left stops. The last person to start is the first allowed to stop.' },
-  '2':  { name: 'You',               desc: '{player} drinks!' },
-  '3':  { name: 'Me',                desc: 'You drink!' },
-  '4':  { name: 'Thumb Master',       desc: 'At any point, put your thumb on the table. Everyone must follow — last one down drinks 3 sips! Lasts until the next 4 is drawn.' },
-  '5':  { name: 'Guys',              desc: 'All guys drink.' },
-  '6':  { name: 'Chicks',            desc: 'All girls drink.' },
-  '7':  { name: 'Heaven',            desc: 'Everyone points to the sky. Last one drinks.' },
-  '8':  { name: 'Mate',              desc: '{player} is your mate! You drink together until the next 8 is drawn.' },
-  '9':  { name: 'Rhyme',             desc: 'Say a word. Everyone must rhyme with it going clockwise. First to fail or repeat drinks.' },
-  '10': { name: 'Categories',        desc: 'Pick a category (e.g. car brands). Go around clockwise naming things in that category. First to fail drinks.' },
-  'J':  { name: 'Never Have I Ever', desc: 'Everyone holds up 3 fingers. Go around saying things you\'ve never done. If you have done it, put a finger down. First to put all fingers down drinks.' },
-  'Q':  { name: 'Question Master',   desc: 'You are the Question Master! Anyone who answers your question (until the next Q) must drink.' },
-  'K':  { name: 'King\'s Cup',        desc: 'Pour some of your drink into the King\'s Cup. The drawer of the 4th King must drink the entire cup!' },
-};
-
-const RULES_NO = {
-  'A':  { name: 'Foss',              desc: 'Alle begynner å drikke. Du kan ikke stoppe før personen til venstre for deg stopper.' },
-  '2':  { name: 'Du',                desc: '{player} drikker!' },
-  '3':  { name: 'Meg',               desc: 'Du drikker!' },
-  '4':  { name: 'Tommel',            desc: 'Personen som får denne kan når som helst legge tommelen på bordet. Alle andre må følge — sist ned drikker 3 slurker! Gjelder til neste 4 trekkes.' },
-  '5':  { name: 'Gutter',            desc: 'Alle gutter drikker.' },
-  '6':  { name: 'Jenter',            desc: 'Alle jenter drikker.' },
-  '7':  { name: 'Himmel',            desc: 'Alle peker mot himmelen. Siste person drikker.' },
-  '8':  { name: 'Makker',            desc: '{player} er din makker! Dere drikker sammen til neste 8 trekkes.' },
-  '9':  { name: 'Rim',               desc: 'Si et ord. Alle må rime med det med klokken. Første som feiler drikker.' },
-  '10': { name: 'Kategorier',        desc: 'Velg en kategori (f.eks. bilmerker). Gå rundt med klokken. Første som feiler drikker.' },
-  'J':  { name: 'Aldri har jeg',     desc: 'Alle holder opp 3 fingre. Si ting du aldri har gjort. Har du gjort det, legg ned en finger. Første med alle fingre nede drikker.' },
-  'Q':  { name: 'Spørsmålsmester',   desc: 'Du er spørsmålsmesteren! Alle som svarer på spørsmålene dine (til neste Q) må drikke.' },
-  'K':  { name: 'Kongepokal',        desc: 'Hell litt av drikken din i kongepokalen. Den som trekker den 4. kongen må drikke hele pokalen!' },
-};
-
-function getRules() {
-  return app.lang === 'no' ? RULES_NO : RULES_EN;
-}
-
-function buildDeck() {
-  const d = [];
-  for (const suit of SUITS) for (const rank of RANKS) d.push({ rank, suit });
-  return d;
-}
-
-function initRing() {
-  app.ring.deck = shuffle(buildDeck());
-  app.ring.kingsDrawn = 0;
-  app.ring.pendingCard = null;
-  app.ring.animating = false;
-  app.ring.flipped = false;
-  updateRingStats();
-  resetRingCardDisplay();
-  document.getElementById('ring-overlay').classList.remove('show');
-  
-  document.getElementById('card-area').style.cursor = 'pointer';
-  setRingRulePanel(null);
-}
-
-function updateRingStats() {
-  document.getElementById('ring-cards-left').textContent = app.ring.deck.length;
-  document.getElementById('ring-kings-drawn').textContent = app.ring.kingsDrawn;
-  const n = app.ring.deck.length;
-  for (let i = 1; i <= 4; i++) {
-    document.getElementById('cup-' + i)?.classList.toggle('filled', i <= app.ring.kingsDrawn);
-  }
-}
-
-function resetRingCardDisplay() {
-  const card = document.getElementById('card');
-  card.classList.remove('flipped');
-  card.style.transition = 'none';
-  requestAnimationFrame(function() { card.style.transition = ''; });
-}
-
-function setRingRulePanel(cardData) {
-  const panel = document.getElementById('rule-panel');
-  const nameEl = document.getElementById('rule-name');
-  const descEl = document.getElementById('rule-desc');
-  if (!panel) return;
-  if (!cardData) {
-    panel.className = 'rule-panel empty';
-    nameEl.textContent = '';
-    descEl.textContent = app.lang === 'no' ? 'Trykk på kortet for å trekke' : 'Tap the card to draw';
-    return;
-  }
-  const rules = getRules();
-  const rule = rules[cardData.rank];
-  if (!rule) return;
-  panel.className = 'rule-panel';
-  nameEl.textContent = rule.name;
-  const playerName = app.players[app.ring.lastPlayerIdx ?? 0] || '';
-  descEl.textContent = rule.desc.replace('{player}', playerName);
-}
-
-const FLIP_MS = 380;
-
-function drawCard() {
-  if (app.ring.animating || app.ring.deck.length === 0) return;
-  app.ring.animating = true;
-  SFX.flip();
-  const card = document.getElementById('card');
-
-  if (app.ring.flipped) {
-    card.classList.remove('flipped');
-    setTimeout(function() {
-      app.ring.pendingCard = app.ring.deck.pop();
-      if (app.ring.pendingCard.rank === 'K') app.ring.kingsDrawn++;
-      updateRingStats();
-      showCardFront(app.ring.pendingCard);
-      setRingRulePanel(app.ring.pendingCard);
-    }, FLIP_MS / 2);
-    setTimeout(function() {
-      card.classList.add('flipped');
-      app.ring.flipped = true;
-      setTimeout(function() {
-        app.ring.animating = false;
-        checkRingEndState(app.ring.pendingCard);
-      }, FLIP_MS);
-    }, FLIP_MS);
-  } else {
-    app.ring.pendingCard = app.ring.deck.pop();
-    if (app.ring.pendingCard.rank === 'K') app.ring.kingsDrawn++;
-    updateRingStats();
-    showCardFront(app.ring.pendingCard);
-    setRingRulePanel(app.ring.pendingCard);
-    requestAnimationFrame(function() {
-      card.classList.add('flipped');
-      app.ring.flipped = true;
-      setTimeout(function() {
-        app.ring.animating = false;
-        checkRingEndState(app.ring.pendingCard);
-      }, FLIP_MS);
-    });
-  }
-}
-
-function checkRingEndState(cardData) {
-  if (cardData.rank === 'K') SFX.king();
-  if (cardData.rank === 'K' && app.ring.kingsDrawn === 4) {
-    setTimeout(function() {
-      SFX.gameOver();
-      document.getElementById('ring-overlay').classList.add('show');
-      document.getElementById('card-area').style.cursor = 'default';
-    }, 300);
-  } else if (app.ring.deck.length === 0) {
-    document.getElementById('card-area').style.cursor = 'default';
-  }
-}
-
-function restartRing() {
-  SFX.click();
-  document.getElementById('ring-overlay').classList.remove('show');
-  initRing();
-}
-
-// Woodcut-style portrait face cards with thick outlines — § replaced with suit symbol.
-function getFaceArt(rank, color) {
-  const f  = color === 'red' ? '#cc1717' : '#111111';
-  const g  = '#B8943A';
-  const sk = '#FAE0C2';
-  const hr = color === 'red' ? '#6B2020' : '#2C1A0E';
-  const ol = '#111';
-  const sw = '1.4';
-
-  if (rank === 'K') return '<svg viewBox="0 0 70 100" xmlns="http://www.w3.org/2000/svg">\n      <!-- 5-point crown -->\n      <polygon points="35,4 20,20 26,30 35,22 44,30 50,20" fill="' + g + '" stroke="' + ol + '" stroke-width="' + sw + '" stroke-linejoin="round"/>\n      <rect x="13" y="28" width="44" height="8" rx="2" fill="' + g + '" stroke="' + ol + '" stroke-width="' + sw + '"/>\n      <circle cx="35" cy="11" r="4.5" fill="' + f + '" stroke="' + ol + '" stroke-width="1"/>\n      <circle cx="22"  cy="28" r="3"  fill="' + f + '" stroke="' + ol + '" stroke-width="1"/>\n      <circle cx="48"  cy="28" r="3"  fill="' + f + '" stroke="' + ol + '" stroke-width="1"/>\n      <!-- Hair above ears -->\n      <path d="M16,43 Q16,35 35,34 Q54,35 54,43" fill="' + hr + '" stroke="' + hr + '" stroke-width="1"/>\n      <!-- Face -->\n      <ellipse cx="35" cy="50" rx="14" ry="16" fill="' + sk + '" stroke="' + ol + '" stroke-width="' + sw + '"/>\n      <!-- Eyes -->\n      <ellipse cx="28" cy="47" rx="2.4" ry="2.1" fill="' + ol + '"/>\n      <ellipse cx="42" cy="47" rx="2.4" ry="2.1" fill="' + ol + '"/>\n      <circle cx="28.7" cy="46.4" r="0.85" fill="white"/>\n      <circle cx="42.7" cy="46.4" r="0.85" fill="white"/>\n      <!-- Nose bridge -->\n      <line x1="35" y1="48" x2="35" y2="53" stroke="#C4967A" stroke-width="1.2"/>\n      <!-- Moustache -->\n      <path d="M26,57 Q35,63 44,57" stroke="' + hr + '" stroke-width="3.2" fill="none" stroke-linecap="round"/>\n      <!-- Beard -->\n      <path d="M21,58 Q35,75 49,58 L47,67 Q35,83 23,67 Z" fill="' + hr + '" stroke="' + ol + '" stroke-width="1"/>\n      <!-- Ermine robe -->\n      <path d="M18,65 Q35,73 52,65 L54,100 Q35,104 16,100 Z" fill="white" stroke="#AAA" stroke-width="1.2"/>\n      <path d="M18,65 Q35,73 52,65" stroke="#999" stroke-width="1" fill="none"/>\n      <circle cx="27" cy="78" r="2.5" fill="#333"/>\n      <circle cx="35" cy="83" r="2.5" fill="#333"/>\n      <circle cx="43" cy="78" r="2.5" fill="#333"/>\n      <!-- Robe centre line -->\n      <line x1="35" y1="73" x2="35" y2="100" stroke="#ccc" stroke-width="1"/>\n      <!-- Sword right -->\n      <line x1="60" y1="34" x2="67" y2="100" stroke="' + f + '" stroke-width="2.6" stroke-linecap="round"/>\n      <line x1="55" y1="56" x2="70" y2="56" stroke="' + f + '" stroke-width="2.2" stroke-linecap="round"/>\n      <circle cx="60" cy="34" r="3.5" fill="' + g + '" stroke="' + ol + '" stroke-width="1"/>\n      <!-- Orb left -->\n      <circle cx="8" cy="79" r="8.5" fill="none" stroke="' + g + '" stroke-width="2.2"/>\n      <line x1="8" y1="69" x2="8" y2="89"  stroke="' + g + '" stroke-width="1.5"/>\n      <line x1="0" y1="79" x2="16" y2="79" stroke="' + g + '" stroke-width="1.5"/>\n    </svg>';
-
-  if (rank === 'Q') return '<svg viewBox="0 0 70 100" xmlns="http://www.w3.org/2000/svg">\n      <!-- 3-point tiara -->\n      <polygon points="35,3 18,25 52,25" fill="' + g + '" stroke="' + ol + '" stroke-width="' + sw + '" stroke-linejoin="round"/>\n      <rect x="13" y="23" width="44" height="8" rx="2" fill="' + g + '" stroke="' + ol + '" stroke-width="' + sw + '"/>\n      <circle cx="35" cy="9"  r="5.5" fill="' + f + '" stroke="' + ol + '" stroke-width="1"/>\n      <circle cx="20" cy="25" r="3.5" fill="' + f + '" stroke="' + ol + '" stroke-width="1"/>\n      <circle cx="50" cy="25" r="3.5" fill="' + f + '" stroke="' + ol + '" stroke-width="1"/>\n      <!-- Pearl band -->\n      <circle cx="26" cy="27" r="2" fill="white" stroke="#BBB" stroke-width="0.5"/>\n      <circle cx="35" cy="27" r="2" fill="white" stroke="#BBB" stroke-width="0.5"/>\n      <circle cx="44" cy="27" r="2" fill="white" stroke="#BBB" stroke-width="0.5"/>\n      <!-- Long hair behind -->\n      <path d="M19,45 Q15,72 17,100" stroke="' + hr + '" stroke-width="11" fill="none" stroke-linecap="round"/>\n      <path d="M51,45 Q55,72 53,100" stroke="' + hr + '" stroke-width="11" fill="none" stroke-linecap="round"/>\n      <path d="M19,45 Q35,38 51,45" fill="' + hr + '" stroke="' + hr + '" stroke-width="1"/>\n      <!-- Face -->\n      <ellipse cx="35" cy="51" rx="14" ry="16" fill="' + sk + '" stroke="' + ol + '" stroke-width="' + sw + '"/>\n      <!-- Eyebrows -->\n      <path d="M24,45 Q28,42 31,45" stroke="' + hr + '" stroke-width="1.6" fill="none" stroke-linecap="round"/>\n      <path d="M39,45 Q42,42 46,45" stroke="' + hr + '" stroke-width="1.6" fill="none" stroke-linecap="round"/>\n      <!-- Eyes -->\n      <ellipse cx="28" cy="49" rx="2.8" ry="2.3" fill="' + ol + '"/>\n      <ellipse cx="42" cy="49" rx="2.8" ry="2.3" fill="' + ol + '"/>\n      <circle cx="28.9" cy="48.3" r="1"   fill="white"/>\n      <circle cx="42.9" cy="48.3" r="1"   fill="white"/>\n      <!-- Lips -->\n      <path d="M29,61 Q35,67 41,61" stroke="' + f + '" stroke-width="2.4" fill="none" stroke-linecap="round"/>\n      <line x1="35" y1="61" x2="35" y2="63" stroke="' + f + '" stroke-width="1.2"/>\n      <!-- Pearl necklace -->\n      <circle cx="26" cy="67" r="1.9" fill="' + g + '" stroke="#7A5C1E" stroke-width="0.6"/>\n      <circle cx="30" cy="69" r="1.9" fill="' + g + '" stroke="#7A5C1E" stroke-width="0.6"/>\n      <circle cx="35" cy="70" r="1.9" fill="' + g + '" stroke="#7A5C1E" stroke-width="0.6"/>\n      <circle cx="40" cy="69" r="1.9" fill="' + g + '" stroke="#7A5C1E" stroke-width="0.6"/>\n      <circle cx="44" cy="67" r="1.9" fill="' + g + '" stroke="#7A5C1E" stroke-width="0.6"/>\n      <!-- Dress bodice -->\n      <path d="M20,68 Q35,77 50,68 L52,100 Q35,104 18,100 Z" fill="' + f + '" opacity="0.17" stroke="' + f + '" stroke-width="1.3"/>\n      <!-- Rose scepter -->\n      <line x1="7" y1="68" x2="10" y2="100" stroke="' + g + '" stroke-width="2.2" stroke-linecap="round"/>\n      <circle cx="7" cy="60" r="7.5" fill="' + f + '" opacity="0.20" stroke="' + f + '" stroke-width="0.5"/>\n      <circle cx="7" cy="60" r="5.5" fill="' + f + '" opacity="0.48"/>\n      <circle cx="7" cy="60" r="3"   fill="' + f + '" stroke="' + ol + '" stroke-width="0.8"/>\n      <circle cx="3"  cy="55" r="2.2" fill="' + f + '"/>\n      <circle cx="11" cy="55" r="2.2" fill="' + f + '"/>\n      <circle cx="7"  cy="52" r="2.2" fill="' + f + '"/>\n      <!-- Suit fan -->\n      <text x="65" y="69" text-anchor="middle" font-size="11" fill="' + f + '" opacity="0.55" font-family="serif">§</text>\n      <text x="65" y="82" text-anchor="middle" font-size="11" fill="' + f + '" opacity="0.55" font-family="serif">§</text>\n    </svg>';
-
-  /* Jack */
-  return '<svg viewBox="0 0 70 100" xmlns="http://www.w3.org/2000/svg">\n      <!-- Hat (broad trapezoid) -->\n      <polygon points="22,38 26,14 44,14 48,38" fill="#1c1c36" stroke="' + ol + '" stroke-width="' + sw + '" stroke-linejoin="round"/>\n      <!-- Hat brim -->\n      <rect x="10" y="36" width="50" height="7" rx="2.5" fill="#111" stroke="' + ol + '" stroke-width="1.2"/>\n      <!-- Feather plume -->\n      <path d="M46,41 C57,28 65,16 70,4 C64,22 57,33 49,41" fill="' + f + '" stroke="' + f + '" stroke-width="0.7" stroke-linejoin="round"/>\n      <path d="M47,41 C57,30 64,19 68,8 C63,24 57,35 50,41"  fill="' + f + '" opacity="0.32"/>\n      <!-- Hat band -->\n      <rect x="24" y="32" width="28" height="5" rx="1.5" fill="' + g + '" stroke="#7A5C1E" stroke-width="1"/>\n      <circle cx="35" cy="34.5" r="3.5" fill="' + g + '" stroke="#7A5C1E" stroke-width="1"/>\n      <!-- Star badge -->\n      <polygon points="35,17 37,23 43,23 38,27 40,33 35,29 30,33 32,27 27,23 33,23" fill="' + g + '" stroke="#7A5C1E" stroke-width="0.8"/>\n      <!-- Long blond hair -->\n      <path d="M17,51 Q13,76 15,100" stroke="' + g + '" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.9"/>\n      <path d="M53,51 Q57,76 55,100" stroke="' + g + '" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.9"/>\n      <!-- Face -->\n      <ellipse cx="35" cy="56" rx="14" ry="16" fill="' + sk + '" stroke="' + ol + '" stroke-width="' + sw + '"/>\n      <!-- Eyes -->\n      <ellipse cx="28" cy="52" rx="2.6" ry="2.2" fill="' + ol + '"/>\n      <ellipse cx="42" cy="52" rx="2.6" ry="2.2" fill="' + ol + '"/>\n      <circle cx="28.9" cy="51.3" r="0.95" fill="white"/>\n      <circle cx="42.9" cy="51.3" r="0.95" fill="white"/>\n      <!-- Smirk -->\n      <path d="M30,63 Q36,69 42,63" stroke="#B07850" stroke-width="2" fill="none" stroke-linecap="round"/>\n      <!-- Ruff collar -->\n      <path d="M20,70 Q35,79 50,70" stroke="#ddd" stroke-width="7" fill="none" stroke-linecap="round"/>\n      <path d="M20,70 Q35,79 50,70" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>\n      <path d="M21,74 Q28,79 35,76 Q42,79 49,74" stroke="#bbb" stroke-width="1.5" fill="none"/>\n      <!-- Jacket -->\n      <path d="M20,74 Q35,83 50,74 L52,100 Q35,104 18,100 Z" fill="' + f + '" opacity="0.17" stroke="' + f + '" stroke-width="1"/>\n      <!-- Halberd -->\n      <line x1="62" y1="22" x2="62" y2="100" stroke="' + f + '" stroke-width="2.6" stroke-linecap="round"/>\n      <polygon points="56,22 68,22 62,8"  fill="' + f + '" stroke="' + f + '" stroke-width="1" stroke-linejoin="round"/>\n      <polygon points="56,28 62,24 68,28 62,35" fill="' + f + '" opacity="0.55"/>\n      <line x1="56" y1="30" x2="68" y2="30" stroke="' + f + '" stroke-width="2.2"/>\n    </svg>';
-}
-
-// Individual card image filename lookup
-const CARD_RANK_NAME = { 'A':'ace','2':'two','3':'three','4':'four','5':'five','6':'six','7':'seven','8':'eight','9':'nine','10':'ten','J':'jack','Q':'queen','K':'king' };
-const CARD_SUIT_NAME = { '♣':'clubs','♠':'spades','♥':'hearts','♦':'diamonds' };
-
-// Norwegian card names — format: "Ruter seks", "Hjerter dame", "Spar konge"
-const CARD_RANK_NO = { 'A':'ess','2':'to','3':'tre','4':'fire','5':'fem','6':'seks','7':'sju','8':'åtte','9':'ni','10':'ti','J':'knekt','Q':'dame','K':'konge' };
-const CARD_SUIT_NO = { '♣':'Kløver','♠':'Spar','♥':'Hjerter','♦':'Ruter' };
-
-function showCardFront(cardData) {
-  document.getElementById('card-front').className = 'card-face card-front';
-  if (cardData.rank !== 'K') SFX.reveal();
-  const rankName = CARD_RANK_NAME[cardData.rank];
-  const suitName = CARD_SUIT_NAME[cardData.suit.symbol];
-  document.getElementById('card-img').src = 'cards/' + rankName + '_' + suitName + '.png';
-  const rankNo = CARD_RANK_NO[cardData.rank] || cardData.rank;
-  const suitNo = CARD_SUIT_NO[cardData.suit.symbol] || cardData.suit.symbol;
-  document.getElementById('rule-badge').textContent = suitNo + ' ' + rankNo;
-}
-
-// ─────────────────────────────────────────────
-// WATERFALL & NEVER HAVE I EVER (combined)
 // ─────────────────────────────────────────────
 function initWaterfall() {
   app.nhie.used = new Set();
@@ -7168,24 +5210,24 @@ const JEO_SETS = [
       { q: 'I hvilken region i Frankrike produseres cognac?', a: 'Cognac (Charente)', d: 5 }
     ]},
     { name: '🌍 Geografi', qs: [
-      { q: 'Hva er hovedstaden i Australia?', a: 'Canberra', d: 1 },
+      { q: 'Hva er den offisielle valutaen i Sør-Afrika?', a: 'Rand', d: 1 },
       { q: 'Hvilken elv er verdens lengste?', a: 'Nilen', d: 2 },
       { q: 'I hvilket land ligger Machu Picchu?', a: 'Peru', d: 3 },
       { q: 'Hva heter verdens minste land?', a: 'Vatikanstaten', d: 4 },
       { q: 'Hvilken by ligger på to kontinenter?', a: 'Istanbul', d: 5 }
     ]},
     { name: '🎬 Film & TV', qs: [
-      { q: 'I hvilken by er «Peaky Blinders» satt?', a: 'Birmingham', d: 1 },
+      { q: 'Hvem spilte Maximus i «Gladiator» (2000)?', a: 'Russell Crowe', d: 1 },
       { q: 'Hvilken serie handler om Walter White?', a: 'Breaking Bad', d: 2 },
-      { q: 'Hvem regisserte Inception?', a: 'Christopher Nolan', d: 3 },
+      { q: 'Hvem spilte T-800 i den originale «Terminator»-filmen (1984)?', a: 'Arnold Schwarzenegger', d: 3 },
       { q: 'Hvem stemmer Simba i den originale «Løvenes Konge» (1994)?', a: 'Matthew Broderick', d: 4 },
       { q: 'Hva heter den opprinnelige japanske filmen fra 1954 der Godzilla dukket opp for første gang?', a: 'Gojira', d: 5 }
     ]},
     { name: '🎵 Musikk', qs: [
-      { q: 'Hvem sang «Billie Jean»?', a: 'Michael Jackson', d: 1 },
-      { q: 'Hvilken norsk artist laget «Faded»?', a: 'Alan Walker', d: 2 },
+      { q: 'Hva heter Lady Gagas egentlige navn?', a: 'Stefani Joanne Angelina Germanotta', d: 1 },
+      { q: 'Hvem sang «Someone Like You» i 2011?', a: 'Adele', d: 2 },
       { q: 'Hvilken gruppe sang «Bohemian Rhapsody»?', a: 'Queen', d: 3 },
-      { q: 'Hva heter Beyoncés ektemann?', a: 'Jay-Z', d: 4 },
+      { q: 'Hva heter Taylor Swifts debutalbum fra 2006?', a: 'Taylor Swift', d: 4 },
       { q: 'Hvilken by er kjent som «Music City» i USA?', a: 'Nashville', d: 5 }
     ]},
     { name: '🥳 Fest', qs: [
@@ -7205,8 +5247,8 @@ const JEO_SETS = [
       { q: 'Hva er det japanske destillerte brennevinet laget av søtpoteter eller bygg kalt?', a: 'Shochu', d: 5 }
     ]},
     { name: '🌍 Geografi', qs: [
-      { q: 'Hva er hovedstaden i Brasil?', a: 'Brasília', d: 1 },
-      { q: 'Hva heter det høyeste fjellet i Afrika?', a: 'Kilimanjaro', d: 2 },
+      { q: 'Hva er den offisielle valutaen i Russland?', a: 'Rubel', d: 1 },
+      { q: 'I hvilket land ligger Taj Mahal?', a: 'India', d: 2 },
       { q: 'Hvilket hav er det minste i verden?', a: 'Arktis (Nordishavet)', d: 3 },
       { q: 'Hvilket land omgir øygruppen der Galápagos-øyene ligger?', a: 'Ecuador', d: 4 },
       { q: 'Hvilket land er det eneste som grenser til både Kaspihavet og Persiabukten?', a: 'Iran', d: 5 }
@@ -7214,13 +5256,13 @@ const JEO_SETS = [
     { name: '🎬 Film & TV', qs: [
       { q: 'Hvem stemmer Donkey i «Shrek»?', a: 'Eddie Murphy', d: 1 },
       { q: 'Hvilken serie utspiller seg i Westeros?', a: 'Game of Thrones', d: 2 },
-      { q: 'Hvilken film vant Oscar for beste film i 2020?', a: 'Parasite', d: 3 },
-      { q: 'Hvem regisserte «Pulp Fiction»?', a: 'Quentin Tarantino', d: 4 },
+      { q: 'Hvilken film fra 1994 handler om en mann som sitter urettmessig i fengsel?', a: 'The Shawshank Redemption', d: 3 },
+      { q: 'Hvem spilte Michael Corleone i «The Godfather»?', a: 'Al Pacino', d: 4 },
       { q: 'Hvilken skuespiller spilte Joker i «The Dark Knight»?', a: 'Heath Ledger', d: 5 }
     ]},
     { name: '🎵 Musikk', qs: [
-      { q: 'Hvilket band sang «Smells Like Teen Spirit»?', a: 'Nirvana', d: 1 },
-      { q: 'Hvem er kjent som «The King of Rock and Roll»?', a: 'Elvis Presley', d: 2 },
+      { q: 'Hvem sang «Shape of You» (2017)?', a: 'Ed Sheeran', d: 1 },
+      { q: 'Hvilket band ga ut albumet «OK Computer» i 1997?', a: 'Radiohead', d: 2 },
       { q: 'I hvilket år ble ABBA grunnlagt?', a: '1972', d: 3 },
       { q: 'Hva heter Eminems egentlige fornavn?', a: 'Marshall (Mathers)', d: 4 },
       { q: 'Hvilken komponist ble døv, men fortsatte å komponere — inkludert sin 9. symfoni?', a: 'Beethoven', d: 5 }
@@ -7235,14 +5277,14 @@ const JEO_SETS = [
   ],
   [
     { name: '🔬 Vitenskap', qs: [
-      { q: 'Hva er det hardeste naturlige stoffet på jorda?', a: 'Diamant', d: 1 },
-      { q: 'Hva er det mest utbredte grunnstoffet i universet?', a: 'Hydrogen', d: 2 },
+      { q: 'Hva er det kjemiske symbolet for gull?', a: 'Au', d: 1 },
+      { q: 'Hva heter den greske guden for krig?', a: 'Ares', d: 2 },
       { q: 'Hva kalles et dyr som spiser både planter og kjøtt?', a: 'Omnivore (altetende)', d: 3 },
-      { q: 'Hva er det eneste metallet som er flytende ved romtemperatur?', a: 'Kvikksølv', d: 4 },
+      { q: 'Hva er det norske ordet for fobien mot høyder?', a: 'Akrofobi (høydeskrekk)', d: 4 },
       { q: 'Hva er navnet på prosessen der en substans går direkte fra fast stoff til gass?', a: 'Sublimasjon', d: 5 }
     ]},
     { name: '🌍 Geografi', qs: [
-      { q: 'Hva er Norges lengste fjord?', a: 'Sognefjorden', d: 1 },
+      { q: 'Hva er navnet på øygruppen der Charles Darwin utviklet sin evolusjonsteori?', a: 'Galapagosøyene', d: 1 },
       { q: 'Hvilket land har flest tidssoner i verden?', a: 'Russland', d: 2 },
       { q: 'Hva heter Frankrikes høyeste fjell?', a: 'Mont Blanc', d: 3 },
       { q: 'Hvilken øy er verdens største?', a: 'Grønland', d: 4 },
@@ -7279,22 +5321,22 @@ const JEO_SETS = [
       { q: 'Hva heter enheten som måler lydstyrke?', a: 'Desibel (dB)', d: 5 }
     ]},
     { name: '🌍 Geografi', qs: [
-      { q: 'Hva er verdens folkerikeste land?', a: 'India', d: 1 },
+      { q: 'Hva er hovedstaden i Egypt?', a: 'Kairo', d: 1 },
       { q: 'Hva heter Italias aktive vulkan på Sicilia?', a: 'Etna', d: 2 },
-      { q: 'Hvilken elv renner gjennom London?', a: 'Themsen', d: 3 },
-      { q: 'Hva heter den lengste elven i Sør-Amerika?', a: 'Amazonas', d: 4 },
-      { q: 'Hvilken by er kjent som «The Eternal City»?', a: 'Roma', d: 5 }
+      { q: 'Hva heter det lengste fjellet i Skandinavia?', a: 'Galdhøpiggen', d: 3 },
+      { q: 'Hva er hovedstaden i Argentina?', a: 'Buenos Aires', d: 4 },
+      { q: 'Hva heter det høyeste fjellet i Europa (utenom Kaukasus)?', a: 'Mont Blanc', d: 5 }
     ]},
     { name: '🎬 Film & TV', qs: [
       { q: 'Hva heter protagonisten i «Harry Potter»-serien?', a: 'Harry Potter', d: 1 },
-      { q: 'Hvem spilte Jack i Titanic (1997)?', a: 'Leonardo DiCaprio', d: 2 },
+      { q: 'Hvem spilte Amy Dunne i thrilleren «Gone Girl» (2014)?', a: 'Rosamund Pike', d: 2 },
       { q: 'I hvilken animasjonsfilm synger man «Let It Go»?', a: 'Frost (Frozen)', d: 3 },
-      { q: 'Hvem regisserte «Schindler\'s List»?', a: 'Steven Spielberg', d: 4 },
+      { q: 'Hvilken film fra 1994 handler om en mann som sitter urettmessig fengslet i Shawshank?', a: 'The Shawshank Redemption', d: 4 },
       { q: 'Hva heter den danske serien som inspirerte den amerikanske «House of Cards»?', a: 'Borgen', d: 5 }
     ]},
     { name: '🎵 Musikk', qs: [
-      { q: 'Hvem er kjent som «Queen of Pop»?', a: 'Madonna', d: 1 },
-      { q: 'Hvilket land er ABBA fra?', a: 'Sverige', d: 2 },
+      { q: 'Hvilket norsk band sang «Take On Me»?', a: 'a-ha', d: 1 },
+      { q: 'Hvem sang «Bad Guy» og vant Grammy for Album of the Year i 2020?', a: 'Billie Eilish', d: 2 },
       { q: 'Hva heter duoen bak «Get Lucky»?', a: 'Daft Punk', d: 3 },
       { q: 'Hvilken norsk artist vant Eurovision Song Contest i 2009?', a: 'Alexander Rybak', d: 4 },
       { q: 'I hvilket år ga The Beatles ut albumet «Abbey Road»?', a: '1969', d: 5 }
@@ -7310,13 +5352,13 @@ const JEO_SETS = [
   [
     { name: '🏰 Historie', qs: [
       { q: 'Hvem var Norges første statsminister etter 1814?', a: 'Christian Magnus Falsen (regjeringen Peder Anker)', d: 1 },
-      { q: 'I hvilket år falt Berlinmuren?', a: '1989', d: 2 },
-      { q: 'Hvem oppdaget penicillin?', a: 'Alexander Fleming', d: 3 },
+      { q: 'Hva heter det kjemiske grunnstoffet med atomnummer 1?', a: 'Hydrogen', d: 2 },
+      { q: 'Hva er det kjemiske symbolet for jern?', a: 'Fe', d: 3 },
       { q: 'I hvilken by ble attentatet som utløste første verdenskrig begått?', a: 'Sarajevo', d: 4 },
       { q: 'Hvilken sivilisasjon bygde Machu Picchu?', a: 'Inkaene', d: 5 }
     ]},
     { name: '🌍 Geografi', qs: [
-      { q: 'Hva er Europas lengste elv?', a: 'Volga', d: 1 },
+      { q: 'Hva er den offisielle valutaen i India?', a: 'Rupi', d: 1 },
       { q: 'Hvilken by er Kanadas største?', a: 'Toronto', d: 2 },
       { q: 'Hva heter den smaleste staten i USA?', a: 'Rhode Island', d: 3 },
       { q: 'Hva heter halvøya der Cancún i Mexico ligger?', a: 'Yucatán', d: 4 },
@@ -7324,7 +5366,7 @@ const JEO_SETS = [
     ]},
     { name: '🎬 Film & TV', qs: [
       { q: 'Hva heter løven i «Narnia»?', a: 'Aslan', d: 1 },
-      { q: 'Hvem spilte Iron Man i Marvel-filmene?', a: 'Robert Downey Jr.', d: 2 },
+      { q: 'Hvem spilte Charlize Theron i actionfilmen «Mad Max: Fury Road»?', a: 'Imperator Furiosa', d: 2 },
       { q: 'Hvilken film inneholder scenen «I\'m the king of the world!»?', a: 'Titanic', d: 3 },
       { q: 'Hva heter den belgiske detektiven skapt av Agatha Christie?', a: 'Hercule Poirot', d: 4 },
       { q: 'Hvem regisserte den originale «Star Wars»-trilogien?', a: 'George Lucas', d: 5 }
@@ -7337,30 +5379,30 @@ const JEO_SETS = [
       { q: 'Hva heter den spanske risen som brukes i paella?', a: 'Bomba-ris (eller Calasparra)', d: 5 }
     ]},
     { name: '🏅 Sport', qs: [
-      { q: 'Hvilken sport spilles i Wimbledon?', a: 'Tennis', d: 1 },
+      { q: 'Hvor mange hull er det på en standard golfbane?', a: '18', d: 1 },
       { q: 'Hva heter den viktigste fotballturneringen i verden for landslag?', a: 'VM (FIFA World Cup)', d: 2 },
       { q: 'Hvem har vunnet flest Grand Slam-titler i tennis (herrer)?', a: 'Novak Djokovic', d: 3 },
       { q: 'Hvem var den første svarte idrettsutøveren til å vinne individuelt gull i vinter-OL?', a: 'Shani Davis (2006)', d: 4 },
-      { q: 'I hvilken by ble de første moderne OL arrangert i 1896?', a: 'Aten (Hellas)', d: 5 }
+      { q: 'Hvilken norsk by arrangerte Vinter-OL i 1994?', a: 'Lillehammer', d: 5 }
     ]}
   ],
   [
     { name: '🏰 Historie', qs: [
-      { q: 'Hvem var den første presidenten i USA?', a: 'George Washington', d: 1 },
+      { q: 'Hva heter den korteste krigen i historien, som varte bare 38–45 minutter?', a: 'Anglo-Zanzibar-krigen', d: 1 },
       { q: 'I hvilket år erklærte Norge sin uavhengighet (grunnlovsdagen)?', a: '1814', d: 2 },
       { q: 'Hvem oppfant trykkpressen med bevegelig type?', a: 'Johannes Gutenberg', d: 3 },
       { q: 'Hvilken sykdom drepte mellom 30–60% av Europas befolkning på 1300-tallet?', a: 'Svartedauden (pesten)', d: 4 },
       { q: 'Hvem ble den første romerske keiseren (ikke Julius Cæsar)?', a: 'Augustus', d: 5 }
     ]},
     { name: '🌍 Geografi', qs: [
-      { q: 'Hva er hovedstaden i Japan?', a: 'Tokyo', d: 1 },
+      { q: 'Hvilken by er kjent som «The Big Apple»?', a: 'New York', d: 1 },
       { q: 'Hva heter øya der Madagaskar ligger?', a: 'Madagaskar (er en øy)', d: 2 },
       { q: 'Hvilken innsjø er den høyestliggende seilbare innsjøen i verden?', a: 'Titicaca-sjøen', d: 3 },
       { q: 'Hva heter bukten i Europa der tidevannsskiftet er størst i verden?', a: 'Bay of Fundy (Canada)', d: 4 },
       { q: 'Hva heter den eneste byen som har vært vertskap for både sommer- og vinter-OL?', a: 'Beijing', d: 5 }
     ]},
     { name: '🎬 Film & TV', qs: [
-      { q: 'Hvem spilte Forrest Gump?', a: 'Tom Hanks', d: 1 },
+      { q: 'Hvem regisserte «Forrest Gump» (1994)?', a: 'Robert Zemeckis', d: 1 },
       { q: 'Hva heter den norske julekalender-klassikeren fra NRK?', a: 'Julemorgen (eller Jul i Blåfjell)', d: 2 },
       { q: 'I hvilken film sier karakteren «You can\'t handle the truth!»?', a: 'A Few Good Men', d: 3 },
       { q: 'Hvem er regissøren bak «The Godfather»-trilogien?', a: 'Francis Ford Coppola', d: 4 },
@@ -7391,7 +5433,7 @@ const JEO_SETS = [
     ]},
     { name: '🌍 Geografi', qs: [
       { q: 'Hva er Afrikas høyeste fjell?', a: 'Kilimanjaro', d: 1 },
-      { q: 'Hvilken elv renner gjennom Cairo?', a: 'Nilen', d: 2 },
+      { q: 'I hvilken by ligger det berømte torget Tiananmen?', a: 'Beijing', d: 2 },
       { q: 'Hva heter Australias største ørken?', a: 'Great Victoria Desert', d: 3 },
       { q: 'Hva heter den eneste europeiske staten som grenser til Spania og Frankrike?', a: 'Andorra', d: 4 },
       { q: 'Hva heter fjorden som er verdens nest lengste fjord, i Norge?', a: 'Hardangerfjorden', d: 5 }
@@ -7420,7 +5462,7 @@ const JEO_SETS = [
   ],
   [
     { name: '🏰 Historie', qs: [
-      { q: 'Hvem malte Mona Lisa?', a: 'Leonardo da Vinci', d: 1 },
+      { q: 'Hva kalles frykten for edderkopper?', a: 'Araknofobi', d: 1 },
       { q: 'Hva heter den store murens offisielle navn i Kina?', a: 'Kinesiske mur (Wan Li Chang Cheng)', d: 2 },
       { q: 'I hvilket år landet mennesket på månen for første gang?', a: '1969', d: 3 },
       { q: 'Hvem var den siste faraoen i Egypt?', a: 'Kleopatra VII', d: 4 },
@@ -7434,16 +5476,16 @@ const JEO_SETS = [
       { q: 'Hva heter halvøya der Finland og Skandinavia ligger?', a: 'Den skandinaviske halvøya (og Kolahalvøya for Finland)', d: 5 }
     ]},
     { name: '🎬 Film & TV', qs: [
-      { q: 'Hvem spilte Black Widow i Marvel-filmene?', a: 'Scarlett Johansson', d: 1 },
+      { q: 'Hva heter Buzz Lightyears venn og partner i «Toy Story»?', a: 'Woody', d: 1 },
       { q: 'Hva heter det nordiske TV-dramaet kjent for «Forbrydelsen»?', a: 'Forbrydelsen (The Killing) — dansk', d: 2 },
       { q: 'Hvem regisserte «Parasite» (2019)?', a: 'Bong Joon-ho', d: 3 },
       { q: 'Hva heter serien om en russisk-norsk narkoligaen på Netflix?', a: 'Ragnarok (eller Beforeigners)', d: 4 },
       { q: 'Hva heter Kubricks psykologiske thriller fra 1980 basert på Stephen Kings roman?', a: 'The Shining', d: 5 }
     ]},
     { name: '🎵 Musikk', qs: [
-      { q: 'Hva heter den svenske DJ-en bak «Wake Me Up»?', a: 'Avicii', d: 1 },
+      { q: 'Hva heter Ed Sheerans debutalbum fra 2011?', a: '+  (Plus)', d: 1 },
       { q: 'Hvilket band var Kurt Cobain frontfigur for?', a: 'Nirvana', d: 2 },
-      { q: 'Hva heter Drakes egentlige navn?', a: 'Aubrey Drake Graham', d: 3 },
+      { q: 'Hvem sang «Waterloo» som ABBA vant Eurovision med?', a: 'ABBA', d: 3 },
       { q: 'Hvilken artist ga ut albumet «Thriller» i 1982?', a: 'Michael Jackson', d: 4 },
       { q: 'Hvem komponerte «The Four Seasons»?', a: 'Antonio Vivaldi', d: 5 }
     ]},
@@ -7468,13 +5510,13 @@ const JEO_SETS = [
       { q: 'Hva er det offisielle navnet på Kinas Forbudte By i dag?', a: 'Palace Museum (Gugong)', d: 2 },
       { q: 'Hva heter Sør-Amerikas største land?', a: 'Brasil', d: 3 },
       { q: 'Hva heter den eneste innlandssjøen i verden uten avløp til hav som kalles «hav»?', a: 'Det kaspiske hav', d: 4 },
-      { q: 'Hva heter den lengste jernbanen i verden, som går gjennom Russland?', a: 'Den transsiberske jernbanen', d: 5 }
+      { q: 'Hva er det offisielle navnet på den russiske jernbanen som krysser hele Sibir?', a: 'Transsibirske jernbanen', d: 5 },
     ]},
     { name: '🎬 Film & TV', qs: [
       { q: 'Hva heter protagonisten i «Stranger Things»?', a: 'Eleven / Millie (eller hele gjengen)', d: 1 },
-      { q: 'Hvem spilte Batman i Christopher Nolans «Dark Knight»-trilogi?', a: 'Christian Bale', d: 2 },
+      { q: 'Hva heter den ikoniske fiksjonsdetektiven skapt av Arthur Conan Doyle?', a: 'Sherlock Holmes', d: 2 },
       { q: 'Hva heter den danske serien om statsministeren som ble Norsk remake?', a: 'Borgen', d: 3 },
-      { q: 'Hvem regisserte «2001: A Space Odyssey»?', a: 'Stanley Kubrick', d: 4 },
+      { q: 'Hvem spilte rollen som Forrest Grump i «Forrest Gump»?', a: 'Tom Hanks', d: 4 },
       { q: 'Hva heter den japanske regissøren bak «Spirited Away» og «My Neighbor Totoro»?', a: 'Hayao Miyazaki', d: 5 }
     ]},
     { name: '🍕 Mat', qs: [
@@ -7511,14 +5553,14 @@ const JEO_SETS = [
       { q: 'Hva heter filmen der Simba er løvekongen?', a: 'Løvenes Konge (The Lion King)', d: 1 },
       { q: 'Hvem spilte Hannibal Lecter i «Nattsvermeren»?', a: 'Anthony Hopkins', d: 2 },
       { q: 'Hva heter Christopher Nolans film om drømmereiser?', a: 'Inception', d: 3 },
-      { q: 'Hvem regisserte «Schindler\'s List»?', a: 'Steven Spielberg', d: 4 },
-      { q: 'Hva heter den franske filmbevegelsen fra 1950–60-tallet kalt?', a: 'Nouvelle Vague (ny bølge)', d: 5 }
+      { q: 'Hvem regisserte «Casablanca» (1942)?', a: 'Michael Curtiz', d: 4 },
+      { q: 'Hvem spilte hovedrollen i filmen «Amélie» (2001)?', a: 'Audrey Tautou', d: 5 },
     ]},
     { name: '🎵 Musikk & Artister', qs: [
-      { q: 'Hvem sang «Hello» i 2015?', a: 'Adele', d: 1 },
+      { q: 'Hvilket band er Mick Jagger frontfigur for?', a: 'The Rolling Stones', d: 1 },
       { q: 'Hva heter den norske duoen bak «What\'s Up Danger»?', a: '(ikke norsk) — Hva heter Kygo og Selena Gomez sin hit? — «It Ain\'t Me»', d: 2 },
       { q: 'Hva heter gruppen bak «Waterloo» som vant Eurovision i 1974?', a: 'ABBA', d: 3 },
-      { q: 'Hvem er kjent som «The Weeknd» og synger «Blinding Lights»?', a: 'Abel Tesfaye', d: 4 },
+      { q: 'Hvem spilte Elvis Presley i Baz Luhrmanns «Elvis» (2022)?', a: 'Austin Butler', d: 4 },
       { q: 'Hva heter det klassiske verket av Beethoven som han komponerte mens han var døv?', a: 'Symfoni nr. 9 (Ode til glede)', d: 5 }
     ]},
     { name: '🏅 Sport & OL', qs: [
@@ -7533,7 +5575,7 @@ const JEO_SETS = [
     { name: '🏰 Norsk Historie', qs: [
       { q: 'I hvilket år ble Norge okkupert av Nazi-Tyskland?', a: '1940', d: 1 },
       { q: 'Hva heter norsk grunnlov og hvilket år ble den undertegnet?', a: 'Grunnloven, 1814', d: 2 },
-      { q: 'Hva heter Norges oljefond offisielt?', a: 'Statens pensjonsfond utland', d: 3 },
+      { q: 'I hvilken by ble Nobels fredspris delt ut for første gang?', a: 'Kristiania (Oslo)', d: 3 },
       { q: 'Hvem var Norges statsminister under andre verdenskrig i eksil?', a: 'Johan Nygaardsvold', d: 4 },
       { q: 'Hva heter den norske motstands-organisasjonen under krigen kalt «XU»?', a: 'Etterretningsorganisasjon (XU) — hemmelig etterretning', d: 5 }
     ]},
@@ -7541,11 +5583,11 @@ const JEO_SETS = [
       { q: 'Hva er Asias lengste elv?', a: 'Yangtze (Chang Jiang)', d: 1 },
       { q: 'Hva heter kanalnettet mellom øyene i Venezia?', a: 'Kanaler (Grand Canal er den viktigste)', d: 2 },
       { q: 'Hva heter den aktive vulkanen på Island som er kjent for store utbrudd?', a: 'Eyjafjallajökull (eller Katla)', d: 3 },
-      { q: 'Hva heter havet mellom Norge og Storbritannia?', a: 'Nordsjøen', d: 4 },
+      { q: 'Hva er arealet til det minste landet i verden?', a: '0,44 km²', d: 4 },
       { q: 'Hva heter den røde plassen i Moskva på russisk?', a: 'Krasnaya Ploshchad', d: 5 }
     ]},
     { name: '📺 TV-Serier', qs: [
-      { q: 'Hva heter dinosaur-parken i «Jurassic Park»-universet?', a: 'Jurassic Park / Jurassic World', d: 1 },
+      { q: 'Hvem spilte Jack Sparrow i «Pirates of the Caribbean»?', a: 'Johnny Depp', d: 1 },
       { q: 'I hvilken serie spiller Bryan Cranston rollen som Walter White?', a: 'Breaking Bad', d: 2 },
       { q: 'Hva heter den svenske krimserien basert på Henning Mankells bøker?', a: 'Wallander', d: 3 },
       { q: 'Hvem skapte TV-serien «Twin Peaks»?', a: 'David Lynch og Mark Frost', d: 4 },
@@ -7570,7 +5612,7 @@ const JEO_SETS = [
     { name: '🎭 Kunst & Kultur', qs: [
       { q: 'Hvem malte «Skrik»?', a: 'Edvard Munch', d: 1 },
       { q: 'I hvilken by henger Mona Lisa?', a: 'Paris (Louvre)', d: 2 },
-      { q: 'Hvem forfattet «Romeo og Julie»?', a: 'William Shakespeare', d: 3 },
+      { q: 'Hvem malte «Skrik» (1893)?', a: 'Edvard Munch', d: 3 },
       { q: 'Hva heter den franske kunstbevegelsen på 1860-tallet kjent for «Les Demoiselles d\'Avignon»?', a: 'Kubisme (Picasso)', d: 4 },
       { q: 'Hva heter den spanske arkitekten bak La Sagrada Família i Barcelona?', a: 'Antoni Gaudí', d: 5 }
     ]},
@@ -7582,23 +5624,23 @@ const JEO_SETS = [
       { q: 'Hva heter det indre farvannet langs Norskekysten mellom øyer og fastland?', a: 'Indre farled / Skjærgården', d: 5 }
     ]},
     { name: '🎬 Film & TV', qs: [
-      { q: 'Hvem spilte Hermione Granger i Harry Potter-filmene?', a: 'Emma Watson', d: 1 },
+      { q: 'Hvem stemmer Elsa i den norske versjonen av «Frost»?', a: 'Creo Skarsgård', d: 1 },
       { q: 'Hva heter den norske regissøren bak «Kitchen Stories»?', a: 'Bent Hamer', d: 2 },
       { q: 'Hva heter Pixar-filmen om monstre som skremmer barn?', a: 'Monsters, Inc.', d: 3 },
-      { q: 'Hvem spilte Bond i «Casino Royale» (2006)?', a: 'Daniel Craig', d: 4 },
+      { q: 'Hvem regisserte «Joker» (2019)?', a: 'Todd Phillips', d: 4 },
       { q: 'Hva heter den franske filmen som vant Oscar for beste utenlandske film i 2012?', a: 'The Artist (stum film — 2011/2012)', d: 5 }
     ]},
     { name: '🎵 Musikk', qs: [
-      { q: 'Hva heter Rihannas hjemland?', a: 'Barbados', d: 1 },
-      { q: 'Hvem er kjent som «The Boss» i rocken?', a: 'Bruce Springsteen', d: 2 },
+      { q: 'Hva heter Eminem med sitt borgerlige navn?', a: 'Marshall Bruce Mathers III', d: 1 },
+      { q: 'Hvem er kjent som «The Thin White Duke»?', a: 'David Bowie', d: 2 },
       { q: 'Hva heter den sveitsiske elektroniske duoen bak «Blue (Da Ba Dee)»?', a: '(Ikke sveitsisk) — Eiffel 65 fra Italia', d: 3 },
       { q: 'Hva heter den norske musikeren Ole Gunnar Mikalsen bedre kjent som?', a: 'Datarock (eller CC Cowboys)', d: 4 },
-      { q: 'Hva heter Mozarts opera om Don Juan?', a: 'Don Giovanni', d: 5 }
+      { q: 'Hva heter den berømte operaen av Puccini om en japansk geisha?', a: 'Madama Butterfly', d: 5 }
     ]},
     { name: '🏅 Sport', qs: [
       { q: 'Hvem er kjent som «Black Mamba» i basketball?', a: 'Kobe Bryant', d: 1 },
       { q: 'I hvilken sport er «Grand Prix» den høyeste klassen?', a: 'Formel 1', d: 2 },
-      { q: 'Hvem vant FIFA-VM i 2022?', a: 'Argentina', d: 3 },
+      { q: 'Hva er en lysets hastighet i vakuum (avrundet)?', a: '300 000 km/s', d: 3 },
       { q: 'Hvem har vunnet flest Tour de France-titler uten diskvalifikasjon?', a: 'Jacques Anquetil / Eddy Merckx / Bernard Hinault / Miguel Induráin (alle 5)', d: 4 },
       { q: 'Hva heter den rumenske gymnasten som fikk syv perfekte 10-ere i OL i 1976?', a: 'Nadia Comaneci', d: 5 }
     ]}
@@ -7609,7 +5651,7 @@ const JEO_SETS = [
       { q: 'Hva heter Fyodor Dostojevskijs roman om en morder og hans skyld?', a: 'Forbrytelse og straff', d: 2 },
       { q: 'Hvem forfattet «To Kill a Mockingbird»?', a: 'Harper Lee', d: 3 },
       { q: 'Hva heter Ibsens drama om Nora Helmer?', a: 'Et dukkehjem', d: 4 },
-      { q: 'Hva heter den norske forfatteren som vant Nobelprisen i litteratur i 1928?', a: 'Sigrid Undset', d: 5 }
+      { q: 'Hvem skrev «Don Quijote»?', a: 'Miguel de Cervantes', d: 5 }
     ]},
     { name: '🌍 Geografi', qs: [
       { q: 'Hva er Storbritannias høyeste fjell?', a: 'Ben Nevis', d: 1 },
@@ -7626,7 +5668,7 @@ const JEO_SETS = [
       { q: 'Hva er halvlederfenomenet der elektrisk motstand faller til null kalt?', a: 'Supraledning (superconductivity)', d: 5 }
     ]},
     { name: '🎵 Musikk', qs: [
-      { q: 'Hva heter Coldplays vokalist?', a: 'Chris Martin', d: 1 },
+      { q: 'Hvem er vokalist i bandet U2?', a: 'Bono', d: 1 },
       { q: 'Hvilken artist er kjent for albumer som «21» og «25»?', a: 'Adele', d: 2 },
       { q: 'Hvem er duoen bak «Get Lucky»?', a: 'Daft Punk', d: 3 },
       { q: 'Hva heter den islandske artisten kjent for «Bjork»?', a: 'Björk', d: 4 },
@@ -7652,13 +5694,13 @@ const JEO_SETS = [
       { q: 'Hva heter Sveits\' høyeste fjell?', a: 'Monte Rosa (eller Dufourspitze)', d: 1 },
       { q: 'Hva heter den kinesiske tettbefolkede øya som er en separat stat?', a: 'Taiwan', d: 2 },
       { q: 'Hva heter det minste landets i Asia?', a: 'Maldivene (areal), eller Vatikanstaten er i Europa', d: 3 },
-      { q: 'Hva er den offisielle valutaen i Japan?', a: 'Yen', d: 4 },
+      { q: 'Hva er den offisielle valutaen i Mexico?', a: 'Peso', d: 4 },
       { q: 'Hva heter fjellet i Cape Town, Sør-Afrika som er flatt på toppen?', a: 'Table Mountain', d: 5 }
     ]},
     { name: '🎬 Film & TV', qs: [
       { q: 'Hva heter filmen der en enslig mann snakker med en volleyball?', a: 'Cast Away', d: 1 },
       { q: 'Hva heter Disney-prinsessen som lever under vann?', a: 'Ariel (Den lille havfruen)', d: 2 },
-      { q: 'Hvem spilte Wolverine i X-Men-filmene?', a: 'Hugh Jackman', d: 3 },
+      { q: 'Hva heter NASAs romteleskop som ble skutt opp i 1990?', a: 'Hubble Space Telescope', d: 3 },
       { q: 'Hva heter den spanske thrilleren på Netflix om en bankkran?', a: 'La Casa de Papel (Money Heist)', d: 4 },
       { q: 'Hva heter regissøren bak «Mulholland Drive» og «Twin Peaks»?', a: 'David Lynch', d: 5 }
     ]},
@@ -7693,9 +5735,9 @@ const JEO_SETS = [
       { q: 'Hva heter den sørligste bebodde øya i verden?', a: 'Puerto Toro (Chile) eller Stewart Island (New Zealand)', d: 5 }
     ]},
     { name: '🎬 Klassisk Film', qs: [
-      { q: 'Hvem spilte Scarlett O\'Hara i «Gone with the Wind»?', a: 'Vivien Leigh', d: 1 },
+      { q: 'Hvem spilte den ikoniske rollen som Rhett Butler i «Gone with the Wind»?', a: 'Clark Gable', d: 1 },
       { q: 'Hva heter Alfred Hitchcocks thriller med dusjen som er berømt?', a: 'Psycho', d: 2 },
-      { q: 'Hvem regisserte «Citizen Kane» (1941)?', a: 'Orson Welles', d: 3 },
+      { q: 'Hvem spilte Ripley i «Alien» (1979)?', a: 'Sigourney Weaver', d: 3 },
       { q: 'Hva heter den franske film-noir klassikeren fra 1955 med Alain Delon?', a: 'Le Samouraï (1967) — av Jean-Pierre Melville', d: 4 },
       { q: 'Hva heter den japanske filmen av Kurosawa som inspirerte «The Magnificent Seven»?', a: 'Seven Samurai (Shichinin no Samurai, 1954)', d: 5 }
     ]},
@@ -7708,7 +5750,7 @@ const JEO_SETS = [
     ]},
     { name: '🔬 Kropp & Helse', qs: [
       { q: 'Hvor mange tenner har et voksent menneske normalt?', a: '32', d: 1 },
-      { q: 'Hva er det største organet i menneskekroppen?', a: 'Huden', d: 2 },
+      { q: 'Hva kalles studiet av stjerner og planeter?', a: 'Astronomi', d: 2 },
       { q: 'Hva kaller vi studiet av sykdommer og medisinske tilstander?', a: 'Patologi', d: 3 },
       { q: 'Hva heter det protein i røde blodlegemer som frakter oksygen?', a: 'Hemoglobin', d: 4 },
       { q: 'Hva kaller man den delen av hjernen som styrer balanse og motorikk?', a: 'Lillehjernen (cerebellum)', d: 5 }
@@ -7716,10 +5758,19 @@ const JEO_SETS = [
   ]
 ];
 
-app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0, setIdx: Math.floor(Math.random() * JEO_SETS.length) };
+function _jeoPickSet() {
+  if (!app._jeoUsedSets) app._jeoUsedSets = new Set();
+  let available = Array.from({ length: JEO_SETS.length }, (_, i) => i).filter(i => !app._jeoUsedSets.has(i));
+  if (available.length === 0) { app._jeoUsedSets.clear(); available = Array.from({ length: JEO_SETS.length }, (_, i) => i); }
+  const idx = available[Math.floor(Math.random() * available.length)];
+  app._jeoUsedSets.add(idx);
+  return idx;
+}
+
+app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0, setIdx: _jeoPickSet() };
 
 function initJeopardy() {
-  app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0, setIdx: Math.floor(Math.random() * JEO_SETS.length) };
+  app.jeopardy = { used: [], current: null, done: 0, teams: [], teamsSet: false, currentTeam: 0, setIdx: _jeoPickSet() };
   _jeoShowTeamSetup();
 }
 
@@ -8452,7 +6503,6 @@ const GIRLS_NIGHT_CHALLENGES = {
 // Weighted type pool: 40 entries — music appears exactly once, wheel exactly twice
 // 1=wheel(2), 2=nhie(6), 3=music(1), 4=challenges(31)
 const GASSED_TYPE_POOL = [
-  1,1,
   2,2,2,2,2,2,
   3,
   4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
@@ -8599,20 +6649,6 @@ function gassedTurn(skipCapture) {
     g.typeIdx = 0;
   }
   let type = g.typeOrder[g.typeIdx++];
-  // Avoid wheel appearing twice in a row
-  if (type === 1 && type === g.lastSubType && g.typeIdx < g.typeOrder.length) {
-    type = g.typeOrder[g.typeIdx++];
-  }
-  if (type === 1) g.lastSubType = type;
-
-  if (type === 1) {
-    // ── Lykkehjulet — vis selve hjul-skjermen ──
-    g.inSubGame = true;
-    showScreen('screen-wheel');
-    initWheel();
-    S.schedulePush(50);
-    return;
-  }
 
   // Reset screen-gassed card areas (only reached for types 2/3/4)
   const _pn = $('gs-player-name'); if (_pn) _pn.textContent = playerName;
@@ -9035,14 +7071,6 @@ const S = {
       players:     [...(app.players ?? [])],
       lang:        app.lang ?? 'no',
       screenHtml:  screenEl?.innerHTML ?? '',
-      canvasAngles: {
-        outerAngle: app.wheel?.outerAngle ?? 0,
-        innerAngle:  app.wheel?.innerAngle  ?? 0,
-        todAngle:    app.tod?.pickerPos      ?? 0,
-      },
-      wheelSpinParams: (app.wheel?.spinning && app.wheel?.spinParams) ? app.wheel.spinParams : null,
-      catReveal: app.trivia?.catRevealTs
-        ? { cat: app.trivia.category, ts: app.trivia.catRevealTs }
         : null,
       overlays: {
         gim: {
@@ -9053,10 +7081,6 @@ const S = {
         },
         todCat: {
           show: document.getElementById('tod-category-modal')?.style.display !== 'none',
-        },
-        ringOver: {
-          show: document.getElementById('ring-overlay')?.classList.contains('show') ?? false,
-          msg:  document.getElementById('ring-overlay-msg')?.textContent ?? '',
         },
         triviaCat: (function() {
           const m = document.getElementById('trivia-cat-modal');
@@ -9120,61 +7144,13 @@ const S = {
         } else if (src.startsWith('file://')) {
           img.src = src.slice(src.lastIndexOf('/') + 1);
         }
-      });
-    }
 
-    // Tegn canvas-hjul på nytt (canvas-innhold er ikke i innerHTML)
-    if (st.canvasAngles) {
-      if (st.screen === 'screen-wheel') {
-        app.wheel = app.wheel || {};
-        app.wheel.outerAngle = st.canvasAngles.outerAngle ?? 0;
-        app.wheel.innerAngle  = st.canvasAngles.innerAngle  ?? 0;
-        const c = document.getElementById('wheel-canvas');
-        if (c && c.offsetWidth > 0) {
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          const sz = Math.round(c.offsetWidth * dpr);
-          if (c.width !== sz) { c.width = sz; c.height = sz; }
-        }
-        if (typeof drawWheels === 'function') drawWheels();
-      }
-      if (st.screen === 'screen-tod') {
-        app.tod = app.tod || {};
-        app.tod.pickerPos = st.canvasAngles.todAngle ?? 0;
-        _todPickerBuild();
-        _todPickerRender(app.tod.pickerPos);
-      }
-    }
-
-    // Lykkehjul: kjør lokal animasjon på joiner for jevn visning
-    if (st.wheelSpinParams && !app._joinerWheelAnim) {
-      const p = st.wheelSpinParams;
-      app.wheel = app.wheel || {};
-      const serverElapsed = Date.now() - p.startedAt;
-      const localT0 = performance.now() - serverElapsed;
-      app._joinerWheelAnim = true;
-      const canvas = document.getElementById('wheel-canvas');
-      if (canvas && canvas.offsetWidth > 0) {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const sz = Math.round(canvas.offsetWidth * dpr);
-        if (canvas.width !== sz) { canvas.width = sz; canvas.height = sz; }
-      }
-      function joinerWheelFrame(now) {
-        if (!app._joinerWheelAnim) return;
-        const elapsed = now - localT0;
-        const ot = Math.min(elapsed / p.oDur, 1);
-        const it = Math.min(elapsed / p.iDur, 1);
-        app.wheel.outerAngle = p.oStart + (p.oFinal - p.oStart) * easeOutQuint(ot);
-        app.wheel.innerAngle = p.iStart + (p.iFinal - p.iStart) * easeOutQuint(it);
-        if (typeof drawWheels === 'function') drawWheels();
-        if (ot < 1 || it < 1) {
-          requestAnimationFrame(joinerWheelFrame);
-        } else {
-          app._joinerWheelAnim = false;
-        }
-      }
-      requestAnimationFrame(joinerWheelFrame);
-    } else if (!st.wheelSpinParams) {
-      app._joinerWheelAnim = false;
+    // Tegn TOD-picker på nytt (canvas-innhold er ikke i innerHTML)
+    if (st.canvasAngles && st.screen === 'screen-tod') {
+      app.tod = app.tod || {};
+      app.tod.pickerPos = st.canvasAngles.todAngle ?? 0;
+      _todPickerBuild();
+      _todPickerRender(app.tod.pickerPos);
     }
 
     // Kategori-avsløring-animasjon (trivia) — timestamp-basert deduplisering
@@ -9201,14 +7177,6 @@ const S = {
     const todCat = $('tod-category-modal');
     if (todCat && o.todCat) todCat.style.display = o.todCat.show ? 'flex' : 'none';
 
-    const ringOver = $('ring-overlay');
-    if (ringOver && o.ringOver) {
-      ringOver.classList.toggle('show', o.ringOver.show);
-      if (o.ringOver.msg) {
-        const msg = $('ring-overlay-msg');
-        if (msg) msg.textContent = o.ringOver.msg;
-      }
-    }
 
     const triviaCat = $('trivia-cat-modal');
     if (triviaCat && o.triviaCat) {
@@ -9336,46 +7304,15 @@ function _wrap(name, delay) {
 })();
 
 // Enkle handlinger
-['wfNext','todChoose','todDone','todPass','restartRing',
+['wfNext','todChoose','todDone','todPass',
  'goHome','goToHome','triviaNext','triviaRestart',
- 'triviaAnswer','horseStartRace','horseConfirmAndStart',
- 'dismissHorseModal','startGame','initHorse',
+ 'triviaAnswer',
+ 'startGame',
  'dismissInstructions','selectTodCategory',
  'jeoReveal','jeoMark','jeoAssignTeam','jeoStartGame','jeoClose','jeoCloseOverlay',
  'gassedNext','gassedPrev','gassedReturnFromSub',
  'addPlayer','removePlayer',
 ].forEach(n => _wrap(n));
-
-// drawCard — push under animasjon så joiner ser kortvendings-animasjonen
-(function() {
-  const orig = window.drawCard;
-  if (!orig) return;
-  window.drawCard = function() {
-    orig.apply(this, arguments);
-    const t = setInterval(() => {
-      S.push();
-      if (!app.ring?.animating) clearInterval(t);
-    }, 80);
-    setTimeout(() => clearInterval(t), 3000);
-  };
-})();
-
-// horseFlip — vent på kortanimasjon
-_wrap('horseFlip', 500);
-
-// spinWheels — push hvert 300ms under spin, så joiner ser animasjonen
-(function() {
-  const orig = window.spinWheels;
-  if (!orig) return;
-  window.spinWheels = function() {
-    orig();
-    const t = setInterval(() => {
-      S.push();
-      if (!app.wheel?.spinning) clearInterval(t);
-    }, 300);
-    setTimeout(() => clearInterval(t), 15000);
-  };
-})();
 
 // todPickPlayer — push hvert 300ms under spin
 (function() {
