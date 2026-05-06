@@ -702,49 +702,27 @@
       background: #EF9F27; border-color: #EF9F27; color: #fff;
       box-shadow: 0 0 10px rgba(239,159,39,0.55);
     }
-    .gc-sliders { width: 100%; display: flex; flex-direction: column; gap: 12px; }
-    .gc-slider-group {
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 14px; padding: 14px 16px;
+    .gc-level-wrap { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .gc-level-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 1.8px;
+      color: rgba(255,255,255,0.32); text-transform: uppercase;
     }
-    .gc-slider-header {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px;
+    .gc-level-toggle {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
     }
-    .gc-slider-title {
-      font-family: 'Boogaloo', cursive; font-size: 1rem; color: rgba(255,255,255,0.8);
+    .gc-level-btn {
+      padding: 14px 8px; border-radius: 14px; border: 1.5px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      font-family: 'Boogaloo', cursive; font-size: 1.1rem; color: rgba(255,255,255,0.5);
+      cursor: pointer; transition: all 0.18s; letter-spacing: 0.5px;
     }
-    .gc-bottle-icons { display: flex; gap: 3px; }
-    .gc-bottle {
-      font-size: 1.15rem; opacity: 0.2;
-      transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    .gc-level-btn.selected {
+      border-color: #EF9F27; background: rgba(239,159,39,0.14); color: #EF9F27;
+      box-shadow: 0 0 0 1px rgba(239,159,39,0.2);
     }
-    .gc-bottle.lit { opacity: 1; transform: scale(1.18) translateY(-2px); }
-    .gc-challenge-badge {
-      font-family: 'Boogaloo', cursive; font-size: 0.9rem;
-      padding: 3px 11px; border-radius: 20px; transition: all 0.2s;
-    }
-    .gc-challenge-badge.mild  { background: rgba(52,211,153,0.16); color: #34d399; }
-    .gc-challenge-badge.spicy { background: rgba(239,159,39,0.16); color: #EF9F27; }
-    .gc-challenge-badge.wild  { background: rgba(239,68,68,0.18);  color: #f87171; }
-    .gc-range {
-      -webkit-appearance: none; appearance: none;
-      width: 100%; height: 5px; border-radius: 99px;
-      background: rgba(255,255,255,0.12); outline: none; margin-bottom: 7px; cursor: pointer;
-    }
-    .gc-range::-webkit-slider-thumb {
-      -webkit-appearance: none; appearance: none;
-      width: 24px; height: 24px; border-radius: 50%; background: #EF9F27; cursor: pointer;
-      box-shadow: 0 0 10px rgba(239,159,39,0.65), 0 2px 6px rgba(0,0,0,0.45);
-      transition: transform 0.15s;
-    }
-    .gc-range:active::-webkit-slider-thumb { transform: scale(1.2); }
-    .gc-range::-moz-range-thumb {
-      width: 24px; height: 24px; border-radius: 50%; background: #EF9F27; border: none; cursor: pointer;
-      box-shadow: 0 0 10px rgba(239,159,39,0.65);
-    }
-    .gc-range-labels {
-      display: flex; justify-content: space-between;
-      font-size: 0.68rem; color: rgba(255,255,255,0.3);
+    .gc-level-wild.selected {
+      border-color: #f87171; background: rgba(239,68,68,0.14); color: #f87171;
+      box-shadow: 0 0 0 1px rgba(239,68,68,0.2);
     }
     .gc-start-btn {
       width: 100%; padding: 16px 24px; border: none; border-radius: 18px;
@@ -2442,26 +2420,15 @@
       </button>
     </div>
 
-    <div class="gc-sliders">
-      <div class="gc-slider-group">
-        <div class="gc-slider-header">
-          <div class="gc-slider-title">🍾 Flaskeføring</div>
-          <div class="gc-bottle-icons" id="gc-bottle-icons">
-            <span class="gc-bottle" data-level="1">🍾</span>
-            <span class="gc-bottle" data-level="2">🍾</span>
-            <span class="gc-bottle" data-level="3">🍾</span>
-          </div>
-        </div>
-        <input type="range" class="gc-range" id="gc-drink-level" min="1" max="3" value="2" oninput="gcUpdateDrink(this.value)">
-        <div class="gc-range-labels"><span>Lett</span><span>Moderat</span><span>Tungt</span></div>
-      </div>
-      <div class="gc-slider-group">
-        <div class="gc-slider-header">
-          <div class="gc-slider-title">🔥 Drøyhet</div>
-          <span class="gc-challenge-badge spicy" id="gc-challenge-badge">Spicy</span>
-        </div>
-        <input type="range" class="gc-range" id="gc-challenge-level" min="1" max="3" value="2" oninput="gcUpdateChallenge(this.value)">
-        <div class="gc-range-labels"><span>Mild</span><span>Spicy</span><span>Wild 🔥</span></div>
+    <div class="gc-level-wrap">
+      <div class="gc-level-label">Intensitet</div>
+      <div class="gc-level-toggle">
+        <button class="gc-level-btn gc-level-normal selected" id="gc-level-normal" onclick="gcSetLevel('normal')">
+          😊 Normal
+        </button>
+        <button class="gc-level-btn gc-level-wild" id="gc-level-wild" onclick="gcSetLevel('wild')">
+          🔥 Wild
+        </button>
       </div>
     </div>
 
@@ -6145,21 +6112,18 @@ const GASSED_TYPE_POOL = [
 ];
 
 app.gassed = { lastPlayer: -1, nhieUsed: new Set(), cardsUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [] };
-app.gassedConfig = { mode: null, drinkLevel: 2, challengeLevel: 2 };
+app.gassedConfig = { mode: null, level: 'normal' };
 
 function gassedShowIntro() {
   document.getElementById('gassed-intro').classList.add('show');
   const bb = document.getElementById('back-btn');
   if (bb) bb.classList.remove('visible');
   // Reset config state
-  app.gassedConfig = { mode: null, drinkLevel: 2, challengeLevel: 2 };
+  app.gassedConfig = { mode: null, level: 'normal' };
   document.querySelectorAll('.gc-mode-card').forEach(function(c) { c.classList.remove('selected'); });
   const startBtn = document.getElementById('gc-start-btn');
   if (startBtn) { startBtn.disabled = true; startBtn.textContent = 'Velg spillmodus for å starte'; }
-  const drinkSlider = document.getElementById('gc-drink-level');
-  if (drinkSlider) { drinkSlider.value = 2; gcUpdateDrink(2); }
-  const challengeSlider = document.getElementById('gc-challenge-level');
-  if (challengeSlider) { challengeSlider.value = 2; gcUpdateChallenge(2); }
+  gcSetLevel('normal');
   S.push();
 }
 
@@ -6171,24 +6135,15 @@ function gcSelectMode(el) {
   if (btn) { btn.disabled = false; btn.textContent = 'Start spillet! 🍺'; }
 }
 
-function gcUpdateDrink(val) {
-  val = parseInt(val);
-  app.gassedConfig.drinkLevel = val;
-  document.querySelectorAll('.gc-bottle').forEach(function(b, i) {
-    b.classList.toggle('lit', i < val);
-  });
+function gcSetLevel(level) {
+  app.gassedConfig.level = level;
+  document.getElementById('gc-level-normal').classList.toggle('selected', level === 'normal');
+  document.getElementById('gc-level-wild').classList.toggle('selected', level === 'wild');
 }
 
-function gcUpdateChallenge(val) {
-  val = parseInt(val);
-  app.gassedConfig.challengeLevel = val;
-  const badge = document.getElementById('gc-challenge-badge');
-  if (!badge) return;
-  const classes = ['mild','spicy','wild'];
-  const labels  = ['Mild','Spicy','Wild 🔥'];
-  badge.className = 'gc-challenge-badge ' + classes[val - 1];
-  badge.textContent = labels[val - 1];
-}
+// Keep stubs so gassedShowIntro reset works
+function gcUpdateDrink() {}
+function gcUpdateChallenge() {}
 
 function gassedIntroStart() {
   document.getElementById('gassed-intro').classList.remove('show');
@@ -6252,6 +6207,29 @@ function _gassedRestoreCard(st) {
   $('gs-countdown-num').textContent = '10';
 }
 
+function gcBuildFilteredPool(pool, intensArr, usedSet, maxIntensity) {
+  const idxs = [];
+  for (let i = 0; i < pool.length; i++) {
+    if (usedSet && usedSet.has(i)) continue;
+    const intens = (intensArr && intensArr[i] != null) ? intensArr[i] : 1;
+    if (intens <= maxIntensity) idxs.push(i);
+  }
+  return idxs;
+}
+
+function gcScaleSips(n, drinkLvl) {
+  if (drinkLvl >= 3) return Math.round(n * 1.5);
+  if (drinkLvl <= 1) return Math.max(1, Math.round(n * 0.67));
+  return n;
+}
+
+function gcScaleSipsText(text, drinkLvl) {
+  if (drinkLvl === 2) return text;
+  return text.replace(/(\d+)\s*(slurk|sip)/gi, function(m, n, unit) {
+    return gcScaleSips(parseInt(n), drinkLvl) + ' ' + unit;
+  });
+}
+
 function gassedTurn(skipCapture) {
   const g = app.gassed;
   const isNo = app.lang !== 'en';
@@ -6312,9 +6290,10 @@ function gassedTurn(skipCapture) {
     return;
   }
 
-  const cfg = app.gassedConfig || { drinkLevel: 2, challengeLevel: 2 };
-  const drinkLvl = cfg.drinkLevel || 2;
-  const challLvl = cfg.challengeLevel || 2;
+  const cfg = app.gassedConfig || { level: 'normal' };
+  const isWild = cfg.level === 'wild';
+  const drinkLvl = isWild ? 3 : 2;
+  const challLvl = isWild ? 3 : 2;
   const gameMode = cfg.mode || 'gets-gassed';
 
   // Resolve mode-specific pools
