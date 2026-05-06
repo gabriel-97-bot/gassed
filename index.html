@@ -16,7 +16,7 @@
 
   <!-- Open Graph — forhåndsvisning ved deling av URL -->
   <meta property="og:title" content="Gassed — The Ultimate Drinking Game">
-  <meta property="og:description" content="Play Ring of Fire, Wheel of Fortune, Horse Race, Never Have I Ever and more. The ultimate drinking game for your next party!">
+  <meta property="og:description" content="Never Have I Ever, Truth or Dare, Trivia, Jeopardy, Waterfall and more. The ultimate drinking game for your next party!">
   <meta property="og:image" content="https://gabriel-97-bot.github.io/gassed/og_preview.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -25,7 +25,7 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Gassed — The Ultimate Drinking Game">
-  <meta name="twitter:description" content="Play Ring of Fire, Wheel of Fortune, Horse Race, Never Have I Ever and more. The ultimate drinking game for your next party!">
+  <meta name="twitter:description" content="Never Have I Ever, Truth or Dare, Trivia, Jeopardy, Waterfall and more. The ultimate drinking game for your next party!">
   <meta name="twitter:image" content="https://gabriel-97-bot.github.io/gassed/og_preview.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -135,17 +135,6 @@
       to   { transform: translate(50px,-80px) scale(1.05); }
     }
 
-/* ── Fire canvas (Ring of Fire only) ── */
-    #fire-canvas {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 1;
-      display: none;
-    }
-
-    #fire-canvas.active { display: block; }
 
     /* ── Phone wrapper (mobile: transparent passthrough) ── */
     .phone-outer {
@@ -810,7 +799,7 @@
     .home-game-btn.hgb-small .home-game-btn-icon { font-size: 1.3rem; }
     #rotate-prompt { display: none !important; }
 
-    /* ── Gassed sub-game return button (floats over ring/wheel screen) ── */
+    /* ── Gassed sub-game return button ── */
 
     /* ── Screen: Gassed (main game) — landscape-first Picolo-style layout ── */
     #screen-gassed {
@@ -991,16 +980,6 @@
     }
     .edit-players-link:hover { background: rgba(255,255,255,0.2); color: #fff; }
 
-    /* ── Screen 3: Ring of Fire ── */
-    .ring-title-row {
-      display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center;
-    }
-    .ring-title {
-      font-family: 'Boogaloo', sans-serif;
-      font-size: 0.95rem; font-weight: 400;
-      letter-spacing: 3px; text-transform: uppercase; color: rgba(239,159,39,0.6);
-      white-space: nowrap;
-    }
     #mute-btn {
       background: rgba(0,0,0,0.3); border: 1px solid rgba(255,140,0,0.3);
       border-radius: 8px; padding: 4px 8px; font-size: 1.1rem;
@@ -1008,142 +987,6 @@
       backdrop-filter: blur(6px); transition: opacity 0.2s;
     }
     #mute-btn:active { opacity: 0.6; }
-    /* Gassed sub-game player banner (ring + wheel) */
-    .kings-row { display: flex; gap: 12px; }
-    .king-cup {
-      width: 34px; height: 38px;
-      border: 2px solid #6b4c1e;
-      border-radius: 4px 4px 7px 7px; background: #2a1a08;
-      position: relative; transition: all 0.35s ease;
-    }
-    .king-cup::before {
-      content: ''; position: absolute;
-      top: -8px; left: 50%; transform: translateX(-50%);
-      width: 24px; height: 8px;
-      background: #6b4c1e; border-radius: 2px 2px 0 0;
-    }
-    .king-cup.filled {
-      background: linear-gradient(to top, #8b0000 60%, #cc2200);
-      border-color: #cc2200;
-      box-shadow: 0 0 16px rgba(200,0,0,0.65), 0 0 32px rgba(200,0,0,0.2);
-    }
-    .king-cup.filled::before { background: #cc2200; }
-
-    /* Card area */
-    .card-area {
-      perspective: 1200px;
-      width: clamp(190px,30vh,250px); height: clamp(266px,42vh,350px);
-      cursor: pointer; margin: 4px 0; flex-shrink: 0;
-    }
-    .card {
-      width: clamp(190px,30vh,250px); height: clamp(266px,42vh,350px);
-      border-radius: 14px; position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.4s cubic-bezier(0.45,0,0.55,1);
-      will-change: transform; user-select: none;
-    }
-    .card.flipped { transform: rotateY(180deg); }
-    .card-face {
-      position: absolute; inset: 0; border-radius: 14px;
-      backface-visibility: hidden; -webkit-backface-visibility: hidden;
-      overflow: hidden;
-      -webkit-mask-image: -webkit-radial-gradient(white, black);
-    }
-    .card-back {
-      box-shadow: 0 12px 48px rgba(0,0,0,0.85);
-      overflow: hidden;
-    }
-    .card-front {
-      background: #fff;
-      border: 2px solid rgba(200,200,200,0.7);
-      transform: rotateY(180deg);
-      padding: 0;
-      box-shadow: 0 12px 48px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.15);
-      overflow: hidden;
-    }
-    .card-front::before { display: none; }
-    .card-front.red, .card-front.black { } /* farger styres av sprite */
-    .card-rule-badge {
-      position: absolute;
-      bottom: 7px; left: 50%; transform: translateX(-50%);
-      font-size: 0.5rem; font-weight: 800; text-transform: uppercase;
-      letter-spacing: 0.9px; color: #fff;
-      background: rgba(0,0,0,0.68);
-      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-      border-radius: 4px; padding: 3px 8px;
-      max-width: 90%; line-height: 1.4; white-space: nowrap;
-      z-index: 5; text-align: center;
-    }
-
-    /* Rule panel */
-    .rule-panel {
-      width: 100%; max-width: 340px;
-      min-height: clamp(80px,12vh,110px);
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,140,0,0.3);
-      border-radius: 16px; padding: 16px 20px;
-      text-align: center;
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.35);
-    }
-    .rule-panel .rule-name {
-      font-size: 1.4rem; font-weight: bold; color: #ff8c00;
-      text-shadow: 0 0 14px rgba(255,100,0,0.55); margin-bottom: 6px;
-    }
-    .rule-panel .rule-desc { font-size: 0.9rem; color: #d4c5a9; line-height: 1.5; }
-    .rule-panel .rule-player { font-weight: 700; color: #ffab30; font-size: 1rem; }
-    .rule-panel.empty { border-color: rgba(255,255,255,0.08); }
-    .rule-panel.empty .rule-desc { color: rgba(255,255,255,0.28); font-style: italic; }
-    .deck-info { font-size: 0.82rem; color: #7a6040; letter-spacing: 1px; margin: 4px 0; }
-    /* Ring of Fire — draw button as a fire ring */
-    .ring-draw-inner {
-      position: relative; z-index: 1;
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .ring-draw-text {
-      font-family: 'Georgia', serif;
-      font-size: 0.8rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 1.5px; line-height: 1.4;
-      text-align: center; max-width: 90px;
-      color: #ffe0a0;
-      text-shadow:
-        0 0 8px rgba(255,160,0,1),
-        0 0 18px rgba(255,80,0,0.9),
-        0 0 32px rgba(255,40,0,0.6);
-    }
-      from {
-        box-shadow:
-          0 0 0 3px rgba(255,100,0,0.6),
-          0 0 18px 6px rgba(255,80,0,0.8),
-          0 0 36px 12px rgba(255,40,0,0.55),
-          0 0 64px 22px rgba(255,10,0,0.3),
-          inset 0 0 16px rgba(255,60,0,0.2);
-      }
-      to {
-        box-shadow:
-          0 0 0 5px rgba(255,140,0,0.85),
-          0 0 28px 10px rgba(255,100,0,0.95),
-          0 0 56px 20px rgba(255,50,0,0.7),
-          0 0 90px 32px rgba(255,20,0,0.45),
-          inset 0 0 24px rgba(255,80,0,0.3);
-      }
-    }
-
-    /* Ring overlay */
-    .restart-btn {
-      padding: 14px 44px; font-size: 1rem; font-family: 'Georgia', serif;
-      letter-spacing: 2px; text-transform: uppercase;
-      background: linear-gradient(135deg, #1a6b1a, #2e9e2e);
-      color: #fff; border: none; border-radius: 50px; cursor: pointer;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.5), 0 8px 24px rgba(0,150,0,0.4);
-      transition: all 0.2s ease;
-    }
-    .restart-btn:hover { transform: translateY(-2px); }
-    .restart-btn:active { transform: translateY(2px); }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
     /* ── Jeopardy ── */
     /* ── Jeopardy design tokens ── */
     #screen-jeopardy {
@@ -1819,17 +1662,6 @@
       .game-card { min-height: 76px; padding: 12px 8px 10px; gap: 5px; }
       .game-card-icon { font-size: 1.8rem; }
 
-      /* ── Ring of Fire: kort til venstre, regel-panel til høyre ── */
-      .kings-row { gap: 8px; }
-      .king-cup  { width: 24px; height: 28px; }
-      .king-cup::before { width: 16px; height: 5px; top: -5px; }
-      .card-area { grid-area: card; align-self: center; }
-      .card-area, .card {
-        width:  clamp(110px, calc(100dvh - 210px), 145px);
-        height: clamp(155px, calc(100dvh - 150px), 200px);
-      }
-      .rule-panel { grid-area: rules; align-self: center; font-size: 0.95rem; }
-
       /* ── Lykkehjulet: hjul sentrert, snurr-knapp ved siden ── */
 
       /* ── Nøtt eller Sannhet: hjul til venstre, kontroller til høyre ── */
@@ -1864,208 +1696,9 @@
       .trivia-question-text { font-size: 1.05rem; }
       .trivia-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 
-      /* ── Veddeløpet ── */
-
-    }
+      }
 
     /* ── Veddeløpet ── */
-    /* ── Horse race – layout ── */
-
-    /* ── Derby track (vertical — horses run bottom→top) ── */
-    /* Hurdle cards on LEFT side */
-    .hurdle-above-item {
-      position: absolute; right: 0; transform: translateY(-50%);
-      display: flex; flex-direction: row-reverse; align-items: center;
-      pointer-events: none;
-    }
-    .hurdle-above-item img {
-      width: 24px; height: 34px; border-radius: 3px;
-      object-fit: cover; display: block;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.75);
-      transition: opacity 0.4s;
-    }
-    .hurdle-above-line {
-      height: 0; width: 10px;
-      border-top: 2px dashed rgba(255,255,255,0.55);
-      transition: border-color 0.4s;
-    }
-    .hurdle-above-item.triggered img { opacity: 0.25; }
-    .hurdle-above-item.triggered .hurdle-above-line { border-color: rgba(255,255,255,0.18); }
-
-    /* Track wrap — now a column (finish on top, start on bottom) */
-
-    /* FINISH row (top) */
-
-    /* START row (bottom) */
-
-    /* Lanes row — each lane is a vertical column */
-
-    /* Single lane (vertical column) */
-
-    /* Lane track surface (top part, flex:1) */
-    /* centre vertical dashed line */
-
-    /* Lane badge at bottom */
-
-    /* Horse jockey piece — centered horizontally, moves vertically */
-      animation: horseFlashRed 0.45s ease-in-out forwards;
-    }
-      position: absolute;
-      font-size: 1.8rem;
-      pointer-events: none;
-      z-index: 10;
-      animation: horseFireworkFloat var(--fw-dur, 0.9s) ease-out forwards;
-    }
-
-    /* Hurdle marks — horizontal lines across the lane */
-    .hurdle-mark {
-      position: absolute; left: 0; right: 0; height: 2px;
-      transform: translateY(-50%); z-index: 1; opacity: 0.75;
-      transition: opacity 0.4s; border-radius: 1px;
-    }
-    .hurdle-mark.type-all    { background: rgba(239,43,45,0.85); }
-    .hurdle-mark.type-leader { background: rgba(201,168,76,0.9); }
-    .hurdle-mark.triggered   { opacity: 0.15; }
-    .hurdle-card {
-      flex: 1; height: 42px; border-radius: 7px;
-      background: rgba(0,40,104,0.5);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(201,168,76,0.4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; font-weight: 900; transition: all 0.4s ease;
-      position: relative; overflow: hidden;
-    }
-    .hurdle-card::before { content: ''; position: absolute; inset: 3px; border: 1px solid rgba(255,255,255,0.14); border-radius: 4px; }
-    .hurdle-card.type-all    { border-color: rgba(239,43,45,0.6); }
-    .hurdle-card.type-leader { border-color: rgba(201,168,76,0.7); }
-    .hurdle-card.flipped { background: #fafafa; border-color: #ccc; }
-    .hurdle-card.flipped::before { display: none; }
-    .hurdle-card.flipped.red   { color: #d0021b; }
-    .hurdle-card.flipped.black { color: #111; }
-    .hurdle-card.flipped.type-all    { border-color: #EF2B2D; background: #fff5f5; }
-    .hurdle-card.flipped.type-leader { border-color: #C9A84C; background: #fffdf0; }
-    /* Small left-side hurdle card wrapper + emoji */
-    .hca-card-wrap { position: relative; display: inline-block; line-height: 0; }
-    .hca-emoji {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; pointer-events: none;
-    }
-
-    /* Big reveal card — hurdle emoji on back face */
-    .hcr-hurdle-emoji {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.8rem; pointer-events: none;
-    }
-
-    /* Hurdle mark icon badges */
-    .hurdle-mark::before {
-      content: attr(data-icon);
-      position: absolute; left: 50%; transform: translateX(-50%);
-      top: -18px; font-size: 0.85rem; line-height: 1;
-      pointer-events: none;
-    }
-
-    /* Hurdle pop-up modal */
-    @keyframes hhmFadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .hhm-card {
-      background: rgba(18,22,42,0.97);
-      border-radius: 24px; padding: 32px 28px 24px;
-      width: 82%; max-width: 320px;
-      display: flex; flex-direction: column; align-items: center;
-      gap: 10px; text-align: center;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 24px 64px rgba(0,0,0,0.7);
-      animation: hhmSlideUp 0.28s cubic-bezier(0.22,1,0.36,1);
-    }
-    @keyframes hhmSlideUp { from { transform: translateY(32px) scale(0.9); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
-    .hhm-icon { font-size: 3.6rem; line-height: 1; }
-    .hhm-title { display: none; }
-    .hhm-desc {
-      font-size: 1.2rem; font-weight: 700; color: var(--text);
-      line-height: 1.6;
-    }
-    .hhm-ok {
-      margin-top: 10px; width: 100%; padding: 14px;
-      background: var(--accent); color: #fff;
-      border: none; border-radius: 14px;
-      font-size: 1.1rem; font-weight: 800; letter-spacing: 0.04em;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(239,43,45,0.4);
-      transition: transform 0.12s, box-shadow 0.12s;
-    }
-    .hhm-ok:active { transform: scale(0.96); box-shadow: 0 2px 8px rgba(239,43,45,0.3); }
-    .hhm-card.type-leader .hhm-ok {
-      background: #b8922a;
-      box-shadow: 0 4px 16px rgba(184,146,42,0.45);
-    }
-    /* ── Hurdle Card Reveal Overlay ──────────────────────── */
-    #hurdle-card-reveal {
-      position: absolute; inset: 0; z-index: 70;
-      background: rgba(0,0,0,0.82);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 18px;
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      animation: hhmFadeIn 0.2s ease;
-    }
-    .hcr-label {
-      font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.55);
-      letter-spacing: 0.08em; text-transform: uppercase;
-    }
-    .hcr-card-wrap {
-      perspective: 800px;
-      width: 120px; height: 168px;
-    }
-    .hcr-card {
-      width: 100%; height: 100%;
-      border-radius: 12px;
-      position: relative; transform-style: preserve-3d;
-      transition: transform 0.65s cubic-bezier(0.45,0,0.55,1);
-      will-change: transform;
-    }
-    .hcr-card.flipped { transform: rotateY(180deg); }
-    .hcr-face {
-      position: absolute; inset: 0; border-radius: 12px;
-      backface-visibility: hidden; -webkit-backface-visibility: hidden;
-      overflow: hidden;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.1);
-    }
-    .hcr-face img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-    .hcr-back  { background: #1a1a2e; }
-    .hcr-front { background: #fff; transform: rotateY(180deg); }
-    .hcr-glow {
-      position: absolute; inset: -20px; border-radius: 24px;
-      background: radial-gradient(ellipse, rgba(255,180,0,0.35) 0%, transparent 70%);
-      animation: hcrPulse 0.8s ease-in-out infinite alternate;
-      pointer-events: none;
-    }
-    @keyframes hcrPulse {
-      from { opacity: 0.4; transform: scale(0.95); }
-      to   { opacity: 1;   transform: scale(1.05); }
-    }
-    .hcr-suit-label {
-      font-size: 2rem; font-weight: 900; letter-spacing: 0.04em;
-      text-shadow: 0 0 24px rgba(255,200,0,0.8), 0 2px 8px rgba(0,0,0,0.9);
-    }
-    .hcr-tap-hint {
-      font-size: 0.85rem; color: rgba(255,255,255,0.45);
-      letter-spacing: 0.06em; animation: hcrPulse 1.2s ease-in-out infinite alternate;
-    }
-    .hcr-result-text {
-      font-size: 1rem; font-weight: 700; color: #fff;
-      text-align: center; line-height: 1.6; white-space: pre-line;
-      padding: 0 24px;
-    }
-    .hcr-ok-btn {
-      margin-top: 4px; padding: 12px 48px;
-      background: linear-gradient(135deg, #EF2B2D, #c0231e);
-      border: none; border-radius: 100px;
-      color: #fff; font-size: 1rem; font-weight: 800;
-      letter-spacing: 0.5px; cursor: pointer;
-      box-shadow: 0 4px 18px rgba(239,43,45,0.5);
-    }
-
     /* ── Game Instructions Modal ─────────────────────────── */
     #game-instructions-modal {
       position: absolute; inset: 0; z-index: 80;
@@ -2591,16 +2224,6 @@
       body.game-active .trivia-question-text { font-size: 0.98rem; }
       body.game-active .trivia-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 
-      /* Ring of Fire: kort venstre, regel høyre */
-      body.game-active .kings-row  { gap: 6px; }
-      body.game-active .king-cup   { width: 20px; height: 24px; }
-      body.game-active .king-cup::before { width: 14px; height: 4px; top: -4px; }
-      body.game-active .card-area  { grid-area: card; align-self: center; }
-      body.game-active .card-area, body.game-active .card { width: 105px; height: 148px; }
-      body.game-active .rule-panel { grid-area: rules; align-self: center; font-size: 0.88rem; }
-
-      /* Lykkehjulet: hjul sentrert, snurr-knapp ved siden */
-
       /* Nøtt eller Sannhet: hjul venstre, kontroller høyre */
       body.game-active #screen-tod {
         display: grid;
@@ -2658,9 +2281,6 @@
   <div class="aurora-blob aurora-blob-2"></div>
   <div class="aurora-blob aurora-blob-3"></div>
 </div>
-
-<!-- Fire canvas (Ring of Fire only) -->
-<canvas id="fire-canvas"></canvas>
 
 <!-- Settings button -->
 <button id="settings-btn" onclick="openSettings()" title="Innstillinger">⚙️</button>
@@ -3069,7 +2689,7 @@
     <div class="rotate-text">Snu telefonen</div>
   </div>
 
-  <!-- Gassed: floating return button shown during ring/wheel sub-game -->
+  <!-- Gassed: floating return button shown during sub-games -->
 
   <!-- Screen: Gassed (main combined game) -->
   <div class="screen" id="screen-gassed" onclick="gassedTapNav(event)">
@@ -3279,23 +2899,10 @@ const T = {
       editPlayers: 'Edit Players'
     },
     games: {
-      ring: 'Ring of Fire',
       waterfall: 'Never Have I Ever',
       tod: 'Truth or Dare',
-      horse: 'Darby Race',
       trivia: 'Trivia Quiz',
-      wheel: 'Wheel of Fortune',
       jeopardy: 'Jeopardy',
-    },
-    ring: {
-      title: '🔥 Ring of Fire',
-      statsCards: 'Cards:',
-      statsKings: 'Kings:',
-      tapToDraw: 'Tap the card to draw',
-      drawBtn: 'Draw a card',
-      gameOver: 'GAME OVER',
-      gameOverMsg: 'All 4 kings drawn! The King\'s Cup must be finished. Cheers! 🍺',
-      playAgain: 'Play Again'
     },
     nhie: {
       prefix: 'Never have I ever…',
@@ -3316,23 +2923,6 @@ const T = {
       lekenName: 'Gassed', lekenDesc: 'Fun and a little embarrassing',
       fagName: 'Naughty Naughty', fagDesc: 'Bold and daring',
     },
-    horse: {
-      betSubtitle: 'Place your bets — pick your horse!',
-      startRace: '🏁 Start Race!',
-      hurdles: 'Hurdles',
-      lastFlip: 'Last flip:',
-      flipCard: '🃏 Flip Card',
-      raceAgain: '🔄 Race Again',
-      hurdleAlert: '🚧 Hurdle! All horses back 1 step!',
-      drinkAlert: 'bettors on {suit} drink!',
-      wins: 'wins the race!',
-      congratulate: 'Winners celebrate!',
-      drink: 'drinks',
-      sips: 'sip(s)',
-      preraceTitle: 'Drink your bet now!',
-      preraceSub: 'The winner gets to hand out double back',
-      preraceStart: '🏁 Start the race!',
-    },
     trivia: {
       title: '🧠 Trivia Quiz',
       playerDrinks: '{player} drinks!',
@@ -3349,7 +2939,6 @@ const T = {
       catBlandet: 'Mixed bag',
       catFilm: 'Movies',
     },
-    wheel: { title: '🎡 Wheel of Fortune', spinBtn: 'SPIN!' },
     jeopardy: {
       title: '🍺 Jeopardy',
       progress: 'questions used',
@@ -3362,7 +2951,6 @@ const T = {
       gameOver: 'Game Over!',
       playAgain: '↩ Play again',
     },
-    hcr: { label: 'The hurdle card is revealed!' },
     cem: { title: 'Quit the game?', sub: 'All game progress will be lost.', continue: 'Keep playing', quit: 'Quit' },
     gim: { start: 'Start the game' },
   },
@@ -3380,23 +2968,10 @@ const T = {
       editPlayers: 'Endre spillere'
     },
     games: {
-      ring: 'Ring of Fire',
       waterfall: 'Jeg har aldri',
       tod: 'Nøtt eller Sannhet',
-      horse: 'Veddeløpet',
       trivia: 'Trivia Quiz',
-      wheel: 'Lykkehjulet',
       jeopardy: 'Jeopardy',
-    },
-    ring: {
-      title: '🔥 Ring of Fire',
-      statsCards: 'Kort:',
-      statsKings: 'Konger:',
-      tapToDraw: 'Trykk på kortet for å trekke',
-      drawBtn: 'Trekk et kort',
-      gameOver: 'SPILLET ER OVER',
-      gameOverMsg: 'Alle 4 konger er trukket! Kongepokalen skal tømmes. Skål! 🍺',
-      playAgain: 'Spill igjen'
     },
     nhie: {
       prefix: 'Jeg har aldri…',
@@ -3417,23 +2992,6 @@ const T = {
       lekenName: 'Gassed', lekenDesc: 'Gøy og litt flaut',
       fagName: 'Naughty Naughty', fagDesc: 'Vågalt og utfordrende',
     },
-    horse: {
-      betSubtitle: 'Legg inn veddemålene — velg din hest!',
-      startRace: '🏁 Start løpet!',
-      hurdles: 'Hindre',
-      lastFlip: 'Sist vendt:',
-      flipCard: '🃏 Vend kort',
-      raceAgain: '🔄 Løp igjen',
-      hurdleAlert: '🚧 Hinder! Alle hester 1 tilbake!',
-      drinkAlert: 'som satset på {suit} drikker!',
-      wins: 'vinner løpet!',
-      congratulate: 'Vinnerne jubler!',
-      drink: 'drikker',
-      sips: 'slurk',
-      preraceTitle: 'Drikk innsatsen din nå!',
-      preraceSub: 'Vinner kan dele ut dobbelt tilbake',
-      preraceStart: '🏁 Start løpet!',
-    },
     trivia: {
       title: '🧠 Trivia Quiz',
       playerDrinks: '{player} drikker!',
@@ -3450,7 +3008,6 @@ const T = {
       catBlandet: 'Godt blandet',
       catFilm: 'Film',
     },
-    wheel: { title: '🎡 Lykkehjulet', spinBtn: 'SNURR!' },
     jeopardy: {
       title: '🍺 Jeopardy',
       progress: 'spørsmål brukt',
@@ -3463,7 +3020,6 @@ const T = {
       gameOver: 'Spillet er ferdig!',
       playAgain: '↩ Spill igjen',
     },
-    hcr: { label: 'Hinderkortet avsløres!' },
     cem: { title: 'Avslutte spillet?', sub: 'All fremdrift i spillet går tapt.', continue: 'Fortsett spillet', quit: 'Avslutt' },
     gim: { start: 'Start spillet' },
   }
@@ -4679,7 +4235,6 @@ function showScreen(id) {
   if (document.querySelector('.screen.active')?.id === id) return;
 
   const isGame = ['screen-waterfall','screen-tod','screen-trivia','screen-jeopardy','screen-gassed'].includes(id);
-  const isRing = false;
   const wasGame = document.body.classList.contains('game-active');
 
   // If the game-active state is changing, the phone frame will rotate.
@@ -4694,13 +4249,6 @@ function showScreen(id) {
 
   document.getElementById('back-btn').classList.toggle('visible', isGame || id === 'screen-home');
 
-  // Fire canvas — no longer used (fire effect is now the draw button itself)
-  const fireCanvas = document.getElementById('fire-canvas');
-  fireCanvas.classList.remove('active');
-  fireActive = false;
-
-  // Aurora blobs — hidden on Ring of Fire so fire ring stands out
-  document.getElementById('aurora-blobs').style.display = isRing ? 'none' : '';
   // Corks only on home/setup; game screens get their own emoji
   if (window.corkCanvasHide) window.corkCanvasHide(isGame);
   if (window.setFloatingEmoji) window.setFloatingEmoji(id);
@@ -5699,122 +5247,6 @@ function runSlotMachine(reelId, players, winner, itemHeight, duration, cb) {
     });
   });
 }
-
-// ─────────────────────────────────────────────
-// FIRE PARTICLE SYSTEM
-// ─────────────────────────────────────────────
-var fireActive = false;
-
-(function () {
-  const canvas = document.getElementById('fire-canvas');
-  const ctx = canvas.getContext('2d');
-
-  let W, H, cx, cy, RADIUS;
-
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth  || window.innerWidth;
-    H = canvas.height = canvas.offsetHeight || window.innerHeight;
-    cx = W / 2;
-    cy = H * 0.42;   // around the card area (~40% down)
-    RADIUS = Math.min(W, H) * 0.22;  // tighter ring around card
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  const MAX = 160;
-  const particles = [];
-
-  function spawnParticle() {
-    const angle = Math.random() * Math.PI * 2;
-    const r = RADIUS + (Math.random() - 0.5) * 12;
-    particles.push({
-      x: cx + Math.cos(angle) * r,
-      y: cy + Math.sin(angle) * r,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: -(0.55 + Math.random() * 0.9),
-      life: 0,
-      maxLife: 60 + Math.random() * 50,
-      baseSize: 9 + Math.random() * 11,
-      turbFreq:  0.05 + Math.random() * 0.05,
-      turbAmp:   0.04 + Math.random() * 0.04,
-      turbPhase: Math.random() * Math.PI * 2,
-    });
-  }
-
-  function flameColor(t) {
-    var r, g, b, a;
-    if (t < 0.28) {
-      var s = t / 0.28;
-      r = 185; g = 75 - s * 25; b = 0; a = 0.45 - s * 0.04;
-    } else if (t < 0.60) {
-      var s2 = (t - 0.28) / 0.32;
-      r = 155 - s2 * 45; g = 50 - s2 * 48; b = 0; a = 0.41 - s2 * 0.13;
-    } else {
-      var s3 = (t - 0.60) / 0.40;
-      r = 110 - s3 * 65; g = 2; b = 0; a = 0.28 - s3 * 0.28;
-    }
-    return { r: Math.round(r), g: Math.round(g), b: Math.round(b), a: Math.max(0, a) };
-  }
-
-  function frame() {
-    if (!fireActive) {
-      requestAnimationFrame(frame);
-      return;
-    }
-
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.clearRect(0, 0, W, H);
-
-    for (let i = 0; i < 3; i++) spawnParticle();
-    while (particles.length > MAX) particles.shift();
-
-    ctx.globalCompositeOperation = 'lighter';
-
-    for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i];
-      p.life++;
-      const t = p.life / p.maxLife;
-
-      p.vx += Math.sin(p.life * p.turbFreq + p.turbPhase) * p.turbAmp;
-      p.vx *= 0.978;
-      p.vy -= 0.006;
-
-      p.x += p.vx;
-      p.y += p.vy;
-
-      const fc = flameColor(t);
-      if (fc.a <= 0) { particles.splice(i, 1); continue; }
-
-      const env = t < 0.2 ? (t / 0.2) : (1 - (t - 0.2) / 0.8);
-      const hw = p.baseSize * (0.3 + env * 0.7);
-      const hh = hw * 1.6;
-
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.scale(1, hh / hw);
-
-      const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, hw * 2);
-      grd.addColorStop(0,   'rgba(' + fc.r + ',' + fc.g + ',' + fc.b + ',' + fc.a + ')');
-      grd.addColorStop(0.4, 'rgba(' + Math.round(fc.r * 0.75) + ',' + Math.round(fc.g * 0.35) + ',0,' + (fc.a * 0.5) + ')');
-      grd.addColorStop(1,   'rgba(0,0,0,0)');
-
-      ctx.beginPath();
-      ctx.arc(0, 0, hw * 2, 0, Math.PI * 2);
-      ctx.fillStyle = grd;
-      ctx.fill();
-      ctx.restore();
-
-      if (p.life >= p.maxLife) particles.splice(i, 1);
-    }
-
-    ctx.globalCompositeOperation = 'source-over';
-    requestAnimationFrame(frame);
-  }
-
-  requestAnimationFrame(frame);
-})();
-
-// (resize handler for removed horse race game removed)
 
 // Track portrait/landscape so CSS rotate fallback fires on game screens
 (function _trackOrientation() {
