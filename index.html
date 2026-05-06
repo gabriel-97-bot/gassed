@@ -6144,7 +6144,7 @@ const GASSED_TYPE_POOL = [
   4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 ];
 
-app.gassed = { lastPlayer: -1, nhieUsed: new Set(), cardsUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, deck: [], countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [] };
+app.gassed = { lastPlayer: -1, nhieUsed: new Set(), cardsUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [] };
 app.gassedConfig = { mode: null, drinkLevel: 2, challengeLevel: 2 };
 
 function gassedShowIntro() {
@@ -6205,7 +6205,7 @@ function startGassed() {
     musicIdx: 0,
     typeOrder: shuffle([...GASSED_TYPE_POOL]),
     typeIdx: 0,
-    deck: shuffle(buildDeck()),
+
     countdownTimer: null,
     turnCount: 0,
     lastSubType: -1,
