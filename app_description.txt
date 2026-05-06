@@ -1,0 +1,57 @@
+GASSED — Det ultimate drikkespillet
+
+─────────────────────────────────────
+KORT BESKRIVELSE (30 ord)
+─────────────────────────────────────
+Gassed er drikkespillet som tar festen til neste nivå. Velg spillmodus, sett opp spillerne og la kortene avgjøre hvem som drikker.
+
+─────────────────────────────────────
+FULL BESKRIVELSE
+─────────────────────────────────────
+Gassed er en alt-i-ett drikkespill-app laget for vennegjenger som vil ha mer moro på festen. Med fem spill i én app slipper du å bytte mellom apper — bare åpne Gassed og la festen begynne.
+
+🍺 GASSED — DET ORIGINALE KORTSPILLET
+Det flaggskipet spillet. Velg mellom tre ulike spillmoduser tilpasset stemningen:
+
+• Girls Night — Vibbes, drama og ekte tea. Perfekt for jentekvelder med personlige spørsmål og morsomme utfordringer.
+• Testo / Guttastemning — For gutta. Ingen tull, bare drikking og konkurranser.
+• Everyone Gets Gassed — Ingen slipper unna. Et spill der alle drikker, hele tiden.
+
+Velg intensitetsnivå:
+• Normal — Moro og avslappet, passer for alle.
+• Wild 🔥 — Bare for de tøffe. Villere utfordringer og mer å drikke.
+
+Kortene roterer mellom «Jeg har aldri», utfordringer, musikk-utfordringer og dilemmaer — slik at ingen runde er lik.
+
+😏 NØTT ELLER SANNHET
+Klassisk sannhet eller tørr — med en twist. Velg stemning (avslappet, Gassed eller vågalt), og la spillet plukke ut hvem som må svare. Pass eller drikk 2 slurker.
+
+🧠 TRIVIA QUIZ
+Test kunnskapen med spørsmål innen geografi, musikk, film og mye mer. Spill individuelt eller lag mot lag. Riktig svar = del ut drikke. Feil svar = drikk selv.
+
+🍺 JEOPARDY
+Det klassiske poengsystemet i drikkespill-format. Velg kategori og innsats, svar riktig for å dele ut — svar feil og drikk selv. Støtter 2 lag, 3 lag eller solo.
+
+─────────────────────────────────────
+NØKKELFUNKSJONER
+─────────────────────────────────────
+✓ 5 spill i én app
+✓ Flerspiller-støtte — legg til opptil 10 spillere
+✓ Sesjonsdeling — spill synkronisert på flere enheter via sesjonskode
+✓ Norsk og engelsk språkstøtte
+✓ Fungerer uten internett (unntatt sesjonsdeling)
+✓ Ingen annonser, ingen kjøp i appen
+✓ Designet for mobilnettleser — ingen installasjon nødvendig
+
+─────────────────────────────────────
+TEKNISK INFO
+─────────────────────────────────────
+Platform: Nettleser (PWA-klar)
+Språk: Norsk / Engelsk
+Målgruppe: 18+
+Versjon: 1.0
+
+─────────────────────────────────────
+ANSVARSFRASKRIVELSE
+─────────────────────────────────────
+Gassed er laget for underholdning og er kun beregnet for myndige personer (18+). Drikk ansvarlig. Appen oppfordrer aldri til overdreven alkoholinntak.
