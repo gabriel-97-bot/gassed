@@ -45,15 +45,19 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:         #070A1C;
+      --bg:         #07080F;
       --surface:    rgba(255,255,255,0.058);
       --surface-hi: rgba(255,255,255,0.1);
       --border:     rgba(255,255,255,0.1);
       --border-hi:  rgba(255,255,255,0.22);
-      --red:        #EF2B2D;
-      --red-dk:     #c0231e;
-      --navy:       #002868;
-      --gold:       #C9A84C;
+      --red:        #C8102E;
+      --red-dk:     #880014;
+      --red-l:      #E82030;
+      --navy:       #003087;
+      --navy-dk:    #001050;
+      --gold:       #eeb95b;
+      --green:      #1e9e40;
+      --green-l:    #2ecc56;
       --text:       #EEF2FF;
       --muted:      rgba(238,242,255,0.52);
       --dim:        rgba(238,242,255,0.3);
@@ -63,7 +67,7 @@
       --blur:       blur(20px);
       --shadow-card: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
       --shadow-btn:  0 4px 0 rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.25);
-      --accent:      #EF2B2D;
+      --accent:      #C8102E;
     }
 
     html, body {
@@ -77,7 +81,7 @@
       box-sizing: border-box;
       height: 100vh;
       height: 100dvh;
-      background: linear-gradient(175deg, #0a0d1a 0%, #002868 18%, #1a1f3a 35%, #3d1218 52%, #6b2020 65%, #a0522d 78%, #c87941 90%, #f5c842 100%);
+      background: #07080F;
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
       color: var(--text);
       display: flex;
@@ -103,19 +107,19 @@
     .aurora-blob-1 {
       width: 700px; height: 700px;
       top: -200px; left: -150px;
-      background: rgba(0,40,104,0.35);
+      background: rgba(0,48,135,0.4);
       animation: auroraMove1 22s ease-in-out infinite alternate;
     }
     .aurora-blob-2 {
       width: 600px; height: 600px;
       top: 25%; right: -180px;
-      background: rgba(107,32,32,0.32);
+      background: rgba(200,16,46,0.3);
       animation: auroraMove2 28s ease-in-out infinite alternate;
     }
     .aurora-blob-3 {
       width: 800px; height: 800px;
       bottom: -300px; left: 10%;
-      background: rgba(200,121,65,0.25);
+      background: rgba(238,185,91,0.15);
       animation: auroraMove3 35s ease-in-out infinite alternate;
     }
     @keyframes auroraMove1 {
@@ -432,11 +436,11 @@
       display: flex; align-items: center; justify-content: center;
       gap: 8px; width: 100%; padding: 16px 20px;
       font-size: 1rem; font-weight: 700; letter-spacing: 0.5px;
-      background: linear-gradient(135deg, #2979ff, #1a5cd4);
+      background: linear-gradient(135deg, #C8102E, #880014);
       color: #fff; border: none; border-radius: var(--r-md);
       cursor: pointer; min-height: 52px;
       transition: all 0.18s cubic-bezier(0.22,1,0.36,1);
-      box-shadow: 0 4px 0 rgba(0,0,0,0.45), 0 8px 28px rgba(41,121,255,0.35);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.45), 0 8px 24px rgba(200,16,46,0.35);
       position: relative; overflow: hidden;
     }
     #start-btn {
@@ -460,13 +464,13 @@
       pointer-events: none;
     }
     .btn-primary:hover {
-      background: linear-gradient(135deg, #4a8fff, #2166e8);
+      background: linear-gradient(135deg, #E82030, #C8102E);
       transform: translateY(-2px);
-      box-shadow: 0 6px 0 rgba(0,0,0,0.45), 0 14px 36px rgba(41,121,255,0.5);
+      box-shadow: 0 6px 0 rgba(0,0,0,0.45), 0 14px 36px rgba(200,16,46,0.5);
     }
     .btn-primary:active {
       transform: translateY(3px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.45), 0 4px 12px rgba(41,121,255,0.2);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.45), 0 4px 12px rgba(200,16,46,0.2);
     }
     .btn-primary:disabled { opacity: 0.32; cursor: not-allowed; transform: none; box-shadow: none; }
 
@@ -812,7 +816,7 @@
     #screen-gassed {
       display: flex; flex-direction: column;
       padding: 48px 0 0; gap: 0; justify-content: flex-start;
-      background: #1a1a1a;
+      background: #07080F;
     }
     /* Top bar: player info */
     .gs-player-header { display: none; }
@@ -953,19 +957,21 @@
     .game-card:active { transform: scale(0.96); box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
 
 
-    .game-card.water::before { background: linear-gradient(90deg,#002868,#2563eb); }
-    .game-card.water:hover   { box-shadow: 0 14px 48px rgba(37,99,235,0.2), 0 4px 12px rgba(0,0,0,0.35); }
-    .game-card.water::after  { background: radial-gradient(ellipse at 50% 0%, rgba(37,99,235,0.14), transparent 65%); }
+    .game-card.water::before { background: linear-gradient(90deg, #001050, #003087); }
+    .game-card.water:hover   { box-shadow: 0 14px 48px rgba(0,48,135,0.25), 0 4px 12px rgba(0,0,0,0.35); }
+    .game-card.water::after  { background: radial-gradient(ellipse at 50% 0%, rgba(0,48,135,0.18), transparent 65%); }
 
-    .game-card.tod::before   { background: linear-gradient(90deg,var(--red),var(--navy)); }
-    .game-card.tod:hover     { box-shadow: 0 14px 48px rgba(239,43,45,0.18), 0 4px 12px rgba(0,0,0,0.35); }
-    .game-card.tod::after    { background: radial-gradient(ellipse at 50% 0%, rgba(180,0,180,0.1), transparent 65%); }
+    .game-card.tod::before   { background: linear-gradient(90deg, #7c3aed, #a855f7); }
+    .game-card.tod:hover     { box-shadow: 0 14px 48px rgba(124,58,237,0.22), 0 4px 12px rgba(0,0,0,0.35); }
+    .game-card.tod::after    { background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.14), transparent 65%); }
 
-    .game-card.trivia::before { background: var(--gold); }
-    .game-card.trivia:hover  { box-shadow: 0 14px 48px rgba(201,168,76,0.22), 0 4px 12px rgba(0,0,0,0.35); }
-    .game-card.trivia::after { background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.14), transparent 65%); }
+    .game-card.trivia::before { background: linear-gradient(90deg, #1e9e40, #2ecc56); }
+    .game-card.trivia:hover  { box-shadow: 0 14px 48px rgba(30,158,64,0.22), 0 4px 12px rgba(0,0,0,0.35); }
+    .game-card.trivia::after { background: radial-gradient(ellipse at 50% 0%, rgba(30,158,64,0.14), transparent 65%); }
 
-
+    .game-card.jeopardy::before { background: linear-gradient(90deg, #C8102E, #003087); }
+    .game-card.jeopardy:hover { box-shadow: 0 14px 48px rgba(200,16,46,0.2), 0 4px 12px rgba(0,0,0,0.35); }
+    .game-card.jeopardy::after { background: radial-gradient(ellipse at 50% 0%, rgba(200,16,46,0.1), transparent 65%); }
 
     .game-card.jeopardy { background: linear-gradient(135deg, #001050 0%, #003087 50%, #C8102E 100%); }
 
@@ -1143,36 +1149,66 @@
     #screen-jeopardy {
       padding: 48px 8px 8px;
       overflow: hidden;
-      position: relative;
-      background: #07080F;
-    }
-    #screen-jeopardy::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        #880014 0 9.5%, #C8102E 9.5% 19.5%, #E82030 19.5% 29%,
-        #fff 29% 38%,
-        #001050 38% 46%, #003087 46% 58%, #001050 58% 66%,
-        #fff 66% 75%,
-        #E82030 75% 84.5%, #C8102E 84.5% 94.5%, #880014 94.5% 100%
-      );
-      opacity: 0.45;
-      pointer-events: none; z-index: 0;
-    }
-    #screen-jeopardy::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.88) 100%);
-      pointer-events: none; z-index: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.88) 100%),
+        repeating-linear-gradient(
+          90deg,
+          #880014 0 9.5%, #C8102E 9.5% 19.5%, #E82030 19.5% 29%,
+          #fff 29% 38%,
+          #001050 38% 46%, #003087 46% 58%, #001050 58% 66%,
+          #fff 66% 75%,
+          #E82030 75% 84.5%, #C8102E 84.5% 94.5%, #880014 94.5% 100%
+        );
     }
     #jeo-board-wrap {
-      display: flex; flex-direction: row;
-      width: 100%; height: 100%;
-      gap: 10px; align-items: stretch;
-      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      width: 100%; flex: 1; min-height: 0;
+      gap: 0;
     }
-    /* LEFT sidebar */
+    /* Jeopardy board: new header-based layout */
+    .jeo-board-header-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 8px; flex-shrink: 0;
+    }
+    .jeo-title-text {
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 1.4rem; color: #eeb95b; letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(238,185,91,0.5);
+    }
+    .jeo-score-chips { display: flex; gap: 6px; }
+    .jeo-score-chip {
+      background: rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 4px 10px; text-align: center;
+      min-width: 72px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .jeo-score-chip.active {
+      box-shadow: 0 0 12px currentColor;
+    }
+    .jeo-score-chip-name {
+      font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: rgba(255,255,255,0.5);
+    }
+    .jeo-score-chip-pts {
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 1.1rem; line-height: 1.2;
+    }
+    .jeo-turn-text {
+      font-size: 0.62rem; color: rgba(255,255,255,0.4);
+      letter-spacing: 0.5px; margin-top: 1px;
+    }
+    /* Board grid */
+    .jeo-board-grid {
+      display: flex; flex-direction: column;
+      flex: 1; min-height: 0; gap: 4px;
+    }
+    .jeo-cat-row {
+      display: flex; gap: 4px;
+    }
+    .jeo-tile-row {
+      display: flex; gap: 4px; flex: 1;
+    }
+    /* LEFT sidebar (kept for CSS compatibility) */
     .jeo-sidebar {
       display: flex; flex-direction: column;
       gap: 8px; flex-shrink: 0; width: 110px;
@@ -1213,7 +1249,7 @@
     /* RIGHT: board fills remaining space */
     .jeo-board {
       display: flex; flex-direction: column;
-      flex: 1; gap: 4px;
+      flex: 1; min-height: 0; gap: 4px;
     }
     .jeo-board-header {
       display: flex; gap: 4px;
@@ -1257,34 +1293,21 @@
     #jeo-team-modal {
       display: none; position: absolute; inset: 0;
       background: linear-gradient(to bottom, #0a0b18, #07080F);
-      z-index: 360;
+      z-index: 400;
       flex-direction: column; align-items: center;
       padding: 0 24px 28px; overflow-y: auto; gap: 0;
-    }
-    #jeo-team-modal::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        #880014 0 9.5%, #C8102E 9.5% 19.5%, #E82030 19.5% 29%,
-        #fff 29% 38%,
-        #001050 38% 46%, #003087 46% 58%, #001050 58% 66%,
-        #fff 66% 75%,
-        #E82030 75% 84.5%, #C8102E 84.5% 94.5%, #880014 94.5% 100%
-      );
-      opacity: 0.06; pointer-events: none; z-index: 0;
     }
     #jeo-team-modal.show { display: flex; }
     .jeo-tm-title {
       position: sticky; top: 0; z-index: 2;
       width: calc(100% + 48px); margin-left: -24px; margin-right: -24px;
       background: rgba(7,8,15,0.96);
-      padding: max(72px, calc(env(safe-area-inset-top) + 20px)) 24px 18px;
+      padding: 18px 24px 14px;
       color: #eeb95b; font-family: 'Boogaloo', sans-serif;
-      font-size: 1.35rem; font-weight: 900; text-align: center; letter-spacing: 2px;
+      font-size: 1.2rem; font-weight: 900; text-align: center; letter-spacing: 2px;
     }
     .jeo-tm-teams {
-      display: flex; gap: 12px; width: 100%; margin-bottom: 22px; position: relative; z-index: 1;
+      display: flex; gap: 12px; width: 100%; margin-bottom: 14px; position: relative; z-index: 1;
     }
     .jeo-tm-team {
       flex: 1; background: rgba(255,255,255,0.06);
@@ -1300,12 +1323,12 @@
       color: rgba(255,255,255,0.65); font-size: 0.75rem; line-height: 1.4; min-height: 18px;
     }
     .jeo-tm-players {
-      width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px;
+      width: 100%; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;
       position: relative; z-index: 1;
     }
     .jeo-tm-player {
       display: flex; align-items: center; gap: 10px;
-      background: rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px;
+      background: rgba(255,255,255,0.06); border-radius: 10px; padding: 10px 12px;
     }
     .jeo-tm-player-name {
       flex: 1; color: #fff; font-weight: 700; font-size: 0.95rem;
@@ -1342,22 +1365,27 @@
     .jeo-ov-cat {
       color: rgba(238,185,91,0.65); font-size: 0.72rem; font-weight: 700;
       text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 18px;
+      background: rgba(0,48,135,0.3); border: 1px solid rgba(0,48,135,0.6);
+      border-radius: 100px; padding: 4px 14px;
     }
     .jeo-ov-question {
       color: #fff; font-size: 1.5rem; font-weight: 700;
       line-height: 1.4; max-width: 340px; margin-bottom: 28px;
     }
     .jeo-ov-stakes {
-      color: #eeb95b; font-size: 2rem; font-weight: 900;
       font-family: 'Boogaloo', sans-serif;
+      font-size: 2rem; color: #eeb95b;
+      text-shadow: 0 0 16px rgba(238,185,91,0.5);
       margin-bottom: 4px; line-height: 1;
     }
     .jeo-ov-stakes-label {
-      color: rgba(238,185,91,0.55); font-size: 0.75rem; margin-bottom: 36px;
+      font-size: 0.7rem; color: rgba(238,185,91,0.55);
+      text-transform: uppercase; letter-spacing: 2px; margin-top: -8px; margin-bottom: 20px;
     }
     .jeo-ov-answer {
-      color: #4dff99; font-size: 1.35rem; font-weight: 700;
-      max-width: 320px; margin-bottom: 28px; line-height: 1.35;
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 2.2rem; color: #fff;
+      line-height: 1.3; margin-bottom: 24px;
     }
     .jeo-ov-result {
       font-size: 1.15rem; font-weight: 700;
@@ -1386,7 +1414,11 @@
     .jeo-btn-reveal { background: #eeb95b; color: #07080F; }
     .jeo-btn-correct { background: #00c44a; color: #fff; }
     .jeo-btn-wrong   { background: #cc2200; color: #fff; }
-    .jeo-btn-close   { background: rgba(255,255,255,0.12); color: #fff; font-size: 0.9rem; }
+    .jeo-btn-close {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.8);
+    }
     .jeo-gameover {
       text-align: center; padding: 40px 20px;
     }
@@ -1669,8 +1701,8 @@
       margin-top: 8px;
       width: 100%;
       padding: 12px;
-      background: rgba(239,43,45,0.10);
-      border: 1px solid rgba(239,43,45,0.26);
+      background: rgba(200,16,46,0.10);
+      border: 1px solid rgba(200,16,46,0.26);
       border-radius: 12px;
       color: var(--red);
       font-size: 0.88rem;
@@ -1683,8 +1715,8 @@
       font-size: 0.72rem;
       font-weight: 700;
       border-radius: 8px;
-      background: rgba(239,43,45,0.18);
-      border-color: rgba(239,43,45,0.5);
+      background: rgba(200,16,46,0.18);
+      border-color: rgba(200,16,46,0.5);
     }
     #session-join-area {
       margin-top: 8px;
@@ -1819,7 +1851,7 @@
       .tod-inline-text { font-size: 1.1rem; }
 
       /* ── Gassed: real mobile landscape — scale up fonts ── */
-      #screen-gassed { background: #1a1a1a; padding-top: 36px; }
+      #screen-gassed { background: #07080F; padding-top: 36px; }
       .gs-player-name { font-size: 0.95rem; }
       .gs-main-text   { font-size: clamp(2rem, 5.5vw, 3.5rem); }
       .gs-sub-text    { font-size: clamp(0.9rem, 1.8vw, 1.1rem); }
@@ -2541,8 +2573,19 @@
       body.game-active .wf-challenge-text { font-size: 1.3rem; line-height: 1.35; min-height: auto; }
       body.game-active #screen-trivia { padding: 36px 52px 8px 52px; gap: 6px; }
       body.game-active #screen-jeopardy { padding: 36px 12px 8px 52px; overflow: hidden; }
-      body.game-active #screen-jeopardy #jeo-board-wrap { height: 100%; }
       body.game-active .jeo-sidebar { width: 96px; }
+      body.game-active .jeo-title-text { font-size: 1.1rem; }
+      body.game-active .jeo-score-chip { min-width: 60px; padding: 3px 8px; }
+      body.game-active .jeo-score-chip-pts { font-size: 0.9rem; }
+      /* Jeopardy team modal: compact vertical layout in landscape */
+      body.game-active #jeo-team-modal { overflow-y: auto; padding: 0 16px 12px; }
+      body.game-active .jeo-tm-title { padding: 8px 16px 8px; font-size: 0.9rem; width: calc(100% + 32px); margin-left: -16px; margin-right: -16px; }
+      body.game-active .jeo-tm-teams { margin-bottom: 8px; }
+      body.game-active .jeo-tm-players { margin-bottom: 8px; gap: 5px; }
+      body.game-active .jeo-tm-player { padding: 6px 10px; }
+      body.game-active .jeo-tm-player-name { font-size: 0.82rem; }
+      body.game-active .jeo-tm-btn { padding: 5px 8px; font-size: 0.72rem; }
+      body.game-active .jeo-btn-start-game { padding: 9px 0; font-size: 0.82rem; }
       body.game-active .jeo-score-pts { font-size: 1.1rem; }
       body.game-active .jeo-tile { font-size: 0.85rem; }
       body.game-active .trivia-question-text { font-size: 0.98rem; }
@@ -2576,7 +2619,7 @@
       body.game-active .tod-inline-text { font-size: 1rem; }
 
       /* Gassed: desktop phone frame (682×314) — tighter sizes */
-      body.game-active #screen-gassed { background: #1a1a1a; padding-top: 36px; }
+      body.game-active #screen-gassed { background: #07080F; padding-top: 36px; }
       body.game-active .gs-player-name   { font-size: 0.95rem; }
       body.game-active .gs-main-text     { font-size: 1.9rem; }
       body.game-active .gs-sub-text      { font-size: 0.88rem; }
@@ -2847,6 +2890,31 @@
       <button class="gim-start" style="background:rgba(255,255,255,0.1);box-shadow:none;border:1px solid rgba(255,255,255,0.18);" onclick="triviaPickMode('individual')">👤 Individuelt</button>
       <button class="gim-start" onclick="triviaPickMode('team')">👥 Lagspill</button>
     </div>
+  </div>
+</div>
+
+<!-- Jeopardy: team setup modal -->
+<div id="jeo-team-modal"></div>
+
+<!-- Jeopardy: question/answer overlay -->
+<div id="jeo-overlay">
+  <div class="jeo-ov-team-badge" id="jeo-ov-team"></div>
+  <div class="jeo-ov-cat" id="jeo-ov-cat"></div>
+  <div id="jeo-state-q">
+    <div class="jeo-ov-question" id="jeo-ov-question"></div>
+    <div class="jeo-ov-stakes" id="jeo-ov-stakes"></div>
+    <div class="jeo-ov-stakes-label" id="jeo-ov-stakes-label"></div>
+    <button class="jeo-btn jeo-btn-reveal" onclick="jeoReveal()">Vis svar</button>
+  </div>
+  <div id="jeo-state-a" style="display:none;width:100%;max-width:320px;text-align:center">
+    <div class="jeo-ov-question" id="jeo-ov-question-a" style="font-size:1rem;opacity:0.6;margin-bottom:12px"></div>
+    <div class="jeo-ov-answer" id="jeo-ov-answer"></div>
+    <div class="jeo-verdict-label">Hvem svarte riktig?</div>
+    <div id="jeo-verdict-teams"></div>
+  </div>
+  <div id="jeo-state-result" style="display:none;width:100%;max-width:320px;text-align:center">
+    <div class="jeo-ov-result" id="jeo-ov-result"></div>
+    <button class="jeo-btn jeo-btn-close" onclick="jeoClose()">Tilbake til brettet</button>
   </div>
 </div>
 
@@ -4661,6 +4729,189 @@ function showScreen(id) {
 
 const GAME_SCREENS = ['screen-waterfall','screen-tod','screen-trivia','screen-jeopardy','screen-gassed'];
 
+// ─────────────────────────────────────────────
+// GAME LAUNCHER
+// ─────────────────────────────────────────────
+
+function launchGame(gameId) {
+  if (gameId === 'waterfall') { initWaterfall(); showScreen('screen-waterfall'); }
+  else if (gameId === 'tod')  { showScreen('screen-tod'); initTod(); }
+  else if (gameId === 'trivia') { showScreen('screen-trivia'); initTrivia(); }
+  else if (gameId === 'jeopardy') { showScreen('screen-jeopardy'); initJeopardy(); }
+  else if (gameId === 'gassed')   { startGassed(); }
+}
+
+function getGameInstructions() {
+  const no = app.lang !== 'en';
+  return {
+    waterfall: {
+      icon: '🙈', title: no ? 'Jeg har aldri' : 'Never Have I Ever',
+      rules: [
+        { icon: '📖', text: no ? 'Et tilfeldig "Jeg har aldri…"-utsagn vises.' : 'A random "Never have I ever…" statement is shown.' },
+        { icon: '🍺', text: no ? 'Alle som HAR gjort det drikker!' : 'Everyone who HAS done it drinks!' },
+        { icon: '➡️', text: no ? 'Trykk "Neste" for å få et nytt utsagn.' : 'Tap "Next" to get a new statement.' },
+      ],
+    },
+    tod: {
+      icon: '😏', title: no ? 'Sannhet eller Nøtt' : 'Truth or Dare',
+      rules: [
+        { icon: '🎯', text: no ? 'Velg hvilken spiller som skal svare.' : 'Choose which player has to answer.' },
+        { icon: '🤔', text: no ? 'Velg mellom Sannhet eller Nøtt.' : 'Choose between Truth or Dare.' },
+        { icon: '✅', text: no ? 'Fullfør utfordringen — eller drikk 2 slurker for å slippe unna!' : 'Complete the challenge — or drink 2 sips to skip it!' },
+        { icon: '🔄', text: no ? 'Ta det på omgang rundt bordet.' : 'Take turns around the table.' },
+      ],
+    },
+    trivia: {
+      icon: '🧠', title: no ? 'Trivia Quiz — Individuelt' : 'Trivia Quiz — Individual',
+      rules: [
+        { icon: '🎯', text: no ? 'En spiller er aktiv per spørsmål — det roterer automatisk.' : 'One player is active per question — it rotates automatically.' },
+        { icon: '❓', text: no ? 'Les spørsmålet og velg riktig svar blant alternativene.' : 'Read the question and pick the correct answer from the options.' },
+        { icon: '✅', text: no ? 'Riktig svar: den aktive spilleren peker på noen som drikker.' : 'Correct answer: the active player points to someone who drinks.' },
+        { icon: '❌', text: no ? 'Feil svar: den aktive spilleren drikker 2 slurker.' : 'Wrong answer: the active player drinks 2 sips.' },
+        { icon: '➡️', text: no ? 'Trykk "Neste" for å fortsette til neste spørsmål.' : 'Tap "Next" to continue to the next question.' },
+      ],
+    },
+    'trivia-team': {
+      icon: '👥', title: no ? 'Trivia Quiz — Lagspill' : 'Trivia Quiz — Teams',
+      rules: [
+        { icon: '🏅', text: no ? 'Lag konkurrerer mot hverandre om å svare riktig.' : 'Teams compete against each other to answer correctly.' },
+        { icon: '🔄', text: no ? 'Hvert lag svarer på sin tur — kategorien velges av det aktive laget.' : 'Each team answers on their turn — the active team picks the category.' },
+        { icon: '✅', text: no ? 'Riktig svar: motstanderlaget drikker 2 slurker.' : 'Correct answer: the opposing team drinks 2 sips.' },
+        { icon: '❌', text: no ? 'Feil svar: laget som svarte feil drikker 2 slurker.' : 'Wrong answer: the answering team drinks 2 sips.' },
+        { icon: '🏆', text: no ? 'Spill så lenge dere vil — det laget med flest riktige vinner!' : 'Play as long as you like — the team with the most correct answers wins!' },
+      ],
+    },
+    jeopardy: {
+      icon: '🍺',
+      title: 'Jeopardy',
+      rules: no ? [
+        { icon: '🎯', text: 'Velg en kategori og poengverdi' },
+        { icon: '✅', text: 'Riktig svar → del ut så mange drikker' },
+        { icon: '❌', text: 'Feil svar → drikk selv' },
+        { icon: '🏆', text: 'Spill gjennom alle 25 spørsmål' },
+      ] : [
+        { icon: '🎯', text: 'Pick a category and point value' },
+        { icon: '✅', text: 'Answer correctly → give out that many drinks' },
+        { icon: '❌', text: 'Answer wrong → drink that many yourself' },
+        { icon: '🏆', text: 'Play through all 25 questions' },
+      ],
+    },
+  };
+}
+
+let _gimLaunchId = null;
+
+function startGame(gameId) {
+  app.currentGame = gameId;
+  if (gameId === 'tod') {
+    document.getElementById('tod-category-modal').style.display = 'flex';
+    return;
+  }
+  if (gameId === 'trivia') {
+    document.getElementById('trivia-mode-modal').style.display = 'flex';
+    return;
+  }
+  const info = getGameInstructions()[gameId];
+  if (!info) { launchGame(gameId); return; }
+  _gimLaunchId = gameId;
+  document.getElementById('gim-icon').textContent = info.icon;
+  document.getElementById('gim-title').textContent = info.title;
+  document.getElementById('gim-rules').innerHTML = info.rules
+    .map(r => `<li><span class="gim-rule-icon">${r.icon}</span><span>${r.text}</span></li>`)
+    .join('');
+  document.getElementById('game-instructions-modal').style.display = 'flex';
+}
+
+function triviaPickMode(mode) {
+  document.getElementById('trivia-mode-modal').style.display = 'none';
+  app.trivia.teamMode = (mode === 'team');
+  const info = getGameInstructions()[mode === 'team' ? 'trivia-team' : 'trivia'];
+  _gimLaunchId = 'trivia';
+  document.getElementById('gim-icon').textContent = info.icon;
+  document.getElementById('gim-title').textContent = info.title;
+  document.getElementById('gim-rules').innerHTML = info.rules
+    .map(r => `<li><span class="gim-rule-icon">${r.icon}</span><span>${r.text}</span></li>`)
+    .join('');
+  document.getElementById('game-instructions-modal').style.display = 'flex';
+}
+
+function dismissInstructions() {
+  if (_gimLaunchId) {
+    const id = _gimLaunchId;
+    _gimLaunchId = null;
+    if (id === 'trivia' && app.trivia?.teamMode) {
+      _triviaShowTeamSetup();
+    } else {
+      launchGame(id);
+    }
+  }
+  document.getElementById('game-instructions-modal').style.display = 'none';
+}
+
+function _triviaShowTeamSetup() {
+  const isNo = app.lang !== 'en';
+  app.trivia.teams = [
+    { name: isNo ? 'Lag 1' : 'Team 1', players: [], score: 0 },
+    { name: isNo ? 'Lag 2' : 'Team 2', players: [], score: 0 },
+  ];
+  _triviaRenderTeamSetup();
+  document.getElementById('trivia-team-modal').style.display = 'flex';
+}
+
+function _triviaRenderTeamSetup() {
+  const isNo = app.lang !== 'en';
+  const players = app.players;
+  const teams = app.trivia.teams;
+  let html = '';
+  html += '<div class="jeo-tm-teams">';
+  teams.forEach(t => {
+    const members = t.players.join(', ') || (isNo ? '(ingen)' : '(none)');
+    html += `<div class="jeo-tm-team"><div class="jeo-tm-team-name">${t.name}</div><div class="jeo-tm-members">${members}</div></div>`;
+  });
+  html += '</div><div class="jeo-tm-players">';
+  players.forEach((p, pi) => {
+    const assignedTeam = teams.findIndex(t => t.players.includes(p));
+    html += `<div class="jeo-tm-player"><span class="jeo-tm-player-name">${p}</span><div class="jeo-tm-btns">`;
+    teams.forEach((t, ti) => {
+      const active = assignedTeam === ti ? ' jeo-tm-btn-active' : '';
+      html += `<button class="jeo-tm-btn${active}" onclick="triviaAssignTeam(${pi},${ti})">${t.name}</button>`;
+    });
+    html += '</div></div>';
+  });
+  html += '</div>';
+  document.getElementById('trivia-team-content').innerHTML = html;
+}
+
+function triviaAssignTeam(pi, ti) {
+  const p = app.players[pi];
+  app.trivia.teams.forEach(t => { t.players = t.players.filter(x => x !== p); });
+  app.trivia.teams[ti].players.push(p);
+  _triviaRenderTeamSetup();
+}
+
+function triviaRandomTeams() {
+  const players = [...app.players].sort(() => Math.random() - 0.5);
+  app.trivia.teams.forEach(t => t.players = []);
+  players.forEach((p, i) => app.trivia.teams[i % app.trivia.teams.length].players.push(p));
+  _triviaRenderTeamSetup();
+}
+
+function triviaTeamStart() {
+  const isNo = app.lang !== 'en';
+  const emptyTeam = app.trivia.teams.find(t => t.players.length === 0);
+  if (emptyTeam) {
+    const errEl = document.getElementById('trivia-team-error');
+    if (errEl) errEl.textContent = isNo
+      ? `${emptyTeam.name} har ingen spillere.`
+      : `${emptyTeam.name} has no players.`;
+    return;
+  }
+  document.getElementById('trivia-team-modal').style.display = 'none';
+  app.trivia.teamIdx = 0;
+  showScreen('screen-trivia');
+  initTrivia();
+}
+
 function selectTodCategory(cat) {
   app.tod.category = cat;
   document.getElementById('tod-category-modal').style.display = 'none';
@@ -5563,9 +5814,7 @@ var fireActive = false;
   requestAnimationFrame(frame);
 })();
 
-window.addEventListener('resize', () => {
-  if (app.horse && app.horse.phase === 'racing') updateAllHorsePositions();
-});
+// (resize handler for removed horse race game removed)
 
 // Track portrait/landscape so CSS rotate fallback fires on game screens
 (function _trackOrientation() {
@@ -6175,16 +6424,18 @@ function _jeoShowTeamSetup() {
     { name: isNo ? 'Lag Blå' : 'Team Blue', players: [], score: 0, color: '#003087' },
   ];
   _jeoRenderTeamSetup();
-  document.getElementById('jeo-team-modal').classList.add('show');
+  const _jtm = document.getElementById('jeo-team-modal');
+  if (_jtm) { _jtm.classList.add('show'); console.log('jeo-team-modal shown'); }
+  else { console.error('jeo-team-modal element missing from DOM'); }
   S.schedulePush(50);
 }
 
 function _jeoRenderTeamSetup() {
   const modal = document.getElementById('jeo-team-modal');
-  if (!modal) return;
+  if (!modal) { console.error('jeo-team-modal not found'); return; }
   const isNo = app.lang !== 'en';
-  const players = app.players;
-  const teams = app.jeopardy.teams;
+  const players = Array.isArray(app.players) ? app.players : [];
+  const teams = app.jeopardy?.teams || [];
   let html = `<div class="jeo-tm-title">👥 ${isNo ? 'Velg lag' : 'Choose teams'}</div>`;
   html += `<div class="jeo-tm-teams">`;
   teams.forEach((t, ti) => {
@@ -6202,7 +6453,7 @@ function _jeoRenderTeamSetup() {
     html += `</div></div>`;
   });
   html += `</div>`;
-  html += `<div style="display:flex;gap:8px;width:100%;margin-top:4px;">`;
+  html += `<div class="jeo-tm-action-row" style="display:flex;gap:8px;width:100%;margin-top:4px;">`;
   html += `<button class="jeo-btn-start-game" style="flex:1;background:rgba(255,255,255,0.12);font-size:0.8rem;" onclick="jeoRandomTeams()">🎲 ${isNo ? 'Tilfeldig lag' : 'Random teams'}</button>`;
   html += `<button class="jeo-btn-start-game" style="flex:1;" onclick="jeoStartGame()">🎮 ${isNo ? 'Start spillet!' : 'Start game!'}</button>`;
   html += `</div>`;
@@ -6253,40 +6504,55 @@ function _jeoRenderBoard() {
   const ct = app.jeopardy.currentTeam ?? 0;
   const isNo = app.lang !== 'en';
 
-  // LEFT sidebar: turn indicator + scoreboard
-  let sidebar = '<div class="jeo-sidebar">';
-  if (teams[ct]) {
-    const tc = teams[ct].color || '#eeb95b';
-    sidebar += `<div class="jeo-turn-banner" style="color:${tc};text-shadow:0 0 12px ${tc}66">${isNo ? `${teams[ct].name} sin tur` : `${teams[ct].name}'s turn`}</div>`;
-  }
-  teams.forEach((t, ti) => {
+  // Header bar: title + score chips
+  let chips = teams.map((t, ti) => {
     const active = ti === ct;
     const col = t.color || '#eeb95b';
-    const borderCol = active ? col : `${col}44`;
-    const bgCol = active ? `${col}22` : `${col}0d`;
-    sidebar += `<div class="jeo-score-item${active ? ' jeo-score-active' : ''}" style="border-color:${borderCol};background:${bgCol}"><div class="jeo-score-team" style="color:${col};opacity:${active?1:0.6}">${t.name}</div><div class="jeo-score-pts" style="color:${col}">${t.score >= 0 ? '' : '−'}$${Math.abs(t.score)}</div></div>`;
-  });
-  sidebar += '</div>';
+    const borderStyle = `border: 1.5px solid ${active ? col : col + '44'};`;
+    const bgStyle = `background: ${active ? col + '22' : col + '0d'};`;
+    const turnText = active ? (isNo ? 'din tur' : 'your turn') : '';
+    return `<div class="jeo-score-chip${active ? ' active' : ''}" style="${borderStyle}${bgStyle}color:${col}">
+      <div class="jeo-score-chip-name" style="color:${active ? col : 'rgba(255,255,255,0.45)'}">${t.name}</div>
+      <div class="jeo-score-chip-pts" style="color:${col}">${t.score >= 0 ? '' : '−'}$${Math.abs(t.score)}</div>
+      ${active ? `<div class="jeo-turn-text" style="color:${col}88">${turnText}</div>` : ''}
+    </div>`;
+  }).join('');
 
-  // RIGHT: board
-  let board = '<div class="jeo-board"><div class="jeo-board-header">';
-  data.forEach(c => { board += `<div class="jeo-cat-header">${c.name}</div>`; });
-  board += '</div>';
+  const done = app.jeopardy.used.length;
+  const progress = total > 0 ? Math.round((done / total) * 100) : 0;
+
+  let html = `<div class="jeo-board-header-bar">
+    <div class="jeo-title-text">JEOPARDY</div>
+    <div class="jeo-score-chips">${chips}</div>
+  </div>`;
+
+  // Category headers row
+  html += '<div class="jeo-board-grid">';
+  html += '<div class="jeo-cat-row">';
+  data.forEach(c => { html += `<div class="jeo-cat-header">${c.name}</div>`; });
+  html += '</div>';
+
+  // Question tile rows
   for (let qi = 0; qi < data[0].qs.length; qi++) {
     const pts = (qi + 1) * 100;
-    board += '<div class="jeo-board-row">';
+    // Color code by value
+    let tileColor = 'rgba(255,255,255,0.82)';
+    if (pts >= 400) tileColor = '#eeb95b';
+    else if (pts >= 300) tileColor = '#f0c080';
+    const glowStyle = pts >= 400 ? `text-shadow: 0 0 12px rgba(238,185,91,0.6)` : '';
+    html += '<div class="jeo-tile-row">';
     data.forEach((cat, ci) => {
       const key = ci + '-' + qi;
       const used = app.jeopardy.used.includes(key);
-      board += used
+      html += used
         ? `<div class="jeo-tile jeo-used"></div>`
-        : `<div class="jeo-tile" onclick="jeoOpen(${ci},${qi})">$${pts}</div>`;
+        : `<div class="jeo-tile" onclick="jeoOpen(${ci},${qi})" style="color:${tileColor};${glowStyle}">$${pts}</div>`;
     });
-    board += '</div>';
+    html += '</div>';
   }
-  board += '</div>';
+  html += '</div>'; // jeo-board-grid
 
-  wrap.innerHTML = sidebar + board;
+  wrap.innerHTML = html;
 }
 
 function jeoOpen(ci, qi) {
@@ -7024,7 +7290,6 @@ const S = {
       players:     [...(app.players ?? [])],
       lang:        app.lang ?? 'no',
       screenHtml:  screenEl?.innerHTML ?? '',
-        : null,
       overlays: {
         gim: {
           show:      gimEl ? gimEl.style.display !== 'none' : false,
@@ -7097,6 +7362,8 @@ const S = {
         } else if (src.startsWith('file://')) {
           img.src = src.slice(src.lastIndexOf('/') + 1);
         }
+      });
+    }
 
     // Tegn TOD-picker på nytt (canvas-innhold er ikke i innerHTML)
     if (st.canvasAngles && st.screen === 'screen-tod') {
