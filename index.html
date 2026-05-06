@@ -95,44 +95,24 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ── Aurora background blobs ── */
-    .aurora-blobs {
-      position: absolute; inset: 0; z-index: 0;
-      pointer-events: none; overflow: hidden;
+    /* ── Norwegian flag background ── */
+    .flag-bg {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: linear-gradient(90deg,
+        #2a0008 0%,    #2a0008 10%,
+        #8B0014 10%,   #8B0014 30%,
+        #C8102E 30%,   #C8102E 36%,
+        #c8c8c8 36%,   #c8c8c8 39%,
+        #001050 39%,   #001050 61%,
+        #c8c8c8 61%,   #c8c8c8 64%,
+        #C8102E 64%,   #C8102E 70%,
+        #8B0014 70%,   #8B0014 90%,
+        #2a0008 90%,   #2a0008 100%
+      );
     }
-    .aurora-blob {
-      position: absolute; border-radius: 50%;
-      filter: blur(100px);
-    }
-    .aurora-blob-1 {
-      width: 700px; height: 700px;
-      top: -200px; left: -150px;
-      background: rgba(0,48,135,0.4);
-      animation: auroraMove1 22s ease-in-out infinite alternate;
-    }
-    .aurora-blob-2 {
-      width: 600px; height: 600px;
-      top: 25%; right: -180px;
-      background: rgba(200,16,46,0.3);
-      animation: auroraMove2 28s ease-in-out infinite alternate;
-    }
-    .aurora-blob-3 {
-      width: 800px; height: 800px;
-      bottom: -300px; left: 10%;
-      background: rgba(238,185,91,0.15);
-      animation: auroraMove3 35s ease-in-out infinite alternate;
-    }
-    @keyframes auroraMove1 {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(80px,60px) scale(1.1); }
-    }
-    @keyframes auroraMove2 {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(-60px,90px) scale(0.95); }
-    }
-    @keyframes auroraMove3 {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(50px,-80px) scale(1.05); }
+    .flag-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(0,0,0,0.72);
     }
 
 
@@ -423,26 +403,17 @@
     /* ── Buttons ── */
     .btn-primary {
       display: flex; align-items: center; justify-content: center;
-      gap: 8px; width: 100%; padding: 16px 20px;
-      font-size: 1rem; font-weight: 700; letter-spacing: 0.5px;
+      gap: 8px; width: 100%; padding: 18px 20px;
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 1.6rem; font-weight: 400; letter-spacing: 1px;
       background: linear-gradient(135deg, #C8102E, #880014);
-      color: #fff; border: none; border-radius: var(--r-md);
-      cursor: pointer; min-height: 52px;
+      color: #fff; border: none; border-radius: 18px;
+      cursor: pointer; min-height: 60px;
       transition: all 0.18s cubic-bezier(0.22,1,0.36,1);
-      box-shadow: 0 4px 0 rgba(0,0,0,0.45), 0 8px 24px rgba(200,16,46,0.35);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.45), 0 8px 28px rgba(200,16,46,0.45);
       position: relative; overflow: hidden;
     }
-    #start-btn {
-      font-family: 'Boogaloo', sans-serif;
-      font-size: 2rem; font-weight: 400; letter-spacing: 1px;
-      background: var(--surface);
-      border: 1px solid var(--border-hi);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07);
-      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
-    }
     #start-btn:hover {
-      background: var(--surface-hi);
-      box-shadow: 0 6px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
     }
     #start-btn:active {
       box-shadow: 0 1px 6px rgba(0,0,0,0.3);
@@ -504,7 +475,7 @@
     .btn-danger:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.35); }
 
     /* ── Screen 1: Setup ── */
-    #screen-setup { gap: 0; padding-top: 64px; }
+    #screen-setup { gap: 0; padding-top: 56px; }
 
     .player-add-field {
       display: flex; align-items: center; gap: 10px;
@@ -568,7 +539,8 @@
     .add-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.4), 0 10px 24px rgba(46,204,113,0.42); }
     .add-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.4); }
 
-    .player-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; min-height: 42px; }
+    .player-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; min-height: 0; }
+    .player-chips:empty { margin-bottom: 0; }
 
     .player-chip {
       display: flex; align-items: center; gap: 8px;
@@ -591,93 +563,92 @@
     }
     .chip-remove:hover { color: var(--red); }
 
+    .setup-players-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 1.8px; color: rgba(255,255,255,0.32); text-transform: uppercase; margin-bottom: 12px; }
     .setup-hint { font-size: 0.77rem; color: var(--dim); text-align: center; margin-bottom: 6px; }
 
-    /* ── Screen 2: Home ── */
-    #screen-home { padding-top: 94px; justify-content: flex-start; }
-    .home-game-grid {
-      width: 100%; flex: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 0;
+    /* ── Screen 2: Home (game selection) ── */
+    #screen-home {
+      padding: 0; justify-content: flex-start; overflow-y: auto;
     }
-    .home-game-btn {
-      background: var(--surface);
-      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
-      border: 1px solid var(--border);
-      border-radius: 20px; cursor: pointer;
-      display: flex; align-items: center; gap: 14px;
-      text-align: left; padding: 16px 18px;
-      transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
-      position: relative; overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07);
+    .home-logo-bar {
+      padding: 56px 24px 16px;
+      text-align: center;
     }
-    .home-game-btn::before {
-      content: ''; position: absolute;
-      top: 0; left: 0; right: 0; height: 3px; border-radius: 20px 20px 0 0;
-    }
-    .home-game-btn:active { transform: scale(0.97); }
-    .home-game-btn-icon { font-size: 2rem; flex-shrink: 0; line-height: 1; }
-    .home-game-btn-body { display: flex; flex-direction: column; gap: 2px; }
-    .home-tagline {
+    .home-logo-title {
       font-family: 'Boogaloo', sans-serif;
-      font-size: 2rem; color: #fff;
-      text-align: center; letter-spacing: 0.5px; line-height: 1.25;
-      margin-bottom: 18px;
+      font-size: clamp(3.2rem, 14vw, 5rem);
+      color: #EF9F27; letter-spacing: 5px; line-height: 1;
+      filter: drop-shadow(0 2px 18px rgba(239,159,39,0.5));
     }
-    .home-tagline span { color: var(--red); }
+    .home-logo-underline {
+      width: 44px; height: 3px; border-radius: 2px;
+      background: var(--red); margin: 8px auto 0;
+    }
+    .game-list {
+      width: 100%; display: flex; flex-direction: column; gap: 10px;
+      padding: 8px 16px 0;
+    }
+    .game-row {
+      width: 100%; display: flex; align-items: center;
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; overflow: hidden;
+      cursor: pointer; text-align: left;
+      transition: all 0.2s cubic-bezier(0.22,1,0.36,1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+      min-height: 74px;
+    }
+    .game-row:active { transform: scale(0.975); }
+    .game-row[disabled] { cursor: default; opacity: 0.6; }
+    .game-row[disabled]:active { transform: none; }
+    .gr-icon-wrap {
+      width: 64px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      align-self: stretch; font-size: 1.8rem;
+    }
+    .gr-gassed   .gr-icon-wrap { background: linear-gradient(160deg, #8B0014, #C8102E); }
+    .gr-tod      .gr-icon-wrap { background: linear-gradient(160deg, #4a2a00, #7a4a00); }
+    .gr-trivia   .gr-icon-wrap { background: linear-gradient(160deg, #001050, #003087); }
+    .gr-jeopardy .gr-icon-wrap { background: linear-gradient(160deg, #0a2b1a, #1a5c35); }
+    .gr-horse    .gr-icon-wrap { background: linear-gradient(160deg, #1a0a2b, #3d1a5c); }
+    .gr-body {
+      flex: 1; padding: 14px 10px; display: flex; flex-direction: column; gap: 3px; min-width: 0;
+    }
+    .gr-title {
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 1.25rem; color: #fff; letter-spacing: 0.3px; line-height: 1.1;
+    }
+    .gr-sub {
+      font-size: 0.73rem; color: rgba(255,255,255,0.45); font-weight: 500;
+    }
+    .gr-arrow {
+      font-size: 1.3rem; color: rgba(255,255,255,0.3); padding: 0 14px 0 6px; flex-shrink: 0;
+    }
+    .gr-soon-badge {
+      font-size: 0.58rem; font-weight: 800; letter-spacing: 1.2px;
+      text-transform: uppercase; color: rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px; padding: 3px 8px; margin-right: 10px; flex-shrink: 0;
+    }
     .home-bottom-bar {
-      width: 100%; display: flex; flex-direction: column; align-items: center;
-      gap: 12px; padding-top: 16px; margin-top: auto;
+      width: 100%; display: flex; gap: 10px;
+      padding: 16px 16px 24px; margin-top: auto;
     }
-    .home-session-panel {
-      width: 100%; display: grid; grid-template-columns: 1fr 1px 1fr;
-      align-items: center;
-      background: rgba(255,255,255,0.06);
+    .hbb-btn {
+      flex: 1; padding: 14px 8px;
+      background: rgba(255,255,255,0.07);
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 18px; padding: 4px; overflow: hidden;
+      border-radius: 14px; color: rgba(255,255,255,0.75);
+      font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      text-align: center; transition: background 0.2s;
     }
-    .hsp-share-btn {
-      padding: 13px 16px; background: none; border: none;
-      color: rgba(255,255,255,0.8); font-size: 0.88rem; font-weight: 600;
-      cursor: pointer; border-radius: 14px; text-align: center;
-      transition: background 0.2s; white-space: nowrap; overflow: hidden;
+    .hbb-btn:active { background: rgba(255,255,255,0.13); }
+    /* Other games row */
+    .home-small-row {
+      flex: 0 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 88px; gap: 10px;
     }
-    .hsp-share-btn:active { background: rgba(255,255,255,0.09); }
-    .hsp-divider {
-      width: 1px; height: 28px; background: rgba(255,255,255,0.15);
-      justify-self: center;
-    }
-    .hsp-join {
-      display: flex; align-items: center; min-width: 0; padding-left: 10px;
-    }
-    .hsp-join input {
-      width: 100%; background: none; border: none; outline: none;
-      color: rgba(255,255,255,0.8); font-size: 0.88rem; font-weight: 600;
-      padding: 13px 16px; text-align: center; letter-spacing: 3px;
-    }
-    .hsp-join input::placeholder {
-      color: rgba(255,255,255,0.35); letter-spacing: 0; font-weight: 500;
-    }
-    .home-game-btn-title {
-      font-family: 'Boogaloo', sans-serif;
-      font-size: 1.15rem; font-weight: 400; color: #fff; letter-spacing: 0.5px;
-    }
-    .home-game-btn-sub {
-      font-size: 0.72rem; color: rgba(255,255,255,0.45); font-weight: 600;
-    }
-    .hgb-team-badge {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-      color: rgba(255,255,255,0.5); margin-top: 2px;
-    }
-    /* Gassed — bigger */
-    .home-game-btn.hgb-gassed {
-      flex: 0 0 auto; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-      padding: 14px 20px; border-radius: 22px;
-      box-shadow: 0 6px 32px rgba(239,43,45,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
-    }
-    .home-game-btn.hgb-gassed::before { background: var(--red); }
-    .home-game-btn.hgb-gassed:active  { box-shadow: 0 2px 10px rgba(239,43,45,0.15); }
-    .home-game-btn.hgb-gassed .home-game-btn-icon { font-size: 2rem; }
-    .home-game-btn.hgb-gassed .home-game-btn-title { font-size: 3rem; letter-spacing: 1px; }
     /* Gassed Config Overlay */
     #gassed-intro {
       display: none; position: absolute; inset: 0; z-index: 300;
@@ -1655,12 +1626,15 @@
       #screen-setup { padding-top: 36px; }
 
       /* ── Hjem ── */
-      #screen-home { padding-top: 8px; }
-      .gassed-logo { font-size: 2.2rem; letter-spacing: 4px; margin-bottom: 0; }
-      .screen-subtitle { font-size: 0.78rem; margin-bottom: 4px; }
-      .game-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
-      .game-card { min-height: 76px; padding: 12px 8px 10px; gap: 5px; }
-      .game-card-icon { font-size: 1.8rem; }
+      #screen-home { padding-top: 0; }
+      .home-logo-bar { padding: 28px 24px 12px; }
+      .home-logo-title { font-size: 2.4rem; }
+      .game-list { gap: 7px; padding: 4px 12px 0; }
+      .game-row { min-height: 60px; }
+      .gr-icon-wrap { width: 52px; font-size: 1.4rem; }
+      .gr-title { font-size: 1.05rem; }
+      .gr-sub { font-size: 0.68rem; }
+      .home-bottom-bar { padding: 12px 12px 16px; }
 
       /* ── Lykkehjulet: hjul sentrert, snurr-knapp ved siden ── */
 
@@ -2275,12 +2249,8 @@
 <div class="phone-outer">
 <div class="phone-frame" id="phone-frame">
 
-<!-- Aurora background -->
-<div class="aurora-blobs" id="aurora-blobs">
-  <div class="aurora-blob aurora-blob-1"></div>
-  <div class="aurora-blob aurora-blob-2"></div>
-  <div class="aurora-blob aurora-blob-3"></div>
-</div>
+<!-- Norwegian flag background -->
+<div class="flag-bg"></div>
 
 <!-- Settings button -->
 <button id="settings-btn" onclick="openSettings()" title="Innstillinger">⚙️</button>
@@ -2553,19 +2523,19 @@
   <!-- Screen 1: Setup -->
   <div class="screen active" id="screen-setup">
     <div class="gassed-logo">Gassed</div>
-    <div class="screen-subtitle" data-t="setup.subtitle">Add players to get started</div>
 
     <div class="panel" style="width:100%;margin-bottom:16px;">
+      <div class="setup-players-label">SPILLERE</div>
+      <div class="player-chips" id="player-chips"></div>
       <div class="player-add-field" onclick="document.getElementById('player-input').focus()">
         <span class="paf-icon">＋</span>
-        <input type="text" id="player-input" data-t-placeholder="setup.inputPlaceholder" placeholder="Legg til spiller..." maxlength="20"
+        <input type="text" id="player-input" data-t-placeholder="setup.inputPlaceholder" placeholder="Spillernavn..." maxlength="20"
                onkeydown="if(event.key==='Enter')addPlayer()" />
       </div>
-      <div class="player-chips" id="player-chips"></div>
       <div class="setup-hint" id="setup-hint" data-t="setup.minHint">Need at least 2 players</div>
     </div>
 
-    <button class="btn-primary" id="start-btn" onclick="goToHome()" disabled>Klar</button>
+    <button class="btn-primary" id="start-btn" onclick="goToHome()" disabled>🚀 Klar!</button>
 
     <div id="setup-join-area">
       <div id="setup-join-label">Bli med i sesjon</div>
@@ -2581,46 +2551,63 @@
 
   <!-- Screen 2: Home -->
   <div class="screen" id="screen-home">
-<div class="home-tagline">Fyll glasset. Velg et spill.<br><span>Let's get Gassed!</span></div>
+    <div class="home-logo-bar">
+      <div class="home-logo-title">Gassed</div>
+      <div class="home-logo-underline"></div>
+    </div>
 
-    <div class="home-game-grid">
-      <button class="home-game-btn hgb-gassed" onclick="gassedShowIntro()">
-        <div class="home-game-btn-icon">🍺</div>
-        <div class="home-game-btn-body">
-          <div class="home-game-btn-title">Gassed</div>
+    <div class="game-list">
+      <button class="game-row gr-gassed" onclick="gassedShowIntro()">
+        <div class="gr-icon-wrap">🍺</div>
+        <div class="gr-body">
+          <div class="gr-title">Gassed</div>
+          <div class="gr-sub">Det originale drikkespillet — kortene avgjør!</div>
         </div>
+        <div class="gr-arrow">›</div>
       </button>
 
-      <div class="home-small-row">
-        <button class="home-game-btn hgb-small hgb-tod" onclick="startGame('tod')">
-          <div class="home-game-btn-icon">😏</div>
-          <div class="home-game-btn-title">Nøtt eller Sannhet</div>
-        </button>
-        <button class="home-game-btn hgb-small hgb-trivia" onclick="startGame('trivia')">
-          <div class="home-game-btn-icon">🧠</div>
-          <div class="home-game-btn-title">Trivia Quiz</div>
-        </button>
-        <button class="home-game-btn hgb-small hgb-jeopardy" onclick="startGame('jeopardy')">
-          <div class="home-game-btn-icon">🍺</div>
-          <div class="home-game-btn-title">Jeopardy</div>
-          <div class="hgb-team-badge">👥 Lagspill</div>
-        </button>
-      </div>
+      <button class="game-row gr-tod" onclick="startGame('tod')">
+        <div class="gr-icon-wrap">💬</div>
+        <div class="gr-body">
+          <div class="gr-title">Nøtt eller Sannhet</div>
+          <div class="gr-sub">Sannhet og tørr</div>
+        </div>
+        <div class="gr-arrow">›</div>
+      </button>
+
+      <button class="game-row gr-trivia" onclick="startGame('trivia')">
+        <div class="gr-icon-wrap">🧠</div>
+        <div class="gr-body">
+          <div class="gr-title">Trivia Quiz</div>
+          <div class="gr-sub">Test kunnskapen</div>
+        </div>
+        <div class="gr-arrow">›</div>
+      </button>
+
+      <button class="game-row gr-jeopardy" onclick="startGame('jeopardy')">
+        <div class="gr-icon-wrap">🏆</div>
+        <div class="gr-body">
+          <div class="gr-title">Jeopardy</div>
+          <div class="gr-sub">Lagspill — lag mot lag</div>
+        </div>
+        <div class="gr-arrow">›</div>
+      </button>
+
+      <button class="game-row gr-horse" disabled>
+        <div class="gr-icon-wrap">🏎️</div>
+        <div class="gr-body">
+          <div class="gr-title">Veddeløp</div>
+          <div class="gr-sub">Kommer snart</div>
+        </div>
+        <div class="gr-soon-badge">KOMMER SNART</div>
+      </button>
     </div>
 
     <div class="home-bottom-bar">
-      <div class="home-session-panel">
-        <button class="hsp-share-btn" onclick="sessionCreate()">↗ Del sesjon</button>
-        <div class="hsp-divider"></div>
-        <div class="hsp-join">
-          <input id="session-code-input" type="text" maxlength="5" placeholder="🚪 Skriv kode"
-                 oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
-                 onkeydown="if(event.key==='Enter')sessionJoin()" />
-        </div>
-      </div>
-      <div id="session-join-status"></div>
-      <div class="edit-players-link" onclick="openSettings()" data-t="home.editPlayers">Endre spillere</div>
+      <button class="hbb-btn" onclick="sessionCreate()">↗ Del sesjon</button>
+      <button class="hbb-btn" onclick="homeShowJoinCode()">🔑 Skriv kode</button>
     </div>
+    <div id="session-join-status" style="text-align:center;font-size:0.78rem;min-height:16px;padding-bottom:8px;"></div>
   </div>
 
   <!-- Screen 4: Gassed (Waterfall + NHIE combined) -->
@@ -4250,8 +4237,6 @@ function showScreen(id) {
   document.getElementById('back-btn').classList.toggle('visible', isGame || id === 'screen-home');
 
   // Corks only on home/setup; game screens get their own emoji
-  if (window.corkCanvasHide) window.corkCanvasHide(isGame);
-  if (window.setFloatingEmoji) window.setFloatingEmoji(id);
 
   // Landscape mode: lock orientation on game screens, portrait on home/setup
   document.body.classList.toggle('game-active', isGame);
@@ -6906,6 +6891,20 @@ const S = {
 window.S = S;
 
 /* ── Globale funksjoner kalt fra HTML ── */
+window.homeShowJoinCode = function() {
+  const code = prompt('Skriv inn sesjonskode (5 tegn):');
+  if (!code) return;
+  const cleaned = code.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const status = document.getElementById('session-join-status');
+  if (cleaned.length !== 5) {
+    if (status) { status.textContent = 'Ugyldig kode'; status.className = 'err'; }
+    return;
+  }
+  if (!S.joinRoom(cleaned, status)) {
+    if (status) { status.className = 'err'; }
+  }
+};
+
 window.sessionCreate = function() {
   const code = S.createRoom();
   if (!code) return;
