@@ -5515,6 +5515,7 @@ function triviaRender() {
   else idx = available[Math.floor(Math.random() * available.length)];
   app.trivia.usedPerCat[cat].add(idx);
   app.trivia.current = idx;
+  app.trivia.currentQ = pool[idx];
   app.trivia.answered = false;
 
   const q = pool[idx];
@@ -5554,7 +5555,7 @@ function triviaAnswer(btn, correct, player) {
   if (!correct) btn.classList.add('wrong');
 
   // Finn riktig svar-tekst
-  const q = app.trivia.questions[app.trivia.current];
+  const q = app.trivia.currentQ;
   const correctText = q ? q.a[0] : '';
 
   // Vis resultat-overlay
