@@ -1296,7 +1296,7 @@
       display: none; position: absolute; inset: 0;
       background: linear-gradient(160deg, rgba(0,0,0,0.96) 0%, rgba(0,16,80,0.98) 100%);
       z-index: 350;
-      flex-direction: column; align-items: center; justify-content: center;
+      flex-direction: column; align-items: center; justify-content: flex-start;
       padding: 40px 28px; text-align: center;
       gap: 0; overflow-y: auto;
     }
@@ -1580,6 +1580,17 @@
     @media (max-height: 700px) {
       .screen { padding-top: 58px; }
       #gassed-intro .gc-inner { padding-top: 48px; }
+      #jeo-overlay { padding: 20px 20px; }
+      .jeo-ov-team-badge { margin-bottom: 10px; }
+      .jeo-ov-cat { margin-bottom: 10px; }
+      .jeo-ov-question { font-size: 1.15rem; margin-bottom: 14px; }
+      .jeo-ov-stakes { font-size: 1.5rem; }
+      .jeo-ov-stakes-label { margin-bottom: 12px; }
+      .jeo-ov-answer { font-size: 1.6rem; margin-bottom: 14px; }
+      .jeo-ov-result { margin-bottom: 14px; }
+      .jeo-verdict-label { margin-bottom: 8px; }
+      .jeo-verdict-row { margin-bottom: 6px; }
+      .jeo-btn { padding: 12px 0; margin-bottom: 8px; }
     }
 
     /* ── Session badge (romkode-viser) ── */
