@@ -7753,6 +7753,7 @@ window.sessionJoin = function() {
     if (input) { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 1200); }
   } else {
     _syncSettingsSession();
+    document.getElementById('settings-overlay').classList.remove('open');
   }
 };
 
