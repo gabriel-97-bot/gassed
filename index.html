@@ -1804,6 +1804,7 @@
 
       /* ── Trivia: 2-kolonne svar ── */
       #screen-trivia { padding: 36px 52px 8px 52px; gap: 6px; }
+      #screen-trivia .trivia-player-indicator { top: 12px; left: 52px; right: 52px; }
       .trivia-question-text { font-size: 1.05rem; }
       .trivia-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 
@@ -2131,15 +2132,19 @@
     .hpr-result.lose { color: var(--muted); }
 
     /* ── Trivia Quiz ── */
-    #screen-trivia { gap: 16px; padding-top: 110px; overflow-y: auto; align-items: stretch; }
-    #trivia-quiz-area { display: flex; flex-direction: column; gap: 16px; width: 100%; }
-    .trivia-player-indicator { font-size: 0.78rem; color: var(--gold); text-align: center; letter-spacing: 0.5px; font-weight: 700; flex-shrink: 0; }
-    .trivia-progress { font-size: 0.72rem; color: var(--dim); text-align: center; flex-shrink: 0; }
+    #screen-trivia { gap: 0; padding-top: 62px; overflow: hidden; align-items: stretch; }
+    #screen-trivia .trivia-player-indicator {
+      position: absolute; top: 18px; left: 56px; right: 56px;
+      height: 28px; line-height: 28px; text-align: center;
+      font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.85);
+      letter-spacing: 0.3px; z-index: 10; pointer-events: none;
+    }
+    #trivia-quiz-area { display: flex; flex-direction: column; gap: 12px; width: 100%; }
     .trivia-question-card {
       background: var(--surface);
       backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
       border: 1px solid var(--border);
-      border-radius: 20px; padding: 24px 20px;
+      border-radius: 20px; padding: 16px 18px;
       text-align: center; flex-shrink: 0;
       box-shadow: var(--shadow-card);
       position: relative; overflow: hidden;
@@ -2148,7 +2153,7 @@
     .trivia-question-text { font-size: 1.15rem; font-weight: 700; color: var(--text); line-height: 1.45; }
     .trivia-answers { display: flex; flex-direction: column; gap: 9px; flex-shrink: 0; }
     .trivia-answer-btn {
-      width: 100%; padding: 15px 18px; border-radius: 14px;
+      width: 100%; padding: 12px 16px; border-radius: 14px;
       border: 1px solid var(--border);
       background: var(--surface);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -2360,6 +2365,7 @@
       body.game-active #screen-waterfall { padding: 36px 12px 8px; gap: 10px; }
       body.game-active .wf-challenge-text { font-size: 1.3rem; line-height: 1.35; min-height: auto; }
       body.game-active #screen-trivia { padding: 36px 52px 8px 52px; gap: 6px; }
+      body.game-active #screen-trivia .trivia-player-indicator { top: 12px; left: 52px; right: 52px; }
       body.game-active #screen-jeopardy { padding: 36px 12px 8px 52px; overflow: hidden; }
       body.game-active .jeo-sidebar { width: 96px; }
       body.game-active .jeo-title-text { font-size: 1.1rem; }
@@ -2829,9 +2835,7 @@
 
   <!-- Screen 8: Trivia Quiz -->
   <div class="screen" id="screen-trivia">
-    <div class="screen-title" data-t="games.trivia">🧠 Trivia Quiz</div>
     <div class="trivia-player-indicator" id="trivia-player-indicator"></div>
-    <div class="trivia-progress" id="trivia-progress"></div>
 
     <!-- Active quiz UI -->
     <div id="trivia-quiz-area">
@@ -5545,9 +5549,7 @@ function triviaRender() {
   const q = pool[idx];
   const player = app.players[app.trivia.playerIdx % app.players.length];
 
-  const catLabels = { geografi: '🌍 Geografi', musikk: '🎵 Musikk', blandet: '🎲 Godt blandet', film: '🎬 Film' };
-  document.getElementById('trivia-player-indicator').textContent = player + ' — ' + catLabels[cat];
-  document.getElementById('trivia-progress').textContent = '';
+  document.getElementById('trivia-player-indicator').textContent = player + ' sin tur';
   document.getElementById('trivia-question-text').textContent = q.q;
   document.getElementById('trivia-result-msg').textContent = '';
   document.getElementById('trivia-result-msg').className = 'trivia-result-msg';
