@@ -2497,6 +2497,17 @@
       <div class="settings-label">Tilskuermodus</div>
       <div id="settings-session-code-display" style="display:none;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:10px 14px;text-align:center;letter-spacing:3px;font-size:1.1rem;font-weight:800;color:#fff;user-select:all;-webkit-user-select:all;margin-bottom:8px;"></div>
       <button id="settings-session-btn" onclick="settingsSessionAction()" style="width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.16);color:#fff;font-size:0.9rem;font-weight:700;cursor:pointer;">🔗 Lag sesjon</button>
+      <div id="settings-join-area" style="margin-top:8px;width:100%">
+        <div style="text-align:center;font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin:6px 0;">— eller bli med —</div>
+        <div class="session-row">
+          <input id="session-code-input" type="text" maxlength="5"
+                 placeholder="Sesjonskode"
+                 oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+                 onkeydown="if(event.key==='Enter')sessionJoin()" />
+          <button onclick="sessionJoin()" style="padding:8px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.16);color:#fff;font-size:0.85rem;font-weight:700;cursor:pointer;white-space:nowrap">Bli med</button>
+        </div>
+        <div id="settings-join-status" style="font-size:0.72rem;min-height:16px;text-align:center;color:rgba(238,242,255,0.55);margin-top:4px"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -3265,6 +3276,7 @@ function openSettings() {
 function _syncSettingsSession() {
   const codeDisplay = document.getElementById('settings-session-code-display');
   const btn = document.getElementById('settings-session-btn');
+  const joinArea = document.getElementById('settings-join-area');
   if (!codeDisplay || !btn) return;
   const code = S.roomCode;
   const isJoiner = S.isJoiner;
@@ -3272,20 +3284,32 @@ function _syncSettingsSession() {
     codeDisplay.style.display = '';
     codeDisplay.textContent = isJoiner ? '👁 Tilskuer · ' + code : '🔗 Kode: ' + code;
     btn.textContent = isJoiner ? '🚪 Koble fra' : '🗑 Avslutt sesjon';
+    if (joinArea) joinArea.style.display = 'none';
   } else {
     codeDisplay.style.display = 'none';
     btn.textContent = '🔗 Lag sesjon';
+    if (joinArea) joinArea.style.display = '';
   }
 }
 
 function settingsSessionAction() {
   if (S.roomCode && !S.isJoiner) {
-    // End session
+    // End session (master)
     if (S.roomRef) S.roomRef.remove().catch(() => {});
     if (S._heartbeatTimer) { clearInterval(S._heartbeatTimer); S._heartbeatTimer = null; }
     S.isMaster = false;
     S.roomCode = null;
     S.roomRef = null;
+    const badge = document.getElementById('session-badge');
+    if (badge) badge.style.display = 'none';
+  } else if (S.roomCode && S.isJoiner) {
+    // Disconnect as joiner
+    if (S.roomRef) S.roomRef.off();
+    if (S._disconnectTimer) { clearTimeout(S._disconnectTimer); S._disconnectTimer = null; }
+    S.isJoiner = false;
+    S.roomCode = null;
+    S.roomRef = null;
+    document.body.classList.remove('joiner-mode');
     const badge = document.getElementById('session-badge');
     if (badge) badge.style.display = 'none';
   } else if (!S.roomCode) {
@@ -7488,6 +7512,11 @@ const S = {
           this._onDisconnected();
         }, 8000);
       }
+    }, error => {
+      clearTimeout(giveUp);
+      setStatus('❌ Tilgang nektet: ' + error.message, 'err');
+      const badge = document.getElementById('session-badge');
+      if (badge) { badge.textContent = '❌ Feil'; badge.style.background = 'rgba(180,30,30,0.8)'; }
     });
     return true;
   },
@@ -7698,6 +7727,8 @@ window.homeShowJoinCode = function() {
   }
   if (!S.joinRoom(cleaned, status)) {
     if (status) { status.className = 'err'; }
+  } else {
+    _syncSettingsSession();
   }
 };
 
@@ -7714,10 +7745,12 @@ window.sessionCreate = function() {
 
 window.sessionJoin = function() {
   const input  = document.getElementById('session-code-input');
-  const status = document.getElementById('session-join-status');
+  const status = document.getElementById('settings-join-status');
   const code   = (input?.value ?? '').trim();
   if (!S.joinRoom(code, status)) {
     if (input) { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 1200); }
+  } else {
+    _syncSettingsSession();
   }
 };
 
@@ -7727,6 +7760,8 @@ window.setupSessionJoin = function() {
   const code   = (input?.value ?? '').trim();
   if (!S.joinRoom(code, status)) {
     if (input) { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 1200); }
+  } else {
+    _syncSettingsSession();
   }
 };
 
