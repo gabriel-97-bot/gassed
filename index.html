@@ -657,31 +657,32 @@
       border-radius: 20px; padding: 3px 8px; margin-right: 10px; flex-shrink: 0;
     }
     .home-bottom-bar {
-      width: 100%; display: flex; gap: 10px;
-      padding: 16px 16px 24px; margin-top: auto;
+      width: 100%; display: flex; flex-direction: column; align-items: center;
+      gap: 8px; padding: 12px 16px 24px; margin-top: auto;
     }
-    .hbb-btn {
-      flex: 1; display: flex; align-items: center; gap: 10px; padding: 13px 12px;
-      background: rgba(255,255,255,0.22);
+    .home-session-panel {
+      width: 100%; display: grid; grid-template-columns: 1fr 1px 1fr;
+      align-items: center;
+      background: rgba(255,255,255,0.06);
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border: 1.5px solid rgba(255,255,255,0.32);
-      border-radius: 16px; cursor: pointer; text-align: left;
-      box-shadow: 0 6px 28px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.12);
-      transition: all 0.2s cubic-bezier(0.22,1,0.36,1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px; padding: 4px; overflow: hidden;
     }
-    .hbb-btn:active { transform: scale(0.975); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .hbb-icon {
-      flex-shrink: 0; width: 42px; height: 42px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; border-radius: 10px;
-      background: rgba(200,16,46,0.22);
+    .hsp-share-btn {
+      padding: 13px 16px; background: none; border: none;
+      color: rgba(255,255,255,0.8); font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; border-radius: 14px; text-align: center;
+      transition: background 0.2s; white-space: nowrap; overflow: hidden;
     }
-    .hbb-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; overflow: hidden; }
-    .hbb-title {
-      font-family: 'Boogaloo', sans-serif; font-size: 1.1rem;
-      color: #fff; letter-spacing: 0.3px; line-height: 1.2; white-space: nowrap;
+    .hsp-share-btn:active { background: rgba(255,255,255,0.09); }
+    .hsp-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.15); justify-self: center; }
+    .hsp-join { display: flex; align-items: center; min-width: 0; }
+    .hsp-join input {
+      width: 100%; background: none; border: none; outline: none;
+      color: rgba(255,255,255,0.8); font-size: 0.88rem; font-weight: 600;
+      padding: 13px 16px; text-align: center; letter-spacing: 3px; text-transform: uppercase;
     }
-    .hbb-sub { font-size: 0.67rem; color: rgba(255,255,255,0.55); font-weight: 500; white-space: nowrap; }
+    .hsp-join input::placeholder { color: rgba(255,255,255,0.35); letter-spacing: 0; font-weight: 500; text-transform: none; }
     /* Other games row */
     .home-small-row {
       flex: 0 0 auto;
@@ -2443,15 +2444,14 @@
     }
 
     /* ── Home session popups ── */
-    #home-share-popup,
-    #home-join-popup {
+    #home-share-popup {
       position: absolute; inset: 0; z-index: 600;
       background: rgba(0,0,0,0.55);
       display: flex; align-items: center; justify-content: center;
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
       animation: hhmFadeIn 0.18s ease;
     }
-    .hsp-card, .hjp-card {
+    .hsp-card {
       background: rgba(18,18,30,0.97);
       border: 1px solid rgba(255,255,255,0.20);
       border-radius: 24px; padding: 32px 28px 24px;
@@ -2460,8 +2460,8 @@
       box-shadow: 0 24px 64px rgba(0,0,0,0.7);
       animation: hhmSlideUp 0.22s cubic-bezier(0.22,1,0.36,1);
     }
-    .hsp-icon, .hjp-icon { font-size: 2.4rem; line-height: 1; }
-    .hsp-title, .hjp-title {
+    .hsp-icon { font-size: 2.4rem; line-height: 1; }
+    .hsp-title {
       font-size: 1.25rem; font-weight: 800; color: var(--text);
       letter-spacing: 0.02em; text-align: center;
     }
@@ -2474,7 +2474,7 @@
       width: 100%; text-align: center;
       user-select: all; -webkit-user-select: all;
     }
-    .hsp-sub, .hjp-sub { font-size: 0.85rem; color: var(--muted); text-align: center; }
+    .hsp-sub { font-size: 0.85rem; color: var(--muted); text-align: center; }
     .hsp-close-btn {
       width: 100%; padding: 13px;
       background: rgba(255,255,255,0.14);
@@ -2483,36 +2483,6 @@
       cursor: pointer; margin-top: 4px; transition: background 0.15s;
     }
     .hsp-close-btn:active { background: rgba(255,255,255,0.22); }
-    .hjp-input {
-      width: 100%; padding: 14px; text-align: center;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 14px; color: #fff;
-      font-size: 1.4rem; font-weight: 800; letter-spacing: 6px;
-      font-family: 'Boogaloo', sans-serif; text-transform: uppercase;
-    }
-    .hjp-input::placeholder { color: rgba(255,255,255,0.35); letter-spacing: 2px; font-size: 0.9rem; font-weight: 400; font-family: inherit; }
-    .hjp-input.error { border-color: rgba(239,43,45,0.7); animation: shake 0.3s; }
-    #hjp-join-status { font-size: 0.82rem; min-height: 16px; text-align: center; width: 100%; }
-    #hjp-join-status.ok  { color: #7dffba; }
-    #hjp-join-status.err { color: #ff8080; }
-    .hjp-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 4px; }
-    .hjp-btn-join {
-      width: 100%; padding: 14px;
-      background: linear-gradient(135deg, #C8102E, #880014);
-      color: #fff; border: none; border-radius: 14px;
-      font-size: 1rem; font-weight: 800; cursor: pointer;
-      box-shadow: 0 4px 16px rgba(200,16,46,0.4); transition: transform 0.12s;
-    }
-    .hjp-btn-join:active { transform: scale(0.97); }
-    .hjp-btn-cancel {
-      width: 100%; padding: 12px;
-      background: rgba(255,255,255,0.10);
-      color: var(--muted); border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 14px; font-size: 0.9rem; font-weight: 600;
-      cursor: pointer; transition: background 0.15s;
-    }
-    .hjp-btn-cancel:active { background: rgba(255,255,255,0.18); }
   </style>
 </head>
 <body>
@@ -2883,20 +2853,16 @@
     </div>
 
     <div class="home-bottom-bar">
-      <button class="hbb-btn" onclick="homeSessionShare()">
-        <div class="hbb-icon">↗</div>
-        <div class="hbb-body">
-          <div class="hbb-title">Del sesjon</div>
-          <div class="hbb-sub">Inviter venner</div>
+      <div class="home-session-panel">
+        <button class="hsp-share-btn" onclick="homeSessionShare()">↗ Del sesjon</button>
+        <div class="hsp-divider"></div>
+        <div class="hsp-join">
+          <input id="hsp-join-input" type="text" maxlength="5" placeholder="🔑 Join sesjon"
+                 oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+                 onkeydown="if(event.key==='Enter')homeJoinFromPanel()" />
         </div>
-      </button>
-      <button class="hbb-btn" onclick="homeShowJoinCode()">
-        <div class="hbb-icon">🔑</div>
-        <div class="hbb-body">
-          <div class="hbb-title">Join sesjon</div>
-          <div class="hbb-sub">Skriv inn kode</div>
-        </div>
-      </button>
+      </div>
+      <div id="session-join-status"></div>
     </div>
   </div>
 
@@ -2908,23 +2874,6 @@
       <div class="hsp-code" id="hsp-code-display">—</div>
       <div class="hsp-sub">Del koden med vennene dine</div>
       <button class="hsp-close-btn" onclick="document.getElementById('home-share-popup').style.display='none'">Lukk</button>
-    </div>
-  </div>
-
-  <!-- Join-session popup -->
-  <div id="home-join-popup" style="display:none" onclick="document.getElementById('home-join-popup').style.display='none'">
-    <div class="hjp-card" onclick="event.stopPropagation()">
-      <div class="hjp-icon">🔑</div>
-      <div class="hjp-title">Bli med i sesjon</div>
-      <input class="hjp-input" id="hjp-code-input" type="text" maxlength="5"
-             placeholder="Skriv inn kode"
-             oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
-             onkeydown="if(event.key==='Enter')homeJoinFromPopup()" />
-      <div id="hjp-join-status"></div>
-      <div class="hjp-btns">
-        <button class="hjp-btn-join" onclick="homeJoinFromPopup()">Bli med →</button>
-        <button class="hjp-btn-cancel" onclick="document.getElementById('home-join-popup').style.display='none'">Avbryt</button>
-      </div>
     </div>
   </div>
 
@@ -7841,30 +7790,14 @@ const S = {
 window.S = S;
 
 /* ── Globale funksjoner kalt fra HTML ── */
-window.homeShowJoinCode = function() {
-  const popup  = document.getElementById('home-join-popup');
-  const input  = document.getElementById('hjp-code-input');
-  const status = document.getElementById('hjp-join-status');
-  if (input)  input.value = '';
-  if (status) { status.textContent = ''; status.className = ''; }
-  if (popup)  popup.style.display = 'flex';
-  setTimeout(() => { if (input) input.focus(); }, 80);
-};
-
-window.homeJoinFromPopup = function() {
-  const input  = document.getElementById('hjp-code-input');
-  const status = document.getElementById('hjp-join-status');
+window.homeJoinFromPanel = function() {
+  const input  = document.getElementById('hsp-join-input');
+  const status = document.getElementById('session-join-status');
   const code   = (input?.value ?? '').trim();
-  if (code.length !== 5) {
-    if (status) { status.textContent = 'Ugyldig kode (5 tegn)'; status.className = 'err'; }
-    if (input)  { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 1200); }
-    return;
-  }
   if (!S.joinRoom(code, status)) {
     if (input) { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 1200); }
   } else {
     _syncSettingsSession();
-    document.getElementById('home-join-popup').style.display = 'none';
   }
 };
 
