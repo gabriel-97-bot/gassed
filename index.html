@@ -2440,6 +2440,13 @@
       }
       /* CSS rotate handles the orientation — hide the prompt overlay */
       body.game-active.device-portrait #rotate-prompt { display: none; }
+      /* Team picker must show in portrait — cancel the landscape rotation */
+      body.game-active.device-portrait.team-picker-open .phone-frame {
+        position: static;
+        width: 100%; height: 100%;
+        top: auto; left: auto;
+        transform: none;
+      }
     }
 
     /* ── Home session popups ── */
@@ -4518,6 +4525,7 @@ function showScreen(id) {
   // Landscape mode: lock orientation on game screens, portrait on home/setup
   document.body.classList.toggle('game-active', isGame);
   document.body.classList.toggle('jeopardy-active', id === 'screen-jeopardy');
+  document.body.classList.remove('team-picker-open');
   if (isGame) {
     // Attempt orientation lock (works on Android; silently fails on iOS Safari)
     try { screen.orientation?.lock('landscape').catch(() => {}); } catch(e) {}
@@ -4538,6 +4546,15 @@ function showScreen(id) {
 }
 
 const GAME_SCREENS = ['screen-waterfall','screen-tod','screen-trivia','screen-jeopardy','screen-gassed'];
+
+function _openTeamPicker() {
+  document.body.classList.add('team-picker-open');
+  try { screen.orientation?.lock('portrait').catch(() => {}); } catch(e) {}
+}
+function _closeTeamPicker() {
+  document.body.classList.remove('team-picker-open');
+  try { screen.orientation?.lock('landscape').catch(() => {}); } catch(e) {}
+}
 
 // ─────────────────────────────────────────────
 // GAME LAUNCHER
@@ -4666,6 +4683,7 @@ function _triviaShowTeamSetup() {
   ];
   _triviaRenderTeamSetup();
   document.getElementById('trivia-team-modal').style.display = 'flex';
+  _openTeamPicker();
 }
 
 function _triviaRenderTeamSetup() {
@@ -4717,6 +4735,7 @@ function triviaTeamStart() {
     return;
   }
   document.getElementById('trivia-team-modal').style.display = 'none';
+  _closeTeamPicker();
   app.trivia.teamIdx = 0;
   showScreen('screen-trivia');
   initTrivia();
@@ -4744,6 +4763,7 @@ function confirmGoHome() {
   // Jeopardy team modal open → exit to home
   if (document.getElementById('jeo-team-modal')?.classList.contains('show')) {
     document.getElementById('jeo-team-modal').classList.remove('show');
+    _closeTeamPicker();
     goHome();
     return;
   }
@@ -4768,6 +4788,7 @@ function goHome() {
   document.getElementById('trivia-cat-modal').style.display = 'none';
   document.getElementById('trivia-mode-modal').style.display = 'none';
   document.getElementById('trivia-team-modal').style.display = 'none';
+  _closeTeamPicker();
   document.getElementById('game-instructions-modal').style.display = 'none';
   document.getElementById('tod-choice-overlay')?.classList.remove('show');
   document.getElementById('tod-question-card')?.classList.remove('show');
@@ -6713,7 +6734,7 @@ function _jeoShowTeamSetup() {
   ];
   _jeoRenderTeamSetup();
   const _jtm = document.getElementById('jeo-team-modal');
-  if (_jtm) { _jtm.classList.add('show'); console.log('jeo-team-modal shown'); }
+  if (_jtm) { _jtm.classList.add('show'); _openTeamPicker(); console.log('jeo-team-modal shown'); }
   else { console.error('jeo-team-modal element missing from DOM'); }
   S.schedulePush(50);
 }
@@ -6778,6 +6799,7 @@ function jeoStartGame() {
   }
   app.jeopardy.teamsSet = true;
   document.getElementById('jeo-team-modal').classList.remove('show');
+  _closeTeamPicker();
   showScreen('screen-jeopardy');
   _jeoRenderBoard();
   S.schedulePush(50);
