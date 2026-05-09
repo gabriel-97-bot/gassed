@@ -7827,6 +7827,53 @@ const S = {
         gassedIntro: {
           show: document.getElementById('gassed-intro')?.classList.contains('show') ?? false,
         },
+        triviaResult: (function() {
+          const el = document.getElementById('trivia-result-overlay');
+          if (!el) return { show: false };
+          return {
+            show: el.style.display !== 'none',
+            cls:  el.className,
+            html: el.innerHTML,
+          };
+        })(),
+        triviaTeam: (function() {
+          const el = document.getElementById('trivia-team-modal');
+          if (!el) return { show: false };
+          return {
+            show: el.classList.contains('show'),
+            html: el.innerHTML,
+          };
+        })(),
+        triviaMode: (function() {
+          const el = document.getElementById('trivia-mode-modal');
+          if (!el) return { show: false };
+          return {
+            show: el.style.display !== 'none',
+            html: el.innerHTML,
+          };
+        })(),
+        todChoice: {
+          show: document.getElementById('tod-choice-overlay')?.classList.contains('show') ?? false,
+          name: document.getElementById('tod-choice-name')?.textContent ?? '',
+        },
+        todQuestion: (function() {
+          const el = document.getElementById('tod-question-card');
+          if (!el) return { show: false };
+          return {
+            show:    el.classList.contains('show'),
+            type:    document.getElementById('tod-question-type')?.textContent ?? '',
+            text:    document.getElementById('tod-question-text')?.textContent ?? '',
+            penalty: document.getElementById('tod-q-penalty')?.textContent    ?? '',
+          };
+        })(),
+        hurdleReveal: (function() {
+          const el = document.getElementById('hurdle-card-reveal');
+          if (!el) return { show: false };
+          return {
+            show: el.style.display !== 'none',
+            html: el.innerHTML,
+          };
+        })(),
       },
     };
     return st;
@@ -7921,6 +7968,52 @@ const S = {
     const gassedIntroEl = $('gassed-intro');
     if (gassedIntroEl && o.gassedIntro) {
       gassedIntroEl.classList.toggle('show', o.gassedIntro.show);
+    }
+
+    const triviaResult = $('trivia-result-overlay');
+    if (triviaResult && o.triviaResult) {
+      if (o.triviaResult.show && typeof o.triviaResult.html === 'string') {
+        triviaResult.innerHTML = o.triviaResult.html;
+        triviaResult.className = o.triviaResult.cls || '';
+      }
+      triviaResult.style.display = o.triviaResult.show ? 'flex' : 'none';
+    }
+
+    const triviaTeamEl = $('trivia-team-modal');
+    if (triviaTeamEl && o.triviaTeam) {
+      if (o.triviaTeam.show && typeof o.triviaTeam.html === 'string') triviaTeamEl.innerHTML = o.triviaTeam.html;
+      triviaTeamEl.classList.toggle('show', o.triviaTeam.show);
+    }
+
+    const triviaModeEl = $('trivia-mode-modal');
+    if (triviaModeEl && o.triviaMode) {
+      if (o.triviaMode.show && typeof o.triviaMode.html === 'string') triviaModeEl.innerHTML = o.triviaMode.html;
+      triviaModeEl.style.display = o.triviaMode.show ? 'flex' : 'none';
+    }
+
+    const todChoiceEl = $('tod-choice-overlay');
+    if (todChoiceEl && o.todChoice) {
+      const nm = $('tod-choice-name');
+      if (nm && o.todChoice.name !== undefined) nm.textContent = o.todChoice.name;
+      todChoiceEl.classList.toggle('show', o.todChoice.show);
+    }
+
+    const todQCard = $('tod-question-card');
+    if (todQCard && o.todQuestion) {
+      if (o.todQuestion.show) {
+        const qt = $('tod-question-type'); if (qt) qt.textContent = o.todQuestion.type    ?? '';
+        const tx = $('tod-question-text'); if (tx) tx.textContent = o.todQuestion.text    ?? '';
+        const pn = $('tod-q-penalty');     if (pn) pn.textContent = o.todQuestion.penalty ?? '';
+      }
+      todQCard.classList.toggle('show', o.todQuestion.show);
+    }
+
+    const hurdleRevealEl = $('hurdle-card-reveal');
+    if (hurdleRevealEl && o.hurdleReveal) {
+      if (o.hurdleReveal.show && typeof o.hurdleReveal.html === 'string') {
+        hurdleRevealEl.innerHTML = o.hurdleReveal.html;
+      }
+      hurdleRevealEl.style.display = o.hurdleReveal.show ? 'flex' : 'none';
     }
   },
 
