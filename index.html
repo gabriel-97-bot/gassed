@@ -2201,6 +2201,33 @@
     .trivia-done-emoji { font-size: 4rem; }
     .trivia-done-title { font-size: 1.5rem; font-weight: 800; color: var(--text); }
     .trivia-done-sub { font-size: 0.9rem; color: var(--muted); }
+    .trivia-done-scores { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 260px; margin-top: 4px; }
+    .trivia-done-score-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px; padding: 10px 16px;
+    }
+    .trivia-done-score-row.winner { border-color: rgba(238,185,91,0.55); background: rgba(238,185,91,0.12); }
+    .trivia-done-score-name { font-weight: 700; color: #fff; font-size: 0.95rem; }
+    .trivia-done-score-pts { font-family: 'Boogaloo', sans-serif; font-size: 1.3rem; color: #eeb95b; }
+
+    /* ── Trivia team scoreboard ── */
+    #trivia-team-scoreboard {
+      display: none; flex-direction: column; gap: 6px;
+      width: 100%; flex-shrink: 0; padding-bottom: 4px;
+    }
+    .ttsb-team {
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.14);
+      border-radius: 12px; padding: 8px 12px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .ttsb-team.ttsb-active { border-color: rgba(238,185,91,0.55); background: rgba(238,185,91,0.08); }
+    .ttsb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+    .ttsb-name { font-weight: 700; font-size: 0.88rem; color: #fff; }
+    .ttsb-score { font-family: 'Boogaloo', sans-serif; font-size: 1.05rem; color: #eeb95b; }
+    .ttsb-bar { height: 5px; background: rgba(255,255,255,0.10); border-radius: 3px; overflow: hidden; }
+    .ttsb-fill { height: 100%; background: linear-gradient(90deg,#eeb95b,#ffdd88); border-radius: 3px; transition: width 0.4s ease; }
 
     /* ── Lykkehjulet ── */
     @keyframes wPulse {
@@ -2921,6 +2948,24 @@
   <div class="screen" id="screen-trivia">
     <div class="trivia-player-indicator" id="trivia-player-indicator"></div>
 
+    <!-- Team scoreboard (only visible in team mode) -->
+    <div id="trivia-team-scoreboard">
+      <div class="ttsb-team" id="ttsb-team-0">
+        <div class="ttsb-header">
+          <div class="ttsb-name" id="ttsb-name-0">Lag 1</div>
+          <div class="ttsb-score" id="ttsb-score-0">0 / 15</div>
+        </div>
+        <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-0" style="width:0%"></div></div>
+      </div>
+      <div class="ttsb-team" id="ttsb-team-1">
+        <div class="ttsb-header">
+          <div class="ttsb-name" id="ttsb-name-1">Lag 2</div>
+          <div class="ttsb-score" id="ttsb-score-1">0 / 15</div>
+        </div>
+        <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-1" style="width:0%"></div></div>
+      </div>
+    </div>
+
     <!-- Active quiz UI -->
     <div id="trivia-quiz-area">
       <div class="trivia-question-card">
@@ -2933,10 +2978,11 @@
 
     <!-- Done screen -->
     <div class="trivia-done-screen" id="trivia-done-screen">
-      <div class="trivia-done-emoji">🏆</div>
-      <div class="trivia-done-title" data-t="trivia.doneTitle">Quiz done!</div>
-      <div class="trivia-done-sub" data-t="trivia.doneSub">Thanks for playing!</div>
-      <button class="btn-primary" style="margin-top:8px" onclick="triviaRestart()" data-t="trivia.playAgain">🔄 Play Again</button>
+      <div class="trivia-done-emoji" id="trivia-done-emoji">🏆</div>
+      <div class="trivia-done-title" id="trivia-done-title">Quiz done!</div>
+      <div class="trivia-done-sub" id="trivia-done-sub">Thanks for playing!</div>
+      <div class="trivia-done-scores" id="trivia-done-scores" style="display:none"></div>
+      <button class="btn-primary" style="margin-top:8px" onclick="triviaRestart()">🔄 Spill igjen</button>
     </div>
   </div>
 
@@ -4683,8 +4729,8 @@ function dismissInstructions() {
 function _triviaShowTeamSetup() {
   const isNo = app.lang !== 'en';
   app.trivia.teams = [
-    { name: isNo ? 'Lag 1' : 'Team 1', players: [], score: 0 },
-    { name: isNo ? 'Lag 2' : 'Team 2', players: [], score: 0 },
+    { name: isNo ? 'Lag 1' : 'Team 1', players: [], score: 0, playerIdx: 0 },
+    { name: isNo ? 'Lag 2' : 'Team 2', players: [], score: 0, playerIdx: 0 },
   ];
   _triviaRenderTeamSetup();
   document.getElementById('trivia-team-modal').style.display = 'flex';
@@ -5577,15 +5623,30 @@ const TRIVIA_QUESTIONS = {
 function initTrivia() {
   app.trivia.usedPerCat = app._triviaUsed;
   app.trivia.playerIdx = 0;
+  app.trivia.teamIdx = 0;
   app.trivia.answered = false;
+  if (app.trivia.teamMode) {
+    app.trivia.teams.forEach(t => { t.score = 0; t.playerIdx = 0; });
+  }
   document.getElementById('trivia-done-screen').style.display = 'none';
+  document.getElementById('trivia-done-scores').style.display = 'none';
   document.getElementById('trivia-quiz-area').style.display = '';
+  const sb = document.getElementById('trivia-team-scoreboard');
+  if (sb) sb.style.display = app.trivia.teamMode ? 'flex' : 'none';
+  _updateTriviaScoreboard();
   triviaShowCatPicker();
 }
 
 function triviaShowCatPicker() {
-  const player = app.players[app.trivia.playerIdx % app.players.length];
-  document.getElementById('tcat-player-name').textContent = player + ' sin tur';
+  let player;
+  if (app.trivia.teamMode) {
+    const team = app.trivia.teams[app.trivia.teamIdx];
+    player = team.players[team.playerIdx % team.players.length];
+    document.getElementById('tcat-player-name').textContent = team.name + ' — ' + player + ' sin tur';
+  } else {
+    player = app.players[app.trivia.playerIdx % app.players.length];
+    document.getElementById('tcat-player-name').textContent = player + ' sin tur';
+  }
   document.querySelectorAll('.tcat-opt').forEach(b => b.classList.remove('tcat-selected'));
   document.getElementById('trivia-cat-modal').style.display = 'flex';
   S.schedulePush(50);
@@ -5645,9 +5706,15 @@ function triviaRender() {
   app.trivia.answered = false;
 
   const q = pool[idx];
-  const player = app.players[app.trivia.playerIdx % app.players.length];
-
-  document.getElementById('trivia-player-indicator').textContent = player + ' sin tur';
+  let player;
+  if (app.trivia.teamMode) {
+    const team = app.trivia.teams[app.trivia.teamIdx];
+    player = team.players[team.playerIdx % team.players.length];
+    document.getElementById('trivia-player-indicator').textContent = team.name + ' — ' + player + ' sin tur';
+  } else {
+    player = app.players[app.trivia.playerIdx % app.players.length];
+    document.getElementById('trivia-player-indicator').textContent = player + ' sin tur';
+  }
   document.getElementById('trivia-question-text').textContent = q.q;
   document.getElementById('trivia-result-msg').textContent = '';
   document.getElementById('trivia-result-msg').className = 'trivia-result-msg';
@@ -5697,24 +5764,65 @@ function triviaAnswer(btn, correct, player) {
     ? (isNo ? '🍺 ' + player + ' peker ut hvem som drikker!' : '🍺 ' + player + ' points at someone to drink!')
     : (isNo ? '🍺 ' + player + ' drikker 2 slurker!' : '🍺 ' + player + ' drinks 2 sips!');
 
+  if (app.trivia.teamMode && correct) {
+    app.trivia.teams[app.trivia.teamIdx].score++;
+    _updateTriviaScoreboard();
+  }
+
   overlay.style.display = 'flex';
   correct ? SFX.correct && SFX.correct() : SFX.wrong && SFX.wrong();
 }
 
-function triviaResultNext() {
+function _triviaAdvance() {
   document.getElementById('trivia-result-overlay').style.display = 'none';
-  app.trivia.playerIdx++;
+  if (app.trivia.teamMode) {
+    const winner = app.trivia.teams.find(t => t.score >= 15);
+    if (winner) { _triviaDoneTeam(winner); return; }
+    app.trivia.teams[app.trivia.teamIdx].playerIdx++;
+    app.trivia.teamIdx = 1 - app.trivia.teamIdx;
+    _updateTriviaScoreboard();
+  } else {
+    app.trivia.playerIdx++;
+  }
   triviaShowCatPicker();
 }
 
-function triviaNext() {
-  document.getElementById('trivia-result-overlay').style.display = 'none';
-  app.trivia.playerIdx++;
-  triviaShowCatPicker();
-}
+function triviaResultNext() { _triviaAdvance(); }
+function triviaNext()       { _triviaAdvance(); }
 
 function triviaRestart() {
   initTrivia();
+}
+
+function _updateTriviaScoreboard() {
+  if (!app.trivia.teamMode) return;
+  app.trivia.teams.forEach((t, i) => {
+    const teamEl = document.getElementById('ttsb-team-' + i);
+    if (!teamEl) return;
+    document.getElementById('ttsb-name-' + i).textContent = t.name;
+    document.getElementById('ttsb-score-' + i).textContent = t.score + ' / 15';
+    document.getElementById('ttsb-fill-' + i).style.width = Math.min(100, (t.score / 15) * 100) + '%';
+    teamEl.classList.toggle('ttsb-active', i === (app.trivia.teamIdx ?? 0));
+  });
+}
+
+function _triviaDoneTeam(winner) {
+  document.getElementById('trivia-result-overlay').style.display = 'none';
+  document.getElementById('trivia-quiz-area').style.display = 'none';
+  document.getElementById('trivia-done-emoji').textContent = '🏆';
+  document.getElementById('trivia-done-title').textContent = winner.name + ' vinner!';
+  document.getElementById('trivia-done-sub').textContent = 'Første lag til 15 poeng!';
+  const scoresEl = document.getElementById('trivia-done-scores');
+  scoresEl.innerHTML = app.trivia.teams.map(t =>
+    `<div class="trivia-done-score-row${t === winner ? ' winner' : ''}">
+      <div class="trivia-done-score-name">${t.name}</div>
+      <div class="trivia-done-score-pts">${t.score} poeng</div>
+    </div>`
+  ).join('');
+  scoresEl.style.display = 'flex';
+  const doneEl = document.getElementById('trivia-done-screen');
+  doneEl.style.display = 'flex';
+  S.schedulePush(50);
 }
 
 // ─────────────────────────────────────────────
