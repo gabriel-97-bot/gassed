@@ -1915,9 +1915,21 @@
     }
     #trivia-team-modal {
       position: absolute; inset: 0; z-index: 500;
-      background: rgba(0,0,0,0.82);
-      display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      display: none; flex-direction: column; align-items: center;
+      background: linear-gradient(to bottom, #0a0b18, #1c1f30);
+      overflow-y: auto; padding: 0 24px 28px; gap: 0;
+    }
+    #trivia-team-modal.show { display: flex; }
+    .ttm-title {
+      position: sticky; top: 0; z-index: 2;
+      width: calc(100% + 48px); margin-left: -24px; margin-right: -24px;
+      background: rgba(7,8,15,0.96);
+      padding: 18px 24px 14px;
+      color: #eeb95b; font-family: 'Boogaloo', sans-serif;
+      font-size: 1.2rem; font-weight: 900; text-align: center; letter-spacing: 2px;
+    }
+    .ttm-actions {
+      display: flex; gap: 8px; width: 100%; margin-top: 8px;
     }
 
     /* ── Trivia Category Picker Modal ── */
@@ -2700,16 +2712,14 @@
 
 
 <!-- Trivia Team Selection Modal -->
-<div id="trivia-team-modal" style="display:none">
-  <div class="tcat-card" onclick="event.stopPropagation()" style="max-height:80vh;overflow-y:auto;gap:12px;">
-    <div class="tcat-title" style="position:sticky;top:0;background:#1a1f3a;padding:12px 0 8px;margin:-4px 0 0;">👥 Velg lag</div>
-    <div id="trivia-team-content"></div>
-    <div style="display:flex;gap:8px;width:100%;margin-top:4px;">
-      <button class="jeo-btn-start-game" style="flex:1;background:rgba(255,255,255,0.26);font-size:0.8rem;" onclick="triviaRandomTeams()">🎲 Tilfeldig lag</button>
-      <button class="jeo-btn-start-game" style="flex:1;" onclick="triviaTeamStart()">🎮 Start spillet!</button>
-    </div>
-    <div id="trivia-team-error" style="color:#ff6644;font-size:0.8rem;font-weight:700;text-align:center;min-height:1.2em;"></div>
+<div id="trivia-team-modal">
+  <div class="ttm-title">👥 Velg lag</div>
+  <div id="trivia-team-content" style="width:100%;"></div>
+  <div class="ttm-actions">
+    <button class="jeo-btn-start-game" style="flex:1;background:rgba(255,255,255,0.26);font-size:0.8rem;" onclick="triviaRandomTeams()">🎲 Tilfeldig lag</button>
+    <button class="jeo-btn-start-game" style="flex:1;" onclick="triviaTeamStart()">🎮 Start spillet!</button>
   </div>
+  <div id="trivia-team-error" style="color:#ff6644;font-size:0.8rem;font-weight:700;text-align:center;min-height:1.2em;margin-top:4px;"></div>
 </div>
 
 <!-- ToD Category Picker Modal -->
@@ -4765,7 +4775,7 @@ function _triviaShowTeamSetup() {
     { name: isNo ? 'Lag 2' : 'Team 2', players: [], score: 0, playerIdx: 0 },
   ];
   _triviaRenderTeamSetup();
-  document.getElementById('trivia-team-modal').style.display = 'flex';
+  document.getElementById('trivia-team-modal').classList.add('show');
   _openTeamPicker();
 }
 
@@ -4817,7 +4827,7 @@ function triviaTeamStart() {
       : `${emptyTeam.name} has no players.`;
     return;
   }
-  document.getElementById('trivia-team-modal').style.display = 'none';
+  document.getElementById('trivia-team-modal').classList.remove('show');
   _closeTeamPicker();
   app.trivia.teamIdx = 0;
   showScreen('screen-trivia');
@@ -4870,7 +4880,7 @@ function goHome() {
   document.getElementById('gassed-intro')?.classList.remove('show');
   document.getElementById('trivia-cat-modal').style.display = 'none';
   document.getElementById('trivia-mode-modal').style.display = 'none';
-  document.getElementById('trivia-team-modal').style.display = 'none';
+  document.getElementById('trivia-team-modal').classList.remove('show');
   _closeTeamPicker();
   document.getElementById('game-instructions-modal').style.display = 'none';
   document.getElementById('tod-choice-overlay')?.classList.remove('show');
