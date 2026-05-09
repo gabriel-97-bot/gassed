@@ -2211,11 +2211,8 @@
     .trivia-done-score-name { font-weight: 700; color: #fff; font-size: 0.95rem; }
     .trivia-done-score-pts { font-family: 'Boogaloo', sans-serif; font-size: 1.3rem; color: #eeb95b; }
 
-    /* ── Trivia team scoreboard ── */
-    #trivia-team-scoreboard {
-      display: none; flex-direction: column; gap: 6px;
-      width: 100%; flex-shrink: 0; padding-bottom: 4px;
-    }
+    /* ── Trivia team scoreboard (inside category modal) ── */
+    #trivia-team-scoreboard { gap: 6px; width: 100%; }
     .ttsb-team {
       background: rgba(255,255,255,0.07);
       border: 1.5px solid rgba(255,255,255,0.14);
@@ -2635,6 +2632,25 @@
 <!-- Trivia Category Picker Modal -->
 <div id="trivia-cat-modal" style="display:none">
   <div class="tcat-card" onclick="event.stopPropagation()">
+
+    <!-- Scoreboard — kun i lagmodus -->
+    <div id="trivia-team-scoreboard" style="display:none;flex-direction:column;gap:6px;width:100%;">
+      <div class="ttsb-team" id="ttsb-team-0">
+        <div class="ttsb-header">
+          <div class="ttsb-name" id="ttsb-name-0">Lag 1</div>
+          <div class="ttsb-score" id="ttsb-score-0">0 / 15</div>
+        </div>
+        <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-0" style="width:0%"></div></div>
+      </div>
+      <div class="ttsb-team" id="ttsb-team-1">
+        <div class="ttsb-header">
+          <div class="ttsb-name" id="ttsb-name-1">Lag 2</div>
+          <div class="ttsb-score" id="ttsb-score-1">0 / 15</div>
+        </div>
+        <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-1" style="width:0%"></div></div>
+      </div>
+    </div>
+
     <div class="tcat-player" id="tcat-player-name"></div>
     <div class="tcat-title" data-t="trivia.catTitle">Velg kategori</div>
     <div class="tcat-opts">
@@ -2947,24 +2963,6 @@
   <!-- Screen 8: Trivia Quiz -->
   <div class="screen" id="screen-trivia">
     <div class="trivia-player-indicator" id="trivia-player-indicator"></div>
-
-    <!-- Team scoreboard (only visible in team mode) -->
-    <div id="trivia-team-scoreboard">
-      <div class="ttsb-team" id="ttsb-team-0">
-        <div class="ttsb-header">
-          <div class="ttsb-name" id="ttsb-name-0">Lag 1</div>
-          <div class="ttsb-score" id="ttsb-score-0">0 / 15</div>
-        </div>
-        <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-0" style="width:0%"></div></div>
-      </div>
-      <div class="ttsb-team" id="ttsb-team-1">
-        <div class="ttsb-header">
-          <div class="ttsb-name" id="ttsb-name-1">Lag 2</div>
-          <div class="ttsb-score" id="ttsb-score-1">0 / 15</div>
-        </div>
-        <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-1" style="width:0%"></div></div>
-      </div>
-    </div>
 
     <!-- Active quiz UI -->
     <div id="trivia-quiz-area">
@@ -5631,8 +5629,6 @@ function initTrivia() {
   document.getElementById('trivia-done-screen').style.display = 'none';
   document.getElementById('trivia-done-scores').style.display = 'none';
   document.getElementById('trivia-quiz-area').style.display = '';
-  const sb = document.getElementById('trivia-team-scoreboard');
-  if (sb) sb.style.display = app.trivia.teamMode ? 'flex' : 'none';
   _updateTriviaScoreboard();
   triviaShowCatPicker();
 }
@@ -5795,7 +5791,10 @@ function triviaRestart() {
 }
 
 function _updateTriviaScoreboard() {
-  if (!app.trivia.teamMode) return;
+  const sb = document.getElementById('trivia-team-scoreboard');
+  if (!sb) return;
+  if (!app.trivia.teamMode) { sb.style.display = 'none'; return; }
+  sb.style.display = 'flex';
   app.trivia.teams.forEach((t, i) => {
     const teamEl = document.getElementById('ttsb-team-' + i);
     if (!teamEl) return;
