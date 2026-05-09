@@ -6,8 +6,11 @@
   "server": {
     "androidScheme": "https"
   },
-  "ios": {
-    "backgroundColor": "#1a1a1a",
-    "contentInset": "always"
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": true,
+      "style": "DARK",
+      "backgroundColor": "#1a1a1a"
+    }
   }
 }
