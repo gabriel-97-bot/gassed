@@ -1119,31 +1119,33 @@
     }
     /* Jeopardy board: new header-based layout */
     .jeo-board-header-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 8px; flex-shrink: 0;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px; margin-bottom: 8px; flex-shrink: 0;
     }
     .jeo-title-text {
       font-family: 'Boogaloo', sans-serif;
-      font-size: 1.4rem; color: #eeb95b; letter-spacing: 2px;
-      text-shadow: 0 0 20px rgba(238,185,91,0.5);
+      font-size: 1.9rem; color: #eeb95b; letter-spacing: 3px;
+      text-shadow: 0 0 24px rgba(238,185,91,0.55);
+      text-align: center;
     }
-    .jeo-score-chips { display: flex; gap: 6px; }
+    .jeo-score-chips { display: flex; gap: 8px; width: 100%; }
     .jeo-score-chip {
-      background: rgba(255,255,255,0.06);
-      border-radius: 10px; padding: 4px 10px; text-align: center;
-      min-width: 72px;
+      flex: 1;
+      background: rgba(255,255,255,0.10);
+      border: 1.5px solid rgba(255,255,255,0.22);
+      border-radius: 12px; padding: 6px 10px; text-align: center;
       transition: border-color 0.2s, background 0.2s;
     }
     .jeo-score-chip.active {
-      box-shadow: 0 0 12px currentColor;
+      box-shadow: 0 0 14px rgba(0,0,0,0.4);
     }
     .jeo-score-chip-name {
-      font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1.5px; color: rgba(255,255,255,0.5);
+      font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: rgba(255,255,255,0.80);
     }
     .jeo-score-chip-pts {
       font-family: 'Boogaloo', sans-serif;
-      font-size: 1.1rem; line-height: 1.2;
+      font-size: 1.3rem; line-height: 1.2; color: #fff;
     }
     .jeo-turn-text {
       font-size: 0.62rem; color: rgba(255,255,255,0.4);
@@ -2380,9 +2382,9 @@
       body.game-active #screen-trivia .trivia-player-indicator { top: 12px; left: 52px; right: 52px; }
       body.game-active #screen-jeopardy { padding: 36px 12px 8px 52px; overflow: hidden; }
       body.game-active .jeo-sidebar { width: 96px; }
-      body.game-active .jeo-title-text { font-size: 1.1rem; }
-      body.game-active .jeo-score-chip { min-width: 60px; padding: 3px 8px; }
-      body.game-active .jeo-score-chip-pts { font-size: 0.9rem; }
+      body.game-active .jeo-title-text { font-size: 1.4rem; }
+      body.game-active .jeo-score-chip { padding: 4px 8px; }
+      body.game-active .jeo-score-chip-pts { font-size: 1rem; }
       /* Jeopardy team modal: compact vertical layout in landscape */
       body.game-active #jeo-team-modal { overflow-y: auto; padding: 0 16px 12px; }
       body.game-active .jeo-tm-title { padding: 8px 16px 8px; font-size: 0.9rem; width: calc(100% + 32px); margin-left: -16px; margin-right: -16px; }
@@ -6818,13 +6820,13 @@ function _jeoRenderBoard() {
   let chips = teams.map((t, ti) => {
     const active = ti === ct;
     const col = t.color || '#eeb95b';
-    const borderStyle = `border: 1.5px solid ${active ? col : col + '44'};`;
-    const bgStyle = `background: ${active ? col + '22' : col + '0d'};`;
+    const borderStyle = `border: 1.5px solid ${active ? col : col + '99'};`;
+    const bgStyle = `background: ${active ? col + '33' : col + '1a'};`;
     const turnText = active ? (isNo ? 'din tur' : 'your turn') : '';
-    return `<div class="jeo-score-chip${active ? ' active' : ''}" style="${borderStyle}${bgStyle}color:${col}">
-      <div class="jeo-score-chip-name" style="color:${active ? col : 'rgba(255,255,255,0.45)'}">${t.name}</div>
-      <div class="jeo-score-chip-pts" style="color:${col}">${t.score >= 0 ? '' : '−'}$${Math.abs(t.score)}</div>
-      ${active ? `<div class="jeo-turn-text" style="color:${col}88">${turnText}</div>` : ''}
+    return `<div class="jeo-score-chip${active ? ' active' : ''}" style="${borderStyle}${bgStyle}">
+      <div class="jeo-score-chip-name" style="color:${active ? col : 'rgba(255,255,255,0.85)'}">${t.name}</div>
+      <div class="jeo-score-chip-pts">${t.score >= 0 ? '' : '−'}$${Math.abs(t.score)}</div>
+      ${active ? `<div class="jeo-turn-text" style="color:${col}">${turnText}</div>` : ''}
     </div>`;
   }).join('');
 
@@ -6901,10 +6903,8 @@ function jeoReveal() {
   const verdictDiv = document.getElementById('jeo-verdict-teams');
   if (verdictDiv && team) {
     verdictDiv.innerHTML =
-      `<div class="jeo-verdict-row">` +
-      `<button class="jeo-btn jeo-btn-correct jeo-btn-sm" onclick="jeoMark(${ct},true)">✅ Riktig (+$${pts})</button>` +
-      `<button class="jeo-btn jeo-btn-wrong jeo-btn-sm" onclick="jeoMark(${ct},false)">❌ Feil (-$${pts})</button>` +
-      `</div>`;
+      `<button class="jeo-btn jeo-btn-correct" onclick="jeoMark(${ct},true)">✅ Riktig (+$${pts})</button>` +
+      `<button class="jeo-btn jeo-btn-wrong" onclick="jeoMark(${ct},false)">❌ Feil (-$${pts})</button>`;
   }
   S.schedulePush(50);
 }
