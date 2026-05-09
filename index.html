@@ -1923,48 +1923,75 @@
     /* ── Trivia Category Picker Modal ── */
     #trivia-cat-modal {
       position: absolute; inset: 0; z-index: 500;
-      background: rgba(0,0,0,0.97);
-      display: flex; align-items: center; justify-content: center;
     }
-    .tcat-card {
-      background: rgba(18,18,30,0.97);
-      border: 1px solid rgba(255,255,255,0.20);
-      border-radius: 26px; padding: 24px 20px 22px;
-      width: min(420px, 92vw);
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.7);
-      animation: hhmSlideUp 0.22s cubic-bezier(0.22,1,0.36,1);
+    .tcat-flag-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(90deg,
+        #3d0010 0%,  #3d0010 10%,
+        #a80018 10%, #a80018 30%,
+        #C8102E 30%, #C8102E 36%,
+        #c8c8c8 36%, #c8c8c8 39%,
+        #002070 39%, #002070 61%,
+        #c8c8c8 61%, #c8c8c8 64%,
+        #C8102E 64%, #C8102E 70%,
+        #a80018 70%, #a80018 90%,
+        #3d0010 90%, #3d0010 100%
+      );
+    }
+    .tcat-flag-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(0,0,0,0.84);
+    }
+    .tcat-layout {
+      position: relative; z-index: 1;
+      display: flex; width: 100%; height: 100%;
+      padding: calc(env(safe-area-inset-top) + 52px) 14px calc(env(safe-area-inset-bottom) + 16px);
+      gap: 14px; align-items: flex-start;
+    }
+    .tcat-sidebar {
+      width: 130px; flex-shrink: 0;
+      display: flex; flex-direction: column; gap: 6px; padding-top: 4px;
+    }
+    .tcat-sb-label {
+      font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: rgba(255,255,255,0.38);
+      text-align: center; margin-bottom: 2px;
+    }
+    .tcat-main {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 10px; padding-top: 4px;
     }
     .tcat-player {
-      font-size: 0.8rem; font-weight: 700; color: var(--gold);
-      text-transform: uppercase; letter-spacing: 1px;
+      font-size: 0.78rem; font-weight: 700; color: var(--gold);
+      text-transform: uppercase; letter-spacing: 1px; text-align: center;
     }
     .tcat-title {
-      font-size: 1.2rem; font-weight: 800; color: var(--text);
-      margin-bottom: 4px;
+      font-size: 1.1rem; font-weight: 800; color: var(--text);
+      text-align: center;
     }
     .tcat-opts {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px; width: 100%;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px; width: 100%;
     }
     .tcat-opt {
       display: flex; flex-direction: column; align-items: center; gap: 6px;
-      padding: 14px 8px;
-      background: var(--surface); border: 1px solid var(--border);
+      padding: 16px 8px;
+      background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.15);
       border-radius: 16px; cursor: pointer;
       transition: background 0.15s, border-color 0.15s, transform 0.12s;
     }
-    .tcat-opt:active { transform: scale(0.95); }
-    .tcat-opt:hover  { background: var(--surface-hi); border-color: var(--border-hi); }
+    .tcat-opt:active { transform: scale(0.95); background: rgba(255,255,255,0.16); }
+    .tcat-opt:hover  { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.28); }
     .tcat-opt.tcat-selected {
       background: rgba(41,121,255,0.22);
       border-color: rgba(41,121,255,0.7);
       transform: scale(1.06);
       box-shadow: 0 0 0 3px rgba(41,121,255,0.3);
     }
-    .tcat-emoji { font-size: 1.6rem; line-height: 1; }
-    .tcat-name  { font-size: 0.75rem; font-weight: 700; color: var(--text); text-align: center; line-height: 1.2; }
+    .tcat-emoji { font-size: 1.8rem; line-height: 1; }
+    .tcat-name  { font-size: 0.72rem; font-weight: 700; color: var(--text); text-align: center; line-height: 1.2; }
 
     /* ── Kategori-reveal animasjon ── */
     #cat-reveal-overlay {
@@ -2628,38 +2655,46 @@
   <button class="hcr-ok-btn" id="hcr-ok-btn" style="display:none" onclick="hcrConfirm()">OK</button>
 </div>
 
-<!-- Trivia Category Picker Modal -->
+<!-- Trivia Category Picker -->
 <div id="trivia-cat-modal" style="display:none">
-  <div class="tcat-card" onclick="event.stopPropagation()">
+  <div class="tcat-flag-bg"></div>
+  <div class="tcat-layout">
 
-    <!-- Scoreboard — kun i lagmodus -->
-    <div id="trivia-team-scoreboard" style="display:none;flex-direction:column;gap:6px;width:100%;">
-      <div class="ttsb-team" id="ttsb-team-0">
-        <div class="ttsb-header">
-          <div class="ttsb-name" id="ttsb-name-0">Lag 1</div>
-          <div class="ttsb-score" id="ttsb-score-0">0 / 15</div>
+    <!-- Left: scoreboard (kun i lagmodus) -->
+    <div class="tcat-sidebar" id="tcat-sidebar" style="display:none">
+      <div class="tcat-sb-label">Stillingen</div>
+      <div id="trivia-team-scoreboard" style="display:none;flex-direction:column;gap:8px;width:100%;">
+        <div class="ttsb-team" id="ttsb-team-0">
+          <div class="ttsb-header">
+            <div class="ttsb-name" id="ttsb-name-0">Lag 1</div>
+            <div class="ttsb-score" id="ttsb-score-0">0 / 15</div>
+          </div>
+          <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-0" style="width:0%"></div></div>
         </div>
-        <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-0" style="width:0%"></div></div>
-      </div>
-      <div class="ttsb-team" id="ttsb-team-1">
-        <div class="ttsb-header">
-          <div class="ttsb-name" id="ttsb-name-1">Lag 2</div>
-          <div class="ttsb-score" id="ttsb-score-1">0 / 15</div>
+        <div class="ttsb-team" id="ttsb-team-1">
+          <div class="ttsb-header">
+            <div class="ttsb-name" id="ttsb-name-1">Lag 2</div>
+            <div class="ttsb-score" id="ttsb-score-1">0 / 15</div>
+          </div>
+          <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-1" style="width:0%"></div></div>
         </div>
-        <div class="ttsb-bar"><div class="ttsb-fill" id="ttsb-fill-1" style="width:0%"></div></div>
       </div>
     </div>
 
-    <div class="tcat-player" id="tcat-player-name"></div>
-    <div class="tcat-title" data-t="trivia.catTitle">Velg kategori</div>
-    <div class="tcat-opts">
-      <button class="tcat-opt" onclick="triviaCatPick('film')"><span class="tcat-emoji">🎬🎵</span><span class="tcat-name">Film & Musikk</span></button>
-      <button class="tcat-opt" onclick="triviaCatPick('geografi')"><span class="tcat-emoji">🌍</span><span class="tcat-name">Geografi</span></button>
-      <button class="tcat-opt" onclick="triviaCatPick('norge')"><span class="tcat-emoji">🇳🇴</span><span class="tcat-name">Norge</span></button>
-      <button class="tcat-opt" onclick="triviaCatPick('historie')"><span class="tcat-emoji">📜</span><span class="tcat-name">Historie</span></button>
-      <button class="tcat-opt" onclick="triviaCatPick('vitenskap')"><span class="tcat-emoji">🔬</span><span class="tcat-name">Vitenskap & Teknologi</span></button>
-      <button class="tcat-opt" onclick="triviaCatPick('sport')"><span class="tcat-emoji">⚽</span><span class="tcat-name">Sport</span></button>
+    <!-- Right: player indicator + categories -->
+    <div class="tcat-main">
+      <div class="tcat-player" id="tcat-player-name"></div>
+      <div class="tcat-title" data-t="trivia.catTitle">Velg kategori</div>
+      <div class="tcat-opts">
+        <button class="tcat-opt" onclick="triviaCatPick('film')"><span class="tcat-emoji">🎬🎵</span><span class="tcat-name">Film & Musikk</span></button>
+        <button class="tcat-opt" onclick="triviaCatPick('geografi')"><span class="tcat-emoji">🌍</span><span class="tcat-name">Geografi</span></button>
+        <button class="tcat-opt" onclick="triviaCatPick('norge')"><span class="tcat-emoji">🇳🇴</span><span class="tcat-name">Norge</span></button>
+        <button class="tcat-opt" onclick="triviaCatPick('historie')"><span class="tcat-emoji">📜</span><span class="tcat-name">Historie</span></button>
+        <button class="tcat-opt" onclick="triviaCatPick('vitenskap')"><span class="tcat-emoji">🔬</span><span class="tcat-name">Vitenskap & Teknologi</span></button>
+        <button class="tcat-opt" onclick="triviaCatPick('sport')"><span class="tcat-emoji">⚽</span><span class="tcat-name">Sport</span></button>
+      </div>
     </div>
+
   </div>
 </div>
 
@@ -5791,9 +5826,15 @@ function triviaRestart() {
 
 function _updateTriviaScoreboard() {
   const sb = document.getElementById('trivia-team-scoreboard');
+  const sidebar = document.getElementById('tcat-sidebar');
   if (!sb) return;
-  if (!app.trivia.teamMode) { sb.style.display = 'none'; return; }
+  if (!app.trivia.teamMode) {
+    sb.style.display = 'none';
+    if (sidebar) sidebar.style.display = 'none';
+    return;
+  }
   sb.style.display = 'flex';
+  if (sidebar) sidebar.style.display = 'flex';
   app.trivia.teams.forEach((t, i) => {
     const teamEl = document.getElementById('ttsb-team-' + i);
     if (!teamEl) return;
