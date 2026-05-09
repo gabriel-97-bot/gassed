@@ -1,2 +1,7 @@
 .aider*
 node_modules/
+www/
+ios/App/App/public/
+ios/App/Pods/
+*.xcworkspace/xcuserdata
+*.xcodeproj/xcuserdata
