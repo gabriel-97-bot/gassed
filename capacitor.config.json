@@ -2,7 +2,12 @@
   "appId": "com.gassed.app",
   "appName": "Gassed",
   "webDir": "www",
+  "backgroundColor": "#1a1a1a",
   "server": {
     "androidScheme": "https"
+  },
+  "ios": {
+    "backgroundColor": "#1a1a1a",
+    "contentInset": "always"
   }
 }
