@@ -97,7 +97,11 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ── Norwegian flag background ── */
+    /* ── Norwegian flag background (desktop preview only) ── */
+    .flag-bg { display: none; }
+    @media (min-width: 540px) and (min-height: 600px) {
+      .flag-bg { display: block; }
+    }
     .flag-bg {
       position: absolute; inset: 0; z-index: 0; pointer-events: none;
       background: linear-gradient(90deg,
