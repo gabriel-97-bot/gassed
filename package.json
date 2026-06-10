@@ -6,6 +6,9 @@
     "build": "cp index.html www/index.html",
     "cap:sync": "npm run build && npx cap sync ios",
     "cap:open": "npx cap open ios",
+    "ios:build": "npm run cap:sync && cd ios/App && xcodebuild -scheme App -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Debug CODE_SIGN_IDENTITY='' CODE_SIGNING_REQUIRED=NO -derivedDataPath /tmp/gassed-build -quiet",
+    "ios:run": "xcrun simctl boot 'iPhone 17 Pro' 2>/dev/null; open -a Simulator; xcrun simctl terminate booted com.gassed.app 2>/dev/null; xcrun simctl uninstall booted com.gassed.app 2>/dev/null; xcrun simctl install booted /tmp/gassed-build/Build/Products/Debug-iphonesimulator/App.app && xcrun simctl launch booted com.gassed.app",
+    "ios:dev": "npm run ios:build && npm run ios:run",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
