@@ -9,15 +9,7 @@ class ViewController: CAPBridgeViewController {
         // Extend layout under status bar and home indicator
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // Force WebView to fill the full UIWindow (behind Dynamic Island and home indicator)
-        guard let window = view.window else { return }
-        let fullBounds = window.bounds
-        view.frame = fullBounds
-        webView?.frame = fullBounds
+        // Disable inset adjustments for full-screen layout
         webView?.scrollView.contentInsetAdjustmentBehavior = .never
     }
 }
