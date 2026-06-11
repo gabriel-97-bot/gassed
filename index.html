@@ -8244,16 +8244,16 @@ function gcScaleSipsText(text, drinkLvl) {
 }
 
 // Auto-shrink gs-main-text to fit on one line when possible, otherwise allow wrap.
+// Always reset inline styles first so a previous card's nowrap/font-size cannot leak in.
 function _fitMainText() {
   const el = document.getElementById('gs-main-text');
   if (!el) return;
+  el.style.whiteSpace = '';
+  el.style.fontSize = '';
   const card = document.getElementById('gs-card');
-  if (card && card.classList.contains('gs-card--skaal')) {
-    el.style.fontSize = ''; el.style.whiteSpace = '';
-    return;
-  }
+  if (card && card.classList.contains('gs-card--skaal')) return;
   const text = (el.textContent || '').trim();
-  if (!text) { el.style.fontSize = ''; el.style.whiteSpace = ''; return; }
+  if (!text) return;
   const container = card || el.parentElement;
   if (!container) return;
   const availW = container.clientWidth * 0.92;
