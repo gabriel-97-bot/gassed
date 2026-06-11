@@ -8257,7 +8257,10 @@ function _fitMainText() {
   if (!text) return;
   const container = card || el.parentElement;
   if (!container) return;
-  const availW = container.clientWidth * 0.92;
+  // Leave generous side margin: in Gassed landscape (rotated frame), one end of
+  // the line lands behind the Dynamic Island, so we need ~60px clear on each side.
+  const sideMargin = 60;
+  const availW = container.clientWidth - sideMargin * 2;
   if (availW <= 0) return;
   const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
   const maxPx = 2.7 * remPx;
