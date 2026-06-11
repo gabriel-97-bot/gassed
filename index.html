@@ -8250,6 +8250,7 @@ function _fitMainText() {
   if (!el) return;
   el.style.whiteSpace = '';
   el.style.fontSize = '';
+  el.style.maxWidth = '';
   const card = document.getElementById('gs-card');
   if (card && card.classList.contains('gs-card--skaal')) return;
   const text = (el.textContent || '').trim();
@@ -8261,6 +8262,8 @@ function _fitMainText() {
   const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
   const maxPx = 2.7 * remPx;
   const minOneLinePx = 1.4 * remPx;
+  // Drop the CSS max-width cap so scrollWidth reflects the actual unwrapped content
+  el.style.maxWidth = 'none';
   el.style.whiteSpace = 'nowrap';
   let px = maxPx;
   el.style.fontSize = px + 'px';
@@ -8269,7 +8272,9 @@ function _fitMainText() {
     el.style.fontSize = px + 'px';
   }
   if (el.scrollWidth > availW) {
+    // Won't fit on one line even at min — allow wrap and restore the max-width cap
     el.style.whiteSpace = '';
+    el.style.maxWidth = '';
     const len = text.length;
     let wrapPx = minOneLinePx;
     if (len > 200) wrapPx = 1.1 * remPx;
