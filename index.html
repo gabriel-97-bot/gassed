@@ -8245,11 +8245,14 @@ function gcScaleSipsText(text, drinkLvl) {
 
 // Auto-shrink gs-main-text to fit on one line when possible, otherwise allow wrap.
 // Always reset inline styles first so a previous card's nowrap/font-size cannot leak in.
+// Uses setProperty('font-size', ..., 'important') to beat the landscape clamp() rule
+// that fires when the device actually rotates.
 function _fitMainText() {
   const el = document.getElementById('gs-main-text');
   if (!el) return;
+  const setFs = v => el.style.setProperty('font-size', v, 'important');
   el.style.whiteSpace = '';
-  el.style.fontSize = '';
+  el.style.removeProperty('font-size');
   el.style.maxWidth = '';
   const card = document.getElementById('gs-card');
   if (card && card.classList.contains('gs-card--skaal')) return;
@@ -8269,20 +8272,20 @@ function _fitMainText() {
   el.style.maxWidth = 'none';
   el.style.whiteSpace = 'nowrap';
   let px = maxPx;
-  el.style.fontSize = px + 'px';
+  setFs(px + 'px');
   while (el.scrollWidth > availW && px > minOneLinePx) {
     px -= 1;
-    el.style.fontSize = px + 'px';
+    setFs(px + 'px');
   }
   if (el.scrollWidth > availW) {
-    // Won't fit on one line even at min — allow wrap and restore the max-width cap
+    // Won't fit on one line even at min — allow wrap, cap width to availW explicitly
     el.style.whiteSpace = '';
-    el.style.maxWidth = '';
+    el.style.maxWidth = availW + 'px';
     const len = text.length;
     let wrapPx = minOneLinePx;
     if (len > 200) wrapPx = 1.1 * remPx;
     else if (len > 130) wrapPx = 1.25 * remPx;
-    el.style.fontSize = wrapPx + 'px';
+    setFs(wrapPx + 'px');
   }
 }
 
