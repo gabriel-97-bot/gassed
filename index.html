@@ -8614,7 +8614,12 @@ function gassedTurn(skipCapture) {
         if (_pfx) { _pfx.textContent = interpolate(mc.title, playerName); _pfx.style.display = ''; }
         $('gs-card').classList.add('gs-card--group');
       }
-      $('gs-main-text').textContent = interpolate(mc.text, playerName);
+      let musicText = interpolate(mc.text, playerName);
+      // Sett spillernavn foran hovedteksten (f.eks. "Andrea, syng en eurovision-låt")
+      if (playerName && !mc.text.includes('{player}')) {
+        musicText = playerName + ', ' + musicText.charAt(0).toLowerCase() + musicText.slice(1);
+      }
+      $('gs-main-text').textContent = musicText;
       const mcSub = mc.consequence || mc.sub;
       $('gs-sub-text').textContent = mcSub ? gcScaleSipsText(mcSub, drinkLvl) : '';
       $('gs-countdown-wrap').style.display = 'none';
