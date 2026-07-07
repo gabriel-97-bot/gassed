@@ -8190,11 +8190,44 @@ const GIRLS_NIGHT_CHALLENGES = {
 
 // Weighted type pool: 40 entries — music appears exactly once, wheel exactly twice
 // 1=wheel(2), 2=nhie(6), 3=music(1), 4=challenges(31)
+// NB: Brukes nå kun for Testo/Girls Night. Everyone Gets Gassed styres av GASSED_WEIGHTS.
 const GASSED_TYPE_POOL = [
   2,2,2,2,2,2,
   3,
   4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 ];
+
+// ─────────────────────────────────────────────
+// KORTFORDELING – Everyone Gets Gassed
+// ─────────────────────────────────────────────
+// Sett prosent per kategori. Tallene trenger ikke summere til 100 –
+// de normaliseres automatisk. Sett en kategori til 0 for å skru den av.
+// (Kategorier uten tilgjengelige kort på valgt nivå hoppes over automatisk.)
+const GASSED_WEIGHTS = {
+  general:   23,  // Generelle kort
+  challenge: 21,  // Utfordringer
+  nhie:      15,  // Jeg har aldri
+  music:     10,  // Musikk
+  skaal:      7,  // ALLE SKÅL 🥂
+  regel:      8,  // Ny regel
+  category:   7,  // Kategori
+  drikkif:    4,  // Drikk hvis
+  pekelek:    3,  // Pekelek
+  gruppelek:  2,  // Gruppelek
+  dilemma:    0,  // Dilemma (tommel opp/ned)
+};
+
+// Vektet tilfeldig valg av kategori, begrenset til kategorier som finnes i availTypes.
+function _gassedPickCategory(availTypes) {
+  const entries = Object.keys(GASSED_WEIGHTS)
+    .filter(k => GASSED_WEIGHTS[k] > 0 && availTypes.has(k))
+    .map(k => [k, GASSED_WEIGHTS[k]]);
+  const total = entries.reduce((s, e) => s + e[1], 0);
+  if (total <= 0) return null;
+  let r = Math.random() * total;
+  for (const [k, w] of entries) { r -= w; if (r < 0) return k; }
+  return entries[entries.length - 1][0];
+}
 
 app.gassed = { lastPlayer: -1, nhieUsed: new Set(), cardsUsed: new Set(), musicOrder: [], musicIdx: 0, typeOrder: [], typeIdx: 0, countdownTimer: null, turnCount: 0, lastSubType: -1, cardHistory: [], activeDuration: null };
 app.gassedConfig = { mode: null, level: 'normal' };
@@ -8241,6 +8274,7 @@ function startGassed() {
     lastPlayer: -1,
     nhieUsed: new Set(),
     cardsUsed: new Set(),
+    cardsUsedByType: {},
     musicOrder: shuffle([0, 1, 2]),
     musicIdx: 0,
     typeOrder: shuffle([...GASSED_TYPE_POOL]),
@@ -8430,13 +8464,52 @@ function gassedTurn(skipCapture) {
   g.lastPlayer = pi;
   const playerName = players[pi] || '';
 
-  // Pick activity from weighted pool: 1=wheel, 2=nhie, 3=music, 4=challenges
-  // Do this BEFORE any screen-gassed DOM access so sub-game types 0/1 skip it entirely
-  if (g.typeIdx >= g.typeOrder.length) {
-    g.typeOrder = shuffle([...GASSED_TYPE_POOL]);
-    g.typeIdx = 0;
+  // ── Konfig og modus-spesifikke pools ──
+  const cfg = app.gassedConfig || { level: 'normal' };
+  const isWild = cfg.level === 'wild';
+  const drinkLvl = isWild ? 3 : 2;
+  const challLvl = isWild ? 3 : 2;
+  const gameMode = cfg.mode || 'gets-gassed';
+
+  const _modeNhiePool     = gameMode === 'testo'       ? TESTO_NHIE[app.lang]
+                          : gameMode === 'girls-night' ? GIRLS_NIGHT_NHIE[app.lang]
+                          : CONTENT.nhie[app.lang];
+  const _modeNhieIntens   = gameMode === 'testo'       ? TESTO_NHIE_INTENSITY[app.lang]
+                          : gameMode === 'girls-night' ? GIRLS_NIGHT_NHIE_INTENSITY[app.lang]
+                          : NHIE_INTENSITY[app.lang] || [];
+  const _modeChalPool     = gameMode === 'testo'       ? (TESTO_CHALLENGES[app.lang] || TESTO_CHALLENGES.no)
+                          : gameMode === 'girls-night' ? (GIRLS_NIGHT_CHALLENGES[app.lang] || GIRLS_NIGHT_CHALLENGES.no)
+                          : (CARD_CHALLENGES[app.lang] || CARD_CHALLENGES.no);
+  const _modeChalIntens   = gameMode === 'testo'       ? (_modeChalPool.map(c => c.intensity || 1))
+                          : gameMode === 'girls-night' ? (_modeChalPool.map(c => c.intensity || 1))
+                          : (CARD_CHALLENGES_INTENSITY[app.lang] || CARD_CHALLENGES_INTENSITY.no);
+
+  // ── Velg korttype ──
+  // Everyone Gets Gassed: vektet kategori-valg via GASSED_WEIGHTS.
+  // Testo / Girls Night: gammel GASSED_TYPE_POOL + skål hvert 15. trekk.
+  let type;                  // 2 = nhie, 3 = musikk, 4 = utfordring/øvrige
+  let forcedCategory = null; // gets-gassed: begrens type-4-puljen til denne korttypen
+  let isSkaal = false;
+
+  if (gameMode === 'gets-gassed') {
+    const _typeHasCard = t => _modeChalPool.some(c =>
+      c.type === t && _intensityNum(c.intensity != null ? c.intensity : 1) <= challLvl);
+    const availTypes = new Set(['skaal']);
+    if (gcBuildFilteredPool(_modeNhiePool, _modeNhieIntens, null, challLvl).length) availTypes.add('nhie');
+    ['general','challenge','music','regel','category','drikkif','pekelek','gruppelek','dilemma']
+      .forEach(t => { if (_typeHasCard(t)) availTypes.add(t); });
+    const category = _gassedPickCategory(availTypes) || 'general';
+    if (category === 'skaal')      isSkaal = true;
+    else if (category === 'nhie')  type = 2;
+    else if (category === 'music') type = 3;
+    else { type = 4; forcedCategory = category; }
+  } else {
+    if (g.typeIdx >= g.typeOrder.length) {
+      g.typeOrder = shuffle([...GASSED_TYPE_POOL]);
+      g.typeIdx = 0;
+    }
+    type = g.typeOrder[g.typeIdx++];
   }
-  let type = g.typeOrder[g.typeIdx++];
 
   // Reset screen-gassed card areas (only reached for types 2/3/4)
   const _pn = $('gs-player-name'); if (_pn) _pn.textContent = playerName;
@@ -8450,9 +8523,10 @@ function gassedTurn(skipCapture) {
   const _mt = $('gs-main-text'); if (_mt) _mt.textContent = '';
   const _st = $('gs-sub-text'); if (_st) _st.textContent = '';
 
-  // ── Alle skål-kort hvert 15. trekk ──
+  // ── Alle skål-kort ──
+  // gets-gassed: styrt av vekt (GASSED_WEIGHTS.skaal). Andre moduser: hvert 15. trekk.
   g.turnCount++;
-  if (g.turnCount > 1 && g.turnCount % 15 === 0) {
+  if (isSkaal || (gameMode !== 'gets-gassed' && g.turnCount > 1 && g.turnCount % 15 === 0)) {
     $('gs-card').classList.add('gs-card--group');
     $('gs-card').classList.add('gs-card--skaal');
     $('gs-main-text').textContent = 'ALLE SKÅL! 🥂';
@@ -8464,26 +8538,6 @@ function gassedTurn(skipCapture) {
     return;
   }
   $('gs-main-text').style.fontSize = '';
-
-  const cfg = app.gassedConfig || { level: 'normal' };
-  const isWild = cfg.level === 'wild';
-  const drinkLvl = isWild ? 3 : 2;
-  const challLvl = isWild ? 3 : 2;
-  const gameMode = cfg.mode || 'gets-gassed';
-
-  // Resolve mode-specific pools
-  const _modeNhiePool     = gameMode === 'testo'       ? TESTO_NHIE[app.lang]
-                          : gameMode === 'girls-night' ? GIRLS_NIGHT_NHIE[app.lang]
-                          : CONTENT.nhie[app.lang];
-  const _modeNhieIntens   = gameMode === 'testo'       ? TESTO_NHIE_INTENSITY[app.lang]
-                          : gameMode === 'girls-night' ? GIRLS_NIGHT_NHIE_INTENSITY[app.lang]
-                          : NHIE_INTENSITY[app.lang] || [];
-  const _modeChalPool     = gameMode === 'testo'       ? (TESTO_CHALLENGES[app.lang] || TESTO_CHALLENGES.no)
-                          : gameMode === 'girls-night' ? (GIRLS_NIGHT_CHALLENGES[app.lang] || GIRLS_NIGHT_CHALLENGES.no)
-                          : (CARD_CHALLENGES[app.lang] || CARD_CHALLENGES.no);
-  const _modeChalIntens   = gameMode === 'testo'       ? (_modeChalPool.map(c => c.intensity || 1))
-                          : gameMode === 'girls-night' ? (_modeChalPool.map(c => c.intensity || 1))
-                          : (CARD_CHALLENGES_INTENSITY[app.lang] || CARD_CHALLENGES_INTENSITY.no);
 
   try {
     if (type === 2) {
@@ -8513,23 +8567,32 @@ function gassedTurn(skipCapture) {
       $('gs-sub-text').textContent = nhieCard.consequence || nhieCard.sub || '';
 
     } else if (type === 4) {
-      // ── Utfordring ──
-      if (!(g.cardsUsed instanceof Set)) g.cardsUsed = new Set();
+      // ── Utfordring / øvrige kategorier ──
       const bpool = _modeChalPool;
       const bIntens = _modeChalIntens;
-      // Dilemma (tommel opp/ned) vises kun 1% av tilfellene (bare i standard modus)
-      const _wantDilemma = gameMode === 'gets-gassed' && Math.random() < 0.01;
-      // Build intensity-filtered pool, then apply dilemma filter on top
-      const allWithinIntens = gcBuildFilteredPool(bpool, bIntens, g.cardsUsed, challLvl);
-      // Block new duration cards while one is already active (maks ETT om gangen)
-      const _blockDuration = !!g.activeDuration;
-      const _baseAvailable = _blockDuration ? allWithinIntens.filter(i => !bpool[i].duration_id) : allWithinIntens;
-      const _bfiltered = _baseAvailable.filter(i => _wantDilemma ? bpool[i].type === 'dilemma' : bpool[i].type !== 'dilemma');
-      const _bpool = _bfiltered.length > 0 ? _bfiltered : _baseAvailable;
-      let bidx;
-      if (_bpool.length === 0) { g.cardsUsed = new Set(); bidx = Math.floor(Math.random() * bpool.length); }
-      else bidx = _bpool[Math.floor(Math.random() * _bpool.length)];
-      g.cardsUsed.add(bidx);
+      // Eget brukt-sett per kategori så små kategorier ikke nullstiller de store.
+      if (!g.cardsUsedByType) g.cardsUsedByType = {};
+      const catKey = forcedCategory || '_all';
+      if (!(g.cardsUsedByType[catKey] instanceof Set)) g.cardsUsedByType[catKey] = new Set();
+      const usedSet = g.cardsUsedByType[catKey];
+      const buildAvail = () => {
+        let a = gcBuildFilteredPool(bpool, bIntens, usedSet, challLvl);
+        // gets-gassed: begrens til valgt kategori. Testo/Girls: legacy dilemma-tak på 1%.
+        if (forcedCategory) {
+          a = a.filter(i => bpool[i].type === forcedCategory);
+        } else {
+          const wantDilemma = Math.random() < 0.01;
+          a = a.filter(i => wantDilemma ? bpool[i].type === 'dilemma' : bpool[i].type !== 'dilemma');
+        }
+        // Blokker nye varighetskort mens ett allerede er aktivt (maks ETT om gangen)
+        if (g.activeDuration) a = a.filter(i => !bpool[i].duration_id);
+        return a;
+      };
+      let _bpool = buildAvail();
+      if (_bpool.length === 0) { usedSet.clear(); _bpool = buildAvail(); }
+      let bidx = _bpool.length ? _bpool[Math.floor(Math.random() * _bpool.length)]
+                               : Math.floor(Math.random() * bpool.length);
+      usedSet.add(bidx);
       const bc = bpool[bidx];
       // Registrer nytt aktivt varighetskort (maks ETT om gangen). BESKJED-kortet
       // fyres av automatisk etter at 5 kort er trukket (se toppen av gassedTurn).
