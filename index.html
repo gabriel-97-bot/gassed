@@ -8422,16 +8422,25 @@ function gassedPrev() {
 
 function gassedTapNav(event) {
   if (event.target.closest('button')) return;
-  const rect = event.currentTarget.getBoundingClientRect();
-  // Exclude back-btn zone (top-left ~56px) and settings-btn zone (top-right ~56px)
-  const relX = event.clientX - rect.left;
-  const relY = event.clientY - rect.top;
-  if (relY < 56 && (relX < 56 || relX > rect.width - 56)) return;
-  if (event.clientX >= rect.left + rect.width / 2) {
-    gassedNext();
-  } else {
-    gassedPrev();
+  const screen = event.currentTarget;
+  const rect = screen.getBoundingClientRect();
+  // Trykkets forskyvning fra skjermens visuelle senter.
+  const vx = event.clientX - (rect.left + rect.width / 2);
+  const vy = event.clientY - (rect.top + rect.height / 2);
+  // I portrett tvinges innholdet til landskap med CSS rotate(-90deg) på .phone-frame.
+  // Da ligger kortets visuelle høyre/venstre langs en annen fysisk akse. Projiser
+  // derfor trykket på kortets faktiske lese-akse (lokal +x) via transform-matrisen,
+  // så «venstre halvdel = tilbake, høyre halvdel = fram» alltid stemmer visuelt.
+  let axisX = 1, axisY = 0;
+  const frame = screen.closest('.phone-frame');
+  if (frame && typeof DOMMatrixReadOnly !== 'undefined') {
+    const tf = getComputedStyle(frame).transform;
+    if (tf && tf !== 'none') {
+      try { const m = new DOMMatrixReadOnly(tf); axisX = m.a; axisY = m.b; } catch (e) {}
+    }
   }
+  const proj = vx * axisX + vy * axisY; // > 0 = mot kortets høyre = fram
+  if (proj >= 0) gassedNext(); else gassedPrev();
 }
 
 function gassedReturnFromSub() {
