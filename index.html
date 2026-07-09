@@ -721,6 +721,7 @@
     @keyframes gmdFade { from { opacity: 0; } to { opacity: 1; } }
     .gmd-card {
       width: 100%; max-width: 360px;
+      max-height: calc(100dvh - 48px); overflow-y: auto;
       background: linear-gradient(180deg, rgba(30,22,14,0.98), rgba(18,12,8,0.98));
       border: 1px solid rgba(239,159,39,0.35);
       border-radius: 22px;
@@ -735,8 +736,23 @@
       font-size: 2rem; letter-spacing: 2px; margin-bottom: 12px; line-height: 1.05;
     }
     .gmd-desc {
-      color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.5; margin-bottom: 22px;
+      color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.5; margin-bottom: 18px;
     }
+    .gmd-how {
+      text-align: left; background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+      padding: 14px 16px; margin-bottom: 20px;
+    }
+    .gmd-how-title {
+      font-family: 'Boogaloo', cursive; color: #EF9F27;
+      font-size: 1.1rem; letter-spacing: 1px; text-align: center; margin-bottom: 10px;
+    }
+    .gmd-how-list { list-style: none; margin: 0; padding: 0; }
+    .gmd-how-list li {
+      color: rgba(255,255,255,0.88); font-size: 0.9rem; line-height: 1.4;
+      margin-bottom: 9px;
+    }
+    .gmd-how-list li:last-child { margin-bottom: 0; }
     .gmd-btn {
       width: 100%; border: none; cursor: pointer;
       background: #EF9F27; color: #1a0f06;
@@ -780,6 +796,12 @@
       font-size: 1.6rem; letter-spacing: 2px; text-align: center;
       color: rgba(255,255,255,0.90); margin-top: -4px;
       text-transform: uppercase;
+    }
+    /* Generell beskrivelse av spillet på spillmodus-siden */
+    .gc-general {
+      text-align: center; color: rgba(255,255,255,0.82);
+      font-size: 0.92rem; line-height: 1.45; max-width: 460px;
+      margin: -4px auto 4px; padding: 0 6px;
     }
     .gc-modes { width: 100%; display: flex; flex-direction: column; gap: 14px; }
 
@@ -2842,13 +2864,17 @@
   <div class="gc-inner">
     <div class="gc-logo">Gassed</div>
     <div class="gc-tagline">Spillmodus</div>
+    <div class="gc-general">
+      Gassed er drikkeleken for forspill og fest 🍻 Trekk kort, gjør utfordringer
+      og drikk dere gjennom kvelden. Velg modusen som passer gjengen deres:
+    </div>
 
     <div class="gc-modes">
       <button class="gc-mode-card gc-mode-hero" data-mode="gets-gassed" onclick="gcSelectMode(this)">
         <div class="gc-mode-emoji">💀</div>
         <div class="gc-mode-info">
           <div class="gc-mode-name">Everyone Gets Gassed</div>
-          <div class="gc-mode-desc">Ingen slipper unna — alle drikker</div>
+          <div class="gc-mode-desc">For alle — blandet gjeng, gutter og jenter 🔥</div>
         </div>
         <div class="gc-check">✓</div>
       </button>
@@ -2856,7 +2882,7 @@
         <div class="gc-mode-emoji">🥂</div>
         <div class="gc-mode-info">
           <div class="gc-mode-name">Girls Night</div>
-          <div class="gc-mode-desc">Vibbes, drama og ekte tea 💅</div>
+          <div class="gc-mode-desc">For jentene 💅</div>
         </div>
         <div class="gc-check">✓</div>
       </button>
@@ -2864,7 +2890,7 @@
         <div class="gc-mode-emoji">💪</div>
         <div class="gc-mode-info">
           <div class="gc-mode-name">Testo</div>
-          <div class="gc-mode-desc">For gutta — ingen tull, bare drikking</div>
+          <div class="gc-mode-desc">For gutta 💪</div>
         </div>
         <div class="gc-check">✓</div>
       </button>
@@ -2888,13 +2914,23 @@
   </div>
 </div>
 
-<!-- Beskrivelse-popup: vises når man velger en spillmodus -->
+<!-- Instruksjonskort: vises når man starter spillet -->
 <div id="gassed-mode-desc" onclick="if(event.target===this)gcCloseModeDesc()">
   <div class="gmd-card">
     <div class="gmd-emoji" id="gmd-emoji">💀</div>
     <div class="gmd-name" id="gmd-name"></div>
     <div class="gmd-desc" id="gmd-desc"></div>
-    <button class="gmd-btn" onclick="gcCloseModeDesc()">Fortsett 🍺</button>
+    <div class="gmd-how">
+      <div class="gmd-how-title">Slik spiller dere</div>
+      <ul class="gmd-how-list">
+        <li>📱 Send telefonen rundt — kortet viser hvem sin tur det er og hva som skal gjøres.</li>
+        <li>👉 Trykk høyre side av skjermen for neste kort, venstre side for forrige.</li>
+        <li>🍺 Gjør det kortet sier — den lille teksten under viser hvor mange slurker det koster.</li>
+        <li>👍👎 Tommel-kort: alle stemmer, og de i mindretall drikker.</li>
+        <li>📜 Noen kort gir regler eller varer flere runder — de gjelder til appen sier ifra.</li>
+      </ul>
+    </div>
+    <button class="gmd-btn" onclick="gassedBeginGame()">Kjør! 🍺</button>
   </div>
 </div>
 
@@ -7882,15 +7918,15 @@ function gassedShowIntro() {
 const GASSED_MODE_DESC = {
   'gets-gassed': {
     emoji: '💀', name: 'Everyone Gets Gassed',
-    desc: 'Fest-modusen for HELE gjengen 🍻 Her får du alt: utfordringer, pekelek, tommel opp/ned, «jeg har aldri», musikk, drikk hvis, nye regler og varighetskort. Ingen slipper unna — før eller siden drikker absolutt alle. Perfekt for en blandet gjeng som vil ha full pakke.',
+    desc: 'For HELE gjengen — gutter og jenter, blandet lag. Den brede fest-modusen med alt: utfordringer, pekelek, tommel opp/ned, «jeg har aldri», musikk og mer. Ingen slipper unna.',
   },
   'girls-night': {
     emoji: '🥂', name: 'Girls Night',
-    desc: 'Jentekvelden i kortform 💅 Dating, drama, delulu-tanker og ekte tea. Utfordringer, pekelek og «jeg har aldri» skreddersydd for jentegjengen — situationships, eks-analyser og null filter. Ta med vin, sladder og bestisene.',
+    desc: 'Laget for jentene 💅 Dating, drama, delulu og ekte tea. Utfordringer og spørsmål skreddersydd for jentegjengen — situationships, eks-analyser og null filter.',
   },
   'testo': {
     emoji: '💪', name: 'Testo',
-    desc: 'Guttas modus 🍻 Sport, gym, gaming og skikkelig banter. Utfordringer, egne regler og pekelek laget for gutta — med kappløp, ære på spill og en lærling som må hente neste runde. SKÅL GUTTA!',
+    desc: 'Laget for gutta 💪 Sport, gym, gaming og skikkelig banter. Utfordringer, egne regler og pekelek med kappløp og ære på spill. SKÅL GUTTA!',
   },
 };
 
@@ -7913,7 +7949,6 @@ function gcSelectMode(el) {
   app.gassedConfig.mode = el.dataset.mode;
   const btn = document.getElementById('gc-start-btn');
   if (btn) { btn.disabled = false; btn.textContent = 'Start spillet 🍺'; }
-  gcShowModeDesc(el.dataset.mode);
 }
 
 function gcSetLevel(level) {
@@ -7926,7 +7961,14 @@ function gcSetLevel(level) {
 function gcUpdateDrink() {}
 function gcUpdateChallenge() {}
 
+// Trykk på «Start spillet» → vis instruksjonskortet for valgt modus først.
 function gassedIntroStart() {
+  if (!app.gassedConfig.mode) return;
+  gcShowModeDesc(app.gassedConfig.mode);
+}
+
+// «Kjør!» på instruksjonskortet → start selve spillet.
+function gassedBeginGame() {
   gcCloseModeDesc();
   document.getElementById('gassed-intro').classList.remove('show');
   startGame('gassed');
