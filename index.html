@@ -7871,6 +7871,8 @@ function _gassedCaptureCard() {
     typeBadgeClass:$('gs-type-badge')?.className ?? '',
     miniShow:      $('gs-mini-card')?.style.display !== 'none',
     miniSrc:       $('gs-mini-card-img')?.src ?? '',
+    tommelHTML:    $('gs-tommel')?.innerHTML ?? '',
+    tommelShow:    $('gs-tommel')?.style.display !== 'none',
   };
 }
 
@@ -7893,7 +7895,8 @@ function _gassedRestoreCard(st) {
   $('gs-countdown-wrap').style.display = 'none';
   $('gs-countdown-wrap').className = 'gs-countdown-wrap';
   $('gs-countdown-num').textContent = '10';
-  const _tm = $('gs-tommel'); if (_tm) { _tm.style.display = 'none'; _tm.innerHTML = ''; }
+  const _tm = $('gs-tommel');
+  if (_tm) { _tm.innerHTML = st.tommelHTML || ''; _tm.style.display = st.tommelShow ? '' : 'none'; }
 }
 
 function _intensityNum(v) {
@@ -8300,7 +8303,7 @@ function gassedTurn(skipCapture) {
         : (bc.consequence || bc.sub || '');
       $('gs-sub-text').textContent = gcScaleSipsText(subTxt, drinkLvl);
 
-      // ── Tommel opp/ned: vis to valg-knapper (👍 første valg, 👎 andre valg) ──
+      // ── Tommel opp/ned: dropp hovedteksten, vis kun de to valg-knappene ──
       if (bc.type === 'tommel') {
         const _tm = $('gs-tommel');
         const opts = _splitTommel(cardText);
@@ -8315,6 +8318,8 @@ function gassedTurn(skipCapture) {
             _tm.appendChild(row);
           });
           _tm.style.display = '';
+          // Fjern den store hovedteksten — valgene ligger nå i knappene
+          $('gs-main-text').textContent = '';
         }
       }
 
@@ -8353,8 +8358,11 @@ function gassedTurn(skipCapture) {
     $('gs-main-text').textContent = '';
   }
 
-  // Safety guard: aldri vis et tomt kort — hopp til neste runde hvis innhold mangler
-  if (!$('gs-main-text').textContent?.trim()) {
+  // Safety guard: aldri vis et tomt kort — hopp til neste runde hvis innhold mangler.
+  // Tommel-kort har med vilje tom hovedtekst (valgene ligger i knappene) — ikke hopp da.
+  const _tmEl = $('gs-tommel');
+  const _hasTommel = _tmEl && _tmEl.style.display !== 'none' && _tmEl.children.length > 0;
+  if (!$('gs-main-text').textContent?.trim() && !_hasTommel) {
     if (app.gassed) app.gassed._sliding = false;
     gassedTurn();
     return;
