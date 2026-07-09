@@ -1796,8 +1796,8 @@
       /* ── Generelt ── */
       .screen       { padding: 36px 12px 8px; }
       .screen-title { font-size: 0.95rem; margin-bottom: 2px; }
-      .back-btn     { top: 12px; left: 16px; }
-      #settings-btn { top: 12px; right: 16px; }
+      .back-btn     { top: calc(env(safe-area-inset-top) + 12px); left: calc(env(safe-area-inset-left) + 16px); }
+      #settings-btn { top: calc(env(safe-area-inset-top) + 12px); right: calc(env(safe-area-inset-right) + 16px); }
 
       /* ── Oppsett ── */
       #screen-setup { padding-top: 36px; }
@@ -2530,6 +2530,18 @@
       }
       /* CSS rotate handles the orientation — hide the prompt overlay */
       body.game-active.device-portrait #rotate-prompt { display: none; }
+      /* Knappene ligger inne i den roterte rammen. Etter rotate(-90deg) ligger den
+         fysiske statuslinjen (klokka) langs kortets HØYRE kant og home-indicator
+         langs kortets VENSTRE kant. Skyv tannhjul/tilbake klar av dem med de
+         fysiske safe-area-innrykkene så tannhjulet ikke havner under klokka. */
+      body.game-active.device-portrait #settings-btn {
+        top: calc(env(safe-area-inset-left) + 14px);
+        right: calc(env(safe-area-inset-top) + 14px);
+      }
+      body.game-active.device-portrait .back-btn {
+        top: calc(env(safe-area-inset-left) + 14px);
+        left: calc(env(safe-area-inset-bottom) + 14px);
+      }
       /* Team picker must show in portrait — cancel the landscape rotation */
       body.game-active.device-portrait.team-picker-open .phone-frame {
         position: fixed !important;
