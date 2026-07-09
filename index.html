@@ -133,6 +133,53 @@
       overflow: hidden;
     }
 
+    /* ── Aldersport (18+) ── */
+    #age-gate {
+      position: absolute; inset: 0; z-index: 2000;
+      background: linear-gradient(160deg, #2a0810, #14060a 60%, #0a0406);
+      display: flex; align-items: center; justify-content: center;
+      padding: calc(env(safe-area-inset-top) + 24px) 28px calc(env(safe-area-inset-bottom) + 24px);
+      text-align: center;
+    }
+    .age-gate-inner { width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
+    .age-gate-logo {
+      font-family: 'Boogaloo', cursive; font-size: 3.4rem; color: #EF9F27;
+      letter-spacing: 4px; line-height: 1; margin-bottom: 4px;
+      filter: drop-shadow(0 2px 16px rgba(239,159,39,0.5));
+    }
+    .age-gate-emoji { font-size: 2.6rem; margin-bottom: 14px; }
+    .age-gate-title {
+      font-family: 'Boogaloo', cursive; color: #fff; font-size: 1.7rem;
+      letter-spacing: 1px; margin-bottom: 10px; line-height: 1.15;
+    }
+    .age-gate-text {
+      color: rgba(255,255,255,0.85); font-size: 0.98rem; line-height: 1.5; margin-bottom: 24px;
+    }
+    .age-gate-yes {
+      width: 100%; border: none; cursor: pointer; margin-bottom: 12px;
+      background: linear-gradient(135deg, #EF9F27, #d4800e); color: #fff;
+      font-family: 'Boogaloo', cursive; font-size: 1.35rem; letter-spacing: 1px;
+      padding: 15px; border-radius: 16px; box-shadow: 0 4px 22px rgba(239,159,39,0.45);
+      transition: transform 0.15s;
+    }
+    .age-gate-yes:active { transform: scale(0.97); }
+    .age-gate-no {
+      width: 100%; cursor: pointer; background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.75);
+      font-family: 'Boogaloo', cursive; font-size: 1.1rem; letter-spacing: 1px;
+      padding: 12px; border-radius: 16px; transition: transform 0.15s, background 0.15s;
+    }
+    .age-gate-no:active { transform: scale(0.97); background: rgba(255,255,255,0.08); }
+    .age-gate-note { color: rgba(255,255,255,0.6); font-size: 0.82rem; line-height: 1.4; margin-top: 22px; }
+    .age-gate-denied {
+      display: none; color: #f8b4b4; font-size: 0.95rem; line-height: 1.45;
+      margin-top: 20px; font-weight: 600;
+    }
+    #age-gate.denied .age-gate-yes,
+    #age-gate.denied .age-gate-no,
+    #age-gate.denied .age-gate-note { display: none; }
+    #age-gate.denied .age-gate-denied { display: block; }
+
     /* ── Language toggle ── */
     #lang-toggle { display: none; }
 
@@ -3232,6 +3279,40 @@
 
 
 </div><!-- #app -->
+
+<!-- Aldersport: vises ved første oppstart -->
+<div id="age-gate" style="display:none">
+  <div class="age-gate-inner">
+    <div class="age-gate-logo">Gassed</div>
+    <div class="age-gate-emoji">🍺</div>
+    <div class="age-gate-title">Er du 18 år eller eldre?</div>
+    <div class="age-gate-text">Gassed er et drikkespill for voksne. Du må være myndig (18+) for å spille.</div>
+    <button class="age-gate-yes" onclick="ageGateConfirm()">Ja, jeg er 18+</button>
+    <button class="age-gate-no" onclick="ageGateDeny()">Nei</button>
+    <div class="age-gate-note">🍻 Drikk ansvarlig, kjenn dine grenser, og aldri press noen til å drikke.</div>
+    <div class="age-gate-denied" id="age-gate-denied">Du må være 18 år for å bruke Gassed. Kom tilbake når du er myndig! 👋</div>
+  </div>
+</div>
+<script>
+  function ageGateConfirm() {
+    try { localStorage.setItem('gassed_age_ok', '1'); } catch (e) {}
+    var g = document.getElementById('age-gate');
+    if (g) g.style.display = 'none';
+  }
+  function ageGateDeny() {
+    var g = document.getElementById('age-gate');
+    if (g) g.classList.add('denied');
+  }
+  (function () {
+    try {
+      if (localStorage.getItem('gassed_age_ok') !== '1') {
+        document.getElementById('age-gate').style.display = 'flex';
+      }
+    } catch (e) {
+      document.getElementById('age-gate').style.display = 'flex';
+    }
+  })();
+</script>
 
 </div><!-- .phone-frame -->
 </div><!-- .phone-outer -->
