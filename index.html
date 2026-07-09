@@ -2130,12 +2130,12 @@
     .tcat-main {
       flex: 1; min-width: 0;
       display: flex; flex-direction: column;
-      align-items: center; gap: 8px; padding-top: 2px;
+      align-items: center; padding-top: 2px;
     }
     .tcat-player {
       font-size: 1.15rem; font-weight: 800; color: var(--gold);
       text-transform: uppercase; letter-spacing: 1px; text-align: center;
-      line-height: 1.15; text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+      line-height: 1.15; text-shadow: 0 1px 4px rgba(0,0,0,0.6); margin-bottom: 3px;
     }
     .tcat-title {
       font-size: 1rem; font-weight: 800; color: var(--text);
@@ -2144,13 +2144,14 @@
     .tcat-opts {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px; width: 100%;
+      gap: 12px; width: 100%;
+      margin: auto 0;  /* sentrer griden vertikalt i ledig plass */
     }
     .tcat-opt {
-      display: flex; flex-direction: column; align-items: center; gap: 5px;
-      padding: 11px 6px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 16px 10px;
       background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 14px; cursor: pointer;
+      border-radius: 16px; cursor: pointer;
       transition: background 0.15s, border-color 0.15s, transform 0.12s;
     }
     .tcat-opt:active { transform: scale(0.95); background: rgba(255,255,255,0.16); }
@@ -2161,8 +2162,8 @@
       transform: scale(1.06);
       box-shadow: 0 0 0 3px rgba(41,121,255,0.3);
     }
-    .tcat-emoji { font-size: 1.35rem; line-height: 1; }
-    .tcat-name  { font-size: 0.82rem; font-weight: 700; color: var(--text); text-align: center; line-height: 1.15; }
+    .tcat-emoji { font-size: 1.75rem; line-height: 1; }
+    .tcat-name  { font-size: 0.95rem; font-weight: 700; color: var(--text); text-align: center; line-height: 1.15; }
 
     /* ── Kategori-reveal animasjon ── */
     #cat-reveal-overlay {
