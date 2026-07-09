@@ -708,6 +708,44 @@
       overflow-y: auto; overflow-x: hidden;
     }
     #gassed-intro.show { display: flex; }
+    /* Beskrivelse-popup for valgt spillmodus */
+    #gassed-mode-desc {
+      display: none; position: absolute; inset: 0; z-index: 400;
+      background: rgba(8,4,2,0.72);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+      padding: calc(env(safe-area-inset-top) + 24px) 24px calc(env(safe-area-inset-bottom) + 24px);
+      animation: gmdFade 0.18s ease;
+    }
+    #gassed-mode-desc.show { display: flex; }
+    @keyframes gmdFade { from { opacity: 0; } to { opacity: 1; } }
+    .gmd-card {
+      width: 100%; max-width: 360px;
+      background: linear-gradient(180deg, rgba(30,22,14,0.98), rgba(18,12,8,0.98));
+      border: 1px solid rgba(239,159,39,0.35);
+      border-radius: 22px;
+      padding: 28px 24px 22px; text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+      animation: gmdPop 0.22s cubic-bezier(0.2,0.8,0.3,1.2);
+    }
+    @keyframes gmdPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .gmd-emoji { font-size: 3.2rem; line-height: 1; margin-bottom: 8px; }
+    .gmd-name {
+      font-family: 'Boogaloo', cursive; color: #EF9F27;
+      font-size: 2rem; letter-spacing: 2px; margin-bottom: 12px; line-height: 1.05;
+    }
+    .gmd-desc {
+      color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.5; margin-bottom: 22px;
+    }
+    .gmd-btn {
+      width: 100%; border: none; cursor: pointer;
+      background: #EF9F27; color: #1a0f06;
+      font-family: 'Boogaloo', cursive; font-size: 1.3rem; letter-spacing: 1px;
+      padding: 12px; border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(239,159,39,0.4);
+      transition: transform 0.15s;
+    }
+    .gmd-btn:active { transform: scale(0.97); }
     .gc-inner {
       width: 100%; max-width: 100%; min-height: 100%;
       display: flex; flex-direction: column; align-items: stretch;
@@ -2847,6 +2885,16 @@
     <button class="gc-start-btn" id="gc-start-btn" onclick="gassedIntroStart()" disabled>
       Start spillet 🍺
     </button>
+  </div>
+</div>
+
+<!-- Beskrivelse-popup: vises når man velger en spillmodus -->
+<div id="gassed-mode-desc" onclick="if(event.target===this)gcCloseModeDesc()">
+  <div class="gmd-card">
+    <div class="gmd-emoji" id="gmd-emoji">💀</div>
+    <div class="gmd-name" id="gmd-name"></div>
+    <div class="gmd-desc" id="gmd-desc"></div>
+    <button class="gmd-btn" onclick="gcCloseModeDesc()">Fortsett 🍺</button>
   </div>
 </div>
 
@@ -5420,6 +5468,11 @@ function selectTodCategory(cat) {
 }
 
 function confirmGoHome() {
+  // Modus-beskrivelse-popup åpen → lukk den først (behold intro)
+  if (document.getElementById('gassed-mode-desc')?.classList.contains('show')) {
+    gcCloseModeDesc();
+    return;
+  }
   // Gassed intro open → dismiss it
   if (document.getElementById('gassed-intro')?.classList.contains('show')) {
     document.getElementById('gassed-intro').classList.remove('show');
@@ -5455,6 +5508,7 @@ function goHome() {
   if (app.gassed?.countdownTimer) { clearInterval(app.gassed.countdownTimer); app.gassed.countdownTimer = null; }
   if (app.gassed) app.gassed.inSubGame = false;
   document.getElementById('gassed-intro')?.classList.remove('show');
+  gcCloseModeDesc();
   document.getElementById('trivia-cat-modal').style.display = 'none';
   document.getElementById('trivia-mode-modal').style.display = 'none';
   document.getElementById('trivia-team-modal').classList.remove('show');
@@ -7812,6 +7866,7 @@ app.gassedConfig = { mode: null, level: 'normal' };
 
 function gassedShowIntro() {
   document.getElementById('gassed-intro').classList.add('show');
+  gcCloseModeDesc();
   const bb = document.getElementById('back-btn');
   if (bb) bb.classList.remove('visible');
   // Reset config state
@@ -7823,12 +7878,42 @@ function gassedShowIntro() {
   S.push();
 }
 
+// Beskrivelse per spillmodus — vises som popup når man velger en modus.
+const GASSED_MODE_DESC = {
+  'gets-gassed': {
+    emoji: '💀', name: 'Everyone Gets Gassed',
+    desc: 'Fest-modusen for HELE gjengen 🍻 Her får du alt: utfordringer, pekelek, tommel opp/ned, «jeg har aldri», musikk, drikk hvis, nye regler og varighetskort. Ingen slipper unna — før eller siden drikker absolutt alle. Perfekt for en blandet gjeng som vil ha full pakke.',
+  },
+  'girls-night': {
+    emoji: '🥂', name: 'Girls Night',
+    desc: 'Jentekvelden i kortform 💅 Dating, drama, delulu-tanker og ekte tea. Utfordringer, pekelek og «jeg har aldri» skreddersydd for jentegjengen — situationships, eks-analyser og null filter. Ta med vin, sladder og bestisene.',
+  },
+  'testo': {
+    emoji: '💪', name: 'Testo',
+    desc: 'Guttas modus 🍻 Sport, gym, gaming og skikkelig banter. Utfordringer, egne regler og pekelek laget for gutta — med kappløp, ære på spill og en lærling som må hente neste runde. SKÅL GUTTA!',
+  },
+};
+
+function gcShowModeDesc(mode) {
+  const d = GASSED_MODE_DESC[mode];
+  const pop = document.getElementById('gassed-mode-desc');
+  if (!d || !pop) return;
+  document.getElementById('gmd-emoji').textContent = d.emoji;
+  document.getElementById('gmd-name').textContent = d.name;
+  document.getElementById('gmd-desc').textContent = d.desc;
+  pop.classList.add('show');
+}
+function gcCloseModeDesc() {
+  document.getElementById('gassed-mode-desc')?.classList.remove('show');
+}
+
 function gcSelectMode(el) {
   document.querySelectorAll('.gc-mode-card').forEach(function(c) { c.classList.remove('selected'); });
   el.classList.add('selected');
   app.gassedConfig.mode = el.dataset.mode;
   const btn = document.getElementById('gc-start-btn');
   if (btn) { btn.disabled = false; btn.textContent = 'Start spillet 🍺'; }
+  gcShowModeDesc(el.dataset.mode);
 }
 
 function gcSetLevel(level) {
@@ -7842,6 +7927,7 @@ function gcUpdateDrink() {}
 function gcUpdateChallenge() {}
 
 function gassedIntroStart() {
+  gcCloseModeDesc();
   document.getElementById('gassed-intro').classList.remove('show');
   startGame('gassed');
 }
