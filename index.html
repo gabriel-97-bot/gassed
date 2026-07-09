@@ -1921,6 +1921,13 @@
       .back-btn     { top: calc(env(safe-area-inset-top) + 12px); left: calc(env(safe-area-inset-left) + 16px); }
       #settings-btn { top: calc(env(safe-area-inset-top) + 12px); right: calc(env(safe-area-inset-right) + 16px); }
 
+      /* Trivia kategori-valg: klar av Dynamic Island (fysisk venstre/høyre i ekte landskap) */
+      .tcat-layout {
+        padding-top: calc(env(safe-area-inset-top) + 40px);
+        padding-left: calc(env(safe-area-inset-left) + 14px);
+        padding-right: calc(env(safe-area-inset-right) + 14px);
+      }
+
       /* ── Oppsett ── */
       #screen-setup { padding-top: 36px; }
 
@@ -2108,7 +2115,7 @@
     .tcat-layout {
       position: relative; z-index: 1;
       display: flex; width: 100%; height: 100%;
-      padding: calc(env(safe-area-inset-top) + 40px) 14px calc(env(safe-area-inset-bottom) + 12px);
+      padding: 40px 14px 16px;
       gap: 14px; align-items: flex-start;
     }
     .tcat-sidebar {
@@ -2667,6 +2674,12 @@
       body.game-active.device-portrait .back-btn {
         top: calc(env(safe-area-inset-left) + 14px);
         left: calc(env(safe-area-inset-bottom) + 14px);
+      }
+      /* Trivia kategori-valg: samme rotasjon → Dynamic Island ligger langs kortets
+         HØYRE kant. Skyv innholdet klar med de fysiske innrykkene. */
+      body.game-active.device-portrait .tcat-layout {
+        padding-left:  calc(env(safe-area-inset-bottom) + 14px);
+        padding-right: calc(env(safe-area-inset-top) + 14px);
       }
       /* Team picker must show in portrait — cancel the landscape rotation */
       body.game-active.device-portrait.team-picker-open .phone-frame {
