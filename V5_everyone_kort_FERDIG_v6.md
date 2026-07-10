@@ -16,8 +16,8 @@
 | **ALLE** | Har du over 1 million i snapscore? | Dele ut 3 slurker |
 | **ALLE** | (Navn) mot (navn) skal ha stein, saks, papir (best av 3). | Taperen drikker 4 slurker |
 | **ALLE** | Alle med bachelorgrad | Drikk 3 slurker |
-| **Akrobatisk?** | Personen som klarer å ta en backflip | Del ut 10 slurker\! |
-| **Flexxx** | (Navn) du ser myk og fleksibel ut. Velg en motstander og se hvem som kommer lengst ned i spagaten. | Vinneren deler ut 4 slurker |
+| **Akrobatisk?** | Er det noen her som kan ta en backflip? Kun hvis du VIL — ingen tvang. | Klarer noen det frivillig: de deler ut 5 slurker |
+| **Flexxx** | Spagat-konkurranse for de som VIL være med: hvem kommer lengst ned? Ingen tvang. | Vinneren deler ut 4 slurker |
 | (Navn) | (Navn), bytt plass med personen til venstre. | Skål med din nye sidemann |
 | **ALLE** | Alle som har på seg hvite sokker akkurat nå | Drikk 3 slurker |
 | **ALLE** | Siste person som rører nesa si | Drikker 4 slurker |

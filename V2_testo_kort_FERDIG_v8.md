@@ -121,7 +121,7 @@
 | **UTFORDRING** | (Navn), fortell din beste militær/russetid/guttetur-historie på 30 sek | Tørr ikke? Drikk 3 |
 | **UTFORDRING** | (Navn), hold en øl/boks på strak arm i 60 sekunder | Senker du → drikk innholdet |
 | **UTFORDRING** | (Navn), si alfabetet baklengs  | Klarer ikke → drikk 3 |
-| **UTFORDRING** | (Navn) mot (navn): hvem kommer lengst ned i spagat?  | Taperen drikker 3\. Lykke til |
+| **UTFORDRING** | Spagat-battle for de gutta som VIL: hvem kommer lengst ned? Kun frivillig. | Vinneren deler ut 3 slurker |
 | **UTFORDRING** | (Navn), gjør en perfekt «gutta på tur»-pose | Gruppa tar bilde — det postes, kanskje |
 | **UTFORDRING** | (Navn), syng nasjonalsangen som en operasanger | Eller drikk 3 |
 | **UTFORDRING** | (Navn), vis din mest brukte emoji | Er det 💀 eller 😂 → drikk 2, NPC |
@@ -132,7 +132,7 @@
 | **UTFORDRING** | (Navn), fortell hvilken trener/lærer som formet deg mest.  | Tørr ikke? Drikk 3 |
 | **UTFORDRING** | (Navn), gjør din beste «trener-peptalk» til gutta før en tenkt finale | Choker du før 20 sekunder er gått → drikk 2 |
 | **UTFORDRING** | (Navn) mot (navn): først til å nevne 8 bilmerker | Taperen drikker 3 |
-| **UTFORDRING** | (Navn), stå i brygge/bro i 15 sekunder | Klarer ikke → drikk 2,  |
+| **UTFORDRING** | Er det noen som klarer å stå i brygge/bro? Kun hvis ryggen din vil — ingen tvang. | Klarer noen det: del ut 2 slurker |
 | **UTFORDRING** | (Navn), vis din treningsspilleliste | Ingen treningsspilleliste → drikk 3 |
 | **UTFORDRING** | (Navn), si 3 ting du er stolt av i livet.  | Drikk per nøling. |
 | **UTFORDRING** | (Navn), imiter en UFC-innmarsj med valgfri «walkout song»  | Tørr ikke? Drikk 3 |
