@@ -1,6 +1,21 @@
 GASSED — Det ultimate drikkespillet
 
 ─────────────────────────────────────
+APP-NAVN (App Store)
+─────────────────────────────────────
+Gassed — Drikkespill & Festspill
+
+─────────────────────────────────────
+UNDERTITTEL (30 tegn)
+─────────────────────────────────────
+5 festspill i én app 🍻
+
+─────────────────────────────────────
+KAMPANJETEKST (170 tegn – kan endres når som helst)
+─────────────────────────────────────
+5 drikkespill i én app: kortspill, sannhet eller konsekvens, trivia og jeopardy. Spill synkronisert på flere telefoner. Norsk og engelsk. 18+
+
+─────────────────────────────────────
 KORT BESKRIVELSE (30 ord)
 ─────────────────────────────────────
 Gassed er drikkespillet som tar festen til neste nivå. Velg spillmodus, sett opp spillerne og la kortene avgjøre hvem som drikker.
@@ -37,21 +52,26 @@ NØKKELFUNKSJONER
 ─────────────────────────────────────
 ✓ 5 spill i én app
 ✓ Flerspiller-støtte — legg til opptil 10 spillere
-✓ Sesjonsdeling — spill synkronisert på flere enheter via sesjonskode
+✓ Sesjonsdeling — spill synkronisert på flere telefoner via sesjonskode, så alle følger med samtidig
 ✓ Norsk og engelsk språkstøtte
 ✓ Fungerer uten internett (unntatt sesjonsdeling)
-✓ Ingen annonser, ingen kjøp i appen
-✓ Designet for mobilnettleser — ingen installasjon nødvendig
+✓ Ingen annonser
+
+─────────────────────────────────────
+NØKKELORD (App Store Connect, komma-separert, maks 100 tegn)
+─────────────────────────────────────
+drikkespill,forspill,vorspiel,festspill,party,spill,fest,quiz,jeopardy,sannhet,kortspill,drinking
 
 ─────────────────────────────────────
 TEKNISK INFO
 ─────────────────────────────────────
-Platform: Nettleser (PWA-klar)
+Platform: iOS (native app via Capacitor)
 Språk: Norsk / Engelsk
-Målgruppe: 18+
+Målgruppe: 18+ (aldersgrense 18+ i App Store)
+Kategori: Spill / Underholdning
 Versjon: 1.0
 
 ─────────────────────────────────────
 ANSVARSFRASKRIVELSE
 ─────────────────────────────────────
-Gassed er laget for underholdning og er kun beregnet for myndige personer (18+). Drikk ansvarlig. Appen oppfordrer aldri til overdreven alkoholinntak.
+Gassed er laget for underholdning og er kun beregnet for myndige personer (18+). Drikk ansvarlig, kjenn dine grenser, og press aldri noen til å drikke. Appen oppfordrer aldri til overdreven alkoholinntak. Ingen alkohol er nødvendig for å spille — bytt gjerne ut slurker med en alkoholfri drikk.
