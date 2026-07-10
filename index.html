@@ -8989,6 +8989,12 @@ const S = {
             html: el.innerHTML,
           };
         })(),
+        gassedModeDesc: {
+          show:  document.getElementById('gassed-mode-desc')?.classList.contains('show') ?? false,
+          emoji: document.getElementById('gmd-emoji')?.textContent ?? '',
+          name:  document.getElementById('gmd-name')?.textContent  ?? '',
+          desc:  document.getElementById('gmd-desc')?.textContent  ?? '',
+        },
       },
     };
     return st;
@@ -9083,6 +9089,16 @@ const S = {
     const gassedIntroEl = $('gassed-intro');
     if (gassedIntroEl && o.gassedIntro) {
       gassedIntroEl.classList.toggle('show', o.gassedIntro.show);
+    }
+
+    const gmd = $('gassed-mode-desc');
+    if (gmd && o.gassedModeDesc) {
+      if (o.gassedModeDesc.show) {
+        $('gmd-emoji').textContent = o.gassedModeDesc.emoji ?? '';
+        $('gmd-name').textContent  = o.gassedModeDesc.name  ?? '';
+        $('gmd-desc').textContent  = o.gassedModeDesc.desc  ?? '';
+      }
+      gmd.classList.toggle('show', o.gassedModeDesc.show);
     }
 
     const triviaResult = $('trivia-result-overlay');
@@ -9262,6 +9278,7 @@ function _wrap(name, delay) {
  'dismissInstructions','selectTodCategory',
  'jeoReveal','jeoMark','jeoAssignTeam','jeoStartGame','jeoClose','jeoCloseOverlay',
  'gassedNext','gassedPrev','gassedReturnFromSub',
+ 'gcShowModeDesc','gcCloseModeDesc','gassedBeginGame',
  'addPlayer','removePlayer',
 ].forEach(n => _wrap(n));
 
