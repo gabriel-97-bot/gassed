@@ -8827,9 +8827,9 @@ const S = {
     // Ikke bruk onDisconnect().remove() — kortvarige nettverksmistet ville slettet rommet
     this._showBadge(code, false);
     this.push();
-    // Heartbeat: push hvert 3. sekund så tilskuer alltid ser oppdatert tilstand
+    // Heartbeat: push hvert 7. sekund så tilskuer alltid ser oppdatert tilstand
     if (this._heartbeatTimer) clearInterval(this._heartbeatTimer);
-    this._heartbeatTimer = setInterval(() => { if (this.isMaster && this.roomRef) this.push(); }, 3000);
+    this._heartbeatTimer = setInterval(() => { if (this.isMaster && this.roomRef) this.push(); }, 7000);
     return code;
   },
 
